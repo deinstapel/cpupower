@@ -1,4 +1,3 @@
-
 const St = imports.gi.St;
 const Atk = imports.gi.Atk;
 const Clutter = imports.gi.Clutter;
@@ -15,6 +14,8 @@ const Slider = imports.ui.slider;
 const GLib = imports.gi.GLib;
 const Util = imports.misc.util;
 const Mainloop = imports.mainloop;
+const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
+const _ = Gettext.gettext;
 
 const CPUFreqIndicator = new Lang.Class({
   Name: 'cpupower.CPUFreqIndicator',
@@ -51,7 +52,7 @@ const CPUFreqIndicator = new Lang.Class({
     let icon = new St.Icon({gicon: gicon});
     this.hbox.add_actor(icon);
 
-    this._label = new St.Label({text: "CPU", y_expand: true, y_align: Clutter.ActorAlign.CENTER});
+    this._label = new St.Label({text: _('CPU'), y_expand: true, y_align: Clutter.ActorAlign.CENTER});
     //this.hbox.add_actor(this._label);
     this.hbox.add_actor(PopupMenu.arrowIcon(St.Side.BOTTOM));
 
@@ -67,15 +68,15 @@ const CPUFreqIndicator = new Lang.Class({
   },
   _createMenu: function()
   {
-    this.imMinTitle = new PopupMenu.PopupMenuItem('Minimum Frequency:', {reactive: false});
+    this.imMinTitle = new PopupMenu.PopupMenuItem(_('Minimum Frequency:'), {reactive: false});
     this.imMinLabel = new St.Label({text: this._getMinText()});
     this.imMinTitle.actor.add_child(this.imMinLabel, {align: St.Align.END});
 
-    this.imMaxTitle = new PopupMenu.PopupMenuItem('Maximum Frequency:', {reactive: false});
+    this.imMaxTitle = new PopupMenu.PopupMenuItem(_('Maximum Frequency:'), {reactive: false});
     this.imMaxLabel = new St.Label({text: this._getMaxText()});
     this.imMaxTitle.actor.add_child(this.imMaxLabel, {align: St.Align.END});
 
-    this.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem('Turbo Boost:', this.isTurboBoostActive);
+    this.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(_('Turbo Boost:'), this.isTurboBoostActive);
     this.imTurboSwitch.connect('toggled', Lang.bind(this, function(item)
     {
       if(item.state)
@@ -110,7 +111,7 @@ const CPUFreqIndicator = new Lang.Class({
     }));
     this.imSliderMax.actor.add(this.maxSlider.actor, {expand: true});
 
-    this.imCurrentTitle = new PopupMenu.PopupMenuItem('Current Frequency:', {reactive:false});
+    this.imCurrentTitle = new PopupMenu.PopupMenuItem(_('Current Frequency:'), {reactive:false});
     this.imCurrentLabel = new St.Label({text: this._getCurFreq()});
     this.imCurrentTitle.actor.add_child(this.imCurrentLabel, {align: St.Align.END});
 
@@ -152,7 +153,7 @@ const CPUFreqIndicator = new Lang.Class({
     Util.trySpawnCommandLine(this.pkexec_path + ' cpufreqctl turbo ' + state.toString());
   },
   _updateFreq: function()
-  {
+  {if(!this.menu.isOpen) return true;
     let result = GLib.spawn_command_line_sync(this.pkexec_path + ' cpufreqctl freq 0');
     this.cpufreq = Math.floor(result[1] / 1000.0);
     this.imCurrentLabel.set_text(this._getCurFreq());
