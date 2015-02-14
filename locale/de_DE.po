@@ -1,0 +1,35 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2015-02-12 14:41+0100\n"
+"PO-Revision-Date: 2015-02-12 14:43+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.4\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: ../extension.js\n"
+
+#: ../extension.js:55
+msgid "CPU"
+msgstr "CPU"
+
+#: ../extension.js:71
+msgid "Minimum Frequency:"
+msgstr "Minimale Frequenz:"
+
+#: ../extension.js:75
+msgid "Maximum Frequency:"
+msgstr "Maximale Frequenz:"
+
+#: ../extension.js:79
+msgid "Turbo Boost:"
+msgstr "Turbo Boost:"
+
+#: ../extension.js:114
+msgid "Current Frequency:"
+msgstr "Aktuelle Frequenz:"
