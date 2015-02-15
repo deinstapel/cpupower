@@ -1,1 +1,11 @@
-{"shell-version": ["3.14.3"], "uuid": "cpupower@mko-sl.de", "name": "CPU Power Manager", "description": "Manage Intel_pstate CPU Frequency scaling driver"}
+
+{
+"localedir":"/usr/local/share/locale",
+"shell-version": [
+"3.14.3"
+], 
+"uuid": "cpupower@mko-sl.de", 
+"name": "CPU Power Manager",
+"url": "https://github.com/martin31821/cpupower", 
+"description": "Manage Intel_pstate CPU Frequency scaling driver"
+}

@@ -7,15 +7,19 @@ const Lang = imports.lang;
 const PanelMenu = imports.ui.panelMenu;
 const Panel = imports.ui.panel;
 const PopupMenu = imports.ui.popupMenu;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
 const Gio = imports.gi.Gio;
 const Slider = imports.ui.slider;
 const GLib = imports.gi.GLib;
 const Util = imports.misc.util;
 const Mainloop = imports.mainloop;
+
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
+
+
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
+const Convenience = Me.imports.convenience;
 
 const CPUFreqIndicator = new Lang.Class({
   Name: 'cpupower.CPUFreqIndicator',
@@ -171,7 +175,7 @@ const CPUFreqIndicator = new Lang.Class({
 
 function init(meta) 
 {
-  
+  Convenience.initTranslations('gnome-shell-extension-cpupower');
 }
 
 let _indicator;
