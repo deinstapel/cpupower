@@ -21,13 +21,29 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
 
+const CPUFreqProfileButton = new Lang.Class({
+  Name: 'cpupower.CPUFreqProfileButton',
+  Extends: PopupMenu.PopupMenuItem,
+  _init: function(profile)
+  {
+    this._profile = profile;
+    this.parent(_(this._profile.getName()), {reactive:true});
+  },
+
+  getProfile : function()
+  {
+    return this._profile;
+  },
+});
 const CPUFreqProfile = new Lang.Class({
   Name: 'cpupower.CPUFreqProfile',
-  _init: function()
+  _init: function(name)
   {
     this.minFrequency=0;
     this.maxFrequency=100;
     this.isTurboBoostActive=true;
+    this._name = 'Default';
+    this.imLabel = new CPUFreqProfileButton(this);
   },
   getMinFrequency: function()
   {
@@ -41,9 +57,14 @@ const CPUFreqProfile = new Lang.Class({
   {
     return this.isTurboBoostActive;
   },
+  getName: function()
+  {
+    return this._name;
+  },
+
   save: function()
   {
-    return this.minFrequency.toString() + ':' + this.maxFrequency.toString() + ':' + this.isTurboBoostActive ? 'true' : 'false';
+    return this.minFrequency.toString() + ':' + this.maxFrequency.toString() + ':' + (this.isTurboBoostActive ? 'true' : 'false') + ':' + this._name;
   },
   load: function(input)
   {
@@ -51,6 +72,8 @@ const CPUFreqProfile = new Lang.Class({
     this.minFrequency = parseInt(input2[0]);
     this.maxFrequency = parseInt(input2[1]);
     this.isTurboBoostActive = input[2]=='true';
+    this._name = input[3];
+    this.imLabel = CPUFreqProfileButton(this);
   },
   setMinFrequency: function(value)
   {
@@ -64,6 +87,15 @@ const CPUFreqProfile = new Lang.Class({
   {
     this.isTurboBoostActive = value;
   },
+  setName: function(value)
+  {
+    this._name = value;
+    this.imLabel = new CPUFreqProfileButton(this);
+  },
+  getUiComponent: function()
+  {
+    return this.imLabel;
+  },
 });
 
 const CPUFreqIndicator = new Lang.Class({
@@ -76,21 +108,26 @@ const CPUFreqIndicator = new Lang.Class({
     highPowerProfile.setMinFrequency(100);
     highPowerProfile.setMaxFrequency(100);
     highPowerProfile.setTurboBoost(true);
+    highPowerProfile.setName('High Performance');
 
     var energySaveProfile = new CPUFreqProfile();
     energySaveProfile.setMinFrequency(0);
     energySaveProfile.setMaxFrequency(10);
     energySaveProfile.setTurboBoost(false);
+    energySaveProfile.setName('Energy Saver');
+
 
     var quietProfile = new CPUFreqProfile();
     quietProfile.setMinFrequency(0);
     quietProfile.setMaxFrequency(30);
     quietProfile.setTurboBoost(false);
+    quietProfile.setName('Quiet');
 
     var multimediaProfile = new CPUFreqProfile();
     multimediaProfile.setMinFrequency(30);
     multimediaProfile.setMaxFrequency(80);
     multimediaProfile.setTurboBoost(true);
+    multimediaProfile.setName('Multimedia');
 
     this.profiles = new Array(highPowerProfile, energySaveProfile, quietProfile, multimediaProfile);
 
@@ -196,7 +233,37 @@ const CPUFreqIndicator = new Lang.Class({
     this._freqSection.addMenuItem(this.imTurboSwitch);
     this._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
     this._freqSection.addMenuItem(this.imCurrentTitle);
+    this._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
+    for(var i = 0; i < this.profiles.length; i++)
+    {
+      var uiComponent= this.profiles[i].getUiComponent();
+      uiComponent.connect('activate', Lang.bind(this, function(item)
+      {
+        this._applyProfile(item.getProfile());
+      }));
+      this._freqSection.addMenuItem(uiComponent);
+    }
+
+  },
+  _applyProfile: function(profile)
+  {
+    this.minVal = profile.getMinFrequency();
+    this.imMinLabel.set_text(this._getMinText());
+    this.minSlider.setValue(this.minVal / 100.0);
+    this._updateMin();
+
+    this.maxVal = profile.getMaxFrequency();
+    this.imMaxLabel.set_text(this._getMaxText());
+    this.maxSlider.setValue(this.maxVal / 100.0);
+    this._updateMax();
+
+    this.isTurboBoostActive = profile.getTurboBoost();
+    this.isTurboBoostActive.setToggleState(this.isTurboBoostActive);
+    if(this.isTurboBoostActive)
+      this._updateTurbo(1);
+    else
+      this._updateTurbo(0);
   },
   _disable: function()
   {
