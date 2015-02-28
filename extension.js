@@ -21,12 +21,79 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
 
+const CPUFreqProfile = new Lang.Class({
+  Name: 'cpupower.CPUFreqProfile',
+  _init: function()
+  {
+    this.minFrequency=0;
+    this.maxFrequency=100;
+    this.isTurboBoostActive=true;
+  },
+  getMinFrequency: function()
+  {
+    return this.minFrequency;
+  },
+  getMaxFrequency: function()
+  {
+    return this.maxFrequency;
+  },
+  getTurboBoost: function()
+  {
+    return this.isTurboBoostActive;
+  },
+  save: function()
+  {
+    return this.minFrequency.toString() + ':' + this.maxFrequency.toString() + ':' + this.isTurboBoostActive ? 'true' : 'false';
+  },
+  load: function(input)
+  {
+    var input2 = input.split(':');
+    this.minFrequency = parseInt(input2[0]);
+    this.maxFrequency = parseInt(input2[1]);
+    this.isTurboBoostActive = input[2]=='true';
+  },
+  setMinFrequency: function(value)
+  {
+    this.minFrequency = value;
+  },
+  setMaxFrequency: function(value)
+  {
+    this.maxFrequency = value;
+  },
+  setTurboBoost: function(value)
+  {
+    this.isTurboBoostActive = value;
+  },
+});
+
 const CPUFreqIndicator = new Lang.Class({
   Name: 'cpupower.CPUFreqIndicator',
   Extends: PanelMenu.Button,
 
   _init: function() 
   {
+    var highPowerProfile = new CPUFreqProfile();
+    highPowerProfile.setMinFrequency(100);
+    highPowerProfile.setMaxFrequency(100);
+    highPowerProfile.setTurboBoost(true);
+
+    var energySaveProfile = new CPUFreqProfile();
+    energySaveProfile.setMinFrequency(0);
+    energySaveProfile.setMaxFrequency(10);
+    energySaveProfile.setTurboBoost(false);
+
+    var quietProfile = new CPUFreqProfile();
+    quietProfile.setMinFrequency(0);
+    quietProfile.setMaxFrequency(30);
+    quietProfile.setTurboBoost(false);
+
+    var multimediaProfile = new CPUFreqProfile();
+    multimediaProfile.setMinFrequency(30);
+    multimediaProfile.setMaxFrequency(80);
+    multimediaProfile.setTurboBoost(true);
+
+    this.profiles = new Array(highPowerProfile, energySaveProfile, quietProfile, multimediaProfile);
+
     this.cpufreq = 800;
     this.parent(null, 'cpupower');
     this.isTurboBoostActive = true;
