@@ -7,5 +7,6 @@
 "uuid": "cpupower@mko-sl.de", 
 "name": "CPU Power Manager",
 "url": "https://github.com/martin31821/cpupower", 
-"description": "Manage Intel_pstate CPU Frequency scaling driver"
+"description": "Manage Intel_pstate CPU Frequency scaling driver",
+"schema": "org.gnome.shell.extensions.cpupower"
 }

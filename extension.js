@@ -15,6 +15,7 @@ const Mainloop = imports.mainloop;
 
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
+const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 
 
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -37,7 +38,7 @@ const CPUFreqProfileButton = new Lang.Class({
 });
 const CPUFreqProfile = new Lang.Class({
   Name: 'cpupower.CPUFreqProfile',
-  _init: function(name)
+  _init: function()
   {
     this.minFrequency=0;
     this.maxFrequency=100;
@@ -69,11 +70,15 @@ const CPUFreqProfile = new Lang.Class({
   load: function(input)
   {
     var input2 = input.split(':');
-    this.minFrequency = parseInt(input2[0]);
-    this.maxFrequency = parseInt(input2[1]);
-    this.isTurboBoostActive = input[2]=='true';
-    this._name = input[3];
-    this.imLabel = CPUFreqProfileButton(this);
+    this.setMinFrequency(parseInt(input2[0]));
+    this.setMaxFrequency(parseInt(input2[1]));
+    if((input2[2] ==="true"))
+      this.setTurboBoost(true);
+    else
+      this.setTurboBoost(false);
+
+    log(this.isTurboBoostActive); log(input2[2]);
+    this.setName(input2[3]);
   },
   setMinFrequency: function(value)
   {
@@ -104,32 +109,18 @@ const CPUFreqIndicator = new Lang.Class({
 
   _init: function() 
   {
-    var highPowerProfile = new CPUFreqProfile();
-    highPowerProfile.setMinFrequency(100);
-    highPowerProfile.setMaxFrequency(100);
-    highPowerProfile.setTurboBoost(true);
-    highPowerProfile.setName('High Performance');
-
-    var energySaveProfile = new CPUFreqProfile();
-    energySaveProfile.setMinFrequency(0);
-    energySaveProfile.setMaxFrequency(10);
-    energySaveProfile.setTurboBoost(false);
-    energySaveProfile.setName('Energy Saver');
-
-
-    var quietProfile = new CPUFreqProfile();
-    quietProfile.setMinFrequency(0);
-    quietProfile.setMaxFrequency(30);
-    quietProfile.setTurboBoost(false);
-    quietProfile.setName('Quiet');
-
-    var multimediaProfile = new CPUFreqProfile();
-    multimediaProfile.setMinFrequency(30);
-    multimediaProfile.setMaxFrequency(80);
-    multimediaProfile.setTurboBoost(true);
-    multimediaProfile.setName('Multimedia');
-
-    this.profiles = new Array(highPowerProfile, energySaveProfile, quietProfile, multimediaProfile);
+    this.settings = Convenience.getSettings(SETTINGS_ID);
+    var profileString = this.settings.get_string('profiles').split(';');
+    log(profileString);
+    this.profiles = [];
+    for(var j = 0; j < profileString.length; j++)
+    {
+      log(profileString[j]);
+      var profile = new CPUFreqProfile();
+      profile.load(profileString[j]);
+      log(profile);
+      this.profiles.push(profile);
+    }
 
     this.cpufreq = 800;
     this.parent(null, 'cpupower');
@@ -259,7 +250,7 @@ const CPUFreqIndicator = new Lang.Class({
     this._updateMax();
 
     this.isTurboBoostActive = profile.getTurboBoost();
-    this.isTurboBoostActive.setToggleState(this.isTurboBoostActive);
+    this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
     if(this.isTurboBoostActive)
       this._updateTurbo(1);
     else
