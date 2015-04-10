@@ -2,8 +2,10 @@
 {
 "localedir":"/usr/local/share/locale",
 "shell-version": [
-"3.14.3",
-"3.16.0"
+"3.10",
+"3.12",
+"3.14",
+"3.16"
 ], 
 "uuid": "cpupower@mko-sl.de", 
 "name": "CPU Power Manager",
