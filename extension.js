@@ -147,8 +147,11 @@ const CPUFreqIndicator = new Lang.Class({
 
     Main.panel.menuManager.addMenu(this.menu);
     this.hbox = new St.BoxLayout({style_class: 'panel-status-menu-box'});
-    let gicon = Gio.icon_new_for_string(Me.path + '/icons/line-chart.png');
-    let icon = new St.Icon({gicon: gicon});
+    let gicon = Gio.icon_new_for_string(Me.path + '/icons/cpu.svg');
+    let icon = new St.Icon({
+        gicon: gicon,
+        style_class: 'system-status-icon'
+    });
     this.hbox.add_actor(icon);
 
     this._label = new St.Label({text: _('CPU'), y_expand: true, y_align: Clutter.ActorAlign.CENTER});
