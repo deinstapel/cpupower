@@ -5,5 +5,10 @@
 			<summary>Serialized Profiles</summary>
 			<description>Format for one: minFreq:maxFreq:turboBoost:Name, split multiple by ;</description>
 		</key>
+		<key name="show-freq-in-taskbar" type="b">
+			<default>false</default>
+			<summary>Show current cpu frequency in taskbar</summary>
+			<description>Show current cpu frequency in the top bar</description>
+		</key>
 	</schema>
 </schemalist>

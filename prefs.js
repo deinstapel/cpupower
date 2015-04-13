@@ -1,27 +1,26 @@
 /*
  *
- *  Weather extension for GNOME Shell preferences 
- *  - Creates a widget to set the preferences of the weather extension
+ *  CPUPower for GNOME Shell preferences 
+ *  - Creates a widget to set the preferences of the cpupower extension
  *
  * Copyright (C) 2012
- *     Canek Peláez <canek@ciencias.unam.mx>,
- *     Christian METZLER <neroth@xeked.com>,
+ *     Martin Koppehel <psl.kontakt@gmail.com>,
  *
- * This file is part of gnome-shell-extension-weather.
+ * This file is part of the gnome-shell extension cpupower.
  *
- * gnome-shell-extension-weather is free software: you can
+ * gnome-shell extension cpupower is free software: you can
  * redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option)
  * any later version.
  *
- * gnome-shell-extension-weather is distributed in the hope that it
+ * gnome-shell extension cpupower is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY; without even the
  * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with gnome-shell-extension-weather.  If not, see
+ * along with gnome-shell extension cpupower.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
  */
@@ -84,14 +83,130 @@ Extends: Gtk.Box,
 
 	initWindow : function()
 	{												
-	this.status("Init window");
-	this.Window.add_from_file(EXTENSIONDIR+"/cpupower-settings.ui");					
-	this.status("CPUPower Settings UI loaded");
-	this.MainWidget = this.Window.get_object("main-widget");
+	  this.status("Init window");
+	  this.Window.add_from_file(EXTENSIONDIR+"/cpupower-settings.ui");					
+	  this.status("CPUPower Settings UI loaded");
+	  this.MainWidget = this.Window.get_object("main-widget");
 						
-	this.status("Inited config widget");
+	  this.initConfigWidget();
+	  this.addLabel(_("Show current frequency"));
+	  this.addSwitch("show_freq_taskbar");
+	  
+	  this.status("Inited config widget");
+	},
+	
+	addLabel : function(text)
+	{
+	  let l = new Gtk.Label({label:text,xalign:0});
+	  l.visible = 1;
+	  l.can_focus = 0;
+	  this.right_widget.attach(l, this.x[0],this.x[1], this.y[0],this.y[1],0,0,0,0);
+	  this.inc();
 	},
 
+	addComboBox : function(a,b)
+	{
+	  let that = this;
+	  let cf = new Gtk.ComboBoxText();
+	  this.configWidgets.push([cf,b]);
+	  cf.visible = 1;
+	  cf.can_focus = 0;
+	  cf.width_request = 100;
+      for(let i in a)
+	  {
+		if(a[i] != 0)
+		cf.append(i, a[i]);
+	  }
+	  cf.active_id = String(this[b]);
+	  cf.connect("changed",function(){try{that[b] = Number(arguments[0].get_active_id());}catch(e){that.status(e);}});
+	  this.right_widget.attach(cf, this.x[0],this.x[1], this.y[0],this.y[1],0,0,0,0);
+	  this.inc();											
+	  this.status("Added comboBox("+(this.configWidgets.length-1)+") "+b+" active_id : "+this[b]);
+	  return 0;
+	},
+
+	addSwitch : function(a)
+	{
+	  let that = this;
+	  let sw = new Gtk.Switch();
+	  this.configWidgets.push([sw,a]);
+	  sw.visible = 1;
+	  sw.can_focus = 0;
+	  sw.active = this[a];
+	  sw.connect("notify::active",function(){that[a] = arguments[0].active;});
+	  this.right_widget.attach(sw, this.x[0],this.x[1], this.y[0],this.y[1],0,0,0,0);
+	  this.inc();
+	},
+	
+	inc : function()
+	{
+	  if(arguments[0])
+	  {
+		this.x[0] = 0;
+		this.x[1] = 1;
+		this.y[0] = 0;
+		this.y[1] = 1;
+		return 0;
+	  }
+
+	  if(this.x[0] == 1)
+	  {
+		this.x[0] = 0;
+		this.x[1] = 1;
+		this.y[0] += 1;
+		this.y[1] += 1;
+		return 0;
+	  }
+	  else
+	  {
+		this.x[0] += 1;
+		this.x[1] += 1;
+		return 0;
+      }
+	},
+	
+	initConfigWidget : function()
+	{
+	  this.configWidgets.splice(0, this.configWidgets.length);
+	  this.inc(1);
+	  let a = this.Window.get_object("right-widget-table");
+	  a.visible = 1;
+	  a.can_focus = 0;
+	  this.right_widget = a;
+	},	
+	
+	refreshUI : function()
+	{
+	  this.status("Refresh UI");
+	},
+	
+	loadConfig : function()
+	{
+	  let that = this;
+   	  this.Settings = Convenience.getSettings(SETTINGS_SCHEMA);	
+	  this.Settings.connect("changed", function(){that.status(0); that.refreshUI();});
+	},
+
+	get show_freq_taskbar()
+	{
+	  if(!this.Settings)
+	    this.loadConfig();
+	  return this.Settings.get_boolean("show-freq-in-taskbar");
+	},
+
+	set show_freq_taskbar(v)
+	{
+	  if(!this.Settings)
+		this.loadConfig();
+	  this.Settings.set_boolean("show-freq-in-taskbar",v);
+	},
+	
+	x : [0,1],
+
+	y : [0,1],
+
+	configWidgets : [],
+	
 });
 
 function init()

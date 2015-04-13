@@ -1,3 +1,31 @@
+/*
+ *
+ *  CPUPower for GNOME Shell preferences 
+ *  - Creates a widget to set the preferences of the cpupower extension
+ *
+ * Copyright (C) 2012
+ *     Martin Koppehel <psl.kontakt@gmail.com>,
+ *
+ * This file is part of the gnome-shell extension cpupower.
+ *
+ * gnome-shell extension cpupower is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * gnome-shell extension cpupower is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gnome-shell extension cpupower.  If not, see
+ * <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
 const St = imports.gi.St;
 const Atk = imports.gi.Atk;
 const Clutter = imports.gi.Clutter;
@@ -37,8 +65,11 @@ const CPUFreqProfileButton = new Lang.Class({
     return this._profile;
   },
 });
+
+
 const CPUFreqProfile = new Lang.Class({
   Name: 'cpupower.CPUFreqProfile',
+  
   _init: function()
   {
     this.minFrequency=0;
@@ -47,18 +78,22 @@ const CPUFreqProfile = new Lang.Class({
     this._name = 'Default';
     this.imLabel = new CPUFreqProfileButton(this);
   },
+  
   getMinFrequency: function()
   {
     return this.minFrequency;
   },
+  
   getMaxFrequency: function()
   {
     return this.maxFrequency;
   },
+  
   getTurboBoost: function()
   {
     return this.isTurboBoostActive;
   },
+  
   getName: function()
   {
     return this._name;
@@ -68,6 +103,7 @@ const CPUFreqProfile = new Lang.Class({
   {
     return this.minFrequency.toString() + ':' + this.maxFrequency.toString() + ':' + (this.isTurboBoostActive ? 'true' : 'false') + ':' + this._name;
   },
+  
   load: function(input)
   {
     var input2 = input.split(':');
@@ -80,23 +116,28 @@ const CPUFreqProfile = new Lang.Class({
 
     this.setName(input2[3]);
   },
+  
   setMinFrequency: function(value)
   {
     this.minFrequency = value;
   },
+  
   setMaxFrequency: function(value)
   {
     this.maxFrequency = value;
   },
+  
   setTurboBoost: function(value)
   {
     this.isTurboBoostActive = value;
   },
+  
   setName: function(value)
   {
     this._name = value;
     this.imLabel = new CPUFreqProfileButton(this);
   },
+  
   getUiComponent: function()
   {
     return this.imLabel;
@@ -109,16 +150,10 @@ const CPUFreqIndicator = new Lang.Class({
 
   _init: function() 
   {
+    let that = this;
     this.settings = Convenience.getSettings(SETTINGS_ID);
-    var profileString = this.settings.get_string('profiles').split(';');
-    log(profileString);
-    this.profiles = [];
-    for(var j = 0; j < profileString.length; j++)
-    {
-      var profile = new CPUFreqProfile();
-      profile.load(profileString[j]);
-      this.profiles.push(profile);
-    }
+    this.settings.connect("changed", function() {that._createMenu(that)});
+
 
     this.cpufreq = 800;
     this.parent(null, 'cpupower');
@@ -128,10 +163,7 @@ const CPUFreqIndicator = new Lang.Class({
     this.pkexec_path = GLib.find_program_in_path('pkexec');
     let result = GLib.spawn_command_line_sync(this.pkexec_path + ' cpufreqctl turbo get', this.out);
     let returnCode = result[1];
-    if(returnCode == 0)
-      this.isTurboBoostActive = false;
-    else
-      this.isTurboBoostActive = true;
+    this.isTurboBoostActive = returnCode;
 
     let result = GLib.spawn_command_line_sync(this.pkexec_path + ' cpufreqctl min get', this.out);
     let returnCode = result[1];
@@ -150,99 +182,118 @@ const CPUFreqIndicator = new Lang.Class({
         gicon: gicon,
         style_class: 'system-status-icon'
     });
+    
+    this.lbl = new St.Label({text: "", y_expand:true, y_align: Clutter.ActorAlign.CENTER});
+    this.hbox.add_actor(this.lbl);
+    
+    
+    this.lblActive = (this.settings.get_boolean("show-freq-in-taskbar"))
+
     this.hbox.add_actor(icon);
-
-    this._label = new St.Label({text: _('CPU'), y_expand: true, y_align: Clutter.ActorAlign.CENTER});
     this.hbox.add_actor(PopupMenu.arrowIcon(St.Side.BOTTOM));
-
-    this._freqSection = new PopupMenu.PopupMenuSection();
-    this.menu.addMenuItem(this._freqSection);
-
-    this._createMenu();
+    
+    this._createMenu(that);
   },
+  
   _enable: function()
   {
     this.actor.add_actor(this.hbox);
     this.timeout = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreq));
   },
-  _createMenu: function()
+  
+  _createMenu: function(that)
   {
-    this.imMinTitle = new PopupMenu.PopupMenuItem(_('Minimum Frequency:'), {reactive: false});
-    this.imMinLabel = new St.Label({text: this._getMinText()});
-    this.imMinTitle.actor.add_child(this.imMinLabel, {align: St.Align.END});
+    if(that._freqSection)
+      that.menu.removeAll();
+    
+    that.lblActive = (that.settings.get_boolean("show-freq-in-taskbar"));
+      
+    that._freqSection = new PopupMenu.PopupMenuSection();
+    that.menu.addMenuItem(that._freqSection);
+    var profileString = that.settings.get_string('profiles').split(';');
+    that.profiles = [];
+    for(var j = 0; j < profileString.length; j++)
+    {
+      var profile = new CPUFreqProfile();
+      profile.load(profileString[j]);
+      that.profiles.push(profile);
+    }
+    that.imMinTitle = new PopupMenu.PopupMenuItem(_('Minimum Frequency:'), {reactive: false});
+    that.imMinLabel = new St.Label({text: that._getMinText()});
+    that.imMinTitle.actor.add_child(that.imMinLabel, {align: St.Align.END});
 
-    this.imMaxTitle = new PopupMenu.PopupMenuItem(_('Maximum Frequency:'), {reactive: false});
-    this.imMaxLabel = new St.Label({text: this._getMaxText()});
-    this.imMaxTitle.actor.add_child(this.imMaxLabel, {align: St.Align.END});
+    that.imMaxTitle = new PopupMenu.PopupMenuItem(_('Maximum Frequency:'), {reactive: false});
+    that.imMaxLabel = new St.Label({text: that._getMaxText()});
+    that.imMaxTitle.actor.add_child(that.imMaxLabel, {align: St.Align.END});
 
-    this.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(_('Turbo Boost:'), this.isTurboBoostActive);
-    this.imTurboSwitch.connect('toggled', Lang.bind(this, function(item)
+    that.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(_('Turbo Boost:'), that.isTurboBoostActive);
+    that.imTurboSwitch.connect('toggled', Lang.bind(that, function(item)
     {
       if(item.state)
       {
-        this.isTurboBoostActive = true;
-        this._updateTurbo(1);
+        that.isTurboBoostActive = true;
+        that._updateTurbo(1);
       }
       else
       {
-        this.isTurboBoostActive = false;
-        this._updateTurbo(0);
+        that.isTurboBoostActive = false;
+        that._updateTurbo(0);
       }
     }));
 
-    this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
-    this.minSlider = new Slider.Slider(this.minVal / 100);
-    this.minSlider.connect('value-changed', Lang.bind(this, function(item)
+    that.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
+    that.minSlider = new Slider.Slider(that.minVal / 100);
+    that.minSlider.connect('value-changed', Lang.bind(that, function(item)
     {
-      this.minVal = Math.floor(item.value * 100);
-      this.imMinLabel.set_text(this._getMinText());
-      this._updateMin(); 
+      that.minVal = Math.floor(item.value * 100);
+      that.imMinLabel.set_text(that._getMinText());
+      that._updateMin(); 
     }));
-    this.imSliderMin.actor.add(this.minSlider.actor, {expand: true});
+    that.imSliderMin.actor.add(that.minSlider.actor, {expand: true});
 
-    this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
-    this.maxSlider = new Slider.Slider(this.maxVal / 100);
-    this.maxSlider.connect('value-changed', Lang.bind(this, function(item)
+    that.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
+    that.maxSlider = new Slider.Slider(that.maxVal / 100);
+    that.maxSlider.connect('value-changed', Lang.bind(that, function(item)
     {
-      this.maxVal = Math.floor(item.value * 100);
-      this.imMaxLabel.set_text(this._getMaxText());
-      this._updateMax();
+      that.maxVal = Math.floor(item.value * 100);
+      that.imMaxLabel.set_text(that._getMaxText());
+      that._updateMax();
     }));
-    this.imSliderMax.actor.add(this.maxSlider.actor, {expand: true});
+    that.imSliderMax.actor.add(that.maxSlider.actor, {expand: true});
 
-    this.imCurrentTitle = new PopupMenu.PopupMenuItem(_('Current Frequency:'), {reactive:false});
-    this.imCurrentLabel = new St.Label({text: this._getCurFreq()});
-    this.imCurrentTitle.actor.add_child(this.imCurrentLabel, {align: St.Align.END});
+    that.imCurrentTitle = new PopupMenu.PopupMenuItem(_('Current Frequency:'), {reactive:false});
+    that.imCurrentLabel = new St.Label({text: that._getCurFreq()});
+    that.imCurrentTitle.actor.add_child(that.imCurrentLabel, {align: St.Align.END});
 
+    that._freqSection.addMenuItem(that.imMinTitle);
+    that._freqSection.addMenuItem(that.imSliderMin);
+    that._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+    that._freqSection.addMenuItem(that.imMaxTitle);
+    that._freqSection.addMenuItem(that.imSliderMax);
+    that._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+    that._freqSection.addMenuItem(that.imTurboSwitch);
+    that._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+    that._freqSection.addMenuItem(that.imCurrentTitle);
+    that._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-    this._freqSection.addMenuItem(this.imMinTitle);
-    this._freqSection.addMenuItem(this.imSliderMin);
-    this._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-    this._freqSection.addMenuItem(this.imMaxTitle);
-    this._freqSection.addMenuItem(this.imSliderMax);
-    this._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-    this._freqSection.addMenuItem(this.imTurboSwitch);
-    this._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-    this._freqSection.addMenuItem(this.imCurrentTitle);
-    this._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-    for(var i = 0; i < this.profiles.length; i++)
+    for(var i = 0; i < that.profiles.length; i++)
     {
-      var uiComponent= this.profiles[i].getUiComponent();
-      uiComponent.connect('activate', Lang.bind(this, function(item)
+      var uiComponent= that.profiles[i].getUiComponent();
+      uiComponent.connect('activate', Lang.bind(that, function(item)
       {
-        this._applyProfile(item.getProfile());
+        that._applyProfile(item.getProfile());
       }));
-      this._freqSection.addMenuItem(uiComponent);
+      that._freqSection.addMenuItem(uiComponent);
     }
     
-    this._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-    this.imPrefsBtn = new PopupMenu.PopupMenuItem(_('Preferences'));
-    this.imPrefsBtn.connect('activate', Lang.bind(this, this._onPreferencesActivate));
+    that._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+    that.imPrefsBtn = new PopupMenu.PopupMenuItem(_('Preferences'));
+    that.imPrefsBtn.connect('activate', Lang.bind(that, that._onPreferencesActivate));
     
-    this._freqSection.addMenuItem(this.imPrefsBtn);
+    that._freqSection.addMenuItem(that.imPrefsBtn);
 
   },
+  
   _applyProfile: function(profile)
   {
     this.minVal = profile.getMinFrequency();
@@ -262,31 +313,38 @@ const CPUFreqIndicator = new Lang.Class({
     else
       this._updateTurbo(0);
   },
+  
   _disable: function()
   {
     this.actor.remove_actor(this.hbox);
     Mainloop.source_remove(this.timeout);
   },
+  
   _getMinText: function()
   {
     return Math.floor(this.minVal).toString() + '%';
   },
+  
   _getMaxText: function()
   {
     return Math.floor(this.maxVal).toString() + '%';
   },
+  
   _updateMax: function()
   {
     Util.trySpawnCommandLine(this.pkexec_path + ' cpufreqctl max ' + Math.floor(this.maxVal).toString());
   },
+  
   _updateMin: function()
   {
     Util.trySpawnCommandLine(this.pkexec_path + ' cpufreqctl min ' + Math.floor(this.minVal));
   },
+  
   _updateTurbo: function(state)
   {
     Util.trySpawnCommandLine(this.pkexec_path + ' cpufreqctl turbo ' + state.toString());
   },
+  
   _updateFreq: function()
   {
     let lines = Shell.get_file_contents_utf8_sync('/proc/cpuinfo').split("\n");
@@ -298,18 +356,25 @@ const CPUFreqIndicator = new Lang.Class({
         continue;
       this.cpufreq = parseInt(line.substring(line.indexOf(':') + 2));
       this.imCurrentLabel.set_text(this._getCurFreq());
+      if(this.lblActive)
+      this.lbl.set_text(this._getCurFreq());
+      else
+      this.lbl.set_text(""); 
       break;
     }
     return true;
   },
+  
   _getCurFreq: function()
   {
     return this.cpufreq.toString() + 'MHz';
   },
+  
   destroy: function()
   {
     this.parent();
   },
+  
   _onPreferencesActivate : function(item)
   {
     Util.spawn(["gnome-shell-extension-prefs","cpupower@mko-sl.de"]);
@@ -324,17 +389,22 @@ function init(meta)
 
 let _indicator;
 
-function enable() {
-	try{
+function enable() 
+{
+  try
+  {
     _indicator = new CPUFreqIndicator();
     Main.panel.addToStatusArea('cpupower', _indicator);
     _indicator._enable();
-}   catch(e){
+  }
+  catch(e)
+  {
 	global.log(e.message);
-}
+  }
 }
 
-function disable() {
-    _indicator._disable();
-    _indicator.destroy();
+function disable() 
+{
+  _indicator._disable();
+  _indicator.destroy();
 }
