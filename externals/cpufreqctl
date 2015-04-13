@@ -4,12 +4,6 @@ then
 	echo "Usage: cpufreqctl.sh {turbo|min|max} {value}"
 	exit
 fi
-if [ $1 = "freq" ]
-then
-	value=$(</sys/devices/system/cpu/cpu$2/cpufreq/cpuinfo_cur_freq)
-	echo $value
-	exit
-fi
 if [ $1 = "turbo" ]
 then
 	if [ $2 = "get" ]

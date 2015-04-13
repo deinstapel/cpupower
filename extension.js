@@ -12,6 +12,7 @@ const Slider = imports.ui.slider;
 const GLib = imports.gi.GLib;
 const Util = imports.misc.util;
 const Mainloop = imports.mainloop;
+const Shell = imports.gi.Shell;
 
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
@@ -77,7 +78,6 @@ const CPUFreqProfile = new Lang.Class({
     else
       this.setTurboBoost(false);
 
-    log(this.isTurboBoostActive); log(input2[2]);
     this.setName(input2[3]);
   },
   setMinFrequency: function(value)
@@ -115,10 +115,8 @@ const CPUFreqIndicator = new Lang.Class({
     this.profiles = [];
     for(var j = 0; j < profileString.length; j++)
     {
-      log(profileString[j]);
       var profile = new CPUFreqProfile();
       profile.load(profileString[j]);
-      log(profile);
       this.profiles.push(profile);
     }
 
@@ -155,7 +153,6 @@ const CPUFreqIndicator = new Lang.Class({
     this.hbox.add_actor(icon);
 
     this._label = new St.Label({text: _('CPU'), y_expand: true, y_align: Clutter.ActorAlign.CENTER});
-    //this.hbox.add_actor(this._label);
     this.hbox.add_actor(PopupMenu.arrowIcon(St.Side.BOTTOM));
 
     this._freqSection = new PopupMenu.PopupMenuSection();
@@ -238,6 +235,12 @@ const CPUFreqIndicator = new Lang.Class({
       }));
       this._freqSection.addMenuItem(uiComponent);
     }
+    
+    this._freqSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+    this.imPrefsBtn = new PopupMenu.PopupMenuItem(_('Preferences'));
+    this.imPrefsBtn.connect('activate', Lang.bind(this, this._onPreferencesActivate));
+    
+    this._freqSection.addMenuItem(this.imPrefsBtn);
 
   },
   _applyProfile: function(profile)
@@ -285,10 +288,18 @@ const CPUFreqIndicator = new Lang.Class({
     Util.trySpawnCommandLine(this.pkexec_path + ' cpufreqctl turbo ' + state.toString());
   },
   _updateFreq: function()
-  {if(!this.menu.isOpen) return true;
-    let result = GLib.spawn_command_line_sync(this.pkexec_path + ' cpufreqctl freq 0');
-    this.cpufreq = Math.floor(result[1] / 1000.0);
-    this.imCurrentLabel.set_text(this._getCurFreq());
+  {
+    let lines = Shell.get_file_contents_utf8_sync('/proc/cpuinfo').split("\n");
+    for(let i = 0; i < lines.length; i++) 
+    {
+      let line = lines[i];
+      
+      if(line.search(/cpu mhz/i) < 0)
+        continue;
+      this.cpufreq = parseInt(line.substring(line.indexOf(':') + 2));
+      this.imCurrentLabel.set_text(this._getCurFreq());
+      break;
+    }
     return true;
   },
   _getCurFreq: function()
@@ -298,6 +309,11 @@ const CPUFreqIndicator = new Lang.Class({
   destroy: function()
   {
     this.parent();
+  },
+  _onPreferencesActivate : function(item)
+  {
+    Util.spawn(["gnome-shell-extension-prefs","cpupower@mko-sl.de"]);
+	return 0;
   },
 });
 
