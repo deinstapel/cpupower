@@ -161,15 +161,16 @@ const CPUFreqIndicator = new Lang.Class({
     this.minVal = 0;
     this.maxVal = 30;
     this.pkexec_path = GLib.find_program_in_path('pkexec');
-    let result = GLib.spawn_command_line_sync(this.pkexec_path + ' cpufreqctl turbo get', this.out);
+    this.cpufreqctl_path = GLib.find_program_in_path('cpufreqctl');
+    let result = GLib.spawn_command_line_sync('cpufreqctl turbo get', this.out);
     let returnCode = result[1];
     this.isTurboBoostActive = returnCode;
 
-    let result = GLib.spawn_command_line_sync(this.pkexec_path + ' cpufreqctl min get', this.out);
+    let result = GLib.spawn_command_line_sync('cpufreqctl min get', this.out);
     let returnCode = result[1];
     this.minVal = returnCode;
 
-    let result = GLib.spawn_command_line_sync(this.pkexec_path + ' cpufreqctl max get', this.out);
+    let result = GLib.spawn_command_line_sync('cpufreqctl max get', this.out);
     let returnCode = result[1];
     this.maxVal = returnCode;
 
@@ -199,6 +200,7 @@ const CPUFreqIndicator = new Lang.Class({
   {
     this.actor.add_actor(this.hbox);
     this.timeout = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreq));
+    this.timeout_mm = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreqMm));
   },
   
   _createMenu: function(that)
@@ -297,27 +299,25 @@ const CPUFreqIndicator = new Lang.Class({
   _applyProfile: function(profile)
   {
     this.minVal = profile.getMinFrequency();
-    this.imMinLabel.set_text(this._getMinText());
-    this.minSlider.setValue(this.minVal / 100.0);
     this._updateMin();
 
     this.maxVal = profile.getMaxFrequency();
-    this.imMaxLabel.set_text(this._getMaxText());
-    this.maxSlider.setValue(this.maxVal / 100.0);
     this._updateMax();
 
     this.isTurboBoostActive = profile.getTurboBoost();
-    this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
     if(this.isTurboBoostActive)
       this._updateTurbo(1);
     else
       this._updateTurbo(0);
+    
+    this._updateUi();
   },
   
   _disable: function()
   {
     this.actor.remove_actor(this.hbox);
     Mainloop.source_remove(this.timeout);
+    Mainloop.source_remove(this.timeout_mm);
   },
   
   _getMinText: function()
@@ -345,6 +345,16 @@ const CPUFreqIndicator = new Lang.Class({
     Util.trySpawnCommandLine(this.pkexec_path + ' cpufreqctl turbo ' + state.toString());
   },
   
+  _updateUi: function()
+  {
+    this.imMinLabel.set_text(this._getMinText());
+    this.minSlider.setValue(this.minVal / 100.0);
+    
+    this.imMaxLabel.set_text(this._getMaxText());
+    this.maxSlider.setValue(this.maxVal / 100.0);
+    
+    this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
+  },
   _updateFreq: function()
   {
     let lines = Shell.get_file_contents_utf8_sync('/proc/cpuinfo').split("\n");
@@ -362,6 +372,22 @@ const CPUFreqIndicator = new Lang.Class({
       this.lbl.set_text(""); 
       break;
     }
+    return true;
+  },
+  
+  _updateFreqMm: function()
+  {
+  	if(!this.menu.isOpen) return true;
+  	
+  	let [res, out] = GLib.spawn_command_line_sync('cpufreqctl turbo get');
+    this.isTurboBoostActive = parseInt(out.toString()) == 1;
+
+    let [res, out] = GLib.spawn_command_line_sync('cpufreqctl min get');
+    this.minVal = parseInt(out.toString());
+    
+    let [res, out] = GLib.spawn_command_line_sync('cpufreqctl max get');
+    this.maxVal = parseInt(out.toString());
+    this._updateUi();
     return true;
   },
   
