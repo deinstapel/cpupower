@@ -1,35 +1,39 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-02-12 14:41+0100\n"
-"PO-Revision-Date: 2015-04-11 00:41+0100\n"
-"Last-Translator: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-06-14 01:58+0200\n"
+"PO-Revision-Date: 2015-06-17 11:08+0100\n"
+"Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: \n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.5\n"
+"X-Generator: Poedit 1.8.1\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: en_US\n"
 "X-Poedit-SearchPath-0: ../extension.js\n"
 
-#: ../extension.js:55
-msgid "CPU"
-msgstr "CPU"
-
-#: ../extension.js:71
+#: ../extension.js:223
 msgid "Minimum Frequency:"
 msgstr "Minimum Frequency:"
 
-#: ../extension.js:75
+#: ../extension.js:227
 msgid "Maximum Frequency:"
 msgstr "Maximum Frequency:"
 
-#: ../extension.js:79
+#: ../extension.js:231
 msgid "Turbo Boost:"
 msgstr "Turbo Boost:"
 
-#: ../extension.js:114
+#: ../extension.js:266
 msgid "Current Frequency:"
 msgstr "Current Frequency:"
+
+#: ../extension.js:292
+msgid "Preferences"
+msgstr "Preferences"
+
+#~ msgid "CPU"
+#~ msgstr "CPU"
