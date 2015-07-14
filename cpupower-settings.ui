@@ -104,6 +104,18 @@
 		              <property name="homogeneous">True</property>
 		            </packing>
 		          </child>
+		          <child>
+		            <object class="GtkToolButton" id="tree-toolbutton-edit">
+		              <property name="visible">True</property>
+		              <property name="can_focus">False</property>
+		              <property name="use_action_appearance">False</property>
+		              <property name="icon_name">edit-redo-symbolic</property>
+		            </object>
+		            <packing>
+		              <property name="expand">False</property>
+		              <property name="homogeneous">True</property>
+		            </packing>
+		          </child>
 		        </object>
 		        <packing>
 		          <property name="top_attach">1</property>

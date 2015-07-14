@@ -50,6 +50,7 @@ const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
+const EXTENSIONDIR = Me.dir.get_path();
 
 const CPUFreqProfileButton = new Lang.Class({
   Name: 'cpupower.CPUFreqProfileButton',
@@ -101,20 +102,15 @@ const CPUFreqProfile = new Lang.Class({
 
   save: function()
   {
-    return this.minFrequency.toString() + ':' + this.maxFrequency.toString() + ':' + (this.isTurboBoostActive ? 'true' : 'false') + ':' + this._name;
+    return new Array( this.minFrequency, this.maxFrequency, this.isTurboBoostActive, this._name);
   },
   
   load: function(input)
   {
-    var input2 = input.split(':');
-    this.setMinFrequency(parseInt(input2[0]));
-    this.setMaxFrequency(parseInt(input2[1]));
-    if((input2[2] ==="true"))
-      this.setTurboBoost(true);
-    else
-      this.setTurboBoost(false);
-
-    this.setName(input2[3]);
+  	this.setMinFrequency(input[0]);
+  	this.setMaxFrequency(input[1]);
+  	this.setTurboBoost(input[2]);
+    this.setName(input[3]);
   },
   
   setMinFrequency: function(value)
@@ -161,16 +157,19 @@ const CPUFreqIndicator = new Lang.Class({
     this.minVal = 0;
     this.maxVal = 30;
     this.pkexec_path = GLib.find_program_in_path('pkexec');
-    this.cpufreqctl_path = GLib.find_program_in_path('cpufreqctl');
-    let result = GLib.spawn_command_line_sync('cpufreqctl turbo get', this.out);
+    global.log(EXTENSIONDIR)
+    this.cpufreqctl_path = 'cpufreqctl';
+    this.nonroot_cpufreqctl_path = EXTENSIONDIR + '/cpufreqctl';
+    global.log(this.cpufreqctl_path);
+    let result = GLib.spawn_command_line_sync(this.nonroot_cpufreqctl_path + ' turbo get', this.out);
     let returnCode = result[1];
     this.isTurboBoostActive = returnCode;
 
-    let result = GLib.spawn_command_line_sync('cpufreqctl min get', this.out);
+    let result = GLib.spawn_command_line_sync(this.nonroot_cpufreqctl_path + ' min get', this.out);
     let returnCode = result[1];
     this.minVal = returnCode;
 
-    let result = GLib.spawn_command_line_sync('cpufreqctl max get', this.out);
+    let result = GLib.spawn_command_line_sync(this.nonroot_cpufreqctl_path + ' max get', this.out);
     let returnCode = result[1];
     this.maxVal = returnCode;
 
@@ -212,12 +211,31 @@ const CPUFreqIndicator = new Lang.Class({
       
     that._freqSection = new PopupMenu.PopupMenuSection();
     that.menu.addMenuItem(that._freqSection);
-    var profileString = that.settings.get_string('profiles').split(';');
+    
+    //Check for installed policykit
+    if(that.pkexec_path == null)
+    {
+    	that.imPkexecTitle = new PopupMenu.PopupMenuItem(_('No Policykit installed.'), {reactive: false});
+    	that._freqSection.addMenuItem(that.imPkexecTitle);
+    	return;
+    }
+    //Check for installed cpufreqctl
+    if(that.cpufreqctl_path == null)
+    {
+    	that.imCpufreqctlTitle = new PopupMenu.PopupMenuItem(_('No cpufreqctl installed.'), {reactive: false});
+    	that._freqSection.addMenuItem(that.imCpufreqctlTitle);
+    	return;
+    }
+    
+    
+    let _profiles = that.settings.get_value('profiles');
+    global.log(_profiles);
+    _profiles = _profiles.deep_unpack();
     that.profiles = [];
-    for(var j = 0; j < profileString.length; j++)
+    for(var j = 0; j < _profiles.length; j++)
     {
       var profile = new CPUFreqProfile();
-      profile.load(profileString[j]);
+      profile.load(_profiles[j]);
       that.profiles.push(profile);
     }
     that.imMinTitle = new PopupMenu.PopupMenuItem(_('Minimum Frequency:'), {reactive: false});
@@ -332,17 +350,23 @@ const CPUFreqIndicator = new Lang.Class({
   
   _updateMax: function()
   {
-    Util.trySpawnCommandLine(this.pkexec_path + ' cpufreqctl max ' + Math.floor(this.maxVal).toString());
+  	let cmd = 'bash -c \"cd ' + EXTENSIONDIR + ' && ' + this.pkexec_path + ' ' + this.cpufreqctl_path + ' max ' + Math.floor(this.maxVal).toString() + '\"';
+  	global.log(cmd);
+    Util.trySpawnCommandLine(cmd);
   },
   
   _updateMin: function()
   {
-    Util.trySpawnCommandLine(this.pkexec_path + ' cpufreqctl min ' + Math.floor(this.minVal));
+  	let cmd = 'bash -c \"cd ' + EXTENSIONDIR + ' && ' + this.pkexec_path + ' ' + this.cpufreqctl_path + ' min ' + Math.floor(this.minVal).toString() + '\"';
+  	global.log(cmd);
+    Util.trySpawnCommandLine(cmd);
   },
   
   _updateTurbo: function(state)
   {
-    Util.trySpawnCommandLine(this.pkexec_path + ' cpufreqctl turbo ' + state.toString());
+    let cmd = 'bash -c \"cd ' + EXTENSIONDIR + ' && ' + this.pkexec_path + ' ' + this.cpufreqctl_path + ' turbo ' + state.toString() + '\"';
+    global.log(cmd);
+    Util.trySpawnCommandLine(cmd);
   },
   
   _updateUi: function()
@@ -379,13 +403,13 @@ const CPUFreqIndicator = new Lang.Class({
   {
   	if(!this.menu.isOpen) return true;
   	
-  	let [res, out] = GLib.spawn_command_line_sync('cpufreqctl turbo get');
+  	let [res, out] = GLib.spawn_command_line_sync(this.nonroot_cpufreqctl_path + ' turbo get');
     this.isTurboBoostActive = parseInt(out.toString()) == 1;
 
-    let [res, out] = GLib.spawn_command_line_sync('cpufreqctl min get');
+    let [res, out] = GLib.spawn_command_line_sync(this.nonroot_cpufreqctl_path + ' min get');
     this.minVal = parseInt(out.toString());
     
-    let [res, out] = GLib.spawn_command_line_sync('cpufreqctl max get');
+    let [res, out] = GLib.spawn_command_line_sync(this.nonroot_cpufreqctl_path + ' max get');
     this.maxVal = parseInt(out.toString());
     this._updateUi();
     return true;
@@ -403,7 +427,7 @@ const CPUFreqIndicator = new Lang.Class({
   
   _onPreferencesActivate : function(item)
   {
-    Util.spawn(["gnome-shell-extension-prefs","cpupower@mko-sl.de"]);
+    Util.trySpawnCommandLine("bash -c \"gnome-shell-extension-prefs cpupower@mko-sl.de >> /tmp/extlog\""); //ensure this will get logged
 	return 0;
   },
 });

@@ -51,6 +51,7 @@ Extends: Gtk.Box,
 
 	_init: function(params)
 	{
+	global.log("init");
 	this.parent(params);
 
 	this.initWindow();
@@ -60,23 +61,7 @@ Extends: Gtk.Box,
 
 	status : function()
 	{
-		if(typeof __logfile__ == "undefined")
-		{
-		__logfile__ = Gio.file_new_for_path(GLib.get_user_cache_dir()+"/cpupower-extension-prefs.log");
-			if(__logfile__.query_exists(null))
-			__logfile__.delete(null);
-		}
-
-		if(!this.debug)
-		return 0;
-
-	let fileOutput = __logfile__.append_to(Gio.FileCreateFlags.PRIVATE,null);
-		if(!arguments[0])
-		fileOutput.write("\n",null);
-		else
-		fileOutput.write("["+new Date().toString()+"] "+arguments[0]+"\n",null);
-	fileOutput.close(null);
-	return 0;
+		global.log(arguments[0]);
 	},
 
 	Window : new Gtk.Builder(),
@@ -87,7 +72,7 @@ Extends: Gtk.Box,
 	  this.Window.add_from_file(EXTENSIONDIR+"/cpupower-settings.ui");					
 	  this.status("CPUPower Settings UI loaded");
 	  this.MainWidget = this.Window.get_object("main-widget");
-						
+	  this.liststore = this.Window.get_object("liststore");
 	  this.initConfigWidget();
 	  this.addLabel(_("Show current frequency"));
 	  this.addSwitch("show_freq_taskbar");
@@ -173,6 +158,18 @@ Extends: Gtk.Box,
 	  a.visible = 1;
 	  a.can_focus = 0;
 	  this.right_widget = a;
+	  this.addb = this.Window.get_object("tree-toolbutton-add");
+	  this.remb = this.Window.get_object("tree-toolbutton-remove");
+	  let that = this;
+	  this.addb.connect("clicked", function() {
+	  	//add new profile
+	  	that.status("add");
+	  });
+	  
+	  this.remb.connect("clicked", function() {
+	  	//remove selected profile
+	  	that.status("remove");
+	  });
 	},	
 	
 	refreshUI : function()
@@ -211,12 +208,12 @@ Extends: Gtk.Box,
 
 function init()
 {
-Convenience.initTranslations('gnome-shell-extension-cpupower');
+  Convenience.initTranslations('gnome-shell-extension-cpupower');
 }
 
 function buildPrefsWidget()
 {
-let widget = new CPUPowerPrefsWidget();
-widget.show_all();
-return widget;
+  let widget = new CPUPowerPrefsWidget();
+  widget.show_all();
+  return widget;
 }
