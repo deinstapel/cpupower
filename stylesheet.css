@@ -1,5 +1,5 @@
 /*
- *
+ * 
  *  CPUPower for GNOME Shell preferences 
  *  - Creates a widget to set the preferences of the cpupower extension
  *
@@ -27,7 +27,7 @@
 
 .cpufreq-label 
 {
-  font-size: 15px;
-  font-weight: bold;
-  color: #ffffff;
+	font-size: 15px;
+	font-weight: bold;
+	color: #ffffff;
 }

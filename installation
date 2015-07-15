@@ -1,0 +1,4 @@
+Please copy the file ~/.local/share/gnome-shell/extensions/cpupower@mko-sl.de/mko.cpupower.policy to /usr/share/polkit-1/actions
+
+To do so, you can use the following command:
+sudo cp ~/.local/share/gnome-shell/extensions/cpupower@mko-sl.de/mko.cpupower.policy /usr/share/polkit-1/actions/
