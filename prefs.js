@@ -43,6 +43,71 @@ const EXTENSIONDIR = Me.dir.get_path();
 
 const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
 
+const CPUFreqProfile = new Lang.Class({
+	Name: 'cpupower.CPUFreqProfile',
+	
+	_init: function()
+	{
+		this.minFrequency=0;
+		this.maxFrequency=100;
+		this.isTurboBoostActive=true;
+		this._name = 'Default';
+	},
+	
+	getMinFrequency: function()
+	{
+		return this.minFrequency;
+	},
+	
+	getMaxFrequency: function()
+	{
+		return this.maxFrequency;
+	},
+	
+	getTurboBoost: function()
+	{
+		return this.isTurboBoostActive;
+	},
+	
+	getName: function()
+	{
+		return this._name;
+	},
+	
+	save: function()
+	{
+		return new Array( this.minFrequency, this.maxFrequency, this.isTurboBoostActive, this._name);
+	},
+	
+	load: function(input)
+	{
+		this.setMinFrequency(input[0]);
+		this.setMaxFrequency(input[1]);
+		this.setTurboBoost(input[2]);
+		this.setName(input[3]);
+	},
+	
+	setMinFrequency: function(value)
+	{
+		this.minFrequency = value;
+	},
+	
+	setMaxFrequency: function(value)
+	{
+		this.maxFrequency = value;
+	},
+	
+	setTurboBoost: function(value)
+	{
+		this.isTurboBoostActive = value;
+	},
+	
+	setName: function(value)
+	{
+		this._name = value;
+	},
+});
+
 const CPUPowerPrefsWidget = new GObject.Class(
 	{
 		Name: 'cpupower.Prefs.Widget',
@@ -69,10 +134,24 @@ const CPUPowerPrefsWidget = new GObject.Class(
 		initWindow : function()
 		{
 			this.status("Init window");
-			this.Window.add_from_file(EXTENSIONDIR+"/cpupower-settings.ui");					
+			this.Window.add_from_file(EXTENSIONDIR+"/cpupower-settings.ui");
 			this.status("CPUPower Settings UI loaded");
 			this.MainWidget = this.Window.get_object("main-widget");
+			this.TreeView = this.Window.get_object("tree-treeview");
 			this.liststore = this.Window.get_object("liststore");
+			this.Iter = this.liststore.get_iter_first();
+			this.TreeView.set_model(this.liststore);
+			let column = new Gtk.TreeViewColumn()
+			this.TreeView.append_column(column);
+			this.status("Treeview column added");
+			let renderer = new Gtk.CellRendererText();
+			column.pack_start(renderer,null);
+			this.status("Column cell renderer text added");
+			
+			column.set_cell_data_func(renderer,function()
+			{
+				arguments[1].markup = arguments[2].get_value(arguments[3],0);
+			});
 			this.initConfigWidget();
 			this.addLabel(_("Show current frequency"));
 			this.addSwitch("show_freq_taskbar");
@@ -159,21 +238,65 @@ const CPUPowerPrefsWidget = new GObject.Class(
 			this.right_widget = a;
 			this.addb = this.Window.get_object("tree-toolbutton-add");
 			this.remb = this.Window.get_object("tree-toolbutton-remove");
+			this.editb = this.Window.get_object("tree-toolbutton-edit");
 			let that = this;
 			this.addb.connect("clicked", function() {
 				//add new profile
 				that.status("add");
+				that.addProfile();
 			});
 			
 			this.remb.connect("clicked", function() {
 				//remove selected profile
 				that.status("remove");
+				that.removeProfile();
 			});
-		},	
+			
+			this.editb.connect("clicked", function() {
+				that.status("edit");
+				that.editProfile();
+			});
+			this.refreshUI();
+		},
+		
+		addProfile : function()
+		{
+			
+		},
+		
+		removeProfile : function()
+		{
+			
+		},
+		
+		editProfile : function()
+		{
+			
+		},
 		
 		refreshUI : function()
 		{
 			this.status("Refresh UI");
+			this.MainWidget = this.Window.get_object("main-widget");
+			this.treeview = this.Window.get_object("tree-treeview");
+			this.liststore = this.Window.get_object("liststore");
+			this.Iter = this.liststore.get_iter_first();
+			if(typeof this.liststore != "undefined")
+			{										
+				this.status("Clearing liststore");
+				this.liststore.clear();
+				this.status("Liststore cleared");
+			}
+			this.prof = this.profiles;
+			global.log(this.prof);
+			for(var i = 0; i < this.prof.length; i++)
+			{
+				let current = this.liststore.append();
+				let profile = this.prof[i];
+				this.liststore.set_value(current, 0, profile.getName());
+				this.status((i+1)+") "+profile.getName()+" added");
+			}
+			this.treeview.set_model(this.liststore);
 		},
 		
 		loadConfig : function()
@@ -188,6 +311,41 @@ const CPUPowerPrefsWidget = new GObject.Class(
 			if(!this.Settings)
 				this.loadConfig();
 			return this.Settings.get_boolean("show-freq-in-taskbar");
+		},
+	   
+		get profiles()
+		{
+			if(!this.Settings)
+				this.loadConfig();
+			let _profiles = this.Settings.get_value('profiles');
+			global.log(_profiles);
+			_profiles = _profiles.deep_unpack();
+			let profiles = [];
+			for(var j = 0; j < _profiles.length; j++)
+			{
+				var profile = new CPUFreqProfile();
+				profile.load(_profiles[j]);
+				profiles.push(profile);
+			}
+			return profiles;
+		},
+		
+		set profiles(v)
+		{
+			if(!this.Settings)
+				this.loadConfig();
+			
+			let _profiles = [];
+			for(var j = 0; j < v.length; j++)
+			{
+				var profile = v[j];
+				var arr = profile.save();
+				_profiles.push(arr);
+			}
+			global.log(_profiles);
+			_profiles = GLib.Variant.new("a(iibs)", _profiles);
+			global.log(_profiles);
+			this.Settings.set_value('profiles', _profiles);
 		},
 		
 		set show_freq_taskbar(v)
