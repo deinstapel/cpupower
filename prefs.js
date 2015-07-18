@@ -55,6 +55,7 @@ const EditDialog = new Lang.Class({
 		global.log("Behaviour: " + (this.profile == null ? "Add" : "Edit"));
 		this.dialog = new Gtk.Dialog({title: ""});
 		this.dialog.set_modal(1);
+		this.dialog.set_resizable(0);
 		this.dialog.set_border_width(15);
 		let ca = this.dialog.get_content_area();
 		let nameLabel = new Gtk.Label({label: _("Name of the profile")});
@@ -331,7 +332,8 @@ const CPUPowerPrefsWidget = new GObject.Class(
 			this.addb = this.Window.get_object("tree-toolbutton-add");
 			this.remb = this.Window.get_object("tree-toolbutton-remove");
 			this.editb = this.Window.get_object("tree-toolbutton-edit");
-					
+			this.downb = this.Window.get_object("tree-toolbutton-move-down");
+			this.upb = this.Window.get_object("tree-toolbutton-move-up");
 			let that = this;
 			this.Window.get_object("treeview-selection").connect("changed",function(selection)
 			{
@@ -339,19 +341,29 @@ const CPUPowerPrefsWidget = new GObject.Class(
 			});
 			this.addb.connect("clicked", function() {
 				//add new profile
-				that.status("add");
+				//that.status("add");
 				that.addProfile();
 			});
 			
 			this.remb.connect("clicked", function() {
 				//remove selected profile
-				that.status("remove");
+				//that.status("remove");
 				that.removeProfile();
 			});
 			
 			this.editb.connect("clicked", function() {
-				that.status("edit");
+				//that.status("edit");
 				that.editProfile();
+			});
+			
+			this.downb.connect("clicked", function() {
+				//that.status("down");
+				that.moveDown();
+			});
+			
+			this.upb.connect("clicked", function() {
+				//that.status("up");
+				that.moveUp();
 			});
 			this.refreshUI();
 		},
@@ -417,6 +429,65 @@ const CPUPowerPrefsWidget = new GObject.Class(
 			}
 			let x = new EditDialog(this.selected_profile, this);
 			x.run();
+		},
+		
+		moveDown : function()
+		{
+			if(this.selected_profile == undefined)
+			{
+				global.log("no profile selected");
+				return 0;
+			}
+			let index = -1;
+			for(var i = 0; i < this.prof.length; i++)
+			{
+				if(this.selected_profile.getName() == this.prof[i].getName())
+				{
+					index = i; break;
+				}
+			}
+			if(index == -1)
+			{
+				global.log("No such profile!");
+				return 0;
+			}
+			if(index != this.prof.length - 1)
+			{
+				let tmp = this.prof[index + 1];
+				this.prof[index + 1] = this.prof[index];
+				this.prof[index] = tmp;
+				this.refreshProf();
+			}
+		},
+		
+		moveUp: function()
+		{
+			if(this.selected_profile == undefined)
+			{
+				global.log("no profile selected");
+				return 0;
+			}
+			let index = -1;
+			for(var i = 0; i < this.prof.length; i++)
+			{
+				if(this.selected_profile.getName() == this.prof[i].getName())
+				{
+					index = i; break;
+				}
+			}
+			if(index == -1)
+			{
+				global.log("No such profile!");
+				return 0;
+			}
+			if(index != 0)
+			{
+				global.log("down");
+				let tmp = this.prof[index - 1];
+				this.prof[index - 1] = this.prof[index];
+				this.prof[index] = tmp;
+				this.refreshProf();
+			}
 		},
 		
 		selectionChanged : function(sel)
