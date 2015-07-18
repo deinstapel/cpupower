@@ -239,7 +239,12 @@ const CPUPowerPrefsWidget = new GObject.Class(
 			this.addb = this.Window.get_object("tree-toolbutton-add");
 			this.remb = this.Window.get_object("tree-toolbutton-remove");
 			this.editb = this.Window.get_object("tree-toolbutton-edit");
+					
 			let that = this;
+			this.Window.get_object("treeview-selection").connect("changed",function(selection)
+			{
+				that.selectionChanged(selection);
+			});
 			this.addb.connect("clicked", function() {
 				//add new profile
 				that.status("add");
@@ -266,14 +271,45 @@ const CPUPowerPrefsWidget = new GObject.Class(
 		
 		removeProfile : function()
 		{
-			
+			if(this.selected_profile == undefined)
+			{
+				this.status("No profile selected.");
+			}
+			let p = [];
+			for(var i = 0; i < this.prof.length; i++)
+			{
+				if(this.prof[i].getName() != this.selected_profile.getName())
+					p.push(this.prof[i]);
+				else
+					this.status("Removing profile " + this.prof[i].getName());
+			}
+			this.prof = p;
+			this.profiles = p; //trigger ui refresh
 		},
 		
 		editProfile : function()
 		{
-			
+			if(selected_profile == undefined)
+			{
+				this.status("No profile selected.");
+			}
 		},
 		
+		selectionChanged : function(sel)
+		{
+			let modelPathlist = sel.get_selected_rows();
+			let ls = modelPathlist[1];
+			let iter = ls.get_iter(modelPathlist[0][0]);
+			let value = this.liststore.get_value(iter[1], 0);
+			for(var i = 0; i < this.prof.length; i++)
+				if(this.prof[i].getName() == value)
+				{
+					this.selected_profile = this.prof[i];
+					break;
+				}
+			
+			this.status("Selection changed to " + this.selected_profile.getName());
+		},
 		refreshUI : function()
 		{
 			this.status("Refresh UI");
