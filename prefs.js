@@ -43,6 +43,98 @@ const EXTENSIONDIR = Me.dir.get_path();
 
 const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
 
+const EditDialog = new Lang.Class({
+	Name: 'cpupower.EditDialog',
+	
+	_init: function(profile, widget)
+	{
+		
+		global.log("init edit dialog");
+		this.profile = profile;
+		this.widget = widget;
+		global.log("Behaviour: " + (this.profile == null ? "Add" : "Edit"));
+		this.dialog = new Gtk.Dialog({title: ""});
+		this.dialog.set_modal(1);
+		this.dialog.set_border_width(15);
+		let ca = this.dialog.get_content_area();
+		let nameLabel = new Gtk.Label({label: _("Name of the profile")});
+		nameLabel.margin_bottom = 12;
+		this.nameEntry = new Gtk.Entry();
+		this.nameEntry.margin_bottom = 12;
+		let minLabel = new Gtk.Label({label: _("Minimum Frequency")});
+		minLabel.margin_bottom = 12;
+		this.minScale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 0.0, 100.0, 5.0);
+		this.minScale.set_valign(Gtk.Align.START);
+		this.minScale.set_value(50.0);
+		this.minScale.set_digits(0);
+		//minScale.set_value_pos(Gtk.Position.POS_RIGHT);
+		let maxLabel = new Gtk.Label({label: _("Maximum Frequency")});
+		maxLabel.margin_bottom = 12;
+		this.maxScale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 0.0, 100.0, 5.0);
+		this.maxScale.set_valign(Gtk.Align.START);
+		this.maxScale.set_value(50.0);
+		this.maxScale.set_digits(0);
+		let turboLabel = new Gtk.Label({label: _("Turbo Boost")});
+		turboLabel.margin_bottom = 12;
+		this.turboSwitch = new Gtk.Switch();
+		this.turboSwitch.margin_bottom = 12;
+		
+		if(this.profile != null)
+		{
+			this.nameEntry.set_text(this.profile.getName());
+			this.minScale.set_value(this.profile.getMinFrequency());
+			this.maxScale.set_value(this.profile.getMaxFrequency());
+			this.turboSwitch.set_state(this.profile.getTurboBoost());
+		}
+		
+		ca.pack_start(nameLabel, 0,0,0);
+		ca.pack_start(this.nameEntry, 0,0,0);
+		ca.pack_start(minLabel, 0,0,0);
+		ca.pack_start(this.minScale, 0,0,0);
+		ca.pack_start(maxLabel, 0,0,0);
+		ca.pack_start(this.maxScale, 0,0,0);
+		ca.pack_start(turboLabel, 0,0,0);
+		ca.pack_start(this.turboSwitch, 0,0,0);
+		
+		this.dialog.add_button(Gtk.STOCK_CANCEL, 0);
+		let d = this.dialog.add_button(Gtk.STOCK_OK, 1);
+
+		d.set_can_default(true);
+		d.sensitive = 1;
+
+		this.dialog.set_default(d);
+	},
+	
+	run: function()
+	{
+		let that = this;
+		this.dialog.show_all();
+		this.dialog.connect("response", function(w, response_id){
+			if(response_id == 1)
+			{
+				global.log(that.profile);
+				let p = that.profile;
+				if(p == null)
+					p = new CPUFreqProfile();
+				global.log(that.profile);
+				p.setName(that.nameEntry.get_text());
+				p.setMinFrequency(Math.round(that.minScale.get_value()));
+				p.setMaxFrequency(Math.round(that.maxScale.get_value()));
+				p.setTurboBoost(that.turboSwitch.get_state());
+				
+				if(that.profile == null)
+				{
+					that.widget.prof.push(p);
+				}
+				global.log(p.getName() + ":" + p.getMinFrequency() + "-" + p.getMaxFrequency() + ":" + p.getTurboBoost());
+				that.widget.refreshProf();
+				
+			}
+			that.dialog.destroy();
+		});
+	},
+});
+
 const CPUFreqProfile = new Lang.Class({
 	Name: 'cpupower.CPUFreqProfile',
 	
@@ -266,7 +358,9 @@ const CPUPowerPrefsWidget = new GObject.Class(
 		
 		addProfile : function()
 		{
-			
+			let x = new EditDialog(null, this);
+			x.run();
+			return 0;
 		},
 		
 		removeProfile : function()
@@ -274,25 +368,55 @@ const CPUPowerPrefsWidget = new GObject.Class(
 			if(this.selected_profile == undefined)
 			{
 				this.status("No profile selected.");
+				return 0;
 			}
-			let p = [];
-			for(var i = 0; i < this.prof.length; i++)
+			let that = this;
+			let textDialog = _("Remove profile %s ?").replace("%s",this.selected_profile.getName());
+			let dialog = new Gtk.Dialog({title : ""});
+			let label = new Gtk.Label({label : textDialog});
+			label.margin_bottom = 12;
+			
+			dialog.set_border_width(12);
+			dialog.set_modal(1);
+			dialog.set_resizable(0);
+			
+			dialog.add_button(Gtk.STOCK_NO, 0);
+			let d = dialog.add_button(Gtk.STOCK_YES, 1);
+			
+			d.set_can_default(true);
+			dialog.set_default(d);
+			
+			let dialog_area = dialog.get_content_area();
+			dialog_area.pack_start(label,0,0,0);
+			dialog.connect("response",function(w, response_id)
 			{
-				if(this.prof[i].getName() != this.selected_profile.getName())
-					p.push(this.prof[i]);
-				else
-					this.status("Removing profile " + this.prof[i].getName());
-			}
-			this.prof = p;
-			this.profiles = p; //trigger ui refresh
+				if(response_id)
+				{
+					let pr = [];
+					for(let i = 0; i < that.prof.length; i++)
+					{
+						if(that.prof[i].getName() != that.selected_profile.getName())
+							pr.push(that.prof[i]);
+					}
+					that.prof = pr;
+					that.refreshProf();
+				}
+			dialog.destroy();
+			return 0;
+			});
+			
+			dialog.show_all();
+			return 0;
 		},
 		
 		editProfile : function()
 		{
-			if(selected_profile == undefined)
+			if(this.selected_profile == undefined)
 			{
 				this.status("No profile selected.");
 			}
+			let x = new EditDialog(this.selected_profile, this);
+			x.run();
 		},
 		
 		selectionChanged : function(sel)
@@ -340,6 +464,11 @@ const CPUPowerPrefsWidget = new GObject.Class(
 			let that = this;
 			this.Settings = Convenience.getSettings(SETTINGS_SCHEMA);	
 			this.Settings.connect("changed", function(){that.status(0); that.refreshUI();});
+		},
+		
+		refreshProf:function()
+		{
+			this.profiles = this.prof; //ui refresh
 		},
 		
 		get show_freq_taskbar()

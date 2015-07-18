@@ -116,6 +116,30 @@ along with gnome-shell extension cpupower.  If not, see
 								<property name="homogeneous">True</property>
 							</packing>
 						</child>
+						<child>
+							<object class="GtkToolButton" id="tree-toolbutton-move-up">
+								<property name="visible">True</property>
+								<property name="can_focus">False</property>
+								<property name="use_action_appearance">False</property>
+								<property name="icon_name">go-up-symbolic</property>
+							</object>
+							<packing>
+								<property name="expand">False</property>
+								<property name="homogeneous">True</property>
+							</packing>
+						</child>
+						<child>
+							<object class="GtkToolButton" id="tree-toolbutton-move-down">
+								<property name="visible">True</property>
+								<property name="can_focus">False</property>
+								<property name="use_action_appearance">False</property>
+								<property name="icon_name">go-down-symbolic</property>
+							</object>
+							<packing>
+								<property name="expand">False</property>
+								<property name="homogeneous">True</property>
+							</packing>
+						</child>
 					</object>
 					<packing>
 						<property name="top_attach">1</property>
