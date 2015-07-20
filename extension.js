@@ -223,7 +223,19 @@ const CPUFreqIndicator = new Lang.Class({
 		
 		if(that.installed)
 		{
-			that.imInstallTitle = new PopupMenu.PopupMenuItem(_("Installation required."),{reactive:false});
+			that.imInstallTitle = new PopupMenu.PopupMenuItem(_("Installation required."),{reactive:true});
+			that.imInstallTitle.connect("activate", function(){
+				// Notification for the installation
+				global.logError("activate @Install");
+				global.log("activate @Install");
+				let fname = EXTENSIONDIR + "/installation.txt";
+				let content = Shell.get_file_contents_utf8_sync(fname);
+				let monitor = Main.layoutManager.primaryMonitor;
+				let text = new St.Label({style_class: 'notification-label', text: content});
+				global.stage.add_actor(text);
+				text.set_position(Math.floor(monitor.width / 2 - text.width / 2), Math.floor(monitor.height / 2 - text.height / 2));
+				Mainloop.timeout_add(5000, function() {text.destroy();});
+			});
 			that._freqSection.addMenuItem(that.imInstallTitle);
 			return;
 		}
