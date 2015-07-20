@@ -142,20 +142,12 @@ const CPUFreqIndicator = new Lang.Class({
 	Name: 'cpupower.CPUFreqIndicator',
 	Extends: PanelMenu.Button,
 	
-	_init: function() 
+	_init: function(installed) 
 	{
-		
+		this.installed = installed;
 		let that = this;
 		this.settings = Convenience.getSettings(SETTINGS_ID);
-		
-		if(!GLib.file_test(EXTENSIONDIR + '/.pgen', GLib.FileTest.EXISTS))
-		{
-			let sedCmd = 'sed -i \"s/xxxPATHxxx/' + EXTENSIONDIR.replace(/\//g, '\\/').replace(/\./g, '\\.') + '\\/cpufreqctl/\" ' + EXTENSIONDIR + '/mko.cpupower.policy';
-			global.log(sedCmd);
-			Util.trySpawnCommandLine(sedCmd);
-			Util.trySpawnCommandLine('xdg-open ' + EXTENSIONDIR + '/installation');
-			Util.trySpawnCommandLine('touch ' + EXTENSIONDIR + '/.pgen');
-		}
+
 		this.cpufreq = 800;
 		this.parent(null, 'cpupower');
 		this.isTurboBoostActive = true;
@@ -203,8 +195,11 @@ const CPUFreqIndicator = new Lang.Class({
 	_enable: function()
 	{
 		this.actor.add_actor(this.hbox);
+		if(!this.installed && this.pkexec_path != null)
+		{
 		this.timeout = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreq));
 		this.timeout_mm = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreqMm));
+		}
 	},
 	
 	
@@ -226,7 +221,12 @@ const CPUFreqIndicator = new Lang.Class({
 			return;
 		}
 		
-		
+		if(that.installed)
+		{
+			that.imInstallTitle = new PopupMenu.PopupMenuItem(_("Installation required."),{reactive:false});
+			that._freqSection.addMenuItem(that.imInstallTitle);
+			return;
+		}
 		let _profiles = that.settings.get_value('profiles');
 		global.log(_profiles);
 		_profiles = _profiles.deep_unpack();
@@ -349,6 +349,7 @@ const CPUFreqIndicator = new Lang.Class({
 	
 	_updateMax: function()
 	{
+		if(!this.menu.isOpen) return;
 		let cmd = this.pkexec_path + ' ' + this.cpufreqctl_path + ' max ' + Math.floor(this.maxVal).toString();
 		global.log(cmd);
 		Util.trySpawnCommandLine(cmd);
@@ -356,6 +357,7 @@ const CPUFreqIndicator = new Lang.Class({
 	
 	_updateMin: function()
 	{
+		if(!this.menu.isOpen) return;
 		let cmd = this.pkexec_path + ' ' + this.cpufreqctl_path + ' min ' + Math.floor(this.minVal).toString();
 		global.log(cmd);
 		Util.trySpawnCommandLine(cmd);
@@ -363,6 +365,7 @@ const CPUFreqIndicator = new Lang.Class({
 	
 	_updateTurbo: function(state)
 	{
+		if(!this.menu.isOpen) return;
 		let cmd = this.pkexec_path + ' ' + this.cpufreqctl_path + ' turbo ' + state.toString();
 		global.log(cmd);
 		Util.trySpawnCommandLine(cmd);
@@ -402,7 +405,7 @@ const CPUFreqIndicator = new Lang.Class({
 	{
 		if(!this.menu.isOpen) return true;
 										
-										let [res, out] = GLib.spawn_command_line_sync(this.cpufreqctl_path + ' turbo get');
+		let [res, out] = GLib.spawn_command_line_sync(this.cpufreqctl_path + ' turbo get');
 		this.isTurboBoostActive = parseInt(out.toString()) == 1;
 		
 		let [res, out] = GLib.spawn_command_line_sync(this.cpufreqctl_path + ' min get');
@@ -437,18 +440,29 @@ function init(meta)
 }
 
 let _indicator;
-
+let install = false;
 function enable() 
 {
+			
+	if(!GLib.file_test(EXTENSIONDIR + '/.pgen', GLib.FileTest.EXISTS))
+	{
+		let sedCmd = 'sed -i \"s/xxxPATHxxx/' + EXTENSIONDIR.replace(/\//g, '\\/').replace(/\./g, '\\.') + '\\/cpufreqctl/\" ' + EXTENSIONDIR + '/mko.cpupower.policy';
+		global.log(sedCmd);
+		Util.trySpawnCommandLine(sedCmd);
+		Util.trySpawnCommandLine('touch ' + EXTENSIONDIR + '/.pgen');
+		global.logError("Installation needed. see https://github.com/martin31821/cpupower/wiki/Installation");
+		install = true;
+	}
 	try
 	{
-		_indicator = new CPUFreqIndicator();
+		_indicator = new CPUFreqIndicator(install);
 		Main.panel.addToStatusArea('cpupower', _indicator);
 		_indicator._enable();
+		shown = true;
 	}
 	catch(e)
 	{
-		global.log(e.message);
+		global.logError(e.message);
 	}
 }
 
