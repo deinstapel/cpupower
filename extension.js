@@ -152,9 +152,9 @@ const CPUFreqIndicator = new Lang.Class({
 		{
 			let sedCmd = 'sed -i \"s/xxxPATHxxx/' + EXTENSIONDIR.replace(/\//g, '\\/').replace(/\./g, '\\.') + '\\/cpufreqctl/\" ' + EXTENSIONDIR + '/mko.cpupower.policy';
 			global.log(sedCmd);
-			GLib.spawn_command_line_sync(sedCmd);
-			GLib.spawn_command_line_sync('xdg-open ' + EXTENSIONDIR + '/installation');
-			GLib.spawn_command_line_sync('touch ' + EXTENSIONDIR + '/.pgen');
+			Util.trySpawnCommandLine(sedCmd);
+			Util.trySpawnCommandLine('xdg-open ' + EXTENSIONDIR + '/installation');
+			Util.trySpawnCommandLine('touch ' + EXTENSIONDIR + '/.pgen');
 		}
 		this.cpufreq = 800;
 		this.parent(null, 'cpupower');
@@ -223,13 +223,6 @@ const CPUFreqIndicator = new Lang.Class({
 		{
 			that.imPkexecTitle = new PopupMenu.PopupMenuItem(_('No Policykit installed.'), {reactive: false});
 			that._freqSection.addMenuItem(that.imPkexecTitle);
-			return;
-		}
-		//Check for installed cpufreqctl
-		if(that.cpufreqctl_path == null)
-		{
-			that.imCpufreqctlTitle = new PopupMenu.PopupMenuItem(_('No cpufreqctl installed.'), {reactive: false});
-			that._freqSection.addMenuItem(that.imCpufreqctlTitle);
 			return;
 		}
 		
