@@ -32,8 +32,6 @@ const GtkBuilder = Gtk.Builder;
 const Gio = imports.gi.Gio;
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
-const Soup = imports.gi.Soup;
-const GWeather = imports.gi.GWeather;
 
 const Lang = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
