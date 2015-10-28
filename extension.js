@@ -442,7 +442,7 @@ const CPUFreqIndicator = new Lang.Class({
 	
 	_getCurFreq: function()
 	{
-		return this.cpufreq.toString() + 'MHz';
+		return (this.cpufreq.toString() / 1000).toFixed(2) + 'GHz';
 	},
 	
 	destroy: function()
