@@ -6,4 +6,8 @@ To do so, you can use the following command:
 sudo cp ~/.local/share/gnome-shell/extensions/cpupower@mko-sl.de/mko.cpupower.policy
 /usr/share/polkit-1/actions/
 
+You need to change the owner of the cpufreqctl tool:
+sudo chown root:root ~/.local/share/gnome-shell/extensions/cpupower@mko-sl.de/cpufreqctl
+sudo chmod 0555 ~/.local/share/gnome-shell/extensions/cpupower@mko-sl.de/cpufreqctl
+
 After you did this, restart gnome-shell.
