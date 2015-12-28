@@ -1,0 +1,66 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-12-28 12:59+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Jan Kašík <honza.kasik@seznam.cz>\n"
+"Language-Team: \n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: extension.js:219
+msgid "No Policykit installed."
+msgstr "Není nainstalován žádný Policykit"
+
+#: extension.js:226
+msgid "Installation required."
+msgstr "Je vyžadována instalace"
+
+#: extension.js:252
+msgid "Minimum Frequency:"
+msgstr "Minimální frekvence:"
+
+#: extension.js:256
+msgid "Maximum Frequency:"
+msgstr "Maximální frekvence:"
+
+#: extension.js:260
+msgid "Turbo Boost:"
+msgstr "Turbo Boost:"
+
+#: extension.js:295
+msgid "Current Frequency:"
+msgstr "Aktuální frekvence:"
+
+#: extension.js:321
+msgid "Preferences"
+msgstr "Nastavení"
+
+#: prefs.js:59
+msgid "Name of the profile"
+msgstr "Název profilu"
+
+#: prefs.js:63
+msgid "Minimum Frequency"
+msgstr "Minimální frekvence"
+
+#: prefs.js:70
+msgid "Maximum Frequency"
+msgstr "Maximální frekvence"
+
+#: prefs.js:76
+msgid "Turbo Boost"
+msgstr "Turbo Boost"
+
+#: prefs.js:247
+msgid "Show current frequency"
+msgstr "Zobrazit aktuální frekvenci"
+
+#: prefs.js:384
+#, javascript-format
+msgid "Remove profile %s ?"
+msgstr "Odstranit profil %s ?"
