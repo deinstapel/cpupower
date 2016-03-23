@@ -327,6 +327,7 @@ const CPUFreqIndicator = new Lang.Class({
 	
 	_applyProfile: function(profile)
 	{
+        
 		this.minVal = profile.getMinFrequency();
 		this._updateMin();
 		
@@ -392,6 +393,16 @@ const CPUFreqIndicator = new Lang.Class({
 		this.maxSlider.setValue(this.maxVal / 100.0);
 		
 		this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
+		
+		for(var i = 0; i < this.profiles.length; i++)
+		{
+			var o = PopupMenu.Ornament.NONE;
+			var p = this.profiles[i];
+			if(this.minVal == p.getMinFrequency() && this.maxVal == p.getMaxFrequency() && this.isTurboBoostActive == p.getTurboBoost())
+				o = PopupMenu.Ornament.DOT;
+			p.getUiComponent().setOrnament(o);
+			
+		}
 	},
 	_updateFreq: function()
 	{
