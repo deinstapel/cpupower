@@ -55,6 +55,15 @@ then
 		echo $value
 		exit
 	fi
+	if [ $2 = "check" ]
+	then
+		preValue=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
+		echo 0 > /sys/devices/system/cpu/intel_pstate/min_perf_pct
+		postValue=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
+		echo $preValue > /sys/devices/system/cpu/intel_pstate/min_perf_pct
+		echo $postValue
+		exit
+	fi
 	if [ $2 -lt 0 ] || [ $2 -gt 100 ];
 	then
 		echo "{value} must be between 0 and 100"
