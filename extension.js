@@ -147,7 +147,7 @@ const CPUFreqIndicator = new Lang.Class({
 		this.installed = installed;
 		let that = this;
 		this.settings = Convenience.getSettings(SETTINGS_ID);
-
+		
 		this.cpufreq = 800;
 		this.parent(null, 'cpupower');
 		this.isTurboBoostActive = true;
@@ -181,7 +181,8 @@ const CPUFreqIndicator = new Lang.Class({
 		this.hbox.add_actor(this.lbl);
 		
 		
-		this.lblActive = (this.settings.get_boolean("show-freq-in-taskbar"))
+		this.lblActive = (this.settings.get_boolean("show-freq-in-taskbar"));
+		this.lblUnit = (this.settings.get_boolean("taskbar-freq-unit-ghz"));
 		
 		this.hbox.add_actor(icon);
 		this.hbox.add_actor(PopupMenu.arrowIcon(St.Side.BOTTOM));
@@ -209,6 +210,7 @@ const CPUFreqIndicator = new Lang.Class({
 			that.menu.removeAll();
 		
 		that.lblActive = (that.settings.get_boolean("show-freq-in-taskbar"));
+		that.lblUnit = (that.settings.get_boolean("taskbar-freq-unit-ghz"));
 		
 		that._freqSection = new PopupMenu.PopupMenuSection();
 		that.menu.addMenuItem(that._freqSection);
@@ -442,7 +444,10 @@ const CPUFreqIndicator = new Lang.Class({
 	
 	_getCurFreq: function()
 	{
-		return (this.cpufreq.toString() / 1000).toFixed(2) + 'GHz';
+		if(this.lblUnit)
+			return (this.cpufreq.toString() / 1000).toFixed(2) + 'GHz';
+		else
+			return this.cpufreq.toString() + 'MHz';
 	},
 	
 	destroy: function()

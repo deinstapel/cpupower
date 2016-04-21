@@ -246,6 +246,8 @@ const CPUPowerPrefsWidget = new GObject.Class(
 			this.initConfigWidget();
 			this.addLabel(_("Show current frequency"));
 			this.addSwitch("show_freq_taskbar");
+            this.addLabel(_("Use GHz instead of MHz as unit"));
+            this.addSwitch("taskbar_unit");
 			this.status("Inited config widget");
 		},
 		
@@ -546,7 +548,14 @@ const CPUPowerPrefsWidget = new GObject.Class(
 				this.loadConfig();
 			return this.Settings.get_boolean("show-freq-in-taskbar");
 		},
-	   
+		
+		get taskbar_unit()
+		{
+			if(!this.Settings)
+				this.loadConfig();
+			return this.Settings.get_boolean("taskbar-freq-unit-ghz");
+		},
+		
 		get profiles()
 		{
 			if(!this.Settings)
@@ -589,6 +598,12 @@ const CPUPowerPrefsWidget = new GObject.Class(
 			this.Settings.set_boolean("show-freq-in-taskbar",v);
 		},
 		
+		set taskbar_unit(v)
+		{
+			if (!this.Settings)
+				this.loadConfig();
+			this.Settings.set_boolean("taskbar-freq-unit-ghz", v);
+		},
 		x : [0,1],
 		
 		y : [0,1],

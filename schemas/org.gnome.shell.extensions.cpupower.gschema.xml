@@ -10,5 +10,10 @@
 			<summary>Show current cpu frequency in taskbar</summary>
 			<description>Show current cpu frequency in the top bar</description>
 		</key>
+        <key name="taskbar-freq-unit-ghz" type="b">
+			<default>true</default>
+			<summary>Frequency in taskbar is shown in GHz or MHz</summary>
+			<description>Control which unit is used for the frequency</description>
+		</key>
 	</schema>
 </schemalist>
