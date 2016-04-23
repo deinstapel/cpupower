@@ -156,17 +156,33 @@ const CPUFreqIndicator = new Lang.Class({
 		this.pkexec_path = GLib.find_program_in_path('pkexec');
 		this.cpufreqctl_path = EXTENSIONDIR + '/cpufreqctl';
 		
-		let result = GLib.spawn_command_line_sync(this.cpufreqctl_path + ' turbo get', this.out);
-		let returnCode = result[1];
-		this.isTurboBoostActive = returnCode;
-		result = GLib.spawn_command_line_sync(this.cpufreqctl_path + ' min get', this.out);
-		returnCode = result[1];
-		this.minVal = returnCode;
-		
-		result = GLib.spawn_command_line_sync(this.cpufreqctl_path + ' max get', this.out);
-		returnCode = result[1];
-		this.maxVal = returnCode;
-		
+		if(!GLib.file_test(EXTENSIONDIR + '/.last-settings', GLib.FileTest.EXISTS))
+		{
+			let result = GLib.spawn_command_line_sync(this.cpufreqctl_path + ' turbo get', this.out);
+			let returnCode = result[1];
+			this.isTurboBoostActive = returnCode;
+			
+			result = GLib.spawn_command_line_sync(this.cpufreqctl_path + ' min get', this.out);
+			returnCode = result[1];
+			this.minVal = returnCode;
+			
+			result = GLib.spawn_command_line_sync(this.cpufreqctl_path + ' max get', this.out);
+			returnCode = result[1];
+			this.maxVal = returnCode;
+		}
+		else
+		{
+			let lines = Shell.get_file_contents_utf8_sync(EXTENSIONDIR + '/.last-settings').split("\n");
+			if(lines.length > 2)
+			{
+				this.minVal = parseInt(lines[0]);
+				this.maxVal = parseInt(lines[1]);
+				this.isTurboBoostActive = (lines[2].indexOf('true') > -1);
+				this._updateMax(true);
+				this._updateMin(true);
+				this._updateTurbo(true);
+			}
+		}
 		
 		
 		Main.panel.menuManager.addMenu(this.menu);
@@ -198,8 +214,8 @@ const CPUFreqIndicator = new Lang.Class({
 		this.actor.add_actor(this.hbox);
 		if(!this.installed && this.pkexec_path != null)
 		{
-		this.timeout = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreq));
-		this.timeout_mm = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreqMm));
+			this.timeout = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreq));
+			this.timeout_mm = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreqMm));
 		}
 	},
 	
@@ -262,16 +278,8 @@ const CPUFreqIndicator = new Lang.Class({
 		that.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(_('Turbo Boost:'), that.isTurboBoostActive);
 		that.imTurboSwitch.connect('toggled', Lang.bind(that, function(item)
 		{
-			if(item.state)
-			{
-				that.isTurboBoostActive = true;
-				that._updateTurbo(1);
-			}
-			else
-			{
-				that.isTurboBoostActive = false;
-				that._updateTurbo(0);
-			}
+			that.isTurboBoostActive = item.state;
+			that._updateTurbo();
 		}));
 		
 		that.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
@@ -337,10 +345,7 @@ const CPUFreqIndicator = new Lang.Class({
 		this._updateMax();
 		
 		this.isTurboBoostActive = profile.getTurboBoost();
-		if(this.isTurboBoostActive)
-			this._updateTurbo(1);
-		else
-			this._updateTurbo(0);
+		this._updateTurbo();
 		
 		this._updateUi();
 	},
@@ -362,28 +367,38 @@ const CPUFreqIndicator = new Lang.Class({
 		return Math.floor(this.maxVal).toString() + '%';
 	},
 	
-	_updateMax: function()
+	_updateFile: function()
 	{
-		if(!this.menu.isOpen) return;
+		let cmd = Math.floor(this.minVal) + '\n' + Math.floor(this.maxVal) + '\n' + (this.isTurboBoostActive ? 'true':'false') + '\n';
+		let path = EXTENSIONDIR + '/.last-settings';
+		GLib.file_set_contents(path, cmd);
+	},
+	
+	_updateMax: function(f = false)
+	{
+		if(!this.menu.isOpen && !f) return;
 		let cmd = this.pkexec_path + ' ' + this.cpufreqctl_path + ' max ' + Math.floor(this.maxVal).toString();
 		global.log(cmd);
 		Util.trySpawnCommandLine(cmd);
+		this._updateFile();
 	},
 	
-	_updateMin: function()
+	_updateMin: function(f = false)
 	{
-		if(!this.menu.isOpen) return;
+		if(!this.menu.isOpen && !f) return;
 		let cmd = this.pkexec_path + ' ' + this.cpufreqctl_path + ' min ' + Math.floor(this.minVal).toString();
 		global.log(cmd);
 		Util.trySpawnCommandLine(cmd);
+		this._updateFile();
 	},
 	
-	_updateTurbo: function(state)
+	_updateTurbo: function(f = false)
 	{
-		if(!this.menu.isOpen) return;
-		let cmd = this.pkexec_path + ' ' + this.cpufreqctl_path + ' turbo ' + state.toString();
+		if(!this.menu.isOpen && !f) return;
+		let cmd = this.pkexec_path + ' ' + this.cpufreqctl_path + ' turbo ' + (this.isTurboBoostActive ? '1' : '0');
 		global.log(cmd);
 		Util.trySpawnCommandLine(cmd);
+		this._updateFile();
 	},
 	
 	_updateUi: function()
