@@ -40,6 +40,7 @@ const Convenience = Me.imports.convenience;
 const EXTENSIONDIR = Me.dir.get_path();
 
 const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
+const DEFAULT_EMPTY_NAME = "No name";
 
 const EditDialog = new Lang.Class({
 	Name: 'cpupower.EditDialog',
@@ -80,7 +81,7 @@ const EditDialog = new Lang.Class({
 		
 		if(this.profile != null)
 		{
-			this.nameEntry.set_text(this.profile.getName());
+			this.nameEntry.set_text(_(this.profile.getName() || DEFAULT_EMPTY_NAME));
 			this.minScale.set_value(this.profile.getMinFrequency());
 			this.maxScale.set_value(this.profile.getMaxFrequency());
 			this.turboSwitch.set_state(this.profile.getTurboBoost());
@@ -497,7 +498,7 @@ const CPUPowerPrefsWidget = new GObject.Class(
 			let iter = ls.get_iter(modelPathlist[0][0]);
 			let value = this.liststore.get_value(iter[1], 0);
 			for(var i = 0; i < this.prof.length; i++)
-				if(this.prof[i].getName() == value)
+				if(_(this.prof[i].getName() || DEFAULT_EMPTY_NAME) == value)
 				{
 					this.selected_profile = this.prof[i];
 					break;
@@ -524,7 +525,7 @@ const CPUPowerPrefsWidget = new GObject.Class(
 			{
 				let current = this.liststore.append();
 				let profile = this.prof[i];
-				this.liststore.set_value(current, 0, profile.getName());
+				this.liststore.set_value(current, 0, _(profile.getName() || DEFAULT_EMPTY_NAME));
 				this.status((i+1)+") "+profile.getName()+" added");
 			}
 			this.treeview.set_model(this.liststore);

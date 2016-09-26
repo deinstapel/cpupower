@@ -50,13 +50,15 @@ const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
 const EXTENSIONDIR = Me.dir.get_path();
 
+const DEFAULT_EMPTY_NAME = "No name";
+
 const CPUFreqProfileButton = new Lang.Class({
 	Name: 'cpupower.CPUFreqProfileButton',
 	Extends: PopupMenu.PopupMenuItem,
 	_init: function(profile)
 	{
 		this._profile = profile;
-		this.parent(_(this._profile.getName()), {reactive:true});
+		this.parent(_(this._profile.getName() || DEFAULT_EMPTY_NAME), {reactive:true});
 	},
 	
 	getProfile : function()
