@@ -6,7 +6,8 @@
 	"3.14",
 	"3.16",
 	"3.18",
-	"3.20"
+	"3.20",
+	"3.22"
 	], 
 	"uuid": "cpupower@mko-sl.de", 
 	"name": "CPU Power Manager",
