@@ -16,13 +16,13 @@ fi
 if [ $1 = "supported" ]
 then
 	ls /sys/devices/system/cpu/intel_pstate > /dev/null 2>&1 || (echo "Unsupported" && exit 5) && echo "Supported"
-	exit 0
+	exit $?
 fi
 
 if [ $1 = "check" ]
 then
-	pkaction --action-id mko.cpupower.setcpufreq | grep $POLICY > /dev/null 2>&1 || (echo "Not installed" && exit 6) && echo "Installed"
-	exit 0
+	pkaction --action-id mko.cpupower.setcpufreq 2>/dev/null | grep $POLICY > /dev/null 2>&1 || (echo "Not installed" && exit 6) && echo "Installed"
+	exit $?
 fi
 
 if [ $1 = "install" ]
