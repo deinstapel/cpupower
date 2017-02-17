@@ -1,11 +1,13 @@
 #!/bin/bash
 
+set -e
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" #stackoverflow 59895
 CFC=$DIR/cpufreqctl
 POLICY=mko.cpupower.setcpufreq
 RULEIN=$DIR/mko.cpupower.policy.in
 RULEDIR=/usr/share/polkit-1/actions
-RULEOUT=$RULEDIR/$POLICY
+RULEOUT=$RULEDIR/$POLICY.policy
 
 if [ $# -lt 1 ]
 then
@@ -35,6 +37,7 @@ then
 	chown root:root "$CFC" || (echo "Failed to change owner" && exit 3)
 	chmod 0555 "$CFC" || (echo "Failed to set permissions" && exit 4)
 	echo "Success"
+
 	exit 0
 fi
 
