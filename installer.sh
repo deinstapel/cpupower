@@ -2,9 +2,10 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" #stackoverflow 59895
 CFC=$DIR/cpufreqctl
+POLICY=mko.cpupower.setcpufreq
 RULEIN=$DIR/mko.cpupower.policy.in
 RULEDIR=/usr/share/polkit-1/actions
-RULEOUT=$RULEDIR/mko.cpupower.setcpufreq
+RULEOUT=$RULEDIR/$POLICY
 
 if [ $# -lt 1 ]
 then
@@ -20,7 +21,7 @@ fi
 
 if [ $1 = "check" ]
 then
-	pkaction --action-id mko.cpupower.setcpufreq > /dev/null 2>&1 || (echo "Not installed" && exit 6) && echo "Installed"
+	pkaction --action-id mko.cpupower.setcpufreq | grep $POLICY > /dev/null 2>&1 || (echo "Not installed" && exit 6) && echo "Installed"
 	exit 0
 fi
 
