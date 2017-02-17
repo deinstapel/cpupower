@@ -9,7 +9,7 @@ RULEOUT=$RULEDIR/$POLICY
 
 if [ $# -lt 1 ]
 then
-	echo "Usage: installer.sh {supported|install|check} {installdir?}"
+	echo "Usage: installer.sh {supported|install|check}"
 	exit1
 fi
 
@@ -27,11 +27,6 @@ fi
 
 if [ $1 = "install" ]
 then
-	if [ $# -lt 2 ]
-	then
-		echo "installdir is required for install option"
-		exit 1
-	fi
 	echo -n "Installing policykit action... "
 	sed "s:xxxPATHxxx:$CFC:g" "$RULEIN" > "$RULEOUT" 2>/dev/null || (echo "Failed" && exit 2)
 	echo "Success"
