@@ -2,8 +2,9 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" #stackoverflow 59895
 CFC=$DIR/cpufreqctl
-RULEIN=mko.cpupower.policy.in
-RULEDIR=/usr/share/polkit-1
+RULEIN=$DIR/mko.cpupower.policy.in
+RULEDIR=/usr/share/polkit-1/actions
+RULEOUT=$RULEDIR/mko.cpupower.setcpufreq
 
 if [ $# -lt 1 ]
 then
@@ -31,7 +32,7 @@ then
 		exit 1
 	fi
 	echo -n "Installing policykit action... "
-	sed "s:xxxPATHxxx:$CFC:g" "$DIR/$RULEIN" > "$RULEDIR/$RULEOUT" 2>/dev/null || (echo "Failed" && exit 2)
+	sed "s:xxxPATHxxx:$CFC:g" "$RULEIN" > "$RULEOUT" 2>/dev/null || (echo "Failed" && exit 2)
 	echo "Success"
 	
 	echo -n "Fixing permissions... "
