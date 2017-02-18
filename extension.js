@@ -59,7 +59,7 @@ function spawn_process_check_exit_code(cmdline)
 {
     let [res, out, err, exitcode] = GLib.spawn_command_line_sync(cmdline);
     if (!res) return false;
-    return exitcode == 0;
+    return exitcode != 0;
 }
 
 function check_supported()
@@ -177,6 +177,8 @@ const CPUFreqBaseIndicator = new Lang.Class({
     
     _init: function()
     {
+        this.parent(null, 'cpupower');
+        
         this.settings = Convenience.getSettings(SETTINGS_ID);
         
         Main.panel.menuManager.addMenu(this.menu);
@@ -609,23 +611,23 @@ let _indicator = null;
 
 function enable() 
 {
-    if (!check_supported())
-    {
-        // Build dummy menu "unsupported on this computer"
-        _indicator = new UnsupportedIndicator();
-    }
-    else if (!check_installed())
-    {
-        // Build dummy menu "not installed -> attempt installation"
-        _indicator = new NotInstalledIndicator();
-    }
-    else 
-    {
-        _indicator = new CPUFreqIndicator(install);
-    }
-    
     try
     {
+        if (!check_supported())
+        {
+            // Build dummy menu "unsupported on this computer"
+            _indicator = new UnsupportedIndicator();
+        }
+        else if (!check_installed())
+        {
+            // Build dummy menu "not installed -> attempt installation"
+            _indicator = new NotInstalledIndicator();
+        }
+        else 
+        {
+            _indicator = new CPUFreqIndicator(install);
+        }
+        
         Main.panel.addToStatusArea('cpupower', _indicator);
         _indicator._enable();
     }
