@@ -59,21 +59,21 @@ function spawn_process_check_exit_code(cmdline)
 {
     let [res, out, err, exitcode] = GLib.spawn_command_line_sync(cmdline);
     if (!res) return false;
-    return exitcode != 0;
+    return exitcode == 0;
 }
 
 function check_supported()
 {
     // installer.sh supported checks for presence of intel_pstate directory
     // returns with 0 exit code if present, nonzero if not supported.
-    return !spawn_process_check_exit_code(INSTALLER + " supported");
+    return spawn_process_check_exit_code(INSTALLER + " supported");
 }
 
 function check_installed()
 {
     // installer.sh check returns with exit code zero if installed (using pkaction)
     // returns with nonzero exit code if the action wasn't found
-    return !spawn_process_check_exit_code(INSTALLER + " check");
+    return spawn_process_check_exit_code(INSTALLER + " check");
 }
 
 function attempt_installation()
@@ -226,9 +226,8 @@ const CPUFreqIndicator = new Lang.Class({
     Name: 'cpupower.CPUFreqIndicator',
     Extends: PanelMenu.Button,
     
-    _init: function(installed) 
+    _init: function() 
     {
-        this.installed = installed;
         let that = this;
         this.settings = Convenience.getSettings(SETTINGS_ID);
         
@@ -240,6 +239,7 @@ const CPUFreqIndicator = new Lang.Class({
         this.pkexec_path = GLib.find_program_in_path('pkexec');
         this.cpufreqctl_path = EXTENSIONDIR + '/cpufreqctl';
         
+        // read the last-settings file.
         if(!GLib.file_test(EXTENSIONDIR + '/.last-settings', GLib.FileTest.EXISTS))
         {
             let result = GLib.spawn_command_line_sync(this.cpufreqctl_path + ' turbo get', this.out);
@@ -269,6 +269,7 @@ const CPUFreqIndicator = new Lang.Class({
         }
         
         
+        // create the menu
         Main.panel.menuManager.addMenu(this.menu);
         this.hbox = new St.BoxLayout({style_class: 'panel-status-menu-box'});
         let gicon = Gio.icon_new_for_string(Me.path + '/icons/cpu.svg');
@@ -323,24 +324,6 @@ const CPUFreqIndicator = new Lang.Class({
             return;
         }
         
-        if(that.installed)
-        {
-            that.imInstallTitle = new PopupMenu.PopupMenuItem(_("Installation required."),{reactive:true});
-            that.imInstallTitle.connect("activate", function(){
-                // Notification for the installation
-                global.logError("activate @Install");
-                global.log("activate @Install");
-                let fname = EXTENSIONDIR + "/installation.txt";
-                let content = Shell.get_file_contents_utf8_sync(fname);
-                let monitor = Main.layoutManager.primaryMonitor;
-                let text = new St.Label({style_class: 'notification-label', text: content});
-                global.stage.add_actor(text);
-                text.set_position(Math.floor(monitor.width / 2 - text.width / 2), Math.floor(monitor.height / 2 - text.height / 2));
-                Mainloop.timeout_add(5000, function() {text.destroy();});
-            });
-            that._freqSection.addMenuItem(that.imInstallTitle);
-            return;
-        }
         let _profiles = that.settings.get_value('profiles');
         global.log(_profiles);
         _profiles = _profiles.deep_unpack();
@@ -625,7 +608,7 @@ function enable()
         }
         else 
         {
-            _indicator = new CPUFreqIndicator(install);
+            _indicator = new CPUFreqIndicator();
         }
         
         Main.panel.addToStatusArea('cpupower', _indicator);
