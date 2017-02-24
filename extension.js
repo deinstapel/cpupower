@@ -55,32 +55,42 @@ const INSTALLER = EXTENSIONDIR + "/installer.sh";
 const CPUFREQCTL = EXTENSIONDIR + "/cpufreqctl";
 const PKEXEC = GLib.find_program_in_path("pkexec");
 
-function spawn_process_check_exit_code(cmdline)
+function spawn_process_check_exit_code(argv, callback)
 {
-    let [res, out, err, exitcode] = GLib.spawn_command_line_sync(cmdline);
-    if (!res) return false;
-    return exitcode == 0;
+    let [ok, pid] = GLib.spawn_async(EXTENSIONDIR, argv, null, GLib.SpawnFlags.DO_NOT_REAP_CHILD, null);
+    if (!ok)
+    {
+        if (callback != null && callback != undefined)
+            callback(false);
+        return;
+    }
+    GLib.child_watch_add(200, pid, function(callback, argv, process, exitCode) {
+        GLib.spawn_close_pid(process);
+        if (callback != null && callback != undefined)
+            callback(exitCode == 0); //GLib.spawn_check_exit_code will throw an exception... so we check against unix style exit codes here.
+    }.bind(null, callback, argv));
 }
 
-function check_supported()
+function check_supported(callback)
 {
-    // installer.sh supported checks for presence of intel_pstate directory
-    // returns with 0 exit code if present, nonzero if not supported.
-    return spawn_process_check_exit_code(INSTALLER + " supported");
+    spawn_process_check_exit_code([INSTALLER, "supported"], callback);
 }
 
-function check_installed()
+function check_installed(callback)
 {
-    // installer.sh check returns with exit code zero if installed (using pkaction)
-    // returns with nonzero exit code if the action wasn't found
-    return spawn_process_check_exit_code(INSTALLER + " check");
+    spawn_process_check_exit_code([INSTALLER, "check"], callback);
 }
 
 function attempt_installation()
 {
-    // try to install the native connector for the extension using policykit to gain 
-    // root privilegies temporary
-    return !spawn_process_check_exit_code(PKEXEC + " " + INSTALLER + " install");
+    spawn_process_check_exit_code([PKEXEC, INSTALLER, "install"], function (success){
+        if (success)
+        {
+            // reenable the extension to allow immediate operation.
+            disable();
+            enable();
+        }
+    });
 }
 
 const CPUFreqProfileButton = new Lang.Class({
@@ -325,7 +335,6 @@ const CPUFreqIndicator = new Lang.Class({
         }
         
         let _profiles = that.settings.get_value('profiles');
-        global.log(_profiles);
         _profiles = _profiles.deep_unpack();
         that.profiles = [];
         for(var j = 0; j < _profiles.length; j++)
@@ -445,7 +454,6 @@ const CPUFreqIndicator = new Lang.Class({
     {
         if(!this.menu.isOpen && !f) return;
         let cmd = this.pkexec_path + ' ' + this.cpufreqctl_path + ' max ' + Math.floor(this.maxVal).toString();
-        global.log(cmd);
         Util.trySpawnCommandLine(cmd);
         this._updateFile();
     },
@@ -454,7 +462,6 @@ const CPUFreqIndicator = new Lang.Class({
     {
         if(!this.menu.isOpen && !f) return;
         let cmd = this.pkexec_path + ' ' + this.cpufreqctl_path + ' min ' + Math.floor(this.minVal).toString();
-        global.log(cmd);
         Util.trySpawnCommandLine(cmd);
         this._updateFile();
     },
@@ -463,7 +470,6 @@ const CPUFreqIndicator = new Lang.Class({
     {
         if(!this.menu.isOpen && !f) return;
         let cmd = this.pkexec_path + ' ' + this.cpufreqctl_path + ' turbo ' + (this.isTurboBoostActive ? '1' : '0');
-        global.log(cmd);
         Util.trySpawnCommandLine(cmd);
         this._updateFile();
     },
@@ -579,10 +585,10 @@ const NotInstalledIndicator = new Lang.Class({
         let separator = new PopupMenu.PopupSeparatorMenuItem();
         this.section.addMenuItem(separator);
         
-        let attemptInstallationLabel = new PopupMenu.PopupMenuItem(_('Attempt installation'), {reactive: true});
-        attemptInstallationLabel.connect("activate", attempt_installation);
-        this.section.addMenuItem(attemptInstallationLabel);
-    }
+        this.attemptInstallationLabel = new PopupMenu.PopupMenuItem(_('Attempt installation'), {reactive: true});
+        this.attemptInstallationLabel.connect("activate", attempt_installation);
+        this.section.addMenuItem(this.attemptInstallationLabel);
+    },
 });
 
 function init(meta) 
@@ -592,27 +598,32 @@ function init(meta)
 
 let _indicator = null;
 
+function _enableIndicator()
+{
+    Main.panel.addToStatusArea('cpupower', _indicator);
+    _indicator._enable();
+}
+
 function enable() 
 {
     try
     {
-        if (!check_supported())
-        {
-            // Build dummy menu "unsupported on this computer"
-            _indicator = new UnsupportedIndicator();
-        }
-        else if (!check_installed())
-        {
-            // Build dummy menu "not installed -> attempt installation"
-            _indicator = new NotInstalledIndicator();
-        }
-        else 
-        {
-            _indicator = new CPUFreqIndicator();
-        }
-        
-        Main.panel.addToStatusArea('cpupower', _indicator);
-        _indicator._enable();
+        check_supported(function(supported) {
+            if (!supported)
+            {
+                _indicator = new UnsupportedIndicator();
+                _enableIndicator();
+                return;
+            }
+            
+            check_installed(function(installed) {
+                if (!installed)
+                    _indicator = new NotInstalledIndicator();
+                else
+                    _indicator = new CPUFreqIndicator();
+                _enableIndicator();
+            });
+        });
     }
     catch(e)
     {
