@@ -2,38 +2,50 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-14 01:58+0200\n"
-"PO-Revision-Date: 2015-06-17 11:08+0100\n"
+"POT-Creation-Date: 2017-02-25 14:21+0100\n"
+"PO-Revision-Date: 2017-02-25 14:21+0100\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: \n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.1\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: ../extension.js\n"
 
-#: ../extension.js:223
+#: ../extension.js:302
 msgid "Minimum Frequency:"
 msgstr "Minimum Frequency:"
 
-#: ../extension.js:227
+#: ../extension.js:306
 msgid "Maximum Frequency:"
 msgstr "Maximum Frequency:"
 
-#: ../extension.js:231
+#: ../extension.js:310
 msgid "Turbo Boost:"
 msgstr "Turbo Boost:"
 
-#: ../extension.js:266
+#: ../extension.js:338
 msgid "Current Frequency:"
 msgstr "Current Frequency:"
 
-#: ../extension.js:292
+#: ../extension.js:364
 msgid "Preferences"
 msgstr "Preferences"
+
+#: ../extension.js:516
+msgid "Your computer does not support intel_pstate."
+msgstr "Your computer does not support intel_pstate."
+
+#: ../extension.js:533
+msgid "Installation required."
+msgstr "Installation required."
+
+#: ../extension.js:539
+msgid "Attempt installation"
+msgstr "Attempt installation"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"
