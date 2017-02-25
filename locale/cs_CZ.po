@@ -1,66 +1,100 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-28 12:59+0100\n"
-"PO-Revision-Date: \n"
+"POT-Creation-Date: 2017-02-25 15:50+0100\n"
+"PO-Revision-Date: 2017-02-25 16:14+0100\n"
 "Last-Translator: Jan Kašík <honza.kasik@seznam.cz>\n"
 "Language-Team: \n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-Basepath: ../..\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: extension.js:219
-msgid "No Policykit installed."
-msgstr "Není nainstalován žádný Policykit"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
+msgid "Serialized Profiles"
+msgstr "Serializované profily"
 
-#: extension.js:226
-msgid "Installation required."
-msgstr "Je vyžadována instalace"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
+msgid "Your CPUpower profiles"
+msgstr "Vaše CPUpower profily"
 
-#: extension.js:252
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
+msgid "Show current cpu frequency in taskbar"
+msgstr "Zobrazit aktuální frekvenci procesoru v liště"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
+msgid "Show current cpu frequency in the top bar"
+msgstr "Zobrazit aktuální frekvenci procesoru v horním panelu"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
+msgid "Frequency in taskbar is shown in GHz or MHz"
+msgstr "Frekvence v liště je zobrazována v GHz nebo MHz"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
+msgid "Control which unit is used for the frequency"
+msgstr "Nastavte jednotku používanou pro zobrazení frekvence"
+
+#: extension.js:302
 msgid "Minimum Frequency:"
 msgstr "Minimální frekvence:"
 
-#: extension.js:256
+#: extension.js:306
 msgid "Maximum Frequency:"
 msgstr "Maximální frekvence:"
 
-#: extension.js:260
+#: extension.js:310
 msgid "Turbo Boost:"
 msgstr "Turbo Boost:"
 
-#: extension.js:295
+#: extension.js:338
 msgid "Current Frequency:"
 msgstr "Aktuální frekvence:"
 
-#: extension.js:321
+#: extension.js:364
 msgid "Preferences"
 msgstr "Nastavení"
 
-#: prefs.js:59
+#: extension.js:516
+msgid "Your computer does not support intel_pstate."
+msgstr "Váš počítač nepodporuje intel_pstate."
+
+#: extension.js:533
+msgid "Installation required."
+msgstr "Je vyžadována instalace"
+
+#: extension.js:539
+msgid "Attempt installation"
+msgstr "Zkusit provést instalaci"
+
+#: prefs.js:60
 msgid "Name of the profile"
 msgstr "Název profilu"
 
-#: prefs.js:63
+#: prefs.js:64
 msgid "Minimum Frequency"
 msgstr "Minimální frekvence"
 
-#: prefs.js:70
+#: prefs.js:71
 msgid "Maximum Frequency"
 msgstr "Maximální frekvence"
 
-#: prefs.js:76
+#: prefs.js:77
 msgid "Turbo Boost"
 msgstr "Turbo Boost"
 
-#: prefs.js:247
+#: prefs.js:248
 msgid "Show current frequency"
 msgstr "Zobrazit aktuální frekvenci"
 
-#: prefs.js:384
+#: prefs.js:250
+msgid "Use GHz instead of MHz as unit"
+msgstr "Pužívat GHz jako výchozí jednotku"
+
+#: prefs.js:387
 #, javascript-format
 msgid "Remove profile %s ?"
 msgstr "Odstranit profil %s ?"
