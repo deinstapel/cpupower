@@ -1,0 +1,100 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2017-02-25 15:50+0100\n"
+"PO-Revision-Date: 2017-03-01 14:09+0100\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.12\n"
+"X-Poedit-Basepath: ../..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: Laurent Tréguier <laurent@treguier.org>\n"
+"Language: fr_FR\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
+msgid "Serialized Profiles"
+msgstr "Profils sérialisés"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
+msgid "Your CPUpower profiles"
+msgstr "Vos profils CPUpower"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
+msgid "Show current cpu frequency in taskbar"
+msgstr "Afficher la fréquence du CPU dans la barre des tâches"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
+msgid "Show current cpu frequency in the top bar"
+msgstr "Afficher la fréquence du CPU dans la barre supérieure"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
+msgid "Frequency in taskbar is shown in GHz or MHz"
+msgstr "Fréquence de la barre des tâches affichée en GHz ou en MHz"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
+msgid "Control which unit is used for the frequency"
+msgstr "Contrôler quelle unité est utilisée pour la fréquence"
+
+#: extension.js:302
+msgid "Minimum Frequency:"
+msgstr "Fréquence Minimum :"
+
+#: extension.js:306
+msgid "Maximum Frequency:"
+msgstr "Fréquence Maximum :"
+
+#: extension.js:310
+msgid "Turbo Boost:"
+msgstr "Turbo Boost :"
+
+#: extension.js:338
+msgid "Current Frequency:"
+msgstr "Fréquence actuelle :"
+
+#: extension.js:364
+msgid "Preferences"
+msgstr "Préférences"
+
+#: extension.js:516
+msgid "Your computer does not support intel_pstate."
+msgstr "Votre ordinateur n'utilise pas intel_pstate."
+
+#: extension.js:533
+msgid "Installation required."
+msgstr "Installation nécessaire."
+
+#: extension.js:539
+msgid "Attempt installation"
+msgstr "Tenter l'installation"
+
+#: prefs.js:60
+msgid "Name of the profile"
+msgstr "Nom du profil"
+
+#: prefs.js:64
+msgid "Minimum Frequency"
+msgstr "Fréquence Minimum"
+
+#: prefs.js:71
+msgid "Maximum Frequency"
+msgstr "Fréquence Maximum"
+
+#: prefs.js:77
+msgid "Turbo Boost"
+msgstr "Turbo Boost"
+
+#: prefs.js:248
+msgid "Show current frequency"
+msgstr "Afficher la fréquence actuelle"
+
+#: prefs.js:250
+msgid "Use GHz instead of MHz as unit"
+msgstr "Utiliser GHz plutôt que MHz comme unité"
+
+#: prefs.js:387
+#, javascript-format
+msgid "Remove profile %s ?"
+msgstr "Supprimer le profil %s ?"
