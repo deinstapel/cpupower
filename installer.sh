@@ -17,7 +17,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -32,48 +32,47 @@ RULEOUT="${RULEDIR}/${POLICY}.policy"
 
 if [ $# -lt 1 ]
 then
-	echo "Usage: installer.sh {supported,install,check,uninstall}"
-	exit 1
+    echo "Usage: installer.sh {supported,install,check,uninstall}"
+    exit 1
 fi
 
 if [ "$1" = "supported" ]
 then
-	ls /sys/devices/system/cpu/intel_pstate > /dev/null 2>&1 || (echo "Unsupported" && exit 5) && echo "Supported"
-	exit $?
+    ls /sys/devices/system/cpu/intel_pstate > /dev/null 2>&1 || (echo "Unsupported" && exit 5) && echo "Supported"
+    exit $?
 fi
 
 if [ "$1" = "check" ]
 then
-	pkaction --action-id mko.cpupower.setcpufreq 2>/dev/null | grep "${POLICY}" > /dev/null 2>&1 || (echo "Not installed" && exit 6) && echo "Installed"
-	exit $?
+    pkaction --action-id mko.cpupower.setcpufreq 2>/dev/null | grep "${POLICY}" > /dev/null 2>&1 || (echo "Not installed" && exit 6) && echo "Installed"
+    exit $?
 fi
 
 if [ "$1" = "install" ]
 then
-	echo -n "Installing policykit action... "
-	sed "s:xxxPATHxxx:${CFC}:g" "${RULEIN}" > "${RULEOUT}" 2>/dev/null || (echo "Failed" && exit 2)
-	echo "Success"
-	
-	echo -n "Fixing permissions... "
-	chown root:root "${CFC}" || (echo "Failed to change owner" && exit 3)
-	chmod 0555 "${CFC}" || (echo "Failed to set permissions" && exit 4)
-	echo "Success"
+    echo -n "Installing policykit action... "
+    sed "s:xxxPATHxxx:${CFC}:g" "${RULEIN}" > "${RULEOUT}" 2>/dev/null || (echo "Failed" && exit 2)
+    echo "Success"
 
-	exit 0
+    echo -n "Fixing permissions... "
+    chown root:root "${CFC}" || (echo "Failed to change owner" && exit 3)
+    chmod 0555 "${CFC}" || (echo "Failed to set permissions" && exit 4)
+    echo "Success"
+
+    exit 0
 fi
 
 if [ "$1" = "uninstall" ]
 then
-        echo -n "Uninstalling policykit action... "
-        if [ -f "${RULEOUT}" ]
-        then
-                rm "${RULEOUT}" || (echo "Fail - cannot remove" && exit 7) && echo "Success"
-        else
-                echo "Fail - not installed" && exit 6
-        fi
-        exit 0
+    echo -n "Uninstalling policykit action... "
+    if [ -f "${RULEOUT}" ]
+    then
+        rm "${RULEOUT}" || (echo "Fail - cannot remove" && exit 7) && echo "Success"
+    else
+        echo "Fail - not installed" && exit 6
+    fi
+    exit 0
 fi
 
 echo "Unknown parameter. See usage."
 exit 1
-
