@@ -373,6 +373,17 @@ const CPUPowerPreferences = new Lang.Class({
         }
     },
 
+    onAboutButtonClicked: function (button)
+    {
+        let profileListItemBuilder = new Gtk.Builder();
+        profileListItemBuilder.add_objects_from_file(GLADE_FILE, ["AboutDialog"]);
+        let dialog = profileListItemBuilder.get_object("AboutDialog");
+        let parentWindow = this.MainWidget.get_toplevel();
+        dialog.set_transient_for(parentWindow);
+        dialog.run();
+        dialog.hide();
+    },
+
     onProfilesListBoxRowSelected: function (box, row)
     {
         let profileContext = this.getSelectedProfileContext();
