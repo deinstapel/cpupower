@@ -1,6 +1,6 @@
 /*
-* 
-*  CPUPower for GNOME Shell preferences 
+*
+*  CPUPower for GNOME Shell preferences
 *  - Creates a widget to set the preferences of the cpupower extension
 *
 * Copyright (C) 2015
@@ -108,7 +108,7 @@ const CPUFreqProfileButton = new Lang.Class({
         this._profile = profile;
         this.parent(_(this._profile.getName() || DEFAULT_EMPTY_NAME), {reactive:true});
     },
-    
+
     getProfile : function()
     {
         return this._profile;
@@ -118,7 +118,7 @@ const CPUFreqProfileButton = new Lang.Class({
 
 const CPUFreqProfile = new Lang.Class({
     Name: 'cpupower.CPUFreqProfile',
-    
+
     _init: function()
     {
         this.minFrequency=0;
@@ -127,32 +127,32 @@ const CPUFreqProfile = new Lang.Class({
         this._name = 'Default';
         this.imLabel = new CPUFreqProfileButton(this);
     },
-    
+
     getMinFrequency: function()
     {
         return this.minFrequency;
     },
-    
+
     getMaxFrequency: function()
     {
         return this.maxFrequency;
     },
-    
+
     getTurboBoost: function()
     {
         return this.isTurboBoostActive;
     },
-    
+
     getName: function()
     {
         return this._name;
     },
-    
+
     save: function()
     {
         return new Array( this.minFrequency, this.maxFrequency, this.isTurboBoostActive, this._name);
     },
-    
+
     load: function(input)
     {
         this.setMinFrequency(input[0]);
@@ -160,28 +160,28 @@ const CPUFreqProfile = new Lang.Class({
         this.setTurboBoost(input[2]);
         this.setName(input[3]);
     },
-    
+
     setMinFrequency: function(value)
     {
         this.minFrequency = value;
     },
-    
+
     setMaxFrequency: function(value)
     {
         this.maxFrequency = value;
     },
-    
+
     setTurboBoost: function(value)
     {
         this.isTurboBoostActive = value;
     },
-    
+
     setName: function(value)
     {
         this._name = value;
         this.imLabel = new CPUFreqProfileButton(this);
     },
-    
+
     getUiComponent: function()
     {
         return this.imLabel;
@@ -192,13 +192,13 @@ const CPUFreqBaseIndicator = new Lang.Class({
     Name: 'cpupower.CPUFreqBaseIndicator',
     Extends: PanelMenu.Button,
     Abstract: true,
-    
+
     _init: function()
     {
         this.parent(null, 'cpupower');
-        
+
         this.settings = Convenience.getSettings(SETTINGS_ID);
-        
+
         Main.panel.menuManager.addMenu(this.menu);
         this.hbox = new St.BoxLayout({style_class: 'panel-status-menu-box'});
         let gicon = Gio.icon_new_for_string(Me.path + '/icons/cpu.svg');
@@ -206,34 +206,34 @@ const CPUFreqBaseIndicator = new Lang.Class({
             gicon: gicon,
             style_class: 'system-status-icon'
         });
-        
+
         this.lbl = new St.Label({text: '', y_expand:true, y_align: Clutter.ActorAlign.CENTER});
         this.hbox.add_actor(this.lbl);
-        
-        
+
+
         this.lblActive = (this.settings.get_boolean('show-freq-in-taskbar'));
         this.lblUnit = (this.settings.get_boolean('taskbar-freq-unit-ghz'));
-        
+
         this.hbox.add_actor(icon);
         this.hbox.add_actor(PopupMenu.arrowIcon(St.Side.BOTTOM));
-        
-        
+
+
         this.settings.connect('changed', this._createMenu.bind(this));
         this._createMenu();
     },
-    
+
     _createMenu: function()
     {
         this.menu.removeAll(); // clear the menu in case we are recreating the menu
         this.section = new PopupMenu.PopupMenuSection();
         this.menu.addMenuItem(this.section);
     },
-    
+
     _disable: function()
     {
         this.actor.remove_actor(this.hbox);
     },
-    
+
     _enable: function()
     {
         this.actor.add_actor(this.hbox);
@@ -243,25 +243,25 @@ const CPUFreqBaseIndicator = new Lang.Class({
 const CPUFreqIndicator = new Lang.Class({
     Name: 'cpupower.CPUFreqIndicator',
     Extends: CPUFreqBaseIndicator,
-    
-    _init: function() 
+
+    _init: function()
     {
         this.cpufreq = 800;
         this.isTurboBoostActive = true;
         this.minVal = 0;
         this.maxVal = 30;
-        
+
         // read the last-settings file.
         if(!GLib.file_test(EXTENSIONDIR + '/.last-settings', GLib.FileTest.EXISTS))
         {
             let result = GLib.spawn_command_line_sync(CPUFREQCTL + ' turbo get', this.out);
             let returnCode = result[1];
             this.isTurboBoostActive = returnCode;
-            
+
             result = GLib.spawn_command_line_sync(CPUFREQCTL + ' min get', this.out);
             returnCode = result[1];
             this.minVal = returnCode;
-            
+
             result = GLib.spawn_command_line_sync(CPUFREQCTL + ' max get', this.out);
             returnCode = result[1];
             this.maxVal = returnCode;
@@ -281,22 +281,22 @@ const CPUFreqIndicator = new Lang.Class({
         }
         this.parent();
     },
-    
+
     _enable: function()
     {
         this.parent();
         this.timeout = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreq));
         this.timeout_mm = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreqMm));
     },
-    
-    
+
+
     _createMenu: function()
     {
         this.parent();
-        
+
         this.lblActive = (this.settings.get_boolean('show-freq-in-taskbar'));
         this.lblUnit = (this.settings.get_boolean('taskbar-freq-unit-ghz'));
-        
+
         let _profiles = this.settings.get_value('profiles');
         _profiles = _profiles.deep_unpack();
         this.profiles = [];
@@ -309,18 +309,18 @@ const CPUFreqIndicator = new Lang.Class({
         this.imMinTitle = new PopupMenu.PopupMenuItem(_('Minimum Frequency:'), {reactive: false});
         this.imMinLabel = new St.Label({text: this._getMinText()});
         this.imMinTitle.actor.add_child(this.imMinLabel, {align: St.Align.END});
-        
+
         this.imMaxTitle = new PopupMenu.PopupMenuItem(_('Maximum Frequency:'), {reactive: false});
         this.imMaxLabel = new St.Label({text: this._getMaxText()});
         this.imMaxTitle.actor.add_child(this.imMaxLabel, {align: St.Align.END});
-        
+
         this.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(_('Turbo Boost:'), this.isTurboBoostActive);
         this.imTurboSwitch.connect('toggled', Lang.bind(this, function(item)
         {
             this.isTurboBoostActive = item.state;
             this._updateTurbo();
         }));
-        
+
         global.logError(this.minVal + ' ' + this.maxVal);
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.minSlider = new Slider.Slider(this.minVal / 100);
@@ -328,10 +328,10 @@ const CPUFreqIndicator = new Lang.Class({
         {
             this.minVal = Math.floor(item.value * 100);
             this.imMinLabel.set_text(this._getMinText());
-            this._updateMin(); 
+            this._updateMin();
         }));
         this.imSliderMin.actor.add(this.minSlider.actor, {expand: true});
-        
+
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.maxSlider = new Slider.Slider(this.maxVal / 100);
         this.maxSlider.connect('value-changed', Lang.bind(this, function(item)
@@ -341,11 +341,11 @@ const CPUFreqIndicator = new Lang.Class({
             this._updateMax();
         }));
         this.imSliderMax.actor.add(this.maxSlider.actor, {expand: true});
-        
+
         this.imCurrentTitle = new PopupMenu.PopupMenuItem(_('Current Frequency:'), {reactive:false});
         this.imCurrentLabel = new St.Label({text: this._getCurFreq()});
         this.imCurrentTitle.actor.add_child(this.imCurrentLabel, {align: St.Align.END});
-        
+
         this.section.addMenuItem(this.imMinTitle);
         this.section.addMenuItem(this.imSliderMin);
         this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -356,62 +356,62 @@ const CPUFreqIndicator = new Lang.Class({
         this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.section.addMenuItem(this.imCurrentTitle);
         this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        
+
         for(var i = 0; i < this.profiles.length; i++)
         {
             var uiComponent= this.profiles[i].getUiComponent();
-            uiComponent.connect('activate', function (item) { 
+            uiComponent.connect('activate', function (item) {
                 this._applyProfile(item.getProfile());
             }.bind(this));
             this.section.addMenuItem(uiComponent);
         }
 
         this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        
+
         this.imPrefsBtn = new PopupMenu.PopupMenuItem(_('Preferences'));
         this.imPrefsBtn.connect('activate', this._onPreferencesActivate.bind(this));
         this.section.addMenuItem(this.imPrefsBtn);
-        
+
     },
-    
+
     _applyProfile: function(profile)
     {
         this.minVal = profile.getMinFrequency();
         this._updateMin();
-        
+
         this.maxVal = profile.getMaxFrequency();
         this._updateMax();
-        
+
         this.isTurboBoostActive = profile.getTurboBoost();
         this._updateTurbo();
-        
+
         this._updateUi();
     },
-    
+
     _disable: function()
     {
         this.parent();
         Mainloop.source_remove(this.timeout);
         Mainloop.source_remove(this.timeout_mm);
     },
-    
+
     _getMinText: function()
     {
         return Math.floor(this.minVal).toString() + '%';
     },
-    
+
     _getMaxText: function()
     {
         return Math.floor(this.maxVal).toString() + '%';
     },
-    
+
     _updateFile: function()
     {
         let cmd = Math.floor(this.minVal) + '\n' + Math.floor(this.maxVal) + '\n' + (this.isTurboBoostActive ? 'true':'false') + '\n';
         let path = EXTENSIONDIR + '/.last-settings';
         GLib.file_set_contents(path, cmd);
     },
-    
+
     _updateMax: function(force = false)
     {
         if(!force && !this.menu.isOpen) return;
@@ -419,7 +419,7 @@ const CPUFreqIndicator = new Lang.Class({
         Util.trySpawnCommandLine(cmd);
         this._updateFile();
     },
-    
+
     _updateMin: function(force = false)
     {
         if(!force && !this.menu.isOpen) return;
@@ -427,7 +427,7 @@ const CPUFreqIndicator = new Lang.Class({
         Util.trySpawnCommandLine(cmd);
         this._updateFile();
     },
-    
+
     _updateTurbo: function(force = false)
     {
         if(!force && !this.menu.isOpen) return;
@@ -435,17 +435,17 @@ const CPUFreqIndicator = new Lang.Class({
         Util.trySpawnCommandLine(cmd);
         this._updateFile();
     },
-    
+
     _updateUi: function()
     {
         this.imMinLabel.set_text(this._getMinText());
         this.minSlider.setValue(this.minVal / 100.0);
-        
+
         this.imMaxLabel.set_text(this._getMaxText());
         this.maxSlider.setValue(this.maxVal / 100.0);
-        
+
         this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
-        
+
         for(var i = 0; i < this.profiles.length; i++)
         {
             var o = PopupMenu.Ornament.NONE;
@@ -453,17 +453,17 @@ const CPUFreqIndicator = new Lang.Class({
             if(this.minVal == p.getMinFrequency() && this.maxVal == p.getMaxFrequency() && this.isTurboBoostActive == p.getTurboBoost())
                 o = PopupMenu.Ornament.DOT;
             p.getUiComponent().setOrnament(o);
-            
+
         }
     },
-    
+
     _updateFreq: function()
     {
         let lines = Shell.get_file_contents_utf8_sync('/proc/cpuinfo').split('\n');
-        for(let i = 0; i < lines.length; i++) 
+        for(let i = 0; i < lines.length; i++)
         {
             let line = lines[i];
-            
+
             if(line.search(/cpu mhz/i) < 0)
                 continue;
             this.cpufreq = parseInt(line.substring(line.indexOf(':') + 2));
@@ -471,28 +471,28 @@ const CPUFreqIndicator = new Lang.Class({
             if(this.lblActive)
                 this.lbl.set_text(this._getCurFreq());
             else
-                this.lbl.set_text(''); 
+                this.lbl.set_text('');
             break;
         }
         return true;
     },
-    
+
     _updateFreqMm: function()
     {
         if(!this.menu.isOpen) return true;
-                                        
+
         let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' turbo get');
         this.isTurboBoostActive = parseInt(out.toString()) == 1;
-        
+
         let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' min get');
         this.minVal = parseInt(out.toString());
-        
+
         let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' max get');
         this.maxVal = parseInt(out.toString());
         this._updateUi();
         return true;
     },
-    
+
     _getCurFreq: function()
     {
         if(this.lblUnit)
@@ -500,10 +500,10 @@ const CPUFreqIndicator = new Lang.Class({
         else
             return this.cpufreq.toString() + 'MHz';
     },
-    
+
     _onPreferencesActivate : function(item)
     {
-        Util.trySpawnCommandLine('bash -c \'gnome-shell-extension-prefs cpupower@mko-sl.de >> /tmp/extlog\''); //ensure this will get logged
+        Util.trySpawnCommandLine('bash -c \'gnome-shell-extension-prefs cpupower@mko-sl.de\''); //ensure this will get logged
         return 0;
     },
 });
@@ -511,12 +511,12 @@ const CPUFreqIndicator = new Lang.Class({
 const UnsupportedIndicator = new Lang.Class({
     Name: 'cpupower.CPUFreqUnsupportedIndicator',
     Extends: CPUFreqBaseIndicator,
-    
+
     _init: function()
     {
         this.parent();
     },
-    
+
     _createMenu: function()
     {
         this.parent();
@@ -528,28 +528,28 @@ const UnsupportedIndicator = new Lang.Class({
 const NotInstalledIndicator = new Lang.Class({
     Name: 'cpupower.CPUFreqNotInstalledIndicator',
     Extends: CPUFreqBaseIndicator,
-    
+
     _init: function()
     {
         this.parent();
     },
-    
+
     _createMenu: function()
     {
         this.parent();
         let notInstalledLabel = new PopupMenu.PopupMenuItem(_('Installation required.'), {reactive: false});
         this.section.addMenuItem(notInstalledLabel);
-        
+
         let separator = new PopupMenu.PopupSeparatorMenuItem();
         this.section.addMenuItem(separator);
-        
+
         this.attemptInstallationLabel = new PopupMenu.PopupMenuItem(_('Attempt installation'), {reactive: true});
         this.attemptInstallationLabel.connect('activate', attempt_installation);
         this.section.addMenuItem(this.attemptInstallationLabel);
     },
 });
 
-function init(meta) 
+function init(meta)
 {
     Convenience.initTranslations('gnome-shell-extension-cpupower');
 }
@@ -562,7 +562,7 @@ function _enableIndicator()
     _indicator._enable();
 }
 
-function enable() 
+function enable()
 {
     try
     {
@@ -573,7 +573,7 @@ function enable()
                 _enableIndicator();
                 return;
             }
-            
+
             check_installed(function(installed) {
                 if (!installed)
                     _indicator = new NotInstalledIndicator();
@@ -589,7 +589,7 @@ function enable()
     }
 }
 
-function disable() 
+function disable()
 {
     if (_indicator != null)
     {

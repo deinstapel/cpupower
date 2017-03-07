@@ -149,6 +149,7 @@ along with gnome-shell extension cpupower.  If not, see
                       <object class="GtkListBox" id="ProfilesListBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <signal name="row-selected" handler="onProfilesListBoxRowSelected" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -243,7 +244,6 @@ along with gnome-shell extension cpupower.  If not, see
           <object class="GtkStack" id="ProfileStack">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="transition_duration">100</property>
             <property name="transition_type">slide-up-down</property>
             <child>
               <placeholder/>
@@ -308,6 +308,7 @@ along with gnome-shell extension cpupower.  If not, see
         <property name="can_focus">True</property>
         <property name="hexpand">True</property>
         <property name="placeholder_text" translatable="yes">Profile name</property>
+        <signal name="changed" handler="onProfileNameEntryChanged" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -335,6 +336,7 @@ along with gnome-shell extension cpupower.  If not, see
         <property name="round_digits">1</property>
         <property name="digits">0</property>
         <property name="value_pos">right</property>
+        <signal name="value-changed" handler="onProfileMinimumFrequencyScaleValueChanged" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -374,6 +376,7 @@ along with gnome-shell extension cpupower.  If not, see
         <property name="round_digits">1</property>
         <property name="digits">0</property>
         <property name="value_pos">right</property>
+        <signal name="value-changed" handler="onProfileMaximumFrequencyScaleValueChanged" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -386,6 +389,7 @@ along with gnome-shell extension cpupower.  If not, see
         <property name="can_focus">True</property>
         <property name="halign">end</property>
         <property name="hexpand">True</property>
+        <signal name="button-release-event" handler="onProfileTurboBoostSwitchButtonRelease" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -402,6 +406,7 @@ along with gnome-shell extension cpupower.  If not, see
         <property name="valign">end</property>
         <property name="margin_top">16</property>
         <property name="vexpand">True</property>
+        <signal name="clicked" handler="onProfileDiscardButtonClicked" swapped="no"/>
         <style>
           <class name="destructive-action"/>
         </style>
@@ -421,6 +426,7 @@ along with gnome-shell extension cpupower.  If not, see
         <property name="valign">end</property>
         <property name="margin_top">16</property>
         <property name="vexpand">True</property>
+        <signal name="clicked" handler="onProfileSaveButtonClicked" swapped="no"/>
         <style>
           <class name="suggested-action"/>
         </style>
@@ -431,36 +437,22 @@ along with gnome-shell extension cpupower.  If not, see
       </packing>
     </child>
   </object>
-  <object class="GtkBox" id="ProfileRowBox">
+  <object class="GtkListBoxRow" id="ProfileListBoxRow">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="border_width">4</property>
-    <property name="orientation">vertical</property>
-    <property name="spacing">4</property>
+    <property name="can_focus">True</property>
     <child>
-      <object class="GtkLabel" id="ProfileRowNameLabel">
+      <object class="GtkBox" id="ProfileRowBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="halign">start</property>
-        <property name="label" translatable="yes">High Performance</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkBox" id="ProfileRowDetailBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="opacity">0.5</property>
+        <property name="border_width">4</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">4</property>
         <child>
-          <object class="GtkLabel" id="ProfileRowMinimumFrequencyLabel">
+          <object class="GtkLabel" id="ProfileRowNameLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label">22</property>
+            <property name="halign">start</property>
+            <property name="label" translatable="yes">High Performance</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -469,10 +461,73 @@ along with gnome-shell extension cpupower.  If not, see
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="ProfileRowSeparatorLabel">
+          <object class="GtkBox" id="ProfileRowDetailBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label">/</property>
+            <property name="opacity">0.5</property>
+            <property name="spacing">4</property>
+            <child>
+              <object class="GtkLabel" id="ProfileRowMinimumFrequencyLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label">22</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="ProfileRowSeparatorLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label">/</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="ProfileRowMaximumFrequencyLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label">100</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="ProfileRowTurboBoostLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">end</property>
+                <property name="margin_left">32</property>
+                <property name="label" translatable="yes">Turbo Boost:</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="ProfileRowTurboBoostStatusLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label">Yes</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -480,50 +535,7 @@ along with gnome-shell extension cpupower.  If not, see
             <property name="position">1</property>
           </packing>
         </child>
-        <child>
-          <object class="GtkLabel" id="ProfileRowMaximumFrequencyLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label">100</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="ProfileRowTurboBoostLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">end</property>
-            <property name="margin_left">32</property>
-            <property name="label" translatable="yes">Turbo Boost:</property>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="ProfileRowTurboBoostStatusLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label">Yes</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">4</property>
-          </packing>
-        </child>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
     </child>
   </object>
 </interface>
