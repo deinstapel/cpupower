@@ -67,7 +67,7 @@ function spawn_process_check_exit_code(argv, callback)
     GLib.child_watch_add(200, pid, function(callback, argv, process, exitCode) {
         GLib.spawn_close_pid(process);
         if (callback != null && callback != undefined)
-            callback(exitCode == 0); //GLib.spawn_check_exit_code will throw an exception... so we check against unix style exit codes here.
+            callback(exitCode == 0, exitCode); //GLib.spawn_check_exit_code will throw an exception... so we check against unix style exit codes here.
     }.bind(null, callback, argv));
 }
 
@@ -79,6 +79,13 @@ function check_supported(callback)
 function check_installed(callback)
 {
     spawn_process_check_exit_code([INSTALLER, 'check'], callback);
+}
+
+function get_min_hardware_frequency(callback)
+{
+    spawn_process_check_exit_code([PKEXEC, CPUFREQCTL, 'min', 'check'], function (success, exitCode) {
+        callback(exitCode);
+    });
 }
 
 function attempt_installation()
