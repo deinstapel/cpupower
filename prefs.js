@@ -38,59 +38,19 @@ const Lang = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
+const CPUFreqProfile = Me.imports.profile.CPUFreqProfile;
 const EXTENSIONDIR = Me.dir.get_path();
-const GLADE_FILE = EXTENSIONDIR + "/cpupower-settings-new.glade";
 
+const GLADE_FILE = EXTENSIONDIR + "/cpupower-settings-new.glade";
 const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
 const DEFAULT_EMPTY_NAME = "No name";
-
-const GenerateUUID = function ()
-{
-    // 32bit random number without 0
-    return Math.floor(1 + Math.random() * 0xFFFFFFFE);
-};
-
-const CPUFreqProfile = new Lang.Class({
-    Name: 'cpupower.CPUFreqProfile',
-
-    _init: function()
-    {
-	this.MinimumFrequency = 0;
-	this.MaximumFrequency = 100;
-	this.TurboBoost = true;
-	this.Name = 'Default';
-        this.UUID = GenerateUUID();
-    },
-
-    save: function()
-    {
-	return [this.MinimumFrequency, this.MaximumFrequency, this.TurboBoost, this.Name, this.UUID];
-    },
-
-    load: function(input)
-    {
-	this.MinimumFrequency = input[0];
-	this.MaximumFrequency = input[1];
-	this.TurboBoost = input[2];
-	this.Name = input[3];
-
-        if (input.length < 5)
-        {
-            this.UUID = GenerateUUID();
-        }
-        else
-        {
-            this.UUID = input[4];
-        }
-    }
-});
 
 const CPUPowerPreferences = new Lang.Class({
     Name: 'cpupower.Preferences',
 
     _init: function()
     {
-	global.log("init");
+        global.log("init");
 
         let me = this;
 
@@ -113,14 +73,32 @@ const CPUPowerPreferences = new Lang.Class({
         );
         this.ProfilesMap = new Map();
     },
-
+    
     status: function()
     {
-	global.log(arguments[0]);
+        global.log(arguments[0]);
     },
 
     Builder: new Gtk.Builder(),
 
+    _updateSettings: function()
+    {
+        let value = this._settings.get_boolean("show-freq-in-taskbar");
+        this.ShowCurrentFrequencySwitch.set_active(value);
+        
+        value = this._settings.get_boolean("taskbar-freq-unit-ghz");
+        this.UseGHzInsteadOfMHzSwitch.set_active(value);
+        
+        let _profiles = this._settings.get_value('profiles');
+        _profiles = _profiles.deep_unpack();
+        for(let j in _profiles)
+        {
+            let profile = new CPUFreqProfile();
+            profile.load(_profiles[j]);
+            this.addOrUpdateProfile(profile);
+        }
+    },
+    
     // Dat is so magic, world is exploooooooding
     _loadWidgets: function()
     {
@@ -306,22 +284,10 @@ const CPUPowerPreferences = new Lang.Class({
 
         //let window = mainWidget.get_parent_window();
         //window.set_events(EventMask.BUTTON_RELEASE_MASK);
-
-        // test code
-        this.profile_a = new CPUFreqProfile();
-        this.profile_b = new CPUFreqProfile();
-        this.profile_c = new CPUFreqProfile();
-        this.profile_d = new CPUFreqProfile();
-
-        this.profile_a.Name = "Test Profile A";
-        this.profile_b.Name = "Test Profile B";
-        this.profile_c.Name = "Test Profile C";
-        this.profile_d.Name = "Test Profile D";
-
-        this.addOrUpdateProfile(this.profile_d);
-        this.addOrUpdateProfile(this.profile_c);
-        this.addOrUpdateProfile(this.profile_b);
-        this.addOrUpdateProfile(this.profile_a);
+        
+        this._settings = Convenience.getSettings(SETTINGS_SCHEMA);	
+        this._settings.connect("changed", this._updateSettings.bind(this));
+        this._updateSettings();
 
         this._selectFirstProfile();
     },
