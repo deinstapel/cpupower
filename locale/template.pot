@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-15 10:49+0100\n"
-"PO-Revision-Date: 2017-03-15 10:49+0100\n"
+"POT-Creation-Date: 2017-03-15 10:46+0100\n"
+"PO-Revision-Date: 2017-03-15 10:47+0100\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -109,35 +109,35 @@ msgstr ""
 
 #: extension.js:311
 msgid "Minimum Frequency:"
-msgstr "Minimum Frequency:"
+msgstr ""
 
 #: extension.js:315
 msgid "Maximum Frequency:"
-msgstr "Maximum Frequency:"
+msgstr ""
 
 #: extension.js:319
 msgid "Turbo Boost:"
-msgstr "Turbo Boost:"
+msgstr ""
 
 #: extension.js:347
 msgid "Current Frequency:"
-msgstr "Current Frequency:"
+msgstr ""
 
 #: extension.js:373
 msgid "Preferences"
-msgstr "Preferences"
+msgstr ""
 
 #: extension.js:525
 msgid "Your computer does not support intel_pstate."
-msgstr "Your computer does not support intel_pstate."
+msgstr ""
 
 #: extension.js:542
 msgid "Installation required."
-msgstr "Installation required."
+msgstr ""
 
 #: extension.js:548
 msgid "Attempt installation"
-msgstr "Attempt installation"
+msgstr ""
 
 #: prefs.js:233
 msgid "Yes"

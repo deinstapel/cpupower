@@ -41,7 +41,7 @@ const Convenience = Me.imports.convenience;
 const CPUFreqProfile = Me.imports.profile.CPUFreqProfile;
 const EXTENSIONDIR = Me.dir.get_path();
 
-const GLADE_FILE = EXTENSIONDIR + "/cpupower-settings-new.glade";
+const GLADE_FILE = EXTENSIONDIR + "/cpupower-preferences.glade";
 const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
 const DEFAULT_EMPTY_NAME = "No name";
 
@@ -73,7 +73,7 @@ const CPUPowerPreferences = new Lang.Class({
         );
         this.ProfilesMap = new Map();
     },
-    
+
     status: function()
     {
         global.log(arguments[0]);
@@ -85,10 +85,10 @@ const CPUPowerPreferences = new Lang.Class({
     {
         let value = this._settings.get_boolean("show-freq-in-taskbar");
         this.ShowCurrentFrequencySwitch.set_active(value);
-        
+
         value = this._settings.get_boolean("taskbar-freq-unit-ghz");
         this.UseGHzInsteadOfMHzSwitch.set_active(value);
-        
+
         let _profiles = this._settings.get_value('profiles');
         _profiles = _profiles.deep_unpack();
         for(let j in _profiles)
@@ -98,7 +98,7 @@ const CPUPowerPreferences = new Lang.Class({
             this.addOrUpdateProfile(profile);
         }
     },
-    
+
     // Dat is so magic, world is exploooooooding
     _loadWidgets: function()
     {
@@ -284,8 +284,8 @@ const CPUPowerPreferences = new Lang.Class({
 
         //let window = mainWidget.get_parent_window();
         //window.set_events(EventMask.BUTTON_RELEASE_MASK);
-        
-        this._settings = Convenience.getSettings(SETTINGS_SCHEMA);	
+
+        this._settings = Convenience.getSettings(SETTINGS_SCHEMA);
         this._settings.connect("changed", this._updateSettings.bind(this));
         this._updateSettings();
 

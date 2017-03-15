@@ -231,6 +231,7 @@ Jan Kasik (@honza-kasik)</property>
                   <object class="GtkToolButton" id="ProfilesAddToolButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Add selected profile</property>
                     <property name="icon_name">list-add-symbolic</property>
                     <signal name="clicked" handler="onProfilesAddToolButtonClicked" swapped="no"/>
                   </object>
@@ -243,6 +244,7 @@ Jan Kasik (@honza-kasik)</property>
                   <object class="GtkToolButton" id="ProfilesRemoveToolButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Remove selected profile</property>
                     <property name="icon_name">list-remove-symbolic</property>
                     <signal name="clicked" handler="onProfilesRemoveToolButtonClicked" swapped="no"/>
                   </object>
@@ -255,6 +257,7 @@ Jan Kasik (@honza-kasik)</property>
                   <object class="GtkToolButton" id="ProfilesMoveUpToolButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Move selected profile up</property>
                     <property name="icon_name">go-up-symbolic</property>
                     <signal name="clicked" handler="onProfilesMoveUpToolButtonClicked" swapped="no"/>
                   </object>
@@ -267,6 +270,7 @@ Jan Kasik (@honza-kasik)</property>
                   <object class="GtkToolButton" id="ProfilesMoveDownToolButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Move selected profile down</property>
                     <property name="icon_name">go-down-symbolic</property>
                     <signal name="clicked" handler="onProfilesMoveDownToolButtonClicked" swapped="no"/>
                   </object>
@@ -512,7 +516,7 @@ Jan Kasik (@honza-kasik)</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes">High Performance</property>
+            <property name="label">High Performance</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -568,7 +572,7 @@ Jan Kasik (@honza-kasik)</property>
                 <property name="can_focus">False</property>
                 <property name="halign">end</property>
                 <property name="margin_left">32</property>
-                <property name="label" translatable="yes">Turbo Boost:</property>
+                <property name="label" translatable="yes">Turbo boost:</property>
               </object>
               <packing>
                 <property name="expand">True</property>
