@@ -292,13 +292,13 @@ const CPUPowerPreferences = new Lang.Class({
         this._selectFirstProfile();
     },
 
-    onShowCurrentFrequencySwitchButtonRelease: function (switchButton, event)
+    onShowCurrentFrequencySwitchActiveNotify: function (switchButton)
     {
         let state = switchButton.active;
         this.status("ShowCurrentFrequency: " + state);
     },
 
-    onUseGHzInsteadOfMHzSwitchButtonRelease: function (switchButton, event)
+    onUseGHzInsteadOfMHzSwitchActiveNotify: function (switchButton)
     {
         let state = switchButton.active;
         this.status("UseGHzInsteadOfMHz: " + state);
@@ -377,7 +377,7 @@ const CPUPowerPreferences = new Lang.Class({
         profileContext.Settings.SaveButton.sensitive = true;
     },
 
-    onProfileTurboBoostSwitchButtonRelease: function (profileContext, switchButton)
+    onProfileTurboBoostSwitchActiveNotify: function (profileContext, switchButton)
     {
         profileContext.Settings.DiscardButton.sensitive = true;
         profileContext.Settings.SaveButton.sensitive = true;

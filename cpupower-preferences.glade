@@ -138,7 +138,7 @@ Jan Kasik (@honza-kasik)</property>
           <object class="GtkSwitch" id="ShowCurrentFrequencySwitch">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <signal name="button-release-event" handler="onShowCurrentFrequencySwitchButtonRelease" swapped="no"/>
+            <signal name="notify::active" handler="onShowCurrentFrequencySwitchActiveNotify" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -149,7 +149,7 @@ Jan Kasik (@honza-kasik)</property>
           <object class="GtkSwitch" id="UseGHzInsteadOfMHzSwitch">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <signal name="button-release-event" handler="onUseGHzInsteadOfMHzSwitchButtonRelease" swapped="no"/>
+            <signal name="notify::active" handler="onUseGHzInsteadOfMHzSwitchActiveNotify" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -453,7 +453,7 @@ Jan Kasik (@honza-kasik)</property>
         <property name="can_focus">True</property>
         <property name="halign">end</property>
         <property name="hexpand">True</property>
-        <signal name="button-release-event" handler="onProfileTurboBoostSwitchButtonRelease" swapped="no"/>
+        <signal name="notify::active" handler="onProfileTurboBoostSwitchActiveNotify" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
