@@ -1,7 +1,7 @@
 <schemalist gettext-domain="gnome-shell-extension-cpupower">
 	<schema id="org.gnome.shell.extensions.cpupower" path="/org/gnome/shell/extensions/cpupower/">
-		<key name="profiles" type="a(iibs)">
-			<default>[(0,10,false,"Energy Saver"), (0,30,false,"Quiet"), (20,80,true,"Multimedia"), (50,100,true,"High Performance")]</default>
+		<key name="profiles" type="a(iibss)">
+			<default>[(0,10,false,"Energy Saver", ""), (0,30,false,"Quiet", ""), (20,80,true,"Multimedia", ""), (50,100,true,"High Performance", "")]</default>
 			<summary>Serialized Profiles</summary>
 			<description>Your CPUpower profiles</description>
 		</key>

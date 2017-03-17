@@ -29,7 +29,7 @@ const Lang = imports.lang;
 const GenerateUUID = function ()
 {
     // 32bit random number without 0
-    return Math.floor(1 + Math.random() * 0xFFFFFFFE);
+    return Math.floor(1 + Math.random() * 0xFFFFFFFE).toString();
 };
 
 const CPUFreqProfile = new Lang.Class({
@@ -46,7 +46,7 @@ const CPUFreqProfile = new Lang.Class({
 
     save: function()
     {
-        return [this.MinimumFrequency, this.MaximumFrequency, this.TurboBoost, this.Name/*, this.UUID*/];
+        return [this.MinimumFrequency, this.MaximumFrequency, this.TurboBoost, this.Name, this.UUID];
     },
 
     load: function(input)
@@ -56,13 +56,16 @@ const CPUFreqProfile = new Lang.Class({
         this.TurboBoost = input[2];
         this.Name = input[3];
 
-        if (input.length < 5)
+        if (input.length < 5 || !input[4])
         {
             this.UUID = GenerateUUID();
+            global.log("Generated UUID: " + this.UUID);
+            return true;
         }
         else
         {
             this.UUID = input[4];
+            return false;
         }
     }
 });

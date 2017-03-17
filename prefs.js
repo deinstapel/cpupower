@@ -57,7 +57,7 @@ const CPUPowerPreferences = new Lang.Class({
         this.Builder.add_objects_from_file(GLADE_FILE, ["MainWidget"]);
         this.Builder.connect_signals_full(
             function (builder, object, signal, handler) {
-                object.connect(signal, Lang.bind(me, me[handler]));
+                object.connect(signal, me[handler].bind(me));
             }
         );
         this._loadWidgets(
@@ -89,16 +89,47 @@ const CPUPowerPreferences = new Lang.Class({
         value = this._settings.get_boolean("taskbar-freq-unit-ghz");
         this.UseGHzInsteadOfMHzSwitch.set_active(value);
 
-        let _profiles = this._settings.get_value('profiles');
+        
+        // Backward compatibility:
+        // for the new Settings UI we introduced a profile-id, which is not present in the older versions.
+        // gesettings allows us to update the schema without conflicts.
+        
+        // CPUFreqProfile checks if an ID is present at load time, if not or an empty one was given, it will generate one
+        // if any profile needed a new ID, we save all profiles and reload the UI.
+        
+        
+        let _profiles = this._settings.get_value("profiles");
         _profiles = _profiles.deep_unpack();
+        let _tmpProfiles = [];
+        let _needsUUIDSave = false;
         for(let j in _profiles)
         {
             let profile = new CPUFreqProfile();
-            profile.load(_profiles[j]);
-            this.addOrUpdateProfile(profile);
+            _needsUUIDSave |= profile.load(_profiles[j]);
+            _tmpProfiles.push(profile);
+        }
+        
+        if (_needsUUIDSave)
+        {
+            let _saved = [];
+            for (let p in _tmpProfiles)
+            {
+                _saved.push(_tmpProfiles[p].save());
+            }
+            this.status("Needed ID refresh, reloading");
+            _saved = GLib.Variant.new("a(iibss)", _saved);
+            this._settings.set_value("profiles", _saved);
+            _updateSettings();
+        }
+        else
+        {
+            for (let p in _tmpProfiles)
+            {
+                this.addOrUpdateProfile(_tmpProfiles[p]);
+            }
         }
     },
-
+    
     // Dat is so magic, world is exploooooooding
     _loadWidgets: function()
     {
@@ -295,18 +326,21 @@ const CPUPowerPreferences = new Lang.Class({
     onShowCurrentFrequencySwitchActiveNotify: function (switchButton)
     {
         let state = switchButton.active;
+        this._settings.set_boolean("show-freq-in-taskbar", state);
         this.status("ShowCurrentFrequency: " + state);
     },
 
     onUseGHzInsteadOfMHzSwitchActiveNotify: function (switchButton)
     {
         let state = switchButton.active;
+        this._settings.set_boolean("taskbar-freq-unit-ghz", state);
         this.status("UseGHzInsteadOfMHz: " + state);
     },
 
     onProfilesAddToolButtonClicked: function (button)
     {
         this.addOrUpdateProfile(new CPUFreqProfile());
+        this._saveOrderedProfileList();
     },
 
     onProfilesRemoveToolButtonClicked: function (button)
@@ -316,6 +350,7 @@ const CPUPowerPreferences = new Lang.Class({
         {
             this.removeProfile(profileContext.Profile);
         }
+        this._saveOrderedProfileList();
     },
 
     onProfilesMoveUpToolButtonClicked: function (button)
@@ -327,6 +362,7 @@ const CPUPowerPreferences = new Lang.Class({
             index = index < 0 ? 0 : index;
             this.setProfileIndex(profileContext.Profile, index);
         }
+        this._saveOrderedProfileList();
     },
 
     onProfilesMoveDownToolButtonClicked: function (button)
@@ -337,6 +373,7 @@ const CPUPowerPreferences = new Lang.Class({
             let index = profileContext.ListItem.Row.get_index() + 1;
             this.setProfileIndex(profileContext.Profile, index);
         }
+        this._saveOrderedProfileList();
     },
 
     onAboutButtonClicked: function (button)
@@ -401,6 +438,22 @@ const CPUPowerPreferences = new Lang.Class({
         profileContext.Profile.TurboBoost = turboBoost;
 
         this.addOrUpdateProfile(profileContext.Profile);
+        this._saveOrderedProfileList();
+    },
+    
+    _saveOrderedProfileList: function()
+    {
+        let _saved = [];
+        for (let value of this.ProfilesMap.entries())
+        {
+            this.status("value: " + value[0] + value[1]);
+            let idx = this.ProfilesMap.size - 1 - this.getProfileIndex(value[1].Profile);
+            this.status("Saving: " + value[1].Profile.UUID + "to idx: " + idx);
+            _saved[idx] = value[1].Profile.save();
+        }
+        
+        _saved = GLib.Variant.new("a(iibss)", _saved);
+        this._settings.set_value("profiles", _saved);
     }
 });
 

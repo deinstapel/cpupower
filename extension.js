@@ -505,7 +505,7 @@ const CPUFreqIndicator = new Lang.Class({
 
     _onPreferencesActivate : function(item)
     {
-        Util.trySpawnCommandLine('bash -c \'gnome-shell-extension-prefs cpupower@mko-sl.de\''); //ensure this will get logged
+        Util.trySpawnCommandLine('gnome-shell-extension-prefs cpupower@mko-sl.de'); //ensure this will get logged
         return 0;
     },
 });
