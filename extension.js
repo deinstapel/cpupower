@@ -44,61 +44,20 @@ const Shell = imports.gi.Shell;
 
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
-const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower'
+const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
 const EXTENSIONDIR = Me.dir.get_path();
+const CPUFreqBaseIndicator = Me.imports.baseindicator.CPUFreqBaseIndicator;
+const UnsupportedIndicator = Me.imports.unsupported.UnsupportedIndicator;
+const NotInstalledIndicator = Me.imports.notinstalled.NotInstalledIndicator;
+const check_supported = Me.imports.utils.check_supported;
+const check_installed = Me.imports.utils.check_installed;
 
 const DEFAULT_EMPTY_NAME = 'No name';
-const INSTALLER = EXTENSIONDIR + '/installer.sh';
 const CPUFREQCTL = EXTENSIONDIR + '/cpufreqctl';
 const PKEXEC = GLib.find_program_in_path('pkexec');
-
-function spawn_process_check_exit_code(argv, callback)
-{
-    let [ok, pid] = GLib.spawn_async(EXTENSIONDIR, argv, null, GLib.SpawnFlags.DO_NOT_REAP_CHILD, null);
-    if (!ok)
-    {
-        if (callback != null && callback != undefined)
-            callback(false);
-        return;
-    }
-    GLib.child_watch_add(200, pid, function(callback, argv, process, exitCode) {
-        GLib.spawn_close_pid(process);
-        if (callback != null && callback != undefined)
-            callback(exitCode == 0, exitCode); //GLib.spawn_check_exit_code will throw an exception... so we check against unix style exit codes here.
-    }.bind(null, callback, argv));
-}
-
-function check_supported(callback)
-{
-    spawn_process_check_exit_code([INSTALLER, 'supported'], callback);
-}
-
-function check_installed(callback)
-{
-    spawn_process_check_exit_code([INSTALLER, 'check'], callback);
-}
-
-function get_min_hardware_frequency(callback)
-{
-    spawn_process_check_exit_code([PKEXEC, CPUFREQCTL, 'min', 'check'], function (success, exitCode) {
-        callback(exitCode);
-    });
-}
-
-function attempt_installation()
-{
-    spawn_process_check_exit_code([PKEXEC, INSTALLER, 'install'], function (success){
-        if (success)
-        {
-            // reenable the extension to allow immediate operation.
-            disable();
-            enable();
-        }
-    });
-}
 
 const CPUFreqProfileButton = new Lang.Class({
     Name: 'cpupower.CPUFreqProfileButton',
@@ -148,11 +107,6 @@ const CPUFreqProfile = new Lang.Class({
         return this._name;
     },
 
-    save: function()
-    {
-        return new Array( this.minFrequency, this.maxFrequency, this.isTurboBoostActive, this._name);
-    },
-
     load: function(input)
     {
         this.setMinFrequency(input[0]);
@@ -186,58 +140,6 @@ const CPUFreqProfile = new Lang.Class({
     {
         return this.imLabel;
     },
-});
-
-const CPUFreqBaseIndicator = new Lang.Class({
-    Name: 'cpupower.CPUFreqBaseIndicator',
-    Extends: PanelMenu.Button,
-    Abstract: true,
-
-    _init: function()
-    {
-        this.parent(null, 'cpupower');
-
-        this.settings = Convenience.getSettings(SETTINGS_ID);
-
-        Main.panel.menuManager.addMenu(this.menu);
-        this.hbox = new St.BoxLayout({style_class: 'panel-status-menu-box'});
-        let gicon = Gio.icon_new_for_string(Me.path + '/icons/cpu.svg');
-        let icon = new St.Icon({
-            gicon: gicon,
-            style_class: 'system-status-icon'
-        });
-
-        this.lbl = new St.Label({text: '', y_expand:true, y_align: Clutter.ActorAlign.CENTER});
-        this.hbox.add_actor(this.lbl);
-
-
-        this.lblActive = (this.settings.get_boolean('show-freq-in-taskbar'));
-        this.lblUnit = (this.settings.get_boolean('taskbar-freq-unit-ghz'));
-
-        this.hbox.add_actor(icon);
-        this.hbox.add_actor(PopupMenu.arrowIcon(St.Side.BOTTOM));
-
-
-        this.settings.connect('changed', this._createMenu.bind(this));
-        this._createMenu();
-    },
-
-    _createMenu: function()
-    {
-        this.menu.removeAll(); // clear the menu in case we are recreating the menu
-        this.section = new PopupMenu.PopupMenuSection();
-        this.menu.addMenuItem(this.section);
-    },
-
-    _disable: function()
-    {
-        this.actor.remove_actor(this.hbox);
-    },
-
-    _enable: function()
-    {
-        this.actor.add_actor(this.hbox);
-    }
 });
 
 const CPUFreqIndicator = new Lang.Class({
@@ -507,47 +409,6 @@ const CPUFreqIndicator = new Lang.Class({
     {
         Util.trySpawnCommandLine('gnome-shell-extension-prefs cpupower@mko-sl.de'); //ensure this will get logged
         return 0;
-    },
-});
-
-const UnsupportedIndicator = new Lang.Class({
-    Name: 'cpupower.CPUFreqUnsupportedIndicator',
-    Extends: CPUFreqBaseIndicator,
-
-    _init: function()
-    {
-        this.parent();
-    },
-
-    _createMenu: function()
-    {
-        this.parent();
-        let unsupporedLabel = new PopupMenu.PopupMenuItem(_('Your computer does not support intel_pstate.'), {reactive: false});
-        this.section.addMenuItem(unsupporedLabel);
-    }
-});
-
-const NotInstalledIndicator = new Lang.Class({
-    Name: 'cpupower.CPUFreqNotInstalledIndicator',
-    Extends: CPUFreqBaseIndicator,
-
-    _init: function()
-    {
-        this.parent();
-    },
-
-    _createMenu: function()
-    {
-        this.parent();
-        let notInstalledLabel = new PopupMenu.PopupMenuItem(_('Installation required.'), {reactive: false});
-        this.section.addMenuItem(notInstalledLabel);
-
-        let separator = new PopupMenu.PopupSeparatorMenuItem();
-        this.section.addMenuItem(separator);
-
-        this.attemptInstallationLabel = new PopupMenu.PopupMenuItem(_('Attempt installation'), {reactive: true});
-        this.attemptInstallationLabel.connect('activate', attempt_installation);
-        this.section.addMenuItem(this.attemptInstallationLabel);
     },
 });
 
