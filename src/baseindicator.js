@@ -5,6 +5,7 @@
  *
  * Copyright (C) 2017
  *     Martin Koppehel <martin.koppehel@st.ovgu.de>,
+ *     Fin Christensen <christensen.fin@gmail.com>,
  *
  * This file is part of the gnome-shell extension cpupower.
  *
@@ -37,7 +38,7 @@ const Clutter = imports.gi.Clutter;
 // Relative and misc imports and definitions
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.convenience;
+const Convenience = Me.imports.src.convenience;
 const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 
 const CPUFreqBaseIndicator = new Lang.Class({
@@ -53,7 +54,7 @@ const CPUFreqBaseIndicator = new Lang.Class({
 
         Main.panel.menuManager.addMenu(this.menu);
         this.hbox = new St.BoxLayout({style_class: 'panel-status-menu-box'});
-        let gicon = Gio.icon_new_for_string(Me.path + '/icons/cpu.svg');
+        let gicon = Gio.icon_new_for_string(Me.path + '/data/icons/cpu.svg');
         let icon = new St.Icon({
             gicon: gicon,
             style_class: 'system-status-icon'

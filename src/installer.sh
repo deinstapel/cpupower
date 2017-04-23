@@ -26,7 +26,7 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" #stackoverflow 59895
 CFC="${DIR}/cpufreqctl"
 POLICY="mko.cpupower.setcpufreq"
-RULEIN="${DIR}/mko.cpupower.policy.in"
+RULEIN="${DIR}/../data/mko.cpupower.policy.in"
 RULEDIR="/usr/share/polkit-1/actions"
 RULEOUT="${RULEDIR}/${POLICY}.policy"
 

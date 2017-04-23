@@ -25,7 +25,6 @@
  *
  */
 
-
 const St = imports.gi.St;
 const Atk = imports.gi.Atk;
 const Clutter = imports.gi.Clutter;
@@ -47,98 +46,27 @@ const _ = Gettext.gettext;
 const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.convenience;
+const Convenience = Me.imports.src.convenience;
 const EXTENSIONDIR = Me.dir.get_path();
-const CPUFreqBaseIndicator = Me.imports.baseindicator.CPUFreqBaseIndicator;
-const UnsupportedIndicator = Me.imports.unsupported.UnsupportedIndicator;
-const NotInstalledIndicator = Me.imports.notinstalled.NotInstalledIndicator;
-const check_supported = Me.imports.utils.check_supported;
-const check_installed = Me.imports.utils.check_installed;
+const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
+const CPUFreqBaseIndicator = Me.imports.src.baseindicator.CPUFreqBaseIndicator;
+const UnsupportedIndicator = Me.imports.src.unsupported.UnsupportedIndicator;
+const NotInstalledIndicator = Me.imports.src.notinstalled.NotInstalledIndicator;
+const check_supported = Me.imports.src.utils.check_supported;
+const check_installed = Me.imports.src.utils.check_installed;
 
 const DEFAULT_EMPTY_NAME = 'No name';
-const CPUFREQCTL = EXTENSIONDIR + '/cpufreqctl';
+const CPUFREQCTL = EXTENSIONDIR + '/src/cpufreqctl';
 const PKEXEC = GLib.find_program_in_path('pkexec');
 
 const CPUFreqProfileButton = new Lang.Class({
     Name: 'cpupower.CPUFreqProfileButton',
     Extends: PopupMenu.PopupMenuItem,
+
     _init: function(profile)
     {
-        this._profile = profile;
-        this.parent(_(this._profile.getName() || DEFAULT_EMPTY_NAME), {reactive:true});
-    },
-
-    getProfile : function()
-    {
-        return this._profile;
-    },
-});
-
-
-const CPUFreqProfile = new Lang.Class({
-    Name: 'cpupower.CPUFreqProfile',
-
-    _init: function()
-    {
-        this.minFrequency=0;
-        this.maxFrequency=100;
-        this.isTurboBoostActive=true;
-        this._name = 'Default';
-        this.imLabel = new CPUFreqProfileButton(this);
-    },
-
-    getMinFrequency: function()
-    {
-        return this.minFrequency;
-    },
-
-    getMaxFrequency: function()
-    {
-        return this.maxFrequency;
-    },
-
-    getTurboBoost: function()
-    {
-        return this.isTurboBoostActive;
-    },
-
-    getName: function()
-    {
-        return this._name;
-    },
-
-    load: function(input)
-    {
-        this.setMinFrequency(input[0]);
-        this.setMaxFrequency(input[1]);
-        this.setTurboBoost(input[2]);
-        this.setName(input[3]);
-    },
-
-    setMinFrequency: function(value)
-    {
-        this.minFrequency = value;
-    },
-
-    setMaxFrequency: function(value)
-    {
-        this.maxFrequency = value;
-    },
-
-    setTurboBoost: function(value)
-    {
-        this.isTurboBoostActive = value;
-    },
-
-    setName: function(value)
-    {
-        this._name = value;
-        this.imLabel = new CPUFreqProfileButton(this);
-    },
-
-    getUiComponent: function()
-    {
-        return this.imLabel;
+        this.Profile = profile;
+        this.parent(_(this.Profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
     },
 });
 
@@ -206,10 +134,11 @@ const CPUFreqIndicator = new Lang.Class({
         {
             var profile = new CPUFreqProfile();
             profile.load(_profiles[j]);
-            this.profiles.push(profile);
+            var profileButton = new CPUFreqProfileButton(profile);
+            this.profiles.push(profileButton);
         }
         this.profiles.reverse();
-        
+
         this.imMinTitle = new PopupMenu.PopupMenuItem(_('Minimum Frequency:'), {reactive: false});
         this.imMinLabel = new St.Label({text: this._getMinText()});
         this.imMinTitle.actor.add_child(this.imMinLabel, {align: St.Align.END});
@@ -263,11 +192,10 @@ const CPUFreqIndicator = new Lang.Class({
 
         for(var i = 0; i < this.profiles.length; i++)
         {
-            var uiComponent= this.profiles[i].getUiComponent();
-            uiComponent.connect('activate', function (item) {
-                this._applyProfile(item.getProfile());
+            this.profiles[i].connect('activate', function (item) {
+                this._applyProfile(item.Profile);
             }.bind(this));
-            this.section.addMenuItem(uiComponent);
+            this.section.addMenuItem(this.profiles[i]);
         }
 
         this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -280,13 +208,13 @@ const CPUFreqIndicator = new Lang.Class({
 
     _applyProfile: function(profile)
     {
-        this.minVal = profile.getMinFrequency();
+        this.minVal = profile.MinimumFrequency;
         this._updateMin();
 
-        this.maxVal = profile.getMaxFrequency();
+        this.maxVal = profile.MaximumFrequency;
         this._updateMax();
 
-        this.isTurboBoostActive = profile.getTurboBoost();
+        this.isTurboBoostActive = profile.TurboBoost;
         this._updateTurbo();
 
         this._updateUi();
@@ -350,14 +278,19 @@ const CPUFreqIndicator = new Lang.Class({
 
         this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
 
-        for(var i = 0; i < this.profiles.length; i++)
+        for (var i = 0; i < this.profiles.length; i++)
         {
             var o = PopupMenu.Ornament.NONE;
-            var p = this.profiles[i];
-            if(this.minVal == p.getMinFrequency() && this.maxVal == p.getMaxFrequency() && this.isTurboBoostActive == p.getTurboBoost())
-                o = PopupMenu.Ornament.DOT;
-            p.getUiComponent().setOrnament(o);
+            var p = this.profiles[i].Profile;
 
+            if (this.minVal == p.MinimumFrequency &&
+                this.maxVal == p.MaximumFrequency &&
+                this.isTurboBoostActive == p.TurboBoost)
+            {
+                o = PopupMenu.Ornament.DOT;
+            }
+
+            this.profiles[i].setOrnament(o);
         }
     },
 
@@ -439,14 +372,26 @@ function enable()
 
             check_installed(function(installed) {
                 if (!installed)
-                    _indicator = new NotInstalledIndicator();
+                {
+                    _indicator = new NotInstalledIndicator(function (success) {
+                        if (success)
+                        {
+                            // reenable the extension to allow immediate operation.
+                            disable();
+                            enable();
+                        }
+                    });
+                }
                 else
+                {
                     _indicator = new CPUFreqIndicator();
+                }
+
                 _enableIndicator();
             });
         });
     }
-    catch(e)
+    catch (e)
     {
         global.logError(e.message);
     }

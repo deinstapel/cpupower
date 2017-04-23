@@ -5,6 +5,7 @@
  *
  * Copyright (C) 2017
  *     Martin Koppehel <martin.koppehel@st.ovgu.de>,
+ *     Fin Christensen <christensen.fin@gmail.com>,
  *
  * This file is part of the gnome-shell extension cpupower.
  *
@@ -30,7 +31,9 @@ const GLib = imports.gi.GLib;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const EXTENSIONDIR = Me.dir.get_path();
-const INSTALLER = EXTENSIONDIR + '/installer.sh';
+const INSTALLER = EXTENSIONDIR + '/src/installer.sh';
+const CPUFREQCTL = EXTENSIONDIR + '/src/cpufreqctl';
+const PKEXEC = GLib.find_program_in_path('pkexec');
 
 function spawn_process_check_exit_code(argv, callback)
 {
@@ -65,14 +68,7 @@ function get_min_hardware_frequency(callback)
     });
 }
 
-function attempt_installation()
+function attempt_installation(done)
 {
-    spawn_process_check_exit_code([PKEXEC, INSTALLER, 'install'], function (success){
-        if (success)
-        {
-            // reenable the extension to allow immediate operation.
-            disable();
-            enable();
-        }
-    });
+    spawn_process_check_exit_code([PKEXEC, INSTALLER, 'install'], done);
 }

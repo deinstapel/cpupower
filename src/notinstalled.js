@@ -5,6 +5,7 @@
  *
  * Copyright (C) 2017
  *     Martin Koppehel <martin.koppehel@st.ovgu.de>,
+ *     Fin Christensen <christensen.fin@gmail.com>,
  *
  * This file is part of the gnome-shell extension cpupower.
  *
@@ -32,9 +33,9 @@ const PopupMenu = imports.ui.popupMenu;
 // Relative and misc imports and definitions
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.convenience;
-const CPUFreqBaseIndicator = Me.imports.baseindicator.CPUFreqBaseIndicator;
-const attempt_installation = Me.imports.utils.attempt_installation;
+const Convenience = Me.imports.src.convenience;
+const CPUFreqBaseIndicator = Me.imports.src.baseindicator.CPUFreqBaseIndicator;
+const attempt_installation = Me.imports.src.utils.attempt_installation;
 
 const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
@@ -44,8 +45,9 @@ const NotInstalledIndicator = new Lang.Class({
     Name: 'cpupower.CPUFreqNotInstalledIndicator',
     Extends: CPUFreqBaseIndicator,
 
-    _init: function()
+    _init: function(done)
     {
+        this._done = done;
         this.parent();
     },
 
@@ -59,7 +61,7 @@ const NotInstalledIndicator = new Lang.Class({
         this.section.addMenuItem(separator);
 
         this.attemptInstallationLabel = new PopupMenu.PopupMenuItem(_('Attempt installation'), {reactive: true});
-        this.attemptInstallationLabel.connect('activate', attempt_installation);
+        this.attemptInstallationLabel.connect('activate', attempt_installation.bind(null, this._done));
         this.section.addMenuItem(this.attemptInstallationLabel);
     },
 });
