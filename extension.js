@@ -40,6 +40,7 @@ const GLib = imports.gi.GLib;
 const Util = imports.misc.util;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
+const UPower = imports.gi.UPowerGlib;
 
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
@@ -114,11 +115,40 @@ const CPUFreqIndicator = new Lang.Class({
 
     _enable: function()
     {
+        this._power = Main.panel.statusArea["aggregateMenu"]._power;
+        this._power_state = this._power._proxy.State;
+        this._powerConnectSignalId = this._power._proxy.connect(
+            'g-properties-changed',
+            this._onPowerChanged.bind(this)
+        );
+
         this.parent();
         this.timeout = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreq));
         this.timeout_mm = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateFreqMm));
     },
 
+    _onPowerChanged: function ()
+    {
+        let new_state = this._power._proxy.State;
+
+        if (new_state != this._power_state)
+        {
+            if (new_state === UPower.DeviceState.FULLY_CHARGED)
+            {
+                global.log ("Power state changed: fully charged");
+            }
+            else if (new_state === UPower.DeviceState.DISCHARGING)
+            {
+                global.log ("Power state changed: discharging");
+            }
+            else if (new_state === UPower.DeviceState.CHARGING)
+            {
+                global.log ("Power state changed: charging");
+            }
+        }
+
+        this._power_state = new_state;
+    },
 
     _createMenu: function()
     {
@@ -222,6 +252,7 @@ const CPUFreqIndicator = new Lang.Class({
 
     _disable: function()
     {
+        this._power._proxy.disconnect(this._powerConnectSignalId);
         this.parent();
         Mainloop.source_remove(this.timeout);
         Mainloop.source_remove(this.timeout_mm);
