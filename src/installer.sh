@@ -44,7 +44,9 @@ fi
 
 if [ "$1" = "check" ]
 then
-    pkaction --action-id mko.cpupower.setcpufreq 2>/dev/null | grep "${POLICY}" > /dev/null 2>&1 || (echo "Not installed" && exit 6) && echo "Installed"
+
+    sed "s:xxxPATHxxx:${CFC}:g" "${RULEIN}" | \
+        cmp --silent "${RULEOUT}" || (echo "Not installed" && exit 6) && echo "Installed"
     exit $?
 fi
 
