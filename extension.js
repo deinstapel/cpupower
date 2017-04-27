@@ -352,10 +352,10 @@ const CPUFreqIndicator = new Lang.Class({
         let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' turbo get');
         this.isTurboBoostActive = parseInt(out.toString()) == 1;
 
-        let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' min get');
+        [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' min get');
         this.minVal = parseInt(out.toString());
 
-        let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' max get');
+        [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' max get');
         this.maxVal = parseInt(out.toString());
         this._updateUi();
         return true;
