@@ -43,7 +43,6 @@ const EXTENSIONDIR = Me.dir.get_path();
 
 const GLADE_FILE = EXTENSIONDIR + "/data/cpupower-preferences.glade";
 const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
-const DEFAULT_EMPTY_NAME = "No name";
 
 const CPUPowerPreferences = new Lang.Class({
     Name: 'cpupower.Preferences',
