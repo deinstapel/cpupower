@@ -1,10 +1,10 @@
 /*
- * 
- *  CPUPower for GNOME Shell preferences 
+ *
+ *  CPUPower for GNOME Shell preferences
  *  - Creates a widget to set the preferences of the cpupower extension
  *
- * Copyright (C) 2012
- *     Martin Koppehel <psl.kontakt@gmail.com>,
+ * Copyright (C) 2017
+ *     Martin Koppehel <martin.koppehel@st.ovgu.de>
  *
  * This file is part of the gnome-shell extension cpupower.
  *
@@ -25,18 +25,20 @@
  *
  */
 
-.cpufreq-label 
-{
-	font-size: 15px;
-	font-weight: bold;
-	color: #ffffff;
-}
+const Lang = imports.lang;
+const PanelMenu = imports.ui.panelMenu;
+const Panel = imports.ui.panel;
+const PopupMenu = imports.ui.popupMenu;
 
-.notification-label {
-    font-size: 36px;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: rgba(10,10,10,0.7);
-    border-radius: 50px;
-	padding: 50px;
-}
+const DEFAULT_EMPTY_NAME = 'No name';
+
+const CPUFreqProfileButton = new Lang.Class({
+    Name: 'cpupower.CPUFreqProfileButton',
+    Extends: PopupMenu.PopupMenuItem,
+
+    _init: function(profile)
+    {
+        this.Profile = profile;
+        this.parent(_(this.Profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
+    },
+});

@@ -1,0 +1,227 @@
+#!/bin/bash
+
+# cpufreqctl - This script can configure the pstate driver of your intel CPU.
+#
+# Copyright (C) 2015-2017
+#     Martin Koppehel <psl.kontakt@gmail.com>,
+#     Fin Christensen <christensen.fin@gmail.com>,
+#
+# This file is part of the gnome-shell extension cpupower.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+set -e
+
+log ()
+{
+    echo "$@" >&2 || true
+}
+
+show_usage ()
+{
+    log "usage: cpufreqctl [-h] [turbo {get,0,1}] [min {get,check,VALUE}] [max {get,VALUE}]"
+}
+
+show_help ()
+{
+    log "usage: cpufreqctl [-h] ACTION PARAMETER"
+    log
+    log "This script can configure the pstate driver of your intel CPU."
+    log
+    help_arguments
+    help_actions
+    help_turbo
+    help_min
+    help_max
+    help_examples
+    help_copyright
+}
+
+help_arguments ()
+{
+    log "optional arguments:"
+    log "    -h, --help   show this help message and exit"
+    log
+}
+
+help_actions ()
+{
+    log "available actions:"
+    log "    turbo        control or read the turbo boost state of your cpu"
+    log "    min          get or set the minimum cpu frequency (in %, [0;100])"
+    log "                 or get the smallest allowed value"
+    log "    max          get or set the maximum cpu frequency (in %, [0;100])"
+    log
+}
+
+help_turbo ()
+{
+    log "turbo parameters:"
+    log "    get          get the current turbo boost state"
+    log "    0            turn turbo boost off"
+    log "    1            turn turbo boost on"
+    log
+}
+
+help_min ()
+{
+    log "min parameters:"
+    log "    get          get the current set minimum frequency (in %, [0;100])"
+    log "    check        get the smallest allowed minimum frequency for your cpu model"
+    log "    VALUE        set the current minimum frequency to a value in [0;100]"
+    log "                 the values is automatically clamped to the minimum allowed cpu"
+    log "                 frequency"
+    log
+}
+
+help_max ()
+{
+    log "max parameters:"
+    log "    get          get the current set maximum frequency (in %, [0;100])"
+    log "    VALUE        set the current maximum frequency to a value in [0;100]"
+    log
+}
+
+help_examples ()
+{
+    log "examples:"
+    log "    Set the maximum frequency to 50%"
+    log "        cpufreqctl max 50"
+    log
+    log "    Get the turbo boost state"
+    log "        cpufreqctl turbo get"
+    log
+    log "    Get smallest allowed minimum cpu frequency for your model"
+    log "        cpufreqctl min check"
+    log
+}
+
+help_copyright ()
+{
+    log "cpufreqctl  Copyright (c) 2017  Martin Koppehel, Fin Christensen"
+}
+
+if [ $# -lt 1 ]
+then
+    show_usage
+    log "error: you must specify an action!"
+    exit
+fi
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]
+then
+    show_help
+    exit
+fi
+
+if [ "$1" = "turbo" ]
+then
+    if [ -z "$2" ]
+    then
+        log "usage: cpufreqctl turbo {get,0,1}"
+        log
+        help_turbo
+        help_copyright
+        exit
+    fi
+
+    if [ "$2" = "get" ]
+    then
+	value=$(<"/sys/devices/system/cpu/intel_pstate/no_turbo")
+	if [ "${value}" -eq 0 ]
+	then
+	    echo 1
+	else
+	    echo 0
+	fi
+	exit
+    fi
+    if [ "$2" -lt 0 ] || [ "$2" -gt 1 ];
+    then
+        log "usage: cpufreqctl turbo {get,0,1}"
+	log "error: VALUE must be 0 or 1"
+	exit
+    fi
+
+    if [ "$2" -eq 1 ]
+    then
+	echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo
+    else
+	echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
+    fi
+    exit
+fi
+
+if [ "$1" = "max" ]
+then
+    if [ -z "$2" ]
+    then
+        log "usage: cpufreqctl max {get,VALUE}"
+        log
+        help_max
+        help_copyright
+        exit
+    fi
+
+    if [ "$2" = "get" ]
+    then
+	value=$(</sys/devices/system/cpu/intel_pstate/max_perf_pct)
+	echo "${value}"
+	exit
+    fi
+    if [ "$2" -lt 0 ] || [ "$2" -gt 100 ];
+    then
+        log "usage: cpufreqctl max {get,VALUE}"
+	log "error: VALUE must be between 0 and 100"
+	exit
+    fi
+    echo "$2" > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+    exit
+fi
+
+if [ "$1" = "min" ]
+then
+    if [ -z "$2" ]
+    then
+        log "usage: cpufreqctl mini {get,check,VALUE}"
+        log
+        help_min
+        help_copyright
+        exit
+    fi
+
+    if [ "$2" = "get" ]
+    then
+	value=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
+	echo "${value}"
+	exit
+    fi
+    if [ "$2" = "check" ]
+    then
+	preValue=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
+	echo 0 > /sys/devices/system/cpu/intel_pstate/min_perf_pct
+	postValue=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
+	echo "${preValue}" > /sys/devices/system/cpu/intel_pstate/min_perf_pct
+	echo "${postValue}"
+	exit
+    fi
+    if [ "$2" -lt 0 ] || [ "$2" -gt 100 ];
+    then
+        log "usage: cpufreqctl min {get,check,VALUE}"
+	log "error: VALUE must be between 0 and 100"
+	exit
+    fi
+    echo "$2" > /sys/devices/system/cpu/intel_pstate/min_perf_pct
+    exit
+fi

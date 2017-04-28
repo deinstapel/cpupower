@@ -3,9 +3,8 @@
  *  CPUPower for GNOME Shell preferences
  *  - Creates a widget to set the preferences of the cpupower extension
  *
- * Copyright (C) 2015
- *     Martin Koppehel <psl.kontakt@gmail.com>,
- *     Fin Christensen <christensen.fin@gmail.com>,
+ * Copyright (C) 2017
+ *     Martin Koppehel <martin.koppehel@st.ovgu.de>,
  *
  * This file is part of the gnome-shell extension cpupower.
  *
@@ -26,19 +25,33 @@
  *
  */
 
+// Gnome imports
+const Lang = imports.lang;
+const PopupMenu = imports.ui.popupMenu;
+
+// Relative and misc imports and definitions
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.src.convenience;
-const CPUPowerPreferences = Me.imports.src.preferences.CPUPowerPreferences;
+const CPUFreqBaseIndicator = Me.imports.src.baseindicator.CPUFreqBaseIndicator;
+const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
+const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
+const _ = Gettext.gettext;
 
-function init()
-{
-    Convenience.initTranslations('gnome-shell-extension-cpupower');
-}
 
-function buildPrefsWidget()
-{
-    let preferences = new CPUPowerPreferences();
-    preferences.MainWidget.show_all();
-    return preferences.MainWidget;
-}
+const UnsupportedIndicator = new Lang.Class({
+    Name: 'cpupower.CPUFreqUnsupportedIndicator',
+    Extends: CPUFreqBaseIndicator,
+
+    _init: function()
+    {
+        this.parent();
+    },
+
+    _createMenu: function()
+    {
+        this.parent();
+        let unsupporedLabel = new PopupMenu.PopupMenuItem(_('Your computer does not support intel_pstate.'), {reactive: false});
+        this.section.addMenuItem(unsupporedLabel);
+    }
+});
