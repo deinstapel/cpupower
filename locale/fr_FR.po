@@ -1,0 +1,154 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-28 21:27+0200\n"
+"PO-Revision-Date: 2017-04-28 23:04+0200\n"
+"Last-Translator: Laurent Tréguier <laurent@treguier.org>\n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.12\n"
+"X-Poedit-Basepath: ../..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
+msgid "Serialized Profiles"
+msgstr "Profils sérialisés"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
+msgid "Your CPUpower profiles"
+msgstr "Vos profils CPUpower"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
+msgid "Show current cpu frequency in taskbar"
+msgstr "Afficher la fréquence du CPU dans la barre des tâches"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
+msgid "Show current cpu frequency in the top bar"
+msgstr "Afficher la fréquence du CPU dans la barre supérieure"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
+msgid "Frequency in taskbar is shown in GHz or MHz"
+msgstr "Fréquence de la barre des tâches affichée en GHz ou en MHz"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
+msgid "Control which unit is used for the frequency"
+msgstr "Contrôler quelle unité est utilisée pour la fréquence"
+
+#: data/cpupower-preferences.glade:61
+msgid "Gnome-Shell Extension for the intel-pstate driver."
+msgstr "Extension Gnome-Shell pour le pilote intel-pstate"
+
+#: data/cpupower-preferences.glade:117
+msgid "Show current frequency"
+msgstr "Afficher la fréquence actuelle"
+
+#: data/cpupower-preferences.glade:130
+msgid "Use GHz instead of MHz"
+msgstr "Utiliser GHz plutôt que MHz comme unité"
+
+#: data/cpupower-preferences.glade:161
+msgid "About"
+msgstr "À propos"
+
+#: data/cpupower-preferences.glade:183
+msgid "General"
+msgstr "Général"
+
+#: data/cpupower-preferences.glade:234
+msgid "Add selected profile"
+msgstr "Ajouter le profil sélectionné"
+
+#: data/cpupower-preferences.glade:247
+msgid "Remove selected profile"
+msgstr "Supprimer le profil sélectionné"
+
+#: data/cpupower-preferences.glade:260
+msgid "Move selected profile up"
+msgstr "Faire monter le profil sélectionné"
+
+#: data/cpupower-preferences.glade:273
+msgid "Move selected profile down"
+msgstr "Faire descendre le profil sélectionné"
+
+#: data/cpupower-preferences.glade:332
+msgid "Profiles"
+msgstr "Profils"
+
+#: data/cpupower-preferences.glade:362 data/cpupower-preferences.glade:374
+msgid "Profile name"
+msgstr "Nom du profil"
+
+#: data/cpupower-preferences.glade:387
+msgid "Minimum frequency"
+msgstr "Fréquence Minimale"
+
+#: data/cpupower-preferences.glade:415
+msgid "Maximum frequency"
+msgstr "Fréquence Maximale"
+
+#: data/cpupower-preferences.glade:427
+msgid "Turbo boost"
+msgstr "Turbo Boost"
+
+#: data/cpupower-preferences.glade:465
+msgid "Discard"
+msgstr "Annuler"
+
+#: data/cpupower-preferences.glade:485
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: data/cpupower-preferences.glade:575
+msgid "Turbo boost:"
+msgstr "Turbo Boost :"
+
+#: src/indicator.js:151
+msgid "Minimum Frequency:"
+msgstr "Fréquence Minimum :"
+
+#: src/indicator.js:155
+msgid "Maximum Frequency:"
+msgstr "Fréquence Maximum :"
+
+#: src/indicator.js:159
+msgid "Turbo Boost:"
+msgstr "Turbo Boost :"
+
+#: src/indicator.js:187
+msgid "Current Frequency:"
+msgstr "Fréquence actuelle :"
+
+#: src/indicator.js:212
+msgid "Preferences"
+msgstr "Préférences"
+
+#: src/notinstalled.js:57
+msgid "Installation required."
+msgstr "Installation nécessaire."
+
+#: src/notinstalled.js:63
+msgid "Attempt installation"
+msgstr "Tenter l'installation"
+
+#: src/preferences.js:263
+msgid "Yes"
+msgstr "Oui"
+
+#: src/preferences.js:263
+msgid "No"
+msgstr "Non"
+
+#: src/unsupported.js:54
+msgid "Your computer does not support intel_pstate."
+msgstr "Votre ordinateur n'utilise pas intel_pstate."
+
+msgid "CPU"
+msgstr "CPU"
+
+#~ msgid "Name of the profile"
+#~ msgstr "Nom du profil"
