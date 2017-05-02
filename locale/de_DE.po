@@ -2,150 +2,150 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-15 10:48+0100\n"
-"PO-Revision-Date: 2017-03-15 10:48+0100\n"
+"POT-Creation-Date: 2017-05-02 19:06+0200\n"
+"PO-Revision-Date: 2017-05-02 19:11+0200\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.0.1\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
-msgid "Serialized Profiles"
-msgstr ""
-
-#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
-msgid "Your CPUpower profiles"
-msgstr ""
-
-#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
-msgid "Show current cpu frequency in taskbar"
-msgstr ""
-
-#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
-msgid "Show current cpu frequency in the top bar"
-msgstr ""
-
-#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
-msgid "Frequency in taskbar is shown in GHz or MHz"
-msgstr ""
-
-#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
-msgid "Control which unit is used for the frequency"
-msgstr ""
-
-#: cpupower-preferences.glade:61
+#: data/cpupower-preferences.glade:61
 msgid "Gnome-Shell Extension for the intel-pstate driver."
-msgstr ""
+msgstr "Gnome-Shell Erweiterung für intel-pstate"
 
-#: cpupower-preferences.glade:117
+#: data/cpupower-preferences.glade:117
 msgid "Show current frequency"
 msgstr "Aktuelle Frequenz anzeigen"
 
-#: cpupower-preferences.glade:130
+#: data/cpupower-preferences.glade:130
 msgid "Use GHz instead of MHz"
-msgstr ""
+msgstr "GHz statt MHz als Einheit nutzen"
 
-#: cpupower-preferences.glade:161
+#: data/cpupower-preferences.glade:161
 msgid "About"
-msgstr ""
+msgstr "Über"
 
-#: cpupower-preferences.glade:183
+#: data/cpupower-preferences.glade:183
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
-#: cpupower-preferences.glade:234
+#: data/cpupower-preferences.glade:234
 msgid "Add selected profile"
-msgstr ""
+msgstr "Profil hinzufügen"
 
-#: cpupower-preferences.glade:247
+#: data/cpupower-preferences.glade:247
 msgid "Remove selected profile"
-msgstr ""
+msgstr "Markiertes Profil entfernen"
 
-#: cpupower-preferences.glade:260
+#: data/cpupower-preferences.glade:260
 msgid "Move selected profile up"
-msgstr ""
+msgstr "Markiertes Profil nach oben verschieben"
 
-#: cpupower-preferences.glade:273
+#: data/cpupower-preferences.glade:273
 msgid "Move selected profile down"
-msgstr ""
+msgstr "Markiertes Profil nach unten verschieben"
 
-#: cpupower-preferences.glade:332
+#: data/cpupower-preferences.glade:332
 msgid "Profiles"
-msgstr ""
+msgstr "Profile"
 
-#: cpupower-preferences.glade:362 cpupower-preferences.glade:374
+#: data/cpupower-preferences.glade:362 data/cpupower-preferences.glade:374
 msgid "Profile name"
-msgstr ""
+msgstr "Profilname"
 
-#: cpupower-preferences.glade:387
+#: data/cpupower-preferences.glade:387
 msgid "Minimum frequency"
-msgstr ""
+msgstr "Minimale Frequenz"
 
-#: cpupower-preferences.glade:415
+#: data/cpupower-preferences.glade:415
 msgid "Maximum frequency"
-msgstr ""
+msgstr "Maximale Frequenz"
 
-#: cpupower-preferences.glade:427
+#: data/cpupower-preferences.glade:427
 msgid "Turbo boost"
-msgstr ""
+msgstr "Turbo Boost"
 
-#: cpupower-preferences.glade:465
+#: data/cpupower-preferences.glade:465
 msgid "Discard"
-msgstr ""
+msgstr "Verwerfen"
 
-#: cpupower-preferences.glade:485
+#: data/cpupower-preferences.glade:485
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
-#: cpupower-preferences.glade:575
+#: data/cpupower-preferences.glade:575
 msgid "Turbo boost:"
-msgstr ""
+msgstr "Turbo Boost:"
 
-#: extension.js:311
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
+msgid "Serialized Profiles"
+msgstr "Serialisierte profile"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
+msgid "Your CPUpower profiles"
+msgstr "CPUPower Profile"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
+msgid "Show current cpu frequency in taskbar"
+msgstr "Aktuelle Frequenz in der Taskleiste anzeigen"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
+msgid "Show current cpu frequency in the top bar"
+msgstr "Aktuelle Frequenz in der Taskleiste anzeigen"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
+msgid "Frequency in taskbar is shown in GHz or MHz"
+msgstr "Frequenz in GHz oder MHz anzeigen"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
+msgid "Control which unit is used for the frequency"
+msgstr "Einheit für Frequenz"
+
+#: src/indicator.js:151
 msgid "Minimum Frequency:"
 msgstr "Minimale Frequenz:"
 
-#: extension.js:315
+#: src/indicator.js:155
 msgid "Maximum Frequency:"
 msgstr "Maximale Frequenz:"
 
-#: extension.js:319
+#: src/indicator.js:159
 msgid "Turbo Boost:"
 msgstr "Turbo Boost:"
 
-#: extension.js:347
+#: src/indicator.js:187
 msgid "Current Frequency:"
 msgstr "Aktuelle Frequenz:"
 
-#: extension.js:373
+#: src/indicator.js:212
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: extension.js:525
-msgid "Your computer does not support intel_pstate."
-msgstr "Dieser Rechner unterstützt intel_pstate nicht."
-
-#: extension.js:542
+#: src/notinstalled.js:57
 msgid "Installation required."
 msgstr "Installation benötigt."
 
-#: extension.js:548
+#: src/notinstalled.js:63
 msgid "Attempt installation"
 msgstr "Installation versuchen"
 
-#: prefs.js:233
+#: src/preferences.js:263
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
-#: prefs.js:233
+#: src/preferences.js:263
 msgid "No"
-msgstr ""
+msgstr "Nein"
+
+#: src/unsupported.js:54
+msgid "Your computer does not support intel_pstate."
+msgstr "Dieser Rechner unterstützt intel_pstate nicht."
 
 #~ msgid "Name of the profile"
 #~ msgstr "Profilname"
