@@ -64,7 +64,8 @@ along with gnome-shell extension cpupower.  If not, see
 Fin Christensen (@fin-ger)
 Alex Pyrgiotis (@apyrgio)</property>
     <property name="translator_credits">Marek Pikuła (@MarPiRK)
-Jan Kasik (@honza-kasik)</property>
+Jan Kasik (@honza-kasik)
+Alex Gluck (@AlexGluck)</property>
     <property name="artists">Thanasis Georgiou (@sakisds)</property>
     <property name="logo">icons/cpu.svg</property>
     <property name="license_type">gpl-3-0</property>
