@@ -41,7 +41,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.src.convenience;
 const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 
-const CPUFreqBaseIndicator = new Lang.Class({
+var CPUFreqBaseIndicator = new Lang.Class({
     Name: 'cpupower.CPUFreqBaseIndicator',
     Extends: PanelMenu.Button,
     Abstract: true,

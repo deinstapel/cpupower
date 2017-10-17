@@ -32,7 +32,7 @@ const PopupMenu = imports.ui.popupMenu;
 
 const DEFAULT_EMPTY_NAME = 'No name';
 
-const CPUFreqProfileButton = new Lang.Class({
+var CPUFreqProfileButton = new Lang.Class({
     Name: 'cpupower.CPUFreqProfileButton',
     Extends: PopupMenu.PopupMenuItem,
 

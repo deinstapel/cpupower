@@ -32,7 +32,7 @@ const GenerateUUID = function ()
     return Math.floor(1 + Math.random() * 0xFFFFFFFE).toString();
 };
 
-const CPUFreqProfile = new Lang.Class({
+var CPUFreqProfile = new Lang.Class({
     Name: 'cpupower.CPUFreqProfile',
 
     _init: function()

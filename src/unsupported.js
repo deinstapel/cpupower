@@ -39,7 +39,7 @@ const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
 
 
-const UnsupportedIndicator = new Lang.Class({
+var UnsupportedIndicator = new Lang.Class({
     Name: 'cpupower.CPUFreqUnsupportedIndicator',
     Extends: CPUFreqBaseIndicator,
 
