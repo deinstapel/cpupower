@@ -263,7 +263,7 @@ var CPUFreqIndicator = new Lang.Class({
     _updateFile: function()
     {
         let cmd = Math.floor(this.minVal) + '\n' + Math.floor(this.maxVal) + '\n' + (this.isTurboBoostActive ? 'true':'false') + '\n';
-		let path = EXTENSIONDIR + '/.last-settings';
+        let path = EXTENSIONDIR + '/.last-settings';
         GLib.file_set_contents(path, cmd);
     },
 
@@ -328,15 +328,15 @@ var CPUFreqIndicator = new Lang.Class({
             if(line.search(/cpu mhz/i) < 0)
                 continue;
 
-			let f = Shell.get_file_contents_utf8_sync('/sys/devices/system/cpu/cpu' + cpucount++ + '/cpufreq/scaling_cur_freq');
-			cpufreq += parseInt(f / 1024);
+            let f = Shell.get_file_contents_utf8_sync('/sys/devices/system/cpu/cpu' + cpucount++ + '/cpufreq/scaling_cur_freq');
+            cpufreq += parseInt(f / 1024);
         }
-		this.cpufreq = (cpufreq / cpucount)
-		this.imCurrentLabel.set_text(this._getCurFreq());
-		if(this.lblActive)
-			this.lbl.set_text(this._getCurFreq());
-		else
-			this.lbl.set_text('');
+        this.cpufreq = (cpufreq / cpucount)
+        this.imCurrentLabel.set_text(this._getCurFreq());
+        if(this.lblActive)
+            this.lbl.set_text(this._getCurFreq());
+        else
+            this.lbl.set_text('');
 
         return true;
     },
