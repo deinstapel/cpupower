@@ -41,7 +41,7 @@ const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
 
-const NotInstalledIndicator = new Lang.Class({
+var NotInstalledIndicator = new Lang.Class({
     Name: 'cpupower.CPUFreqNotInstalledIndicator',
     Extends: CPUFreqBaseIndicator,
 
