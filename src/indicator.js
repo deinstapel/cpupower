@@ -58,12 +58,12 @@ var CPUFreqIndicator = new Lang.Class({
     _init: function()
     {
         this.cpufreq = 800;
-		this.cpucount = 0;
+        this.cpucount = 0;
         this.isTurboBoostActive = true;
         this.minVal = 0;
         this.maxVal = 30;
 
-		global.log('Inside cpupower.CPUFreqIndicator')
+        global.log('Inside cpupower.CPUFreqIndicator')
         // read the last-settings file.
         if(!GLib.file_test(EXTENSIONDIR + '/.last-settings', GLib.FileTest.EXISTS))
         {
@@ -320,45 +320,45 @@ var CPUFreqIndicator = new Lang.Class({
         }
     },
 
-	_sampleFreq: function ()
-	{
-		function getrand(min, max) {
-			return Math.floor(Math.random() * (max - min)) + min;
-		}
+    _sampleFreq: function ()
+    {
+        function getrand(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
 
-		function getfreq(self, n) {
-			let p = '/sys/devices/system/cpu/cpu' + n + '/cpufreq/scaling_cur_freq';
-			let f = Gio.file_new_for_path(p);
+        function getfreq(self, n) {
+            let p = '/sys/devices/system/cpu/cpu' + n + '/cpufreq/scaling_cur_freq';
+            let f = Gio.file_new_for_path(p);
 
-			f.load_contents_async(null, function(obj, res) {
-				let curfreq = self.cpufreq;
-				let [success, contents] = obj.load_contents_finish(res);
+            f.load_contents_async(null, function(obj, res) {
+                let curfreq = self.cpufreq;
+                let [success, contents] = obj.load_contents_finish(res);
 
-				//global.log("Sampled freq for cpu#" + n + ": " + contents);
+                //global.log("Sampled freq for cpu#" + n + ": " + contents);
 
-				if(success) curfreq = parseInt(contents / 1024);
-				self.cpufreq = curfreq;
-			});
-		}
+                if(success) curfreq = parseInt(contents / 1024);
+                self.cpufreq = curfreq;
+            });
+        }
 
-		getfreq(this, getrand(0, this.cpucount));
-	},
+        getfreq(this, getrand(0, this.cpucount));
+    },
 
     _updateFreq: function()
     {
-		if(this.cpucount == 0) {
-			let lines = Shell.get_file_contents_utf8_sync('/proc/cpuinfo').split('\n');
-			for(let i = 0; i < lines.length; i++)
-			{
-				let line = lines[i];
+        if(this.cpucount == 0) {
+            let lines = Shell.get_file_contents_utf8_sync('/proc/cpuinfo').split('\n');
+            for(let i = 0; i < lines.length; i++)
+            {
+                let line = lines[i];
 
-				if(line.search(/cpu mhz/i) < 0)
-					continue;
+                if(line.search(/cpu mhz/i) < 0)
+                    continue;
 
-				this.cpucount++;
-			}
-		}
-		this._sampleFreq();
+                this.cpucount++;
+            }
+        }
+        this._sampleFreq();
 
         if(this.menu.isOpen) this.imCurrentLabel.set_text(this._getCurFreq());
         if(this.lblActive)
@@ -372,8 +372,6 @@ var CPUFreqIndicator = new Lang.Class({
     _updateFreqMm: function()
     {
         if(!this.menu.isOpen) return true;
-
-		global.log('Inside cpupower.CPUFreqIndicator._updateFreqMm')
 
         let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' turbo get');
         this.isTurboBoostActive = parseInt(out.toString()) == 1;
