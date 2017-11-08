@@ -1,0 +1,151 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-28 21:27+0200\n"
+"PO-Revision-Date: 2017-11-08 17:14+0100\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.4\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Last-Translator: Slobodan Terzić  <slobodan.terzic@zoho.eu>\n"
+"Language: sr_RS@latin\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
+msgid "Serialized Profiles"
+msgstr "Serijalizovani profili"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
+msgid "Your CPUpower profiles"
+msgstr "Vaši profili za CPUpower"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
+msgid "Show current cpu frequency in taskbar"
+msgstr "Prikazuj trenutnu frekvenciju na traci zadataka"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
+msgid "Show current cpu frequency in the top bar"
+msgstr "Prikazuj trenutnu frekvenciju na gornjoj traci"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
+msgid "Frequency in taskbar is shown in GHz or MHz"
+msgstr "Frekvencija na traci zadataka se prikazuje u GHz ili MHz"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
+msgid "Control which unit is used for the frequency"
+msgstr "Postavlja jedinicu koja se koristi za frekvenciju"
+
+#: data/cpupower-preferences.glade:61
+msgid "Gnome-Shell Extension for the intel-pstate driver."
+msgstr "Proširenje Gomove školjke za intel_pstate drajver."
+
+#: data/cpupower-preferences.glade:117
+msgid "Show current frequency"
+msgstr "Prikaži trenutnu frekvenciju"
+
+#: data/cpupower-preferences.glade:130
+msgid "Use GHz instead of MHz"
+msgstr "Koristi GHz umesto MHz"
+
+#: data/cpupower-preferences.glade:161
+msgid "About"
+msgstr "O proširenju"
+
+#: data/cpupower-preferences.glade:183
+msgid "General"
+msgstr "Opšte"
+
+#: data/cpupower-preferences.glade:234
+msgid "Add selected profile"
+msgstr "Dodaj izabrani profil"
+
+#: data/cpupower-preferences.glade:247
+msgid "Remove selected profile"
+msgstr "Ukloni izabrani profil"
+
+#: data/cpupower-preferences.glade:260
+msgid "Move selected profile up"
+msgstr "Pomeri izabrani profil na gore"
+
+#: data/cpupower-preferences.glade:273
+msgid "Move selected profile down"
+msgstr "Pomeri izabrani profil na dole"
+
+#: data/cpupower-preferences.glade:332
+msgid "Profiles"
+msgstr "Profili"
+
+#: data/cpupower-preferences.glade:362 data/cpupower-preferences.glade:374
+msgid "Profile name"
+msgstr "Ime profila"
+
+#: data/cpupower-preferences.glade:387
+msgid "Minimum frequency"
+msgstr "Minimalna frekvencija"
+
+#: data/cpupower-preferences.glade:415
+msgid "Maximum frequency"
+msgstr "Maksimalna frekvencija"
+
+#: data/cpupower-preferences.glade:427
+msgid "Turbo boost"
+msgstr "Turbo pojačanje"
+
+#: data/cpupower-preferences.glade:465
+msgid "Discard"
+msgstr "Odbaci"
+
+#: data/cpupower-preferences.glade:485
+msgid "Save"
+msgstr "Snimi"
+
+#: data/cpupower-preferences.glade:575
+msgid "Turbo boost:"
+msgstr "Turbo pojačanje:"
+
+#: src/indicator.js:151
+msgid "Minimum Frequency:"
+msgstr "Minimalna frekvencija:"
+
+#: src/indicator.js:155
+msgid "Maximum Frequency:"
+msgstr "Maksimalna frekvencija:"
+
+#: src/indicator.js:159
+msgid "Turbo Boost:"
+msgstr "Turbo pojačanje:"
+
+#: src/indicator.js:187
+msgid "Current Frequency:"
+msgstr "Trenutna frekvencija:"
+
+#: src/indicator.js:212
+msgid "Preferences"
+msgstr "Podešavanje"
+
+#: src/notinstalled.js:57
+msgid "Installation required."
+msgstr "Neophodna je instalacija"
+
+#: src/notinstalled.js:63
+msgid "Attempt installation"
+msgstr "Pokušaj instalaciju"
+
+#: src/preferences.js:263
+msgid "Yes"
+msgstr "Da"
+
+#: src/preferences.js:263
+msgid "No"
+msgstr "Ne"
+
+#: src/unsupported.js:54
+msgid "Your computer does not support intel_pstate."
+msgstr "Vaš računar ne podržava intel_pstate."
+
+msgid "CPU"
+msgstr "CPU"
