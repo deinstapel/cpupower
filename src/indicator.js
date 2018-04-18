@@ -73,8 +73,9 @@ var CPUFreqIndicator = new Lang.Class({
                 this.minVal = parseInt(lines[0]);
                 this.maxVal = parseInt(lines[1]);
                 this.isTurboBoostActive = (lines[2].indexOf('true') > -1);
-                this._updateFile();
             }
+        } else {
+            global.log('Cached settings file not found: ' + LASTSETTINGS);
         }
 
         let result = GLib.spawn_command_line_sync(CPUFREQCTL + ' turbo get');
