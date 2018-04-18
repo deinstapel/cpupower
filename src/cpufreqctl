@@ -2,9 +2,10 @@
 
 # cpufreqctl - This script can configure the pstate driver of your intel CPU.
 #
-# Copyright (C) 2015-2017
+# Copyright (C) 2015-2018
 #     Martin Koppehel <psl.kontakt@gmail.com>,
 #     Fin Christensen <christensen.fin@gmail.com>,
+#     Tony Lambiris <tony@criticalstack.com>
 #
 # This file is part of the gnome-shell extension cpupower.
 #
@@ -27,156 +28,156 @@ set -e
 
 log ()
 {
-	echo -e "$@" >&2 || true
+    echo -e "$@" >&2 || true
 }
 
 error ()
 {
-	log "error: $@" && exit 1
+    log "error: $@" && exit 1
 }
 
 show_usage ()
 {
-	log "usage: cpufreqctl [-h] [turbo {get,0,1}] [min {get,check,VALUE}] [max {get,VALUE}]"
+    log "usage: cpufreqctl [-h] [turbo {get,0,1}] [min {get,check,VALUE}] [max {get,VALUE}]"
 }
 
 show_help ()
 {
-	log "usage: cpufreqctl [-h] ACTION PARAMETER"
-	log
-	log "This script can configure the pstate driver of your intel CPU."
-	log
-	help_arguments
-	help_actions
-	help_turbo
-	help_min
-	help_max
-	help_examples
-	help_copyright
+    log "usage: cpufreqctl [-h] ACTION PARAMETER"
+    log
+    log "This script can configure the pstate driver of your intel CPU."
+    log
+    help_arguments
+    help_actions
+    help_turbo
+    help_min
+    help_max
+    help_examples
+    help_copyright
 }
 
 help_arguments ()
 {
-	log "optional arguments:"
-	log "    -h, --help   show this help message and exit"
-	log
+    log "optional arguments:"
+    log "    -h, --help   show this help message and exit"
+    log
 }
 
 help_actions ()
 {
-	show_usage
-	log
-	log "available actions:"
-	log "    turbo        control or read the turbo boost state of your cpu"
-	log "    min          get or set the minimum cpu frequency (in %, [0;100])"
-	log "                 or get the smallest allowed value"
-	log "    max          get or set the maximum cpu frequency (in %, [0;100])"
-	log
+    show_usage
+    log
+    log "available actions:"
+    log "    turbo        control or read the turbo boost state of your cpu"
+    log "    min          get or set the minimum cpu frequency (in %, [0;100])"
+    log "                 or get the smallest allowed value"
+    log "    max          get or set the maximum cpu frequency (in %, [0;100])"
+    log
 }
 
 help_turbo ()
 {
-	log "usage: cpufreqctl turbo {get,0,1}"
-	log
-	log "turbo parameters:"
-	log "    get          get the current turbo boost state"
-	log "    0            turn turbo boost off"
-	log "    1            turn turbo boost on"
-	log
+    log "usage: cpufreqctl turbo {get,0,1}"
+    log
+    log "turbo parameters:"
+    log "    get          get the current turbo boost state"
+    log "    0            turn turbo boost off"
+    log "    1            turn turbo boost on"
+    log
 }
 
 help_min ()
 {
-	log "usage: cpufreqctl min {get,check,VALUE}"
-	log
-	log "min parameters:"
-	log "    get          get the current set minimum frequency (in %, [0;100])"
-	log "    check        get the smallest value allowed for minimum frequency (in %, [0;100])"
-	log "    VALUE        set the current minimum frequency to a value in [0;100]"
-	log "                 the values are automatically clamped to the minimum allowed cpu"
-	log "                 frequency"
-	log
+    log "usage: cpufreqctl min {get,check,VALUE}"
+    log
+    log "min parameters:"
+    log "    get          get the current set minimum frequency (in %, [0;100])"
+    log "    check        get the smallest value allowed for minimum frequency (in %, [0;100])"
+    log "    VALUE        set the current minimum frequency to a value in [0;100]"
+    log "                 the values are automatically clamped to the minimum allowed cpu"
+    log "                 frequency"
+    log
 }
 
 help_max ()
 {
-	log "usage: cpufreqctl max {get,check,VALUE}"
-	log
-	log "max parameters:"
-	log "    get          get the current set maximum frequency (in %, [0;100])"
-	log "    check        get the smallest value allowed for maximum frequency (in %, [0;100])"
-	log "    VALUE        set the current maximum frequency to a value [0;100]"
-	log
+    log "usage: cpufreqctl max {get,check,VALUE}"
+    log
+    log "max parameters:"
+    log "    get          get the current set maximum frequency (in %, [0;100])"
+    log "    check        get the smallest value allowed for maximum frequency (in %, [0;100])"
+    log "    VALUE        set the current maximum frequency to a value [0;100]"
+    log
 }
 
 help_examples ()
 {
-	log "examples:"
-	log "    Set the maximum frequency to 50%"
-	log "        cpufreqctl max 50"
-	log
-	log "    Get the turbo boost state"
-	log "        cpufreqctl turbo get"
-	log
-	log "    Get smallest allowed minimum cpu frequency for your model"
-	log "        cpufreqctl min check"
-	log
+    log "examples:"
+    log "    Set the maximum frequency to 50%"
+    log "        cpufreqctl max 50"
+    log
+    log "    Get the turbo boost state"
+    log "        cpufreqctl turbo get"
+    log
+    log "    Get smallest allowed minimum cpu frequency for your model"
+    log "        cpufreqctl min check"
+    log
 }
 
 help_copyright ()
 {
-	log "cpufreqctl  Copyright (c) 2017  Martin Koppehel, Fin Christensen"
+    log "cpufreqctl  Copyright (c) 2017  Martin Koppehel, Fin Christensen"
 }
 
 if [ "$1" = "-h" ] || [ "$1" = "--help" ] || [ $# -lt 1 ]
 then
-	show_help
-	exit
+    show_help
+    exit
 fi
 
 pstate_root="/sys/devices/system/cpu/intel_pstate"
 
 case "$1" in
-	turbo)
-		path="$pstate_root/no_turbo"
-		read val < "$path"
+    turbo)
+        path="$pstate_root/no_turbo"
+        read val < "$path"
 
-		case "$2" in
-			'')
-				help_turbo ;;
-			get)
-				echo $(( val ^ 1 )) ;;
-			0|1)
-				cat > "$path" <<<$(( $2 ^ 1 )) ;;
-			*)
-				error "you must specify a valid parameter!" ;;
-		esac
-		;;
+        case "$2" in
+            '')
+                help_turbo ;;
+            get)
+                echo $(( val ^ 1 )) ;;
+            0|1)
+                cat > "$path" <<<$(( $2 ^ 1 )) ;;
+            *)
+                error "you must specify a valid parameter!" ;;
+        esac
+        ;;
 
-	min|max)
-		path="$pstate_root/$1_perf_pct"
-		read val < "$path"
+    min|max)
+        path="$pstate_root/$1_perf_pct"
+        read val < "$path"
 
-		case "$2" in
-			'')
-				eval help_$1 ;;
-			get)
-				echo "$val" ;;
-			check)
-				cat "$path" <(echo 0 > "$path")
-				echo "$val" > "$path" ;;
-			*[0-9]*)
-				if test "$2" -lt 0 || test "$2" -gt 100
-				then
-					error "VALUE must be between 0 and 100"
-				fi
-				cat > "$path" <<<$2 ;;
-			*)
-				error "you must specify a valid parameter!" ;;
-		esac
-		;;
+        case "$2" in
+            '')
+                eval help_$1 ;;
+            get)
+                echo "$val" ;;
+            check)
+                cat "$path" <(echo 0 > "$path")
+                echo "$val" > "$path" ;;
+            *[0-9]*)
+                if test "$2" -lt 0 || test "$2" -gt 100
+                then
+                    error "VALUE must be between 0 and 100"
+                fi
+                cat > "$path" <<<$2 ;;
+            *)
+                error "you must specify a valid parameter!" ;;
+        esac
+        ;;
 
-	*)
-		help_actions
-		error "you must specify a valid action!" ;;
+    *)
+        help_actions
+        error "you must specify a valid action!" ;;
 esac
