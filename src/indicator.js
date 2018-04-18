@@ -73,9 +73,13 @@ var CPUFreqIndicator = new Lang.Class({
                 this.minVal = parseInt(lines[0]);
                 this.maxVal = parseInt(lines[1]);
                 this.isTurboBoostActive = (lines[2].indexOf('true') > -1);
+
+                this._updateMin();
+                this._updateMax();
+                this._updateTurbo();
             }
         } else {
-            global.log('Cached settings file not found: ' + LASTSETTINGS);
+            global.log('Cached last settings not found: ' + LASTSETTINGS);
         }
 
         let result = GLib.spawn_command_line_sync(CPUFREQCTL + ' turbo get');
@@ -250,6 +254,7 @@ var CPUFreqIndicator = new Lang.Class({
 
     _updateFile: function()
     {
+        if(this.menu && !this.menu.isOpen) return;
         let cmd = Math.floor(this.minVal) + '\n' + Math.floor(this.maxVal) + '\n' + (this.isTurboBoostActive ? 'true':'false') + '\n';
         global.log('Updating cpufreq settings cache file: ' + LASTSETTINGS);
         GLib.file_set_contents(LASTSETTINGS, cmd);
@@ -259,7 +264,6 @@ var CPUFreqIndicator = new Lang.Class({
     {
         let cmd = [PKEXEC, CPUFREQCTL, 'max', Math.floor(this.maxVal).toString()].join(' ');
         Util.trySpawnCommandLine(cmd);
-        if(!this.menu.isOpen) return;
         this._updateFile();
     },
 
@@ -267,7 +271,6 @@ var CPUFreqIndicator = new Lang.Class({
     {
         let cmd = [PKEXEC, CPUFREQCTL, 'min', Math.floor(this.minVal).toString()].join(' ');
         Util.trySpawnCommandLine(cmd);
-        if(!this.menu.isOpen) return;
         this._updateFile();
     },
 
@@ -275,7 +278,6 @@ var CPUFreqIndicator = new Lang.Class({
     {
         let cmd = [PKEXEC, CPUFREQCTL, 'turbo', (this.isTurboBoostActive ? '1' : '0')].join(' ');
         Util.trySpawnCommandLine(cmd);
-        if(!this.menu.isOpen) return;
         this._updateFile();
     },
 
@@ -345,7 +347,7 @@ var CPUFreqIndicator = new Lang.Class({
         }
         this._sampleFreq();
 
-        if(this.menu.isOpen) this.imCurrentLabel.set_text(this._getCurFreq());
+        if(this.menu && !this.menu.isOpen) this.imCurrentLabel.set_text(this._getCurFreq());
         if(this.lblActive)
             this.lbl.set_text(this._getCurFreq());
         else
@@ -356,7 +358,7 @@ var CPUFreqIndicator = new Lang.Class({
 
     _updateFreqMm: function()
     {
-        if(!this.menu.isOpen) return true;
+        if(this.menu && !this.menu.isOpen) return true;
 
         let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' turbo get');
         this.isTurboBoostActive = parseInt(out.toString()) == 1;
