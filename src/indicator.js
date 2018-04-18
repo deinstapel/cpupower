@@ -47,8 +47,8 @@ const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
 const CPUFreqBaseIndicator = Me.imports.src.baseindicator.CPUFreqBaseIndicator;
 const CPUFreqProfileButton = Me.imports.src.profilebutton.CPUFreqProfileButton;
 
-const EXTENSIONDIR = Me.dir.get_path();
-const CPUFREQCTL = EXTENSIONDIR + '/src/cpufreqctl';
+const LASTSETTINGS = GLib.get_user_cache_dir() + '/cpupower.last-settings';
+const CPUFREQCTL = Me.dir.get_path() + '/src/cpufreqctl';
 const PKEXEC = GLib.find_program_in_path('pkexec');
 
 var CPUFreqIndicator = new Lang.Class({
@@ -60,36 +60,20 @@ var CPUFreqIndicator = new Lang.Class({
         this.cpufreq = 800;
         this.cpucount = 0;
         this.isTurboBoostActive = true;
-        this.minVal = 0;
-        this.maxVal = 30;
+        this.minVal = this._getMinCheck();
+        this.maxVal = 100;
 
-        global.log('Inside cpupower.CPUFreqIndicator')
-        // read the last-settings file.
-        if(!GLib.file_test(EXTENSIONDIR + '/.last-settings', GLib.FileTest.EXISTS))
+        global.log('Inside cpupower.CPUFreqIndicator');
+        // read the cached settings file.
+        if(GLib.file_test(LASTSETTINGS, GLib.FileTest.EXISTS))
         {
-            let result = GLib.spawn_command_line_sync(CPUFREQCTL + ' turbo get');
-            let returnCode = result[1];
-            this.isTurboBoostActive = returnCode;
-
-            result = GLib.spawn_command_line_sync(CPUFREQCTL + ' min get');
-            returnCode = result[1];
-            this.minVal = returnCode;
-
-            result = GLib.spawn_command_line_sync(CPUFREQCTL + ' max get');
-            returnCode = result[1];
-            this.maxVal = returnCode;
-        }
-        else
-        {
-            let lines = Shell.get_file_contents_utf8_sync(EXTENSIONDIR + '/.last-settings').split('\n');
+            let lines = Shell.get_file_contents_utf8_sync(LASTSETTINGS).split('\n');
             if(lines.length > 2)
             {
                 this.minVal = parseInt(lines[0]);
                 this.maxVal = parseInt(lines[1]);
                 this.isTurboBoostActive = (lines[2].indexOf('true') > -1);
-                this._updateMax(true);
-                this._updateMin(true);
-                this._updateTurbo(true);
+                this._updateFile();
             }
         }
 
@@ -166,11 +150,11 @@ var CPUFreqIndicator = new Lang.Class({
 
         this.imMinTitle = new PopupMenu.PopupMenuItem(_('Minimum Frequency:'), {reactive: false});
         this.imMinLabel = new St.Label({text: this._getMinText()});
-        this.imMinTitle.actor.add_child(this.imMinLabel, {align: St.Align.END});
+        this.imMinTitle.actor.add_child(this.imMinLabel);
 
         this.imMaxTitle = new PopupMenu.PopupMenuItem(_('Maximum Frequency:'), {reactive: false});
         this.imMaxLabel = new St.Label({text: this._getMaxText()});
-        this.imMaxTitle.actor.add_child(this.imMaxLabel, {align: St.Align.END});
+        this.imMaxTitle.actor.add_child(this.imMaxLabel);
 
         this.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(_('Turbo Boost:'), this.isTurboBoostActive);
         this.imTurboSwitch.connect('toggled', Lang.bind(this, function(item)
@@ -202,7 +186,7 @@ var CPUFreqIndicator = new Lang.Class({
 
         this.imCurrentTitle = new PopupMenu.PopupMenuItem(_('Current Frequency:'), {reactive:false});
         this.imCurrentLabel = new St.Label({text: this._getCurFreq()});
-        this.imCurrentTitle.actor.add_child(this.imCurrentLabel, {align: St.Align.END});
+        this.imCurrentTitle.actor.add_child(this.imCurrentLabel);
 
         this.section.addMenuItem(this.imMinTitle);
         this.section.addMenuItem(this.imSliderMin);
@@ -266,31 +250,31 @@ var CPUFreqIndicator = new Lang.Class({
     _updateFile: function()
     {
         let cmd = Math.floor(this.minVal) + '\n' + Math.floor(this.maxVal) + '\n' + (this.isTurboBoostActive ? 'true':'false') + '\n';
-        let path = EXTENSIONDIR + '/.last-settings';
-        GLib.file_set_contents(path, cmd);
+        global.log('Updating cpufreq settings cache file: ' + LASTSETTINGS);
+        GLib.file_set_contents(LASTSETTINGS, cmd);
     },
 
-    _updateMax: function(force = false)
+    _updateMax: function()
     {
-        if(!force && !this.menu.isOpen) return;
         let cmd = [PKEXEC, CPUFREQCTL, 'max', Math.floor(this.maxVal).toString()].join(' ');
         Util.trySpawnCommandLine(cmd);
+        if(!this.menu.isOpen) return;
         this._updateFile();
     },
 
-    _updateMin: function(force = false)
+    _updateMin: function()
     {
-        if(!force && !this.menu.isOpen) return;
         let cmd = [PKEXEC, CPUFREQCTL, 'min', Math.floor(this.minVal).toString()].join(' ');
         Util.trySpawnCommandLine(cmd);
+        if(!this.menu.isOpen) return;
         this._updateFile();
     },
 
-    _updateTurbo: function(force = false)
+    _updateTurbo: function()
     {
-        if(!force && !this.menu.isOpen) return;
         let cmd = [PKEXEC, CPUFREQCTL, 'turbo', (this.isTurboBoostActive ? '1' : '0')].join(' ');
         Util.trySpawnCommandLine(cmd);
+        if(!this.menu.isOpen) return;
         this._updateFile();
     },
 
@@ -336,7 +320,7 @@ var CPUFreqIndicator = new Lang.Class({
 
                 //global.log("Sampled freq for cpu#" + n + ": " + contents);
 
-                if(success) curfreq = parseInt(contents / 1024);
+                if(success) curfreq = parseInt(contents / 1000);
                 self.cpufreq = curfreq;
             });
         }
@@ -383,6 +367,12 @@ var CPUFreqIndicator = new Lang.Class({
         this.maxVal = parseInt(out.toString());
         this._updateUi();
         return true;
+    },
+
+    _getMinCheck: function()
+    {
+        let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' min check');
+        return parseInt(out.toString());
     },
 
     _getCurFreq: function()
