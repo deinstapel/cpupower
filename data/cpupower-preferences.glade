@@ -62,7 +62,8 @@ along with gnome-shell extension cpupower.  If not, see
     <property name="website">https://github.com/martin31821/cpupower</property>
     <property name="authors">Martin Koppehel (@martin31821)
 Fin Christensen (@fin-ger)
-Alex Pyrgiotis (@apyrgio)</property>
+Alex Pyrgiotis (@apyrgio)
+Tony Lambiris (@tonylambiris)</property>
     <property name="translator_credits">Marek Pikuła (@MarPiRK)
 Jan Kasik (@honza-kasik)
 Alex Gluck (@AlexGluck)</property>
