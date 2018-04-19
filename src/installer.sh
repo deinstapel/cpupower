@@ -29,6 +29,7 @@ POLICY="mko.cpupower.setcpufreq"
 RULEIN="${DIR}/../data/mko.cpupower.policy.in"
 RULEDIR="/usr/share/polkit-1/actions"
 RULEOUT="${RULEDIR}/${POLICY}.policy"
+LEGACYOUT="${RULEDIR}/mko.cpupower.policy"
 
 if [ $# -lt 1 ]
 then
@@ -44,7 +45,6 @@ fi
 
 if [ "$1" = "check" ]
 then
-
     sed "s:xxxPATHxxx:${CFC}:g" "${RULEIN}" | \
         cmp --silent "${RULEOUT}" || (echo "Not installed" && exit 6) && echo "Installed"
     exit $?
@@ -55,6 +55,12 @@ then
     echo -n "Installing policykit action... "
     sed "s:xxxPATHxxx:${CFC}:g" "${RULEIN}" > "${RULEOUT}" 2>/dev/null || (echo "Failed" && exit 2)
     echo "Success"
+
+    if [ -f "${LEGACYOUT}" ]
+    then
+        echo -n "Removing legacy policykit action... "
+        rm "${LEGACYOUT}" || (echo "Fail - cannot remove" && exit 8) && echo "Success"
+    fi
 
     echo -n "Fixing permissions... "
     chown root:root "${CFC}" || (echo "Failed to change owner" && exit 3)
@@ -70,9 +76,17 @@ then
     if [ -f "${RULEOUT}" ]
     then
         rm "${RULEOUT}" || (echo "Fail - cannot remove" && exit 7) && echo "Success"
+
+        if [ -f "${LEGACYOUT}" ]
+        then
+            echo -n "Removing legacy policykit action... "
+            rm "${LEGACYOUT}" || (echo "Fail - cannot remove" && exit 8) && echo "Success"
+        fi
+
     else
         echo "Fail - not installed" && exit 6
     fi
+
     exit 0
 fi
 
