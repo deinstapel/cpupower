@@ -1,0 +1,151 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-10-23 00:34+0200\n"
+"PO-Revision-Date: 2018-10-23 00:34+0200\n"
+"Last-Translator: Orhan Engin OKAY <orhanenginokay@hotmail.com\n"
+"Language-Team: Orhan Engin OKAY <orhanenginokay@hotmail.com\n"
+"Language: tr_TR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
+msgid "Serialized Profiles"
+msgstr "Seri hale getirilmiş Profiller"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
+msgid "Your CPUpower profiles"
+msgstr " CPUgüç profilleriniz"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
+msgid "Show current cpu frequency in taskbar"
+msgstr "Mevcut cpu frekansını görev çubuğunda göster"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
+msgid "Show current cpu frequency in the top bar"
+msgstr "Geçerli cpu frekansını üst çubuğa göster"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
+msgid "Frequency in taskbar is shown in GHz or MHz"
+msgstr "GHz ya da MHz frekansları görev çubuğunda gösterilir"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
+msgid "Control which unit is used for the frequency"
+msgstr "Frekans için hangi birimin kullanıldığını kontrol et"
+
+#: cpupower-preferences.glade:61
+msgid "Gnome-Shell Extension for the intel-pstate driver."
+msgstr "İntel-pstate sürücüsü için Gnome-Shell Uzantısı."
+
+#: cpupower-preferences.glade:117
+msgid "Show current frequency"
+msgstr "Mevcut frekansı göster"
+
+#: cpupower-preferences.glade:130
+msgid "Use GHz instead of MHz"
+msgstr "MHz yerine GHz kullan"
+
+#: cpupower-preferences.glade:161
+msgid "About"
+msgstr "Hakkında"
+
+#: cpupower-preferences.glade:183
+msgid "General"
+msgstr "Genel"
+
+#: cpupower-preferences.glade:234
+msgid "Add selected profile"
+msgstr "Seçilen profili ekle"
+
+#: cpupower-preferences.glade:247
+msgid "Remove selected profile"
+msgstr "Seçilen profili kaldır"
+
+#: cpupower-preferences.glade:260
+msgid "Move selected profile up"
+msgstr "Seçilen profili üste çıkar"
+
+#: cpupower-preferences.glade:273
+msgid "Move selected profile down"
+msgstr "Seçilen profili aşağıya kaydır"
+
+#: cpupower-preferences.glade:332
+msgid "Profiles"
+msgstr "Profiller"
+
+#: cpupower-preferences.glade:362 cpupower-preferences.glade:374
+msgid "Profile name"
+msgstr "Profil adı"
+
+#: cpupower-preferences.glade:387
+msgid "Minimum frequency"
+msgstr "Minimum frekans"
+
+#: cpupower-preferences.glade:415
+msgid "Maximum frequency"
+msgstr "Maksimum frekans"
+
+#: cpupower-preferences.glade:427
+msgid "Turbo boost"
+msgstr "Turbo"
+
+#: cpupower-preferences.glade:465
+msgid "Discard"
+msgstr "At"
+
+#: cpupower-preferences.glade:485
+msgid "Save"
+msgstr "Kaydet"
+
+#: cpupower-preferences.glade:575
+msgid "Turbo boost:"
+msgstr "Turbo:"
+
+#: extension.js:311
+msgid "Minimum Frequency:"
+msgstr "Minimum Frekans:"
+
+#: extension.js:315
+msgid "Maximum Frequency:"
+msgstr "Maksimum Frekans:"
+
+#: extension.js:319
+msgid "Turbo Boost:"
+msgstr "Turbo:"
+
+#: extension.js:347
+msgid "Current Frequency:"
+msgstr "Mevcut Frekans:"
+
+#: extension.js:373
+msgid "Preferences"
+msgstr "Tercihler"
+
+#: extension.js:525
+msgid "Your computer does not support intel_pstate."
+msgstr "Bilgisayarınız intel_pstate desteklemiyor."
+
+#: extension.js:542
+msgid "Installation required."
+msgstr "Yükleme gerekli.."
+
+#: extension.js:548
+msgid "Attempt installation"
+msgstr "Attempt installation"
+
+#: prefs.js:233
+msgid "Yes"
+msgstr "Evet"
+
+#: prefs.js:233
+msgid "No"
+msgstr "Hayır"
+
+#~ msgid "CPU"
+#~ msgstr "CPU"
