@@ -27,7 +27,6 @@
  */
 
 // Gnome imports
-const Lang = imports.lang;
 const PanelMenu = imports.ui.panelMenu;
 const St = imports.gi.St;
 const Gio = imports.gi.Gio;
@@ -41,14 +40,9 @@ const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.src.convenience;
 const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 
-var CPUFreqBaseIndicator = new Lang.Class({
-    Name: 'cpupower.CPUFreqBaseIndicator',
-    Extends: PanelMenu.Button,
-    Abstract: true,
-
-    _init: function()
-    {
-        this.parent(null, 'cpupower');
+var CPUFreqBaseIndicator = class extends PanelMenu.Button {
+    _init() {
+        super._init(null, 'cpupower');
 
         this.settings = Convenience.getSettings(SETTINGS_ID);
 
@@ -73,22 +67,19 @@ var CPUFreqBaseIndicator = new Lang.Class({
 
         this.settings.connect('changed', this._createMenu.bind(this));
         this._createMenu();
-    },
+    }
 
-    _createMenu: function()
-    {
+    createMenu() {
         this.menu.removeAll(); // clear the menu in case we are recreating the menu
         this.section = new PopupMenu.PopupMenuSection();
         this.menu.addMenuItem(this.section);
-    },
+    }
 
-    _disable: function()
-    {
+    disable() {
         this.actor.remove_actor(this.hbox);
-    },
+    }
 
-    _enable: function()
-    {
+    enable() {
         this.actor.add_actor(this.hbox);
     }
-});
+}

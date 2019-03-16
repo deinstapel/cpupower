@@ -32,13 +32,9 @@ const PopupMenu = imports.ui.popupMenu;
 
 const DEFAULT_EMPTY_NAME = 'No name';
 
-var CPUFreqProfileButton = new Lang.Class({
-    Name: 'cpupower.CPUFreqProfileButton',
-    Extends: PopupMenu.PopupMenuItem,
-
-    _init: function(profile)
-    {
+var CPUFreqProfileButton = class extends PopupMenu.PopupMenuItem {
+    _init(profile) {
         this.Profile = profile;
-        this.parent(_(this.Profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
-    },
-});
+        super._init(_(this.Profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
+    }
+}
