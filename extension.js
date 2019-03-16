@@ -39,34 +39,29 @@ const NotInstalledIndicator = Me.imports.src.notinstalled.NotInstalledIndicator;
 const CPUFreqIndicator = Me.imports.src.indicator.CPUFreqIndicator;
 
 
-function init(meta)
-{
+function init(meta) {
     Convenience.initTranslations('gnome-shell-extension-cpupower');
 }
 
 let _indicator = null;
 
-function _enableIndicator()
-{
+function _enableIndicator() {
+    global.log('_enableIndicator', _indicator, typeof _indicator, _indicator.enable);
     Main.panel.addToStatusArea('cpupower', _indicator);
-    _indicator._enable();
+    _indicator.enable();
 }
 
-function enable()
-{
-    try
-    {
-        check_supported(function(supported) {
-            if (!supported)
-            {
+function enable() {
+    try {
+        check_supported(supported => {
+            if (!supported) {
                 _indicator = new UnsupportedIndicator();
                 _enableIndicator();
                 return;
             }
 
-            check_installed(function(installed) {
-                if (!installed)
-                {
+            check_installed(installed => {
+                if (!installed) {
                     _indicator = new NotInstalledIndicator(function (success) {
                         if (success)
                         {
@@ -75,27 +70,20 @@ function enable()
                             enable();
                         }
                     });
-                }
-                else
-                {
+                } else {
                     _indicator = new CPUFreqIndicator();
                 }
-
                 _enableIndicator();
             });
         });
-    }
-    catch (e)
-    {
+    } catch (e) {
         global.logError(e.message);
     }
 }
 
-function disable()
-{
-    if (_indicator != null)
-    {
-        _indicator._disable();
+function disable() {
+    if (_indicator != null) {
+        _indicator.disable();
         _indicator.destroy();
     }
 }
