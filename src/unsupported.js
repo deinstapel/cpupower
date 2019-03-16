@@ -39,19 +39,14 @@ const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
 
 
-var UnsupportedIndicator = new Lang.Class({
-    Name: 'cpupower.CPUFreqUnsupportedIndicator',
-    Extends: CPUFreqBaseIndicator,
+var UnsupportedIndicator = class extends CPUFreqBaseIndicator {
+    _init () {
+        super._init();
+    }
 
-    _init: function()
-    {
-        this.parent();
-    },
-
-    _createMenu: function()
-    {
-        this.parent();
+    createMenu() {
+        super.createMenu();
         let unsupporedLabel = new PopupMenu.PopupMenuItem(_('Your computer does not support intel_pstate.'), {reactive: false});
         this.section.addMenuItem(unsupporedLabel);
     }
-});
+};

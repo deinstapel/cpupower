@@ -24,33 +24,26 @@
  * <http://www.gnu.org/licenses/>.
  *
  */
-const Lang = imports.lang;
-
 const GenerateUUID = function ()
 {
     // 32bit random number without 0
     return Math.floor(1 + Math.random() * 0xFFFFFFFE).toString();
 };
 
-var CPUFreqProfile = new Lang.Class({
-    Name: 'cpupower.CPUFreqProfile',
-
-    _init: function()
-    {
+var CPUFreqProfile = class {
+    _init() {
         this.MinimumFrequency = 0;
         this.MaximumFrequency = 100;
         this.TurboBoost = true;
         this.Name = 'Default';
         this.UUID = GenerateUUID();
-    },
+    }
 
-    save: function()
-    {
+    save() {
         return [this.MinimumFrequency, this.MaximumFrequency, this.TurboBoost, this.Name, this.UUID];
-    },
+    }
 
-    load: function(input)
-    {
+    load(input) {
         this.MinimumFrequency = input[0];
         this.MaximumFrequency = input[1];
         this.TurboBoost = input[2];
@@ -68,4 +61,4 @@ var CPUFreqProfile = new Lang.Class({
             return false;
         }
     }
-});
+}
