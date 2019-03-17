@@ -26,22 +26,20 @@
  */
 
 // Gnome imports
-const Lang = imports.lang;
 const PopupMenu = imports.ui.popupMenu;
 
 // Relative and misc imports and definitions
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.src.convenience;
-const CPUFreqBaseIndicator = Me.imports.src.baseindicator.CPUFreqBaseIndicator;
-const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
+const baseindicator = Me.imports.src.baseindicator;
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
 
 
-var UnsupportedIndicator = class extends CPUFreqBaseIndicator {
-    _init () {
-        super._init();
+var UnsupportedIndicator = class UnsupportedIndicator extends baseindicator.CPUFreqBaseIndicator {
+    constructor() {
+        super();
+        this.createMenu();
     }
 
     createMenu() {

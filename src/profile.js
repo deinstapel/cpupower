@@ -30,7 +30,7 @@ const GenerateUUID = function ()
     return Math.floor(1 + Math.random() * 0xFFFFFFFE).toString();
 };
 
-var CPUFreqProfile = class {
+var CPUFreqProfile = class CPUFreqProfile {
     _init() {
         this.MinimumFrequency = 0;
         this.MaximumFrequency = 100;
@@ -52,7 +52,7 @@ var CPUFreqProfile = class {
         if (input.length < 5 || !input[4])
         {
             this.UUID = GenerateUUID();
-            global.log("Generated UUID: " + this.UUID);
+            // global.log("Generated UUID: " + this.UUID);
             return true;
         }
         else
