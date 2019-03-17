@@ -34,7 +34,6 @@ const Gio = imports.gi.Gio;
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
 
-const Lang = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.src.convenience;
@@ -44,19 +43,13 @@ const EXTENSIONDIR = Me.dir.get_path();
 const GLADE_FILE = EXTENSIONDIR + "/data/cpupower-preferences.glade";
 const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
 
-var CPUPowerPreferences = new Lang.Class({
-    Name: 'cpupower.Preferences',
-
-    _init: function()
-    {
-        let me = this;
-
+var CPUPowerPreferences = class CPUPowerPreferences {
+    constructor() {
+        this.Builder = new Gtk.Builder();
         this.Builder.add_objects_from_file(GLADE_FILE, ["MainWidget"]);
-        this.Builder.connect_signals_full(
-            function (builder, object, signal, handler) {
-                object.connect(signal, me[handler].bind(me));
-            }
-        );
+        this.Builder.connect_signals_full((builder, object, signal, handler) => {
+            object.connect(signal, this[handler].bind(this));
+        });
         this._loadWidgets(
             "MainWidget",
             "ShowCurrentFrequencySwitch",
@@ -69,17 +62,13 @@ var CPUPowerPreferences = new Lang.Class({
             "ProfileStack"
         );
         this.ProfilesMap = new Map();
-    },
+    }
 
-    status: function()
-    {
+    status() {
         global.log(arguments[0]);
-    },
+    }
 
-    Builder: new Gtk.Builder(),
-
-    _updateSettings: function()
-    {
+    _updateSettings() {
         let value = this._settings.get_boolean("show-freq-in-taskbar");
         this.ShowCurrentFrequencySwitch.set_active(value);
 
@@ -99,71 +88,56 @@ var CPUPowerPreferences = new Lang.Class({
         _profiles = _profiles.deep_unpack();
         let _tmpProfiles = [];
         let _needsUUIDSave = false;
-        for(let j in _profiles)
-        {
+        for(let j in _profiles) {
             let profile = new CPUFreqProfile();
             _needsUUIDSave |= profile.load(_profiles[j]);
             _tmpProfiles.push(profile);
         }
 
-        if (_needsUUIDSave)
-        {
+        if (_needsUUIDSave) {
             let _saved = [];
-            for (let p in _tmpProfiles)
-            {
+            for (let p in _tmpProfiles) {
                 _saved.push(_tmpProfiles[p].save());
             }
             this.status("Needed ID refresh, reloading");
             _saved = GLib.Variant.new("a(iibss)", _saved);
             this._settings.set_value("profiles", _saved);
             _updateSettings();
-        }
-        else
-        {
-            for (let p in _tmpProfiles)
-            {
+        } else {
+            for (let p in _tmpProfiles) {
                 this.addOrUpdateProfile(_tmpProfiles[p]);
             }
         }
-    },
+    }
 
     // Dat is so magic, world is exploooooooding
-    _loadWidgets: function()
-    {
-        for (let i in arguments)
-        {
+    _loadWidgets() {
+        for (let i in arguments) {
             this[arguments[i]] = this.Builder.get_object(arguments[i]);
         }
-    },
+    }
 
-    _syncOrdering: function ()
-    {
-        for (let profileContext of this.ProfilesMap.values())
-        {
+    _syncOrdering() {
+        for (let profileContext of this.ProfilesMap.values()) {
             let index = profileContext.ListItem.Row.get_index();
             this.ProfileStack.child_set_property(profileContext.Settings.StackItem, "position", index);
         }
-    },
+    }
 
-    _selectFirstProfile: function ()
-    {
-        for (let profileContext of this.ProfilesMap.values())
-        {
+    _selectFirstProfile() {
+        for (let profileContext of this.ProfilesMap.values()) {
             let index = profileContext.ListItem.Row.get_index();
-            if (index == 0)
-            {
+            if (index == 0) {
                 this.ProfilesListBox.select_row(profileContext.ListItem.Row);
                 break;
             }
         }
-    },
+    }
 
-    addOrUpdateProfile: function (profile)
-    {
+    addOrUpdateProfile(profile) {
         let profileContext = this.ProfilesMap.get(profile.UUID);
 
-        if (profileContext == undefined)
-        {
+        if (profileContext == undefined) {
             profileContext = {
                 Profile: profile,
                 Settings: {
@@ -233,17 +207,13 @@ var CPUPowerPreferences = new Lang.Class({
                 "ProfileListBoxRow"
             );
 
-            let me = this;
-            profileSettingsBuilder.connect_signals_full(
-                function (builder, object, signal, handler) {
-                    object.connect(signal, me[handler].bind(me, profileContext));
-                }
-            );
-            profileListItemBuilder.connect_signals_full(
-                function (builder, object, signal, handler) {
-                    object.connect(signal, me[handler].bind(me, profileContext));
-                }
-            );
+            profileSettingsBuilder.connect_signals_full((builder, object, signal, handler) => {
+                object.connect(signal, this[handler].bind(this, profileContext));
+            });
+
+            profileListItemBuilder.connect_signals_full((builder, object, signal, handler) => {
+                object.connect(signal, this[handler].bind(this, profileContext));
+            });
 
             this.ProfilesListBox.prepend(profileContext.ListItem.Row);
             this.ProfileStack.add_named(profileContext.Settings.StackItem, profileContext.Profile.UUID.toString(16));
@@ -262,51 +232,44 @@ var CPUPowerPreferences = new Lang.Class({
 
         profileContext.Settings.DiscardButton.sensitive = false;
         profileContext.Settings.SaveButton.sensitive = false;
-    },
+    }
 
-    removeProfile: function (profile)
-    {
+    removeProfile(profile) {
         let profileContext = this.ProfilesMap.get(profile.UUID);
         this.ProfilesListBox.remove(profileContext.ListItem.Row);
         this.ProfileStack.remove(profileContext.Settings.StackItem);
         this.ProfilesMap.delete(profile.UUID);
         this._syncOrdering();
-    },
+    }
 
-    setProfileIndex: function (profile, index)
-    {
+    setProfileIndex(profile, index) {
         let profileContext = this.ProfilesMap.get(profile.UUID);
         let profileCount = this.ProfilesMap.length;
         index = index >= profileContext ? profileCount - 1 : index;
         this.ProfilesListBox.remove(profileContext.ListItem.Row);
         this.ProfilesListBox.insert(profileContext.ListItem.Row, index);
         this._syncOrdering();
-    },
+    }
 
-    getProfileIndex: function (profile)
-    {
+    getProfileIndex(profile) {
         let profileContext = this.ProfilesMap.get(profile.UUID);
         return profileContext.ListItem.Row.get_index();
-    },
+    }
 
-    getSelectedProfileContext: function ()
-    {
+    getSelectedProfileContext() {
         let selectedRow = this.ProfilesListBox.get_selected_rows()[0];
         let profileContext = null;
 
-        for (let profCtx of this.ProfilesMap.values())
-        {
-            if (profCtx.ListItem.Row == selectedRow)
-            {
+        for (let profCtx of this.ProfilesMap.values()) {
+            if (profCtx.ListItem.Row == selectedRow) {
                 profileContext = profCtx;
                 break;
             }
         }
         return profileContext;
-    },
+    }
 
-    onMainWidgetRealize: function (mainWidget)
-    {
+    onMainWidgetRealize(mainWidget) {
         mainWidget.expand = true;
         mainWidget.parent.border_width = 0;
 
@@ -318,63 +281,53 @@ var CPUPowerPreferences = new Lang.Class({
         this._updateSettings();
 
         this._selectFirstProfile();
-    },
+    }
 
-    onShowCurrentFrequencySwitchActiveNotify: function (switchButton)
-    {
+    onShowCurrentFrequencySwitchActiveNotify(switchButton) {
         let state = switchButton.active;
         this._settings.set_boolean("show-freq-in-taskbar", state);
         this.status("ShowCurrentFrequency: " + state);
-    },
+    }
 
-    onUseGHzInsteadOfMHzSwitchActiveNotify: function (switchButton)
-    {
+    onUseGHzInsteadOfMHzSwitchActiveNotify(switchButton) {
         let state = switchButton.active;
         this._settings.set_boolean("taskbar-freq-unit-ghz", state);
         this.status("UseGHzInsteadOfMHz: " + state);
-    },
+    }
 
-    onProfilesAddToolButtonClicked: function (button)
-    {
+    onProfilesAddToolButtonClicked(button) {
         this.addOrUpdateProfile(new CPUFreqProfile());
         this._saveOrderedProfileList();
-    },
+    }
 
-    onProfilesRemoveToolButtonClicked: function (button)
-    {
+    onProfilesRemoveToolButtonClicked(button) {
         let profileContext = this.getSelectedProfileContext();
-        if (!!profileContext)
-        {
+        if (!!profileContext) {
             this.removeProfile(profileContext.Profile);
         }
         this._saveOrderedProfileList();
-    },
+    }
 
-    onProfilesMoveUpToolButtonClicked: function (button)
-    {
+    onProfilesMoveUpToolButtonClicked(button) {
         let profileContext = this.getSelectedProfileContext();
-        if (!!profileContext)
-        {
+        if (!!profileContext) {
             let index = profileContext.ListItem.Row.get_index() - 1;
             index = index < 0 ? 0 : index;
             this.setProfileIndex(profileContext.Profile, index);
         }
         this._saveOrderedProfileList();
-    },
+    }
 
-    onProfilesMoveDownToolButtonClicked: function (button)
-    {
+    onProfilesMoveDownToolButtonClicked(button) {
         let profileContext = this.getSelectedProfileContext();
-        if (!!profileContext)
-        {
+        if (!!profileContext) {
             let index = profileContext.ListItem.Row.get_index() + 1;
             this.setProfileIndex(profileContext.Profile, index);
         }
         this._saveOrderedProfileList();
-    },
+    }
 
-    onAboutButtonClicked: function (button)
-    {
+    onAboutButtonClicked(button) {
         let profileListItemBuilder = new Gtk.Builder();
         profileListItemBuilder.add_objects_from_file(GLADE_FILE, ["AboutDialog"]);
         let dialog = profileListItemBuilder.get_object("AboutDialog");
@@ -382,48 +335,40 @@ var CPUPowerPreferences = new Lang.Class({
         dialog.set_transient_for(parentWindow);
         dialog.run();
         dialog.hide();
-    },
+    }
 
-    onProfilesListBoxRowSelected: function (box, row)
-    {
+    onProfilesListBoxRowSelected(box, row) {
         let profileContext = this.getSelectedProfileContext();
-        if (!!profileContext)
-        {
+        if (!!profileContext) {
             this.ProfileStack.set_visible_child(profileContext.Settings.StackItem);
         }
-    },
+    }
 
-    onProfileNameEntryChanged: function (profileContext, entry)
-    {
+    onProfileNameEntryChanged(profileContext, entry) {
         profileContext.Settings.DiscardButton.sensitive = true;
         profileContext.Settings.SaveButton.sensitive = true;
-    },
+    }
 
-    onProfileMinimumFrequencyScaleValueChanged: function (profileContext, scale)
-    {
+    onProfileMinimumFrequencyScaleValueChanged(profileContext, scale) {
         profileContext.Settings.DiscardButton.sensitive = true;
         profileContext.Settings.SaveButton.sensitive = true;
-    },
+    }
 
-    onProfileMaximumFrequencyScaleValueChanged: function (profileContext, scale)
-    {
+    onProfileMaximumFrequencyScaleValueChanged(profileContext, scale) {
         profileContext.Settings.DiscardButton.sensitive = true;
         profileContext.Settings.SaveButton.sensitive = true;
-    },
+    }
 
-    onProfileTurboBoostSwitchActiveNotify: function (profileContext, switchButton)
-    {
+    onProfileTurboBoostSwitchActiveNotify(profileContext, switchButton) {
         profileContext.Settings.DiscardButton.sensitive = true;
         profileContext.Settings.SaveButton.sensitive = true;
-    },
+    }
 
-    onProfileDiscardButtonClicked: function (profileContext, button)
-    {
+    onProfileDiscardButtonClicked(profileContext, button) {
         this.addOrUpdateProfile(profileContext.Profile);
-    },
+    }
 
-    onProfileSaveButtonClicked: function (profileContext, button)
-    {
+    onProfileSaveButtonClicked(profileContext, button) {
         let name = profileContext.Settings.NameEntry.get_text();
         let minimumFrequency = profileContext.Settings.MinimumFrequencyScale.get_value();
         let maximumFrequency = profileContext.Settings.MaximumFrequencyScale.get_value();
@@ -436,13 +381,11 @@ var CPUPowerPreferences = new Lang.Class({
 
         this.addOrUpdateProfile(profileContext.Profile);
         this._saveOrderedProfileList();
-    },
+    }
 
-    _saveOrderedProfileList: function()
-    {
+    _saveOrderedProfileList() {
         let _saved = [];
-        for (let value of this.ProfilesMap.entries())
-        {
+        for (let value of this.ProfilesMap.entries()) {
             this.status("value: " + value[0] + value[1]);
             let idx = this.ProfilesMap.size - 1 - this.getProfileIndex(value[1].Profile);
             this.status("Saving: " + value[1].Profile.UUID + "to idx: " + idx);
@@ -452,4 +395,4 @@ var CPUPowerPreferences = new Lang.Class({
         _saved = GLib.Variant.new("a(iibss)", _saved);
         this._settings.set_value("profiles", _saved);
     }
-});
+}
