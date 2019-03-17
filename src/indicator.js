@@ -34,7 +34,8 @@ const Util = imports.misc.util;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const UPower = imports.gi.UPowerGlib;
-const Gio = imports.gi.Gio
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
@@ -43,27 +44,22 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
 const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
-const CPUFreqBaseIndicator = Me.imports.src.baseindicator.CPUFreqBaseIndicator;
+const baseindicator = Me.imports.src.baseindicator;
 const CPUFreqProfileButton = Me.imports.src.profilebutton.CPUFreqProfileButton;
 
 const LASTSETTINGS = GLib.get_user_cache_dir() + '/cpupower.last-settings';
 const CPUFREQCTL = Me.dir.get_path() + '/src/cpufreqctl';
 const PKEXEC = GLib.find_program_in_path('pkexec');
 
-var CPUFreqIndicator = class extends CPUFreqBaseIndicator {
+var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseIndicator {
     constructor() {
-        global.log('building CPUFreqIndicator');
         super();
-    }
-
-    _init() {
         this.cpufreq = 800;
         this.cpucount = 0;
         this.isTurboBoostActive = true;
         this.minVal = this._getMinCheck();
         this.maxVal = 100;
 
-        global.log('Inside cpupower.CPUFreqIndicator');
         // read the cached settings file.
         if(GLib.file_test(LASTSETTINGS, GLib.FileTest.EXISTS))
         {
@@ -82,19 +78,8 @@ var CPUFreqIndicator = class extends CPUFreqBaseIndicator {
             global.log('Cached last settings not found: ' + LASTSETTINGS);
         }
 
-        let result = GLib.spawn_command_line_sync(CPUFREQCTL + ' turbo get');
-        let returnCode = result[1];
-        this.isTurboBoostActive = returnCode;
-
-        result = GLib.spawn_command_line_sync(CPUFREQCTL + ' min get');
-        returnCode = result[1];
-        this.minVal = returnCode;
-
-        result = GLib.spawn_command_line_sync(CPUFREQCTL + ' max get');
-        returnCode = result[1];
-        this.maxVal = returnCode;
-
-        super._init();
+        this._updateFreqMm(true);
+        this.createMenu();
     }
 
     enable() {
@@ -107,7 +92,7 @@ var CPUFreqIndicator = class extends CPUFreqBaseIndicator {
 
         super.enable();
         this.timeout = Mainloop.timeout_add_seconds(1, () => this._updateFreq());
-        this.timeout_mm = Mainloop.timeout_add_seconds(1, () => this._updateFreqMm());
+        this.timeout_mm = Mainloop.timeout_add_seconds(1, () => this._updateFreqMm(false));
     }
 
     _onPowerChanged() {
@@ -164,7 +149,6 @@ var CPUFreqIndicator = class extends CPUFreqBaseIndicator {
             this._updateTurbo();
         });
 
-        global.logError(this.minVal + ' ' + this.maxVal);
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.minSlider = new Slider.Slider(this.minVal / 100);
         this.minSlider.connect('value-changed', item => {
@@ -242,7 +226,7 @@ var CPUFreqIndicator = class extends CPUFreqBaseIndicator {
     _updateFile() {
         if(this.menu && !this.menu.isOpen) return;
         let cmd = Math.floor(this.minVal) + '\n' + Math.floor(this.maxVal) + '\n' + (this.isTurboBoostActive ? 'true':'false') + '\n';
-        global.log('Updating cpufreq settings cache file: ' + LASTSETTINGS);
+        // global.log('Updating cpufreq settings cache file: ' + LASTSETTINGS);
         GLib.file_set_contents(LASTSETTINGS, cmd);
     }
 
@@ -268,7 +252,7 @@ var CPUFreqIndicator = class extends CPUFreqBaseIndicator {
         this.imMinLabel.set_text(this._getMinText());
         this.minSlider.setValue(this.minVal / 100.0);
 
-        this.imMaxLabel.set_text(this._getMaxText());
+        this.imMaxLabel.set_text(this._getMaxText());result
         this.maxSlider.setValue(this.maxVal / 100.0);
 
         this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
@@ -294,10 +278,13 @@ var CPUFreqIndicator = class extends CPUFreqBaseIndicator {
             f.load_contents_async(null, (obj, res) => {
                 let curfreq = this.cpufreq;
                 let [success, contents] = obj.load_contents_finish(res);
+                if (!success) {
+                    return;
+                }
 
-                //global.log("Sampled freq for cpu#" + n + ": " + contents);
+                // global.log("Sampled freq for cpu#" + n + ": " + contents);
 
-                if(success) curfreq = parseInt(contents / 1000);
+                if(success) curfreq = parseInt(String.fromCharCode.apply(null, contents)) / 1000;
                 this.cpufreq = curfreq;
             });
         }
@@ -323,24 +310,31 @@ var CPUFreqIndicator = class extends CPUFreqBaseIndicator {
         return true;
     }
 
-    _updateFreqMm() {
-        if(this.menu && !this.menu.isOpen) return true;
+    _updateFreqMm(force) {
+        const menuOpen = this.menu && !this.menu.isOpen;
+        if(force || menuOpen) return true;
 
         let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' turbo get');
-        this.isTurboBoostActive = parseInt(out.toString()) == 1;
+        this.isTurboBoostActive = parseInt(String.fromCharCode.apply(null, out)) == 1;
 
         [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' min get');
-        this.minVal = parseInt(out.toString());
+        this.minVal = parseInt(String.fromCharCode.apply(null, out));
 
         [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' max get');
-        this.maxVal = parseInt(out.toString());
-        this._updateUi();
+        this.maxVal = parseInt(String.fromCharCode.apply(null, out));
+        if (menuOpen) {
+            this._updateUi();
+        }
         return true;
     }
 
     _getMinCheck() {
-        let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' min check');
-        return parseInt(out.toString());
+        let [res, out, err, exitcode] = GLib.spawn_command_line_sync(PKEXEC + ' ' + CPUFREQCTL + ' min check');
+        if (exitcode !== 0) {
+            return 0;
+        }
+        const str = String.fromCharCode.apply(null, out);
+        return parseInt(str);
     }
 
     _getCurFreq() {
