@@ -49,8 +49,6 @@ var CPUPowerPreferences = new Lang.Class({
 
     _init: function()
     {
-        global.log("init");
-
         let me = this;
 
         this.Builder.add_objects_from_file(GLADE_FILE, ["MainWidget"]);

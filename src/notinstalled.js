@@ -33,17 +33,18 @@ const PopupMenu = imports.ui.popupMenu;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.src.convenience;
-const CPUFreqBaseIndicator = Me.imports.src.baseindicator.CPUFreqBaseIndicator;
+const baseindicator = Me.imports.src.baseindicator;
 const attempt_installation = Me.imports.src.utils.attempt_installation;
 
 const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
 
-var NotInstalledIndicator = class extends CPUFreqBaseIndicator {
-    _init(done) {
+var NotInstalledIndicator = class NotInstalledIndicator extends baseindicator.CPUFreqBaseIndicator {
+    constructor(done) {
+        super();
         this._done = done;
-        super._init();
+        this.createMenu();
     }
 
     createMenu() {
