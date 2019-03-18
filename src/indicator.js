@@ -252,7 +252,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.imMinLabel.set_text(this._getMinText());
         this.minSlider.setValue(this.minVal / 100.0);
 
-        this.imMaxLabel.set_text(this._getMaxText());result
+        this.imMaxLabel.set_text(this._getMaxText());
         this.maxSlider.setValue(this.maxVal / 100.0);
 
         this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
