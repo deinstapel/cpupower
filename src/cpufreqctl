@@ -26,7 +26,7 @@ function log {
 }
 
 function err {
-	show_usage
+    show_usage
     echo "error: $@" >&2 && false
 }
 
@@ -46,17 +46,17 @@ function show_help {
     help_max
     help_examples
     help_copyright
-	exit
+    exit
 }
 
 function help_arguments {
-	log
+    log
     log "optional arguments:"
     log "    -h, --help   show this help message and exit"
 }
 
 function help_actions {
-	log
+    log
     log "available actions:"
     log "    turbo        control or read the turbo boost state of your cpu"
     log "    min          get or set the minimum cpu frequency (in %, [0;100])"
@@ -65,7 +65,7 @@ function help_actions {
 }
 
 function help_turbo {
-	log
+    log
     log "turbo parameters:"
     log "    get          get the current turbo boost state"
     log "    0            turn turbo boost off"
@@ -73,7 +73,7 @@ function help_turbo {
 }
 
 function help_min {
-	log
+    log
     log "min parameters:"
     log "    get          get the current set minimum frequency (in %, [0;100])"
     log "    check        get the smallest allowed minimum frequency for your cpu model"
@@ -83,14 +83,14 @@ function help_min {
 }
 
 function help_max {
-	log
+    log
     log "max parameters:"
     log "    get          get the current set maximum frequency (in %, [0;100])"
     log "    VALUE        set the current maximum frequency to a value in [0;100]"
 }
 
 function help_examples {
-	log
+    log
     log "examples:"
     log "    set the maximum frequency to 50%"
     log "        cpufreqctl max 50"
@@ -101,8 +101,8 @@ function help_examples {
 }
 
 function help_copyright {
-	log
-	log "cpufreqctl  Copyright (c) 2017-$(date '+%Y') Martin Koppehel, Fin Christensen"
+    log
+    log "cpufreqctl  Copyright (c) 2017-$(date '+%Y') Martin Koppehel, Fin Christensen"
 }
 
 if [ $# -lt 1 ]; then
@@ -122,13 +122,13 @@ case "$1" in
     if [ -z "$2" ]; then
         log "usage: cpufreqctl turbo {get,0,1}"
         help_turbo
-		help_copyright
+        help_copyright
     elif [ "$2" = "get" ]; then
         cat /sys/devices/system/cpu/intel_pstate/no_turbo
     elif [ "$2" -lt 0 ] || [ "$2" -gt 1 ]; then
         log "usage: cpufreqctl turbo {get,0,1}"
         err "VALUE must be 0 or 1"
-	else
+    else
         if [ "$2" -eq 1 ]; then
             policy="performance"
             echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo
@@ -142,30 +142,28 @@ case "$1" in
             echo "$policy" > "$governor"
         done
     fi
-	;;
-
+    ;;
 "max")
     if [ -z "$2" ]; then
         log "usage: cpufreqctl max {get,VALUE}"
         help_max
-		help_copyright
-	elif [ "$2" = "get" ]; then
+        help_copyright
+    elif [ "$2" = "get" ]; then
         cat /sys/devices/system/cpu/intel_pstate/max_perf_pct
-	elif [ "$2" -lt 0 ] || [ "$2" -gt 100 ]; then
+    elif [ "$2" -lt 0 ] || [ "$2" -gt 100 ]; then
         log "usage: cpufreqctl max {get,VALUE}"
-	    err "VALUE must be between 0 and 100"
-	else
-		echo "$2" > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+        err "VALUE must be between 0 and 100"
+    else
+        echo "$2" > /sys/devices/system/cpu/intel_pstate/max_perf_pct
     fi
-	;;
-
+    ;;
 "min")
     if [ -z "$2" ]; then
         log "usage: cpufreqctl mini {get,check,VALUE}"
         help_min
-		help_copyright
+        help_copyright
     elif [ "$2" = "get" ]; then
-	    cat /sys/devices/system/cpu/intel_pstate/min_perf_pct
+        cat /sys/devices/system/cpu/intel_pstate/min_perf_pct
     elif [ "$2" = "check" ]; then
         preValue=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
         echo 0 > /sys/devices/system/cpu/intel_pstate/min_perf_pct
@@ -174,11 +172,11 @@ case "$1" in
         echo "${postValue}"
     elif [ "$2" -lt 0 ] || [ "$2" -gt 100 ]; then
         log "usage: cpufreqctl min {get,check,VALUE}"
-	    err "VALUE must be between 0 and 100"
-	else
+        err "VALUE must be between 0 and 100"
+    else
         echo "$2" > /sys/devices/system/cpu/intel_pstate/min_perf_pct
     fi
-	;;
+    ;;
 *)
-	err "invalid option"
+    err "invalid option"
 esac
