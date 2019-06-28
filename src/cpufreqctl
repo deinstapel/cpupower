@@ -180,6 +180,17 @@ then
 	echo "${value}"
 	exit
     fi
+
+    if [ "$2" = "check" ]
+    then
+	preValue=$(</sys/devices/system/cpu/intel_pstate/max_perf_pct)
+	echo 100 > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+	postValue=$(</sys/devices/system/cpu/intel_pstate/max_perf_pct)
+	echo "${preValue}" > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+	echo "${postValue}"
+	exit
+    fi
+
     if [ "$2" -lt 0 ] || [ "$2" -gt 100 ];
     then
         log "usage: cpufreqctl max {get,VALUE}"
