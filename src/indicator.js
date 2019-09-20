@@ -151,7 +151,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.minSlider = new Slider.Slider(this.minVal / 100);
-        this.minSlider.connect('value-changed', item => {
+        this.minSlider.connect('notify::value', item => {
             this.minVal = Math.floor(item.value * 100);
             this.imMinLabel.set_text(this._getMinText());
             this._updateMin();
@@ -160,7 +160,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.maxSlider = new Slider.Slider(this.maxVal / 100);
-        this.maxSlider.connect('value-changed', item => {
+        this.maxSlider.connect('notify::value', item => {
             this.maxVal = Math.floor(item.value * 100);
             this.imMaxLabel.set_text(this._getMaxText());
             this._updateMax();
