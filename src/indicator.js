@@ -36,6 +36,7 @@ const Shell = imports.gi.Shell;
 const UPower = imports.gi.UPowerGlib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
+const Config = imports.misc.config;
 
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
@@ -151,7 +152,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.minSlider = new Slider.Slider(this.minVal / 100);
-        this.minSlider.connect('notify::value', item => {
+        this.minSlider.connect(Config.PACKAGE_VERSION.startsWith('3.34') ? 'notify::value' : 'value-changed', item => {
             this.minVal = Math.floor(item.value * 100);
             this.imMinLabel.set_text(this._getMinText());
             this._updateMin();
@@ -160,7 +161,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.maxSlider = new Slider.Slider(this.maxVal / 100);
-        this.maxSlider.connect('notify::value', item => {
+        this.maxSlider.connect(Config.PACKAGE_VERSION.startsWith('3.34') ? 'notify::value' : 'value-changed', item => {
             this.maxVal = Math.floor(item.value * 100);
             this.imMaxLabel.set_text(this._getMaxText());
             this._updateMax();
