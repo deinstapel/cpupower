@@ -52,7 +52,7 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
 
         Main.panel.menuManager.addMenu(this.menu);
         this.hbox = new St.BoxLayout({style_class: 'panel-status-menu-box'});
-        let gicon = Gio.icon_new_for_string(Me.path + '/data/icons/cpu.svg');
+        let gicon = Gio.icon_new_for_string(Me.path + '/data/icons/cpu-symbolic.svg');
         let icon = new St.Icon({
             gicon: gicon,
             style_class: 'system-status-icon'
