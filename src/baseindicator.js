@@ -84,7 +84,10 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
     enable() {
         this.actor.add_actor(this.hbox);
     }
+
     destroy() {
         this._mainButton.destroy();
     }
+
 }
+
