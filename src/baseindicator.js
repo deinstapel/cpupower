@@ -66,7 +66,6 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
         this.lblUnit = (this.settings.get_boolean('taskbar-freq-unit-ghz'));
 
         this.hbox.add_actor(icon);
-        this.hbox.add_actor(PopupMenu.arrowIcon(St.Side.BOTTOM));
 
 
         this.settings.connect('changed', () => this.createMenu());
