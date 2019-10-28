@@ -251,10 +251,14 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
     _updateUi() {
         this.imMinLabel.set_text(this._getMinText());
-        this.minSlider.value = this.minVal / 100.0;
+        Config.PACKAGE_VERSION.startsWith('3.34')
+            ? this.minSlider.value = this.minVal / 100.0
+            : this.minSlider.setValue(this.minVal / 100.0);
 
         this.imMaxLabel.set_text(this._getMaxText());
-        this.maxSlider.value = this.maxVal / 100.0;
+        Config.PACKAGE_VERSION.startsWith('3.34')
+            ? this.maxSlider.value = this.maxVal / 100.0
+            : this.maxSlider.setValue(this.maxVal / 100.0);
 
         this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
         for (let p of this.profiles) {
