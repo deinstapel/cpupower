@@ -308,7 +308,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this._sampleFreq();
 
         if(this.menu && !this.menu.isOpen) this.imCurrentLabel.set_text(this._getCurFreq());
-        this.lbl.set_text(this.lblActive ? this._getCurFreq() : '');
+        this.lbl.set_text(this._getCurFreq());
 
         return true;
     }
