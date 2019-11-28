@@ -59,17 +59,9 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
         });
 
         this.lbl = new St.Label({text: '', y_expand:true, y_align: Clutter.ActorAlign.CENTER});
-        this.hbox.add_actor(this.lbl);
-
-
-        this.lblActive = (this.settings.get_boolean('show-freq-in-taskbar'));
-        this.lblUnit = (this.settings.get_boolean('taskbar-freq-unit-ghz'));
-        this.iconActive = (this.settings.get_boolean('show-icon-in-taskbar'));
-        this.arrowActive = (this.settings.get_boolean('show-arrow-in-taskbar'));
-
-        this.hbox.add_actor(this.icon);
         this.arrow = PopupMenu.arrowIcon(St.Side.BOTTOM);
-        this.hbox.add_actor(this.arrow);
+
+        this.createIndicator();
 
 
         this.settings.connect('changed', () => {this.createIndicator(); this.createMenu()});
