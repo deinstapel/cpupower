@@ -52,6 +52,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         });
         this._loadWidgets(
             "MainWidget",
+            "ShowIconSwitch",
+            "ShowArrowSwitch",
             "ShowCurrentFrequencySwitch",
             "UseGHzInsteadOfMHzSwitch",
             "ProfilesListBox",
@@ -75,6 +77,11 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         value = this._settings.get_boolean("taskbar-freq-unit-ghz");
         this.UseGHzInsteadOfMHzSwitch.set_active(value);
 
+        value = this._settings.get_boolean("show-icon-in-taskbar");
+        this.ShowIconSwitch.set_active(value);
+
+        value = this._settings.get_boolean("show-arrow-in-taskbar");
+        this.ShowArrowSwitch.set_active(value);
 
         // Backward compatibility:
         // for the new Settings UI we introduced a profile-id, which is not present in the older versions.
@@ -293,6 +300,16 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         let state = switchButton.active;
         this._settings.set_boolean("taskbar-freq-unit-ghz", state);
         this.status("UseGHzInsteadOfMHz: " + state);
+    }
+    onShowIconSwitchActiveNotify(switchButton) {
+        let state = switchButton.active;
+        this._settings.set_boolean("show-icon-in-taskbar", state);
+        this.status("ShowIcon: " + state);
+    }
+    onShowArrowSwitchActiveNotify(switchButton) {
+        let state = switchButton.active;
+        this._settings.set_boolean("show-arrow-in-taskbar", state);
+        this.status("ShowArrow: " + state);
     }
 
     onProfilesAddToolButtonClicked(button) {

@@ -80,6 +80,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         }
 
         this._updateFreqMm(true);
+        this.createIndicator();
         this.createMenu();
     }
 
@@ -120,9 +121,6 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
     createMenu() {
         super.createMenu();
-
-        this.lblActive = (this.settings.get_boolean('show-freq-in-taskbar'));
-        this.lblUnit = (this.settings.get_boolean('taskbar-freq-unit-ghz'));
 
         let _profiles = this.settings.get_value('profiles');
         _profiles = _profiles.deep_unpack();
