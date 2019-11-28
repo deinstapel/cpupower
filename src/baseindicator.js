@@ -53,7 +53,7 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
         Main.panel.menuManager.addMenu(this.menu);
         this.hbox = new St.BoxLayout({style_class: 'panel-status-menu-box'});
         let gicon = Gio.icon_new_for_string(Me.path + '/data/icons/cpu-symbolic.svg');
-        let icon = new St.Icon({
+        this.icon = new St.Icon({
             gicon: gicon,
             style_class: 'system-status-icon'
         });
@@ -64,12 +64,32 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
 
         this.lblActive = (this.settings.get_boolean('show-freq-in-taskbar'));
         this.lblUnit = (this.settings.get_boolean('taskbar-freq-unit-ghz'));
+        this.iconActive = (this.settings.get_boolean('show-icon-in-taskbar'));
+        this.arrowActive = (this.settings.get_boolean('show-arrow-in-taskbar'));
 
-        this.hbox.add_actor(icon);
-        this.hbox.add_actor(PopupMenu.arrowIcon(St.Side.BOTTOM));
+        this.hbox.add_actor(this.icon);
+        this.arrow = PopupMenu.arrowIcon(St.Side.BOTTOM);
+        this.hbox.add_actor(this.arrow);
 
 
-        this.settings.connect('changed', () => this.createMenu());
+        this.settings.connect('changed', () => {this.createIndicator(); this.createMenu()});
+    }
+
+    createIndicator() {
+        this.lblActive = (this.settings.get_boolean('show-freq-in-taskbar'));
+        this.lblUnit = (this.settings.get_boolean('taskbar-freq-unit-ghz'));
+        this.iconActive = (this.settings.get_boolean('show-icon-in-taskbar'));
+        this.arrowActive = (this.settings.get_boolean('show-arrow-in-taskbar'));
+        this.hbox.remove_all_children();
+        if (this.lblActive) {
+            this.hbox.add_actor(this.lbl);
+        }
+        if (this.iconActive) {
+            this.hbox.add_actor(this.icon);
+        }
+        if (this.arrowActive) {
+            this.hbox.add_actor(this.arrow);
+        }
     }
 
     createMenu() {

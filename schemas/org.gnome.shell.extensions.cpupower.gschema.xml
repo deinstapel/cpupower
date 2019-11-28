@@ -15,5 +15,15 @@
 			<summary>Frequency in taskbar is shown in GHz or MHz</summary>
 			<description>Control which unit is used for the frequency</description>
 		</key>
+		<key name="show-icon-in-taskbar" type="b">
+			<default>true</default>
+			<summary>Show cpu chip icon in taskbar</summary>
+			<description>Show cpu chip icon in the top bar</description>
+		</key>
+		<key name="show-arrow-in-taskbar" type="b">
+			<default>true</default>
+			<summary>Show down arrow in taskbar</summary>
+			<description>Show down arrow in the top bar</description>
+		</key>
 	</schema>
 </schemalist>
