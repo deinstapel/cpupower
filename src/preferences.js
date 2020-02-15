@@ -90,26 +90,26 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         // CPUFreqProfile checks if an ID is present at load time, if not or an empty one was given, it will generate one
         // if any profile needed a new ID, we save all profiles and reload the UI.
 
+        // The same goes for the auto-switching feature.
 
         let _profiles = this._settings.get_value("profiles");
         _profiles = _profiles.deep_unpack();
         let _tmpProfiles = [];
-        let _needsUUIDSave = false;
+        let _needsUpdate = false;
         for(let j in _profiles) {
             let profile = new CPUFreqProfile();
-            _needsUUIDSave |= profile.load(_profiles[j]);
+            _needsUpdate |= profile.load(_profiles[j]);
             _tmpProfiles.push(profile);
         }
 
-        if (_needsUUIDSave) {
+        if (_needsUpdate) {
             let _saved = [];
             for (let p in _tmpProfiles) {
                 _saved.push(_tmpProfiles[p].save());
             }
             this.status("Needed ID refresh, reloading");
-            _saved = GLib.Variant.new("a(iibss)", _saved);
-            this._settings.set_value("profiles", _saved);
-            _updateSettings();
+            this._saveProfiles(_saved);
+            this._updateSettings();
         } else {
             for (let p in _tmpProfiles) {
                 this.addOrUpdateProfile(_tmpProfiles[p]);
@@ -186,6 +186,12 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             profileContext.Settings.TurboBoostSwitch = profileSettingsBuilder.get_object(
                 "ProfileTurboBoostSwitch"
             );
+            profileContext.Settings.AutoSwitchACCheck = profileSettingsBuilder.get_object(
+                "ProfileDefaultACCheck"
+            );
+            profileContext.Settings.AutoSwitchBatCheck = profileSettingsBuilder.get_object(
+                "ProfileDefaultBatCheck"
+            );
             profileContext.Settings.DiscardButton = profileSettingsBuilder.get_object(
                 "ProfileDiscardButton"
             );
@@ -232,6 +238,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         profileContext.Settings.MinimumFrequencyScale.set_value(profileContext.Profile.MinimumFrequency);
         profileContext.Settings.MaximumFrequencyScale.set_value(profileContext.Profile.MaximumFrequency);
         profileContext.Settings.TurboBoostSwitch.set_active(profileContext.Profile.TurboBoost);
+        profileContext.Settings.AutoSwitchACCheck.set_active(profileContext.Profile.DefaultAC);
+        profileContext.Settings.AutoSwitchBatCheck.set_active(profileContext.Profile.DefaultBat);
         profileContext.ListItem.NameLabel.set_text(profileContext.Profile.Name);
         profileContext.ListItem.MinimumFrequencyLabel.set_text(profileContext.Profile.MinimumFrequency.toString());
         profileContext.ListItem.MaximumFrequencyLabel.set_text(profileContext.Profile.MaximumFrequency.toString());
@@ -381,6 +389,16 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         profileContext.Settings.SaveButton.sensitive = true;
     }
 
+    onProfileDefaultBatChecktoggled(profileContext, checkButton) {
+        profileContext.Settings.DiscardButton.sensitive = true;
+        profileContext.Settings.SaveButton.sensitive = true;
+    }
+
+    onProfileDefaultACChecktoggled(profileContext, checkButton) {
+        profileContext.Settings.DiscardButton.sensitive = true;
+        profileContext.Settings.SaveButton.sensitive = true;
+    }
+
     onProfileDiscardButtonClicked(profileContext, button) {
         this.addOrUpdateProfile(profileContext.Profile);
     }
@@ -390,11 +408,15 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         let minimumFrequency = profileContext.Settings.MinimumFrequencyScale.get_value();
         let maximumFrequency = profileContext.Settings.MaximumFrequencyScale.get_value();
         let turboBoost = profileContext.Settings.TurboBoostSwitch.get_active();
+        let autoSwitchAC = profileContext.Settings.AutoSwitchACCheck.get_active();
+        let autoSwitchBat = profileContext.Settings.AutoSwitchBatCheck.get_active();
 
         profileContext.Profile.Name = name;
         profileContext.Profile.MinimumFrequency = minimumFrequency;
         profileContext.Profile.MaximumFrequency = maximumFrequency;
         profileContext.Profile.TurboBoost = turboBoost;
+        profileContext.Profile.DefaultAC = autoSwitchAC;
+        profileContext.Profile.DefaultBat = autoSwitchBat;
 
         this.addOrUpdateProfile(profileContext.Profile);
         this._saveOrderedProfileList();
@@ -409,7 +431,15 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             _saved[idx] = value[1].Profile.save();
         }
 
-        _saved = GLib.Variant.new("a(iibss)", _saved);
-        this._settings.set_value("profiles", _saved);
+        this._saveProfiles(_saved);
+    }
+
+    /**
+     * Saves a profile array in iibssbb-form
+     * @param {Array} saved 
+     */
+    _saveProfiles(saved) {
+        saved = GLib.Variant.new("a(iibssbb)", saved);
+        this._settings.set_value("profiles", saved);
     }
 }

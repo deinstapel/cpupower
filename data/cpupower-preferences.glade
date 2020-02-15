@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 
+<!-- Generated with glade 3.22.0 
 
 Copyright (C) 2015-2017
 
@@ -97,6 +97,9 @@ Jimmy Scionti (@amivaleo)</property>
           <placeholder/>
         </child>
       </object>
+    </child>
+    <child type="titlebar">
+      <placeholder/>
     </child>
   </object>
   <object class="GtkNotebook" id="MainWidget">
@@ -528,7 +531,7 @@ Jimmy Scionti (@amivaleo)</property>
       </object>
       <packing>
         <property name="left_attach">0</property>
-        <property name="top_attach">4</property>
+        <property name="top_attach">5</property>
       </packing>
     </child>
     <child>
@@ -548,7 +551,74 @@ Jimmy Scionti (@amivaleo)</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
+        <property name="top_attach">5</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkGrid" id="ProfileSettingsAutoSwitchGrid">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="margin_right">80</property>
+        <property name="margin_top">12</property>
+        <property name="row_spacing">8</property>
+        <property name="column_spacing">8</property>
+        <child>
+          <object class="GtkLabel" id="ProfileDefaultACLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">end</property>
+            <property name="label" translatable="yes">Set as default AC profile</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="ProfileDefaultBatLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">end</property>
+            <property name="label" translatable="yes">Set as default battery profile</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="ProfileDefaultBatCheck">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="use_stock">True</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="onProfileDefaultBatChecktoggled" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="ProfileDefaultACCheck">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="use_stock">True</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="onProfileDefaultACChecktoggled" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
         <property name="top_attach">4</property>
+        <property name="width">2</property>
       </packing>
     </child>
   </object>
