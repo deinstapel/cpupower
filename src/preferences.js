@@ -153,6 +153,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                     MinimumFrequencyScale: null,
                     MaximumFrequencyScale: null,
                     TurboBoostSwitch: null,
+                    AutoSwitchACCheck: null,
+                    AutoSwitchBatCheck: null,
                     DiscardButton: null,
                     SaveButton: null
                 },
@@ -233,6 +235,14 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             this.ProfilesMap.set(profileContext.Profile.UUID, profileContext);
             this._syncOrdering();
         }
+
+        // update profile context with given profile
+        profileContext.Profile.Name = profile.Name;
+        profileContext.Profile.MinimumFrequency = profile.MinimumFrequency;
+        profileContext.Profile.MaximumFrequency = profile.MaximumFrequency;
+        profileContext.Profile.TurboBoost = profile.TurboBoost;
+        profileContext.Profile.DefaultAC = profile.DefaultAC;
+        profileContext.Profile.DefaultBat = profile.DefaultBat;
 
         profileContext.Settings.NameEntry.set_text(profileContext.Profile.Name);
         profileContext.Settings.MinimumFrequencyScale.set_value(profileContext.Profile.MinimumFrequency);
@@ -419,6 +429,32 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         profileContext.Profile.DefaultBat = autoSwitchBat;
 
         this.addOrUpdateProfile(profileContext.Profile);
+
+        // Resolve collisions
+        // Make the saved profile the only profile with the selected auto switch settings.
+        // So e.g. if autoSwitchAC is active, no other profile should have it active.
+        for(let profCtx of this.ProfilesMap.values()) {
+            let profile = profCtx.Profile;
+            if (profile.UUID != profileContext.Profile.UUID)
+            {
+                let _needsUpdate = false;
+                if (autoSwitchAC && profile.DefaultAC)
+                {
+                    profile.DefaultAC = false;
+                    _needsUpdate = true;
+                }
+                if (autoSwitchBat && profile.DefaultBat)
+                {
+                    profile.DefaultBat = false;
+                    _needsUpdate = true;
+                }
+                if (_needsUpdate)
+                {
+                    this.addOrUpdateProfile(profile);
+                }
+            }
+        }
+
         this._saveOrderedProfileList();
     }
 
