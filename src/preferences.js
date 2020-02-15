@@ -163,7 +163,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                     NameLabel: null,
                     MinimumFrequencyLabel: null,
                     MaximumFrequencyLabel: null,
-                    TurboBoostStatusLabel: null
+                    TurboBoostStatusLabel: null,
+                    AutoSwitchConfigLabel: null
                 }
             };
 
@@ -218,6 +219,9 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             profileContext.ListItem.TurboBoostStatusLabel = profileListItemBuilder.get_object(
                 "ProfileRowTurboBoostStatusLabel"
             );
+            profileContext.ListItem.AutoSwitchConfigLabel = profileListItemBuilder.get_object(
+                "ProfileRowAutoSwitchConfigLabel"
+            );
             profileContext.ListItem.Row = profileListItemBuilder.get_object(
                 "ProfileListBoxRow"
             );
@@ -254,6 +258,22 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         profileContext.ListItem.MinimumFrequencyLabel.set_text(profileContext.Profile.MinimumFrequency.toString());
         profileContext.ListItem.MaximumFrequencyLabel.set_text(profileContext.Profile.MaximumFrequency.toString());
         profileContext.ListItem.TurboBoostStatusLabel.set_text(profileContext.Profile.TurboBoost ? _("Yes") : _("No"));
+        if (profileContext.Profile.DefaultAC && profileContext.Profile.DefaultBat)
+        {
+            profileContext.ListItem.AutoSwitchConfigLabel.set_text("[AC/Battery]");
+        }
+        else if (profileContext.Profile.DefaultAC)
+        {
+            profileContext.ListItem.AutoSwitchConfigLabel.set_text("[AC]");
+        }
+        else if (profileContext.Profile.DefaultBat)
+        {
+            profileContext.ListItem.AutoSwitchConfigLabel.set_text("[Battery]");
+        }
+        else
+        {
+            profileContext.ListItem.AutoSwitchConfigLabel.set_text("");
+        }
 
         profileContext.Settings.DiscardButton.sensitive = false;
         profileContext.Settings.SaveButton.sensitive = false;

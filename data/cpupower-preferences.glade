@@ -633,11 +633,37 @@ Jimmy Scionti (@amivaleo)</property>
         <property name="orientation">vertical</property>
         <property name="spacing">4</property>
         <child>
-          <object class="GtkLabel" id="ProfileRowNameLabel">
+          <object class="GtkBox" id="ProfileRowHeaderBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="label">High Performance</property>
+            <property name="spacing">10</property>
+            <child>
+              <object class="GtkLabel" id="ProfileRowNameLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label">High Performance</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="ProfileRowAutoSwitchConfigLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="opacity">0.5</property>
+                <property name="label">[Battery]</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -717,7 +743,7 @@ Jimmy Scionti (@amivaleo)</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
