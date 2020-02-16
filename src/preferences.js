@@ -46,6 +46,7 @@ const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
 var CPUPowerPreferences = class CPUPowerPreferences {
     constructor() {
         this.Builder = new Gtk.Builder();
+        this.Builder.set_translation_domain("gnome-shell-extension-cpupower");
         this.Builder.add_objects_from_file(GLADE_FILE, ["MainWidget"]);
         this.Builder.connect_signals_full((builder, object, signal, handler) => {
             object.connect(signal, this[handler].bind(this));
@@ -169,6 +170,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             };
 
             let profileSettingsBuilder = new Gtk.Builder();
+            profileSettingsBuilder.set_translation_domain("gnome-shell-extension-cpupower");
             profileSettingsBuilder.add_objects_from_file(
                 GLADE_FILE,
                 [
@@ -206,6 +208,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             );
 
             let profileListItemBuilder = new Gtk.Builder();
+            profileListItemBuilder.set_translation_domain("gnome-shell-extension-cpupower");
             profileListItemBuilder.add_objects_from_file(GLADE_FILE, ["ProfileListBoxRow"]);
             profileContext.ListItem.NameLabel = profileListItemBuilder.get_object(
                 "ProfileRowNameLabel"
