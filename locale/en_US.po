@@ -39,112 +39,148 @@ msgstr ""
 msgid "Control which unit is used for the frequency"
 msgstr ""
 
-#: cpupower-preferences.glade:61
+#: data/cpupower-preferences.glade:61
 msgid "Gnome-Shell Extension for the intel-pstate driver."
 msgstr ""
 
-#: cpupower-preferences.glade:117
+#: data/cpupower-preferences.glade:123
 msgid "Show current frequency"
 msgstr ""
 
-#: cpupower-preferences.glade:130
+#: data/cpupower-preferences.glade:136
 msgid "Use GHz instead of MHz"
 msgstr ""
 
-#: cpupower-preferences.glade:161
+#: data/cpupower-preferences.glade:149
+msgid "Show icon in taskbar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:162
+msgid "Show arrow in taskbar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:215
 msgid "About"
 msgstr ""
 
-#: cpupower-preferences.glade:183
+#: data/cpupower-preferences.glade:237
 msgid "General"
 msgstr ""
 
-#: cpupower-preferences.glade:234
+#: data/cpupower-preferences.glade:288
 msgid "Add selected profile"
 msgstr ""
 
-#: cpupower-preferences.glade:247
+#: data/cpupower-preferences.glade:301
 msgid "Remove selected profile"
 msgstr ""
 
-#: cpupower-preferences.glade:260
+#: data/cpupower-preferences.glade:314
 msgid "Move selected profile up"
 msgstr ""
 
-#: cpupower-preferences.glade:273
+#: data/cpupower-preferences.glade:327
 msgid "Move selected profile down"
 msgstr ""
 
-#: cpupower-preferences.glade:332
+#: data/cpupower-preferences.glade:386
 msgid "Profiles"
 msgstr ""
 
-#: cpupower-preferences.glade:362 cpupower-preferences.glade:374
+#: data/cpupower-preferences.glade:416 data/cpupower-preferences.glade:428
 msgid "Profile name"
 msgstr ""
 
-#: cpupower-preferences.glade:387
+#: data/cpupower-preferences.glade:441
 msgid "Minimum frequency"
 msgstr ""
 
-#: cpupower-preferences.glade:415
+#: data/cpupower-preferences.glade:469
 msgid "Maximum frequency"
 msgstr ""
 
-#: cpupower-preferences.glade:427
+#: data/cpupower-preferences.glade:481
 msgid "Turbo boost"
 msgstr ""
 
-#: cpupower-preferences.glade:465
+#: data/cpupower-preferences.glade:519
 msgid "Discard"
 msgstr ""
 
-#: cpupower-preferences.glade:485
+#: data/cpupower-preferences.glade:539
 msgid "Save"
 msgstr ""
 
-#: cpupower-preferences.glade:575
+#: data/cpupower-preferences.glade:570
+msgid "Default AC profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:582
+msgid "Default battery profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:594
+msgid "Set as default profile for battery operation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:609
+msgid "Set as standard profile for plugged in operation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:724
 msgid "Turbo boost:"
 msgstr ""
 
-#: extension.js:311
+#: src/indicator.js:170
 msgid "Minimum Frequency:"
-msgstr "Minimum Frequency:"
+msgstr ""
 
-#: extension.js:315
+#: src/indicator.js:174
 msgid "Maximum Frequency:"
-msgstr "Maximum Frequency:"
+msgstr ""
 
-#: extension.js:319
+#: src/indicator.js:178
 msgid "Turbo Boost:"
-msgstr "Turbo Boost:"
+msgstr ""
 
-#: extension.js:347
+#: src/indicator.js:184
+msgid "Auto Switch:"
+msgstr ""
+
+#: src/indicator.js:208
 msgid "Current Frequency:"
-msgstr "Current Frequency:"
+msgstr ""
 
-#: extension.js:373
+#: src/indicator.js:233
 msgid "Preferences"
-msgstr "Preferences"
+msgstr ""
 
-#: extension.js:525
-msgid "Your computer does not support intel_pstate."
-msgstr "Your computer does not support intel_pstate."
-
-#: extension.js:542
+#: src/notinstalled.js:57
 msgid "Installation required."
-msgstr "Installation required."
+msgstr ""
 
-#: extension.js:548
+#: src/notinstalled.js:63
 msgid "Attempt installation"
-msgstr "Attempt installation"
+msgstr ""
 
-#: prefs.js:233
+#: src/preferences.js:260
 msgid "Yes"
 msgstr ""
 
-#: prefs.js:233
+#: src/preferences.js:260
 msgid "No"
+msgstr ""
+
+#: src/preferences.js:263 src/preferences.js:267
+msgid "AC"
+msgstr ""
+
+#: src/preferences.js:263 src/preferences.js:271
+msgid "Battery"
+msgstr ""
+
+#: src/unsupported.js:54
+msgid "Your computer does not support intel_pstate."
 msgstr ""
 
 #~ msgid "CPU"
