@@ -567,7 +567,7 @@ Jimmy Scionti (@amivaleo)</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">end</property>
-            <property name="label" translatable="yes">Set as default AC profile</property>
+            <property name="label" translatable="yes">Default AC profile</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -579,7 +579,7 @@ Jimmy Scionti (@amivaleo)</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">end</property>
-            <property name="label" translatable="yes">Set as default battery profile</property>
+            <property name="label" translatable="yes">Default battery profile</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -591,6 +591,7 @@ Jimmy Scionti (@amivaleo)</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
+            <property name="tooltip_text" translatable="yes">Set as default profile for battery operation</property>
             <property name="use_stock">True</property>
             <property name="draw_indicator">True</property>
             <signal name="toggled" handler="onProfileDefaultBatChecktoggled" swapped="no"/>
@@ -605,6 +606,7 @@ Jimmy Scionti (@amivaleo)</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
+            <property name="tooltip_text" translatable="yes">Set as standard profile for plugged in operation</property>
             <property name="use_stock">True</property>
             <property name="draw_indicator">True</property>
             <signal name="toggled" handler="onProfileDefaultACChecktoggled" swapped="no"/>

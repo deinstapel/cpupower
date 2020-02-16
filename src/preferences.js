@@ -260,15 +260,15 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         profileContext.ListItem.TurboBoostStatusLabel.set_text(profileContext.Profile.TurboBoost ? _("Yes") : _("No"));
         if (profileContext.Profile.DefaultAC && profileContext.Profile.DefaultBat)
         {
-            profileContext.ListItem.AutoSwitchConfigLabel.set_text("[AC/Battery]");
+            profileContext.ListItem.AutoSwitchConfigLabel.set_text("[" + _("AC") + "/" + _("Battery") + "]");
         }
         else if (profileContext.Profile.DefaultAC)
         {
-            profileContext.ListItem.AutoSwitchConfigLabel.set_text("[AC]");
+            profileContext.ListItem.AutoSwitchConfigLabel.set_text("[" + _("AC") + "]");
         }
         else if (profileContext.Profile.DefaultBat)
         {
-            profileContext.ListItem.AutoSwitchConfigLabel.set_text("[Battery]");
+            profileContext.ListItem.AutoSwitchConfigLabel.set_text("[" + _("Battery") + "]");
         }
         else
         {
