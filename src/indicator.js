@@ -121,12 +121,13 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         else if (powerState === UPower.DeviceState.DISCHARGING)
         {
             global.log ("Power state changed: discharging");
-            // switch to battery profile if auto switching is anabled
+            // switch to battery profile if auto switching is enabled
             if (this.isAutoSwitchActive)
             {
-                for(var i = 0; i < this.profiles.length; i++)
+                let defaultBatProfileID = this.settings.get_string("default-battery-profile");
+                for(var i = 0; i < this.profiles.length && defaultBatProfileID != ""; i++)
                 {
-                    if (this.profiles[i].Profile.DefaultBat)
+                    if (this.profiles[i].Profile.UUID == defaultBatProfileID)
                     {
                         this._applyProfile(this.profiles[i].Profile);
                         break;
@@ -137,12 +138,13 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         else if (powerState === UPower.DeviceState.CHARGING)
         {
             global.log ("Power state changed: charging");
-            // switch to AC profile if auto switching is anabled
+            // switch to AC profile if auto switching is enabled
             if (this.isAutoSwitchActive)
             {
-                for(var i = 0; i < this.profiles.length; i++)
+                let defaultACProfileID = this.settings.get_string("default-ac-profile");
+                for(var i = 0; i < this.profiles.length && defaultACProfileID != ""; i++)
                 {
-                    if (this.profiles[i].Profile.DefaultAC)
+                    if (this.profiles[i].Profile.UUID == defaultACProfileID)
                     {
                         this._applyProfile(this.profiles[i].Profile);
                         break;

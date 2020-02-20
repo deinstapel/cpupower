@@ -34,12 +34,10 @@ var CPUFreqProfile = class CPUFreqProfile {
         this.MaximumFrequency = 100;
         this.TurboBoost = true;
         this.Name = 'Default';
-        this.DefaultAC = false;
-        this.DefaultBat = false;
     }
 
     save() {
-        return [this.MinimumFrequency, this.MaximumFrequency, this.TurboBoost, this.Name, this.UUID, this.DefaultAC, this.DefaultBat];
+        return [this.MinimumFrequency, this.MaximumFrequency, this.TurboBoost, this.Name, this.UUID];
     }
 
     load(input) {
@@ -50,25 +48,12 @@ var CPUFreqProfile = class CPUFreqProfile {
 
         if (input.length < 5 || !input[4])
         {
-            // if the input profile is so old, that it hasn't profile-ids and auto-switching
             this.UUID = GenerateUUID();
-            this.DefaultAC = false;
-            this.DefaultBat = false;
             // global.log("Generated UUID: " + this.UUID);
-            return true;
-        }
-        else if (input.length < 7)
-        {
-            // if the input profile is from the previous version without auto-switching
-            this.DefaultAC = false;
-            this.DefaultBat = false;
             return true;
         }
         else
         {
-            // if input profile is up to date
-            this.DefaultAC = input[5];
-            this.DefaultBat = input[6];
             this.UUID = input[4];
             return false;
         }

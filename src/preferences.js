@@ -57,6 +57,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             "ShowArrowSwitch",
             "ShowCurrentFrequencySwitch",
             "UseGHzInsteadOfMHzSwitch",
+            "DefaultACComboBox",
+            "DefaultBatComboBox",
             "ProfilesListBox",
             "ProfilesAddToolButton",
             "ProfilesRemoveToolButton",
@@ -84,14 +86,18 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         value = this._settings.get_boolean("show-arrow-in-taskbar");
         this.ShowArrowSwitch.set_active(value);
 
+        let id = this._settings.get_string("default-ac-profile");
+        this.DefaultACComboBox.set_active_id(id);
+
+        id = this._settings.get_string("default-battery-profile");
+        this.DefaultBatComboBox.set_active_id(id);
+
         // Backward compatibility:
         // for the new Settings UI we introduced a profile-id, which is not present in the older versions.
         // gesettings allows us to update the schema without conflicts.
 
         // CPUFreqProfile checks if an ID is present at load time, if not or an empty one was given, it will generate one
         // if any profile needed a new ID, we save all profiles and reload the UI.
-
-        // The same goes for the auto-switching feature.
 
         let _profiles = this._settings.get_value("profiles");
         _profiles = _profiles.deep_unpack();
@@ -154,8 +160,6 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                     MinimumFrequencyScale: null,
                     MaximumFrequencyScale: null,
                     TurboBoostSwitch: null,
-                    AutoSwitchACCheck: null,
-                    AutoSwitchBatCheck: null,
                     DiscardButton: null,
                     SaveButton: null
                 },
@@ -190,12 +194,6 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             );
             profileContext.Settings.TurboBoostSwitch = profileSettingsBuilder.get_object(
                 "ProfileTurboBoostSwitch"
-            );
-            profileContext.Settings.AutoSwitchACCheck = profileSettingsBuilder.get_object(
-                "ProfileDefaultACCheck"
-            );
-            profileContext.Settings.AutoSwitchBatCheck = profileSettingsBuilder.get_object(
-                "ProfileDefaultBatCheck"
             );
             profileContext.Settings.DiscardButton = profileSettingsBuilder.get_object(
                 "ProfileDiscardButton"
@@ -242,41 +240,20 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             this.ProfilesMap.set(profileContext.Profile.UUID, profileContext);
             this._syncOrdering();
         }
-
-        // update profile context with given profile
-        profileContext.Profile.Name = profile.Name;
-        profileContext.Profile.MinimumFrequency = profile.MinimumFrequency;
-        profileContext.Profile.MaximumFrequency = profile.MaximumFrequency;
-        profileContext.Profile.TurboBoost = profile.TurboBoost;
-        profileContext.Profile.DefaultAC = profile.DefaultAC;
-        profileContext.Profile.DefaultBat = profile.DefaultBat;
+        else
+        {
+            // update profile context with given profile
+            profileContext.Profile = profile;
+        }
 
         profileContext.Settings.NameEntry.set_text(profileContext.Profile.Name);
         profileContext.Settings.MinimumFrequencyScale.set_value(profileContext.Profile.MinimumFrequency);
         profileContext.Settings.MaximumFrequencyScale.set_value(profileContext.Profile.MaximumFrequency);
         profileContext.Settings.TurboBoostSwitch.set_active(profileContext.Profile.TurboBoost);
-        profileContext.Settings.AutoSwitchACCheck.set_active(profileContext.Profile.DefaultAC);
-        profileContext.Settings.AutoSwitchBatCheck.set_active(profileContext.Profile.DefaultBat);
         profileContext.ListItem.NameLabel.set_text(profileContext.Profile.Name);
         profileContext.ListItem.MinimumFrequencyLabel.set_text(profileContext.Profile.MinimumFrequency.toString());
         profileContext.ListItem.MaximumFrequencyLabel.set_text(profileContext.Profile.MaximumFrequency.toString());
         profileContext.ListItem.TurboBoostStatusLabel.set_text(profileContext.Profile.TurboBoost ? _("Yes") : _("No"));
-        if (profileContext.Profile.DefaultAC && profileContext.Profile.DefaultBat)
-        {
-            profileContext.ListItem.AutoSwitchConfigLabel.set_text("[" + _("AC") + "/" + _("Battery") + "]");
-        }
-        else if (profileContext.Profile.DefaultAC)
-        {
-            profileContext.ListItem.AutoSwitchConfigLabel.set_text("[" + _("AC") + "]");
-        }
-        else if (profileContext.Profile.DefaultBat)
-        {
-            profileContext.ListItem.AutoSwitchConfigLabel.set_text("[" + _("Battery") + "]");
-        }
-        else
-        {
-            profileContext.ListItem.AutoSwitchConfigLabel.set_text("");
-        }
 
         profileContext.Settings.DiscardButton.sensitive = false;
         profileContext.Settings.SaveButton.sensitive = false;
@@ -284,6 +261,17 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
     removeProfile(profile) {
         let profileContext = this.ProfilesMap.get(profile.UUID);
+
+        // set default profile to none if the removed profile was selected 
+        if (this.DefaultACComboBox.get_active_id() == profileContext.Profile.UUID)
+        {
+            this._settings.set_string("default-ac-profile", "");
+        }
+        if (this.DefaultBatComboBox.get_active_id() == profileContext.Profile.UUID)
+        {
+            this._settings.set_string("default-battery-profile", "");
+        }
+
         this.ProfilesListBox.remove(profileContext.ListItem.Row);
         this.ProfileStack.remove(profileContext.Settings.StackItem);
         this.ProfilesMap.delete(profile.UUID);
@@ -317,6 +305,38 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         return profileContext;
     }
 
+    onMainWidgetSwitchPage(mainWidget) {
+        if (mainWidget.get_current_page() == 1)
+        {
+            this.refreshAutoSwitchComboBoxes();
+        }
+    }
+
+    /**
+     * Refreshes the entries of default profile ComboBoxes from ProfilesMap and
+     * sets the active entries from gsettings
+     */
+    refreshAutoSwitchComboBoxes() {
+        this.DefaultACComboBox.remove_all();
+        this.DefaultBatComboBox.remove_all();
+
+        this.DefaultACComboBox.append("", _("None"));
+        this.DefaultBatComboBox.append("", _("None"));
+        
+        for(let profCtx of this.ProfilesMap.values()) {
+            let profile = profCtx.Profile;
+
+            this.DefaultACComboBox.append(profile.UUID, profile.Name);
+            this.DefaultBatComboBox.append(profile.UUID, profile.Name);
+        }
+
+        let id = this._settings.get_string("default-ac-profile");
+        this.DefaultACComboBox.set_active_id(id);
+
+        id = this._settings.get_string("default-battery-profile");
+        this.DefaultBatComboBox.set_active_id(id);
+    }
+
     onMainWidgetRealize(mainWidget) {
         mainWidget.expand = true;
         mainWidget.parent.border_width = 0;
@@ -327,6 +347,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         this._settings = Convenience.getSettings(SETTINGS_SCHEMA);
         this._settings.connect("changed", this._updateSettings.bind(this));
         this._updateSettings();
+
+        this.refreshAutoSwitchComboBoxes();
 
         this._selectFirstProfile();
     }
@@ -351,6 +373,18 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         let state = switchButton.active;
         this._settings.set_boolean("show-arrow-in-taskbar", state);
         this.status("ShowArrow: " + state);
+    }
+
+    onDefaultACComboBoxActiveNotify(comboBox) {
+        let id = comboBox.get_active_id();
+        this._settings.set_string("default-ac-profile", id);
+        this.status("Default AC profile: " + comboBox.get_active_text());
+    }
+
+    onDefaultBatComboBoxActiveNotify(comboBox) {
+        let id = comboBox.get_active_id();
+        this._settings.set_string("default-battery-profile", id);
+        this.status("Default battery profile: " + comboBox.get_active_text());
     }
 
     onProfilesAddToolButtonClicked(button) {
@@ -441,43 +475,13 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         let minimumFrequency = profileContext.Settings.MinimumFrequencyScale.get_value();
         let maximumFrequency = profileContext.Settings.MaximumFrequencyScale.get_value();
         let turboBoost = profileContext.Settings.TurboBoostSwitch.get_active();
-        let autoSwitchAC = profileContext.Settings.AutoSwitchACCheck.get_active();
-        let autoSwitchBat = profileContext.Settings.AutoSwitchBatCheck.get_active();
 
         profileContext.Profile.Name = name;
         profileContext.Profile.MinimumFrequency = minimumFrequency;
         profileContext.Profile.MaximumFrequency = maximumFrequency;
         profileContext.Profile.TurboBoost = turboBoost;
-        profileContext.Profile.DefaultAC = autoSwitchAC;
-        profileContext.Profile.DefaultBat = autoSwitchBat;
 
         this.addOrUpdateProfile(profileContext.Profile);
-
-        // Resolve collisions
-        // Make the saved profile the only profile with the selected auto switch settings.
-        // So e.g. if autoSwitchAC is active, no other profile should have it active.
-        for(let profCtx of this.ProfilesMap.values()) {
-            let profile = profCtx.Profile;
-            if (profile.UUID != profileContext.Profile.UUID)
-            {
-                let _needsUpdate = false;
-                if (autoSwitchAC && profile.DefaultAC)
-                {
-                    profile.DefaultAC = false;
-                    _needsUpdate = true;
-                }
-                if (autoSwitchBat && profile.DefaultBat)
-                {
-                    profile.DefaultBat = false;
-                    _needsUpdate = true;
-                }
-                if (_needsUpdate)
-                {
-                    this.addOrUpdateProfile(profile);
-                }
-            }
-        }
-
         this._saveOrderedProfileList();
     }
 
@@ -498,7 +502,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
      * @param {Array} saved 
      */
     _saveProfiles(saved) {
-        saved = GLib.Variant.new("a(iibssbb)", saved);
+        saved = GLib.Variant.new("a(iibss)", saved);
         this._settings.set_value("profiles", saved);
     }
 }

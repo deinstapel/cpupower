@@ -107,6 +107,7 @@ Jimmy Scionti (@amivaleo)</property>
     <property name="can_focus">True</property>
     <property name="show_border">False</property>
     <signal name="realize" handler="onMainWidgetRealize" swapped="no"/>
+    <signal name="switch-page" handler="onMainWidgetSwitchPage" after="yes" swapped="no"/>
     <child>
       <object class="GtkGrid" id="GeneralGrid">
         <property name="visible">True</property>
@@ -223,7 +224,96 @@ Jimmy Scionti (@amivaleo)</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
+            <property name="top_attach">6</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
             <property name="top_attach">4</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkGrid" id="AutoSwitchConfigGrid">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="row_spacing">8</property>
+            <property name="column_spacing">8</property>
+            <child>
+              <object class="GtkLabel" id="DefautlACSelectionLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+                <property name="label" translatable="yes">Default AC profile</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="DefaultBatLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+                <property name="label" translatable="yes">Default battery profile</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBoxText" id="DefaultBatComboBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Set as default profile for battery operation</property>
+                <signal name="notify::active" handler="onDefaultBatComboBoxActiveNotify" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBoxText" id="DefaultACComboBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Set as standard profile for plugged in operation</property>
+                <signal name="notify::active" handler="onDefaultACComboBoxActiveNotify" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="AutoSwitchConfigLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Auto Switch Configuration</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">5</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -531,7 +621,7 @@ Jimmy Scionti (@amivaleo)</property>
       </object>
       <packing>
         <property name="left_attach">0</property>
-        <property name="top_attach">5</property>
+        <property name="top_attach">4</property>
       </packing>
     </child>
     <child>
@@ -551,76 +641,7 @@ Jimmy Scionti (@amivaleo)</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
-        <property name="top_attach">5</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkGrid" id="ProfileSettingsAutoSwitchGrid">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="margin_right">80</property>
-        <property name="margin_top">12</property>
-        <property name="row_spacing">8</property>
-        <property name="column_spacing">8</property>
-        <child>
-          <object class="GtkLabel" id="ProfileDefaultACLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">end</property>
-            <property name="label" translatable="yes">Default AC profile</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="ProfileDefaultBatLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">end</property>
-            <property name="label" translatable="yes">Default battery profile</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkCheckButton" id="ProfileDefaultBatCheck">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="tooltip_text" translatable="yes">Set as default profile for battery operation</property>
-            <property name="use_stock">True</property>
-            <property name="draw_indicator">True</property>
-            <signal name="toggled" handler="onProfileDefaultBatChecktoggled" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkCheckButton" id="ProfileDefaultACCheck">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="tooltip_text" translatable="yes">Set as standard profile for plugged in operation</property>
-            <property name="use_stock">True</property>
-            <property name="draw_indicator">True</property>
-            <signal name="toggled" handler="onProfileDefaultACChecktoggled" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">0</property>
         <property name="top_attach">4</property>
-        <property name="width">2</property>
       </packing>
     </child>
   </object>
@@ -657,7 +678,7 @@ Jimmy Scionti (@amivaleo)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="opacity">0.5</property>
-                <property name="label">[Battery]</property>
+                <property name="label"></property>
               </object>
               <packing>
                 <property name="expand">False</property>
