@@ -259,7 +259,7 @@ Jimmy Scionti (@amivaleo)</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="DefaultBatLabel">
+              <object class="GtkLabel" id="DefaultBatSelectionLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
@@ -279,7 +279,7 @@ Jimmy Scionti (@amivaleo)</property>
                 <signal name="notify::active" handler="onDefaultBatComboBoxActiveNotify" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">1</property>
+                <property name="left_attach">2</property>
                 <property name="top_attach">2</property>
               </packing>
             </child>
@@ -291,7 +291,7 @@ Jimmy Scionti (@amivaleo)</property>
                 <signal name="notify::active" handler="onDefaultACComboBoxActiveNotify" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">1</property>
+                <property name="left_attach">2</property>
                 <property name="top_attach">1</property>
               </packing>
             </child>
@@ -307,7 +307,29 @@ Jimmy Scionti (@amivaleo)</property>
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">0</property>
-                <property name="width">2</property>
+                <property name="width">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="DefaultACSelectionIcon">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">ac-adapter-symbolic</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="DefaultBatSelectionIcon">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">battery-symbolic</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
               </packing>
             </child>
           </object>
@@ -659,12 +681,13 @@ Jimmy Scionti (@amivaleo)</property>
           <object class="GtkBox" id="ProfileRowHeaderBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="spacing">10</property>
+            <property name="spacing">2</property>
             <child>
               <object class="GtkLabel" id="ProfileRowNameLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
+                <property name="margin_right">8</property>
                 <property name="label">High Performance</property>
               </object>
               <packing>
@@ -674,17 +697,29 @@ Jimmy Scionti (@amivaleo)</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="ProfileRowAutoSwitchConfigLabel">
-                <property name="visible">True</property>
+              <object class="GtkImage" id="ProfileRowACIcon">
                 <property name="can_focus">False</property>
                 <property name="opacity">0.5</property>
-                <property name="label"></property>
+                <property name="icon_name">ac-adapter-symbolic</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="pack_type">end</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="ProfileRowBatIcon">
+                <property name="can_focus">False</property>
+                <property name="opacity">0.5</property>
+                <property name="icon_name">battery-symbolic</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>

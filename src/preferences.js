@@ -169,7 +169,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                     MinimumFrequencyLabel: null,
                     MaximumFrequencyLabel: null,
                     TurboBoostStatusLabel: null,
-                    AutoSwitchConfigLabel: null
+                    AutoSwitchACIcon: null,
+                    AutoSwitchBatIcon: null
                 }
             };
 
@@ -220,8 +221,11 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             profileContext.ListItem.TurboBoostStatusLabel = profileListItemBuilder.get_object(
                 "ProfileRowTurboBoostStatusLabel"
             );
-            profileContext.ListItem.AutoSwitchConfigLabel = profileListItemBuilder.get_object(
-                "ProfileRowAutoSwitchConfigLabel"
+            profileContext.ListItem.AutoSwitchACIcon = profileListItemBuilder.get_object(
+                "ProfileRowACIcon"
+            );
+            profileContext.ListItem.AutoSwitchBatIcon = profileListItemBuilder.get_object(
+                "ProfileRowBatIcon"
             );
             profileContext.ListItem.Row = profileListItemBuilder.get_object(
                 "ProfileListBoxRow"
@@ -254,6 +258,11 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         profileContext.ListItem.MinimumFrequencyLabel.set_text(profileContext.Profile.MinimumFrequency.toString());
         profileContext.ListItem.MaximumFrequencyLabel.set_text(profileContext.Profile.MaximumFrequency.toString());
         profileContext.ListItem.TurboBoostStatusLabel.set_text(profileContext.Profile.TurboBoost ? _("Yes") : _("No"));
+
+        this._settings.get_string("default-ac-profile") == profileContext.Profile.UUID ? 
+            profileContext.ListItem.AutoSwitchACIcon.set_visible(true) : profileContext.ListItem.AutoSwitchACIcon.set_visible(false);
+        this._settings.get_string("default-battery-profile") == profileContext.Profile.UUID ? 
+            profileContext.ListItem.AutoSwitchBatIcon.set_visible(true) : profileContext.ListItem.AutoSwitchBatIcon.set_visible(false);
 
         profileContext.Settings.DiscardButton.sensitive = false;
         profileContext.Settings.SaveButton.sensitive = false;
