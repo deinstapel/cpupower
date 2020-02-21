@@ -332,8 +332,10 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         this.DefaultACComboBox.append("", _("None"));
         this.DefaultBatComboBox.append("", _("None"));
         
-        for(let profCtx of this.ProfilesMap.values()) {
-            let profile = profCtx.Profile;
+        let profileArray = Array.from(this.ProfilesMap.values());
+        profileArray.sort((p1,p2) => this.getProfileIndex(p1.Profile) - this.getProfileIndex(p2.Profile));
+        for(let i in profileArray) {
+            let profile = profileArray[i].Profile;
 
             this.DefaultACComboBox.append(profile.UUID, profile.Name);
             this.DefaultBatComboBox.append(profile.UUID, profile.Name);
