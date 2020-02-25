@@ -40,119 +40,155 @@ msgstr ""
 msgid "Control which unit is used for the frequency"
 msgstr ""
 
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
+msgid "Show cpu chip icon in taskbar"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
+msgid "Show cpu chip icon in the top bar"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
+msgid "Show down arrow in taskbar"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
+msgid "Show down arrow in the top bar"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
+msgid "default AC profile ID"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
+msgid "The profile to switch to when plugged in"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
+msgid "default battery profile ID"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
+msgid "The profile to switch to when unplugged"
+msgstr ""
+
 #: data/cpupower-preferences.glade:61
 msgid "Gnome-Shell Extension for the intel-pstate driver."
 msgstr ""
 
-#: data/cpupower-preferences.glade:123
+#: data/cpupower-preferences.glade:124
 msgid "Show current frequency"
 msgstr ""
 
-#: data/cpupower-preferences.glade:136
+#: data/cpupower-preferences.glade:137
 msgid "Use GHz instead of MHz"
 msgstr ""
 
-#: data/cpupower-preferences.glade:149
+#: data/cpupower-preferences.glade:150
 msgid "Show icon in taskbar"
 msgstr ""
 
-#: data/cpupower-preferences.glade:162
+#: data/cpupower-preferences.glade:163
 msgid "Show arrow in taskbar"
 msgstr ""
 
-#: data/cpupower-preferences.glade:215
+#: data/cpupower-preferences.glade:216
 msgid "About"
 msgstr ""
 
-#: data/cpupower-preferences.glade:237
-msgid "General"
-msgstr ""
-
-#: data/cpupower-preferences.glade:288
-msgid "Add selected profile"
-msgstr ""
-
-#: data/cpupower-preferences.glade:301
-msgid "Remove selected profile"
-msgstr ""
-
-#: data/cpupower-preferences.glade:314
-msgid "Move selected profile up"
-msgstr ""
-
-#: data/cpupower-preferences.glade:327
-msgid "Move selected profile down"
-msgstr ""
-
-#: data/cpupower-preferences.glade:386
-msgid "Profiles"
-msgstr ""
-
-#: data/cpupower-preferences.glade:416 data/cpupower-preferences.glade:428
-msgid "Profile name"
-msgstr ""
-
-#: data/cpupower-preferences.glade:441
-msgid "Minimum frequency"
-msgstr ""
-
-#: data/cpupower-preferences.glade:469
-msgid "Maximum frequency"
-msgstr ""
-
-#: data/cpupower-preferences.glade:481
-msgid "Turbo boost"
-msgstr ""
-
-#: data/cpupower-preferences.glade:519
-msgid "Discard"
-msgstr ""
-
-#: data/cpupower-preferences.glade:539
-msgid "Save"
-msgstr ""
-
-#: data/cpupower-preferences.glade:570
+#: data/cpupower-preferences.glade:254
 msgid "Default AC profile"
 msgstr ""
 
-#: data/cpupower-preferences.glade:582
+#: data/cpupower-preferences.glade:267
 msgid "Default battery profile"
 msgstr ""
 
-#: data/cpupower-preferences.glade:594
+#: data/cpupower-preferences.glade:278
 msgid "Set as default profile for battery operation"
 msgstr ""
 
-#: data/cpupower-preferences.glade:609
+#: data/cpupower-preferences.glade:237
 msgid "Set as standard profile for plugged in operation"
 msgstr ""
 
-#: data/cpupower-preferences.glade:724
+#: data/cpupower-preferences.glade:237
+msgid "Auto Switch Configuration"
+msgstr ""
+
+#: data/cpupower-preferences.glade:349
+msgid "General"
+msgstr ""
+
+#: data/cpupower-preferences.glade:400
+msgid "Add selected profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:413
+msgid "Remove selected profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:426
+msgid "Move selected profile up"
+msgstr ""
+
+#: data/cpupower-preferences.glade:439
+msgid "Move selected profile down"
+msgstr ""
+
+#: data/cpupower-preferences.glade:498
+msgid "Profiles"
+msgstr ""
+
+#: data/cpupower-preferences.glade:528 data/cpupower-preferences.glade:540
+msgid "Profile name"
+msgstr ""
+
+#: data/cpupower-preferences.glade:553
+msgid "Minimum frequency"
+msgstr ""
+
+#: data/cpupower-preferences.glade:581
+msgid "Maximum frequency"
+msgstr ""
+
+#: data/cpupower-preferences.glade:593
+msgid "Turbo boost"
+msgstr ""
+
+#: data/cpupower-preferences.glade:631
+msgid "Discard"
+msgstr ""
+
+#: data/cpupower-preferences.glade:651
+msgid "Save"
+msgstr ""
+
+#: data/cpupower-preferences.glade:780
 msgid "Turbo boost:"
 msgstr ""
 
-#: src/indicator.js:170
+#: src/indicator.js:172
 msgid "Minimum Frequency:"
 msgstr ""
 
-#: src/indicator.js:174
+#: src/indicator.js:176
 msgid "Maximum Frequency:"
 msgstr ""
 
-#: src/indicator.js:178
+#: src/indicator.js:180
 msgid "Turbo Boost:"
 msgstr ""
 
-#: src/indicator.js:184
+#: src/indicator.js:186
 msgid "Auto Switch:"
 msgstr ""
 
-#: src/indicator.js:208
+#: src/indicator.js:210
 msgid "Current Frequency:"
 msgstr ""
 
-#: src/indicator.js:233
+#: src/indicator.js:235
 msgid "Preferences"
 msgstr ""
 
@@ -172,12 +208,8 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/preferences.js:263 src/preferences.js:267
-msgid "AC"
-msgstr ""
-
-#: src/preferences.js:263 src/preferences.js:271
-msgid "Battery"
+#: src/preferences.js:332 src/preferences.js:333
+msgid "None"
 msgstr ""
 
 #: src/unsupported.js:54
