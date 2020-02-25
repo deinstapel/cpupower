@@ -69,7 +69,7 @@ Jan Kasik (@honza-kasik)
 Alex Gluck (@AlexGluck)
 Jimmy Scionti (@amivaleo)</property>
     <property name="artists">Thanasis Georgiou (@sakisds)</property>
-    <property name="logo">icons/cpu.svg</property>
+    <property name="logo">icons/cpu-symbolic.svg</property>
     <property name="license_type">gpl-3-0</property>
     <child internal-child="vbox">
       <object class="GtkBox">

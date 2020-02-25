@@ -58,7 +58,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.cpufreq = 800;
         this.cpucount = 0;
         this.isTurboBoostActive = true;
-        this.isAutoSwitchActive = false;
+        this.isAutoSwitchActive = true;
         this.minVal = this._getMinCheck();
         this.maxVal = 100;
 
