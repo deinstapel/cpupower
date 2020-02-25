@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 
+<!-- Generated with glade 3.22.0 
 
 Copyright (C) 2015-2017
 
@@ -63,13 +63,14 @@ along with gnome-shell extension cpupower.  If not, see
     <property name="authors">Martin Koppehel (@martin31821)
 Fin Christensen (@fin-ger)
 Alex Pyrgiotis (@apyrgio)
-Tony Lambiris (@tonylambiris)</property>
+Tony Lambiris (@tonylambiris)
+Christopher Peredy (@mastercaution)</property>
     <property name="translator_credits">Marek Pikuła (@MarPiRK)
 Jan Kasik (@honza-kasik)
 Alex Gluck (@AlexGluck)
 Jimmy Scionti (@amivaleo)</property>
     <property name="artists">Thanasis Georgiou (@sakisds)</property>
-    <property name="logo">icons/cpu.svg</property>
+    <property name="logo">icons/cpu-symbolic.svg</property>
     <property name="license_type">gpl-3-0</property>
     <child internal-child="vbox">
       <object class="GtkBox">
@@ -98,12 +99,16 @@ Jimmy Scionti (@amivaleo)</property>
         </child>
       </object>
     </child>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
   </object>
   <object class="GtkNotebook" id="MainWidget">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <property name="show_border">False</property>
     <signal name="realize" handler="onMainWidgetRealize" swapped="no"/>
+    <signal name="switch-page" handler="onMainWidgetSwitchPage" after="yes" swapped="no"/>
     <child>
       <object class="GtkGrid" id="GeneralGrid">
         <property name="visible">True</property>
@@ -220,7 +225,118 @@ Jimmy Scionti (@amivaleo)</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
+            <property name="top_attach">6</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
             <property name="top_attach">4</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkGrid" id="AutoSwitchConfigGrid">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="row_spacing">8</property>
+            <property name="column_spacing">8</property>
+            <child>
+              <object class="GtkLabel" id="DefautlACSelectionLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+                <property name="label" translatable="yes">Default AC profile</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="DefaultBatSelectionLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+                <property name="label" translatable="yes">Default battery profile</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBoxText" id="DefaultBatComboBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Set as default profile for battery operation</property>
+                <signal name="notify::active" handler="onDefaultBatComboBoxActiveNotify" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBoxText" id="DefaultACComboBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Set as standard profile for plugged in operation</property>
+                <signal name="notify::active" handler="onDefaultACComboBoxActiveNotify" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="AutoSwitchConfigLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Auto Switch Configuration</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="DefaultACSelectionIcon">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">ac-adapter-symbolic</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="DefaultBatSelectionIcon">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">battery-symbolic</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">5</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -563,11 +679,50 @@ Jimmy Scionti (@amivaleo)</property>
         <property name="orientation">vertical</property>
         <property name="spacing">4</property>
         <child>
-          <object class="GtkLabel" id="ProfileRowNameLabel">
+          <object class="GtkBox" id="ProfileRowHeaderBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="label">High Performance</property>
+            <property name="spacing">2</property>
+            <child>
+              <object class="GtkLabel" id="ProfileRowNameLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="margin_right">8</property>
+                <property name="label">High Performance</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="ProfileRowACIcon">
+                <property name="can_focus">False</property>
+                <property name="opacity">0.5</property>
+                <property name="icon_name">ac-adapter-symbolic</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="ProfileRowBatIcon">
+                <property name="can_focus">False</property>
+                <property name="opacity">0.5</property>
+                <property name="icon_name">battery-symbolic</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -647,7 +802,7 @@ Jimmy Scionti (@amivaleo)</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>

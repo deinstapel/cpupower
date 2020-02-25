@@ -40,91 +40,155 @@ msgstr ""
 msgid "Control which unit is used for the frequency"
 msgstr ""
 
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
+msgid "Show cpu chip icon in taskbar"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
+msgid "Show cpu chip icon in the top bar"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
+msgid "Show down arrow in taskbar"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
+msgid "Show down arrow in the top bar"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
+msgid "default AC profile ID"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
+msgid "The profile to switch to when plugged in"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
+msgid "default battery profile ID"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
+msgid "The profile to switch to when unplugged"
+msgstr ""
+
 #: data/cpupower-preferences.glade:61
 msgid "Gnome-Shell Extension for the intel-pstate driver."
 msgstr ""
 
-#: data/cpupower-preferences.glade:117
+#: data/cpupower-preferences.glade:124
 msgid "Show current frequency"
 msgstr ""
 
-#: data/cpupower-preferences.glade:130
+#: data/cpupower-preferences.glade:137
 msgid "Use GHz instead of MHz"
 msgstr ""
 
-#: data/cpupower-preferences.glade:161
+#: data/cpupower-preferences.glade:150
+msgid "Show icon in taskbar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:163
+msgid "Show arrow in taskbar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:216
 msgid "About"
 msgstr ""
 
-#: data/cpupower-preferences.glade:183
+#: data/cpupower-preferences.glade:254
+msgid "Default AC profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:267
+msgid "Default battery profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:278
+msgid "Set as default profile for battery operation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:237
+msgid "Set as standard profile for plugged in operation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:237
+msgid "Auto Switch Configuration"
+msgstr ""
+
+#: data/cpupower-preferences.glade:349
 msgid "General"
 msgstr ""
 
-#: data/cpupower-preferences.glade:234
+#: data/cpupower-preferences.glade:400
 msgid "Add selected profile"
 msgstr ""
 
-#: data/cpupower-preferences.glade:247
+#: data/cpupower-preferences.glade:413
 msgid "Remove selected profile"
 msgstr ""
 
-#: data/cpupower-preferences.glade:260
+#: data/cpupower-preferences.glade:426
 msgid "Move selected profile up"
 msgstr ""
 
-#: data/cpupower-preferences.glade:273
+#: data/cpupower-preferences.glade:439
 msgid "Move selected profile down"
 msgstr ""
 
-#: data/cpupower-preferences.glade:332
+#: data/cpupower-preferences.glade:498
 msgid "Profiles"
 msgstr ""
 
-#: data/cpupower-preferences.glade:362 data/cpupower-preferences.glade:374
+#: data/cpupower-preferences.glade:528 data/cpupower-preferences.glade:540
 msgid "Profile name"
 msgstr ""
 
-#: data/cpupower-preferences.glade:387
+#: data/cpupower-preferences.glade:553
 msgid "Minimum frequency"
 msgstr ""
 
-#: data/cpupower-preferences.glade:415
+#: data/cpupower-preferences.glade:581
 msgid "Maximum frequency"
 msgstr ""
 
-#: data/cpupower-preferences.glade:427
+#: data/cpupower-preferences.glade:593
 msgid "Turbo boost"
 msgstr ""
 
-#: data/cpupower-preferences.glade:465
+#: data/cpupower-preferences.glade:631
 msgid "Discard"
 msgstr ""
 
-#: data/cpupower-preferences.glade:485
+#: data/cpupower-preferences.glade:651
 msgid "Save"
 msgstr ""
 
-#: data/cpupower-preferences.glade:575
+#: data/cpupower-preferences.glade:780
 msgid "Turbo boost:"
 msgstr ""
 
-#: src/indicator.js:151
+#: src/indicator.js:172
 msgid "Minimum Frequency:"
 msgstr ""
 
-#: src/indicator.js:155
+#: src/indicator.js:176
 msgid "Maximum Frequency:"
 msgstr ""
 
-#: src/indicator.js:159
+#: src/indicator.js:180
 msgid "Turbo Boost:"
 msgstr ""
 
-#: src/indicator.js:187
+#: src/indicator.js:186
+msgid "Auto Switch:"
+msgstr ""
+
+#: src/indicator.js:210
 msgid "Current Frequency:"
 msgstr ""
 
-#: src/indicator.js:212
+#: src/indicator.js:235
 msgid "Preferences"
 msgstr ""
 
@@ -136,12 +200,16 @@ msgstr ""
 msgid "Attempt installation"
 msgstr ""
 
-#: src/preferences.js:263
+#: src/preferences.js:260
 msgid "Yes"
 msgstr ""
 
-#: src/preferences.js:263
+#: src/preferences.js:260
 msgid "No"
+msgstr ""
+
+#: src/preferences.js:332 src/preferences.js:333
+msgid "None"
 msgstr ""
 
 #: src/unsupported.js:54

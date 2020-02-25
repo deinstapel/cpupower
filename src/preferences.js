@@ -46,6 +46,7 @@ const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
 var CPUPowerPreferences = class CPUPowerPreferences {
     constructor() {
         this.Builder = new Gtk.Builder();
+        this.Builder.set_translation_domain("gnome-shell-extension-cpupower");
         this.Builder.add_objects_from_file(GLADE_FILE, ["MainWidget"]);
         this.Builder.connect_signals_full((builder, object, signal, handler) => {
             object.connect(signal, this[handler].bind(this));
@@ -56,6 +57,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             "ShowArrowSwitch",
             "ShowCurrentFrequencySwitch",
             "UseGHzInsteadOfMHzSwitch",
+            "DefaultACComboBox",
+            "DefaultBatComboBox",
             "ProfilesListBox",
             "ProfilesAddToolButton",
             "ProfilesRemoveToolButton",
@@ -83,6 +86,12 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         value = this._settings.get_boolean("show-arrow-in-taskbar");
         this.ShowArrowSwitch.set_active(value);
 
+        let id = this._settings.get_string("default-ac-profile");
+        this.DefaultACComboBox.set_active_id(id);
+
+        id = this._settings.get_string("default-battery-profile");
+        this.DefaultBatComboBox.set_active_id(id);
+
         // Backward compatibility:
         // for the new Settings UI we introduced a profile-id, which is not present in the older versions.
         // gesettings allows us to update the schema without conflicts.
@@ -90,26 +99,24 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         // CPUFreqProfile checks if an ID is present at load time, if not or an empty one was given, it will generate one
         // if any profile needed a new ID, we save all profiles and reload the UI.
 
-
         let _profiles = this._settings.get_value("profiles");
         _profiles = _profiles.deep_unpack();
         let _tmpProfiles = [];
-        let _needsUUIDSave = false;
+        let _needsUpdate = false;
         for(let j in _profiles) {
             let profile = new CPUFreqProfile();
-            _needsUUIDSave |= profile.load(_profiles[j]);
+            _needsUpdate |= profile.load(_profiles[j]);
             _tmpProfiles.push(profile);
         }
 
-        if (_needsUUIDSave) {
+        if (_needsUpdate) {
             let _saved = [];
             for (let p in _tmpProfiles) {
                 _saved.push(_tmpProfiles[p].save());
             }
             this.status("Needed ID refresh, reloading");
-            _saved = GLib.Variant.new("a(iibss)", _saved);
-            this._settings.set_value("profiles", _saved);
-            _updateSettings();
+            this._saveProfiles(_saved);
+            this._updateSettings();
         } else {
             for (let p in _tmpProfiles) {
                 this.addOrUpdateProfile(_tmpProfiles[p]);
@@ -161,11 +168,14 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                     NameLabel: null,
                     MinimumFrequencyLabel: null,
                     MaximumFrequencyLabel: null,
-                    TurboBoostStatusLabel: null
+                    TurboBoostStatusLabel: null,
+                    AutoSwitchACIcon: null,
+                    AutoSwitchBatIcon: null
                 }
             };
 
             let profileSettingsBuilder = new Gtk.Builder();
+            profileSettingsBuilder.set_translation_domain("gnome-shell-extension-cpupower");
             profileSettingsBuilder.add_objects_from_file(
                 GLADE_FILE,
                 [
@@ -197,6 +207,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             );
 
             let profileListItemBuilder = new Gtk.Builder();
+            profileListItemBuilder.set_translation_domain("gnome-shell-extension-cpupower");
             profileListItemBuilder.add_objects_from_file(GLADE_FILE, ["ProfileListBoxRow"]);
             profileContext.ListItem.NameLabel = profileListItemBuilder.get_object(
                 "ProfileRowNameLabel"
@@ -209,6 +220,12 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             );
             profileContext.ListItem.TurboBoostStatusLabel = profileListItemBuilder.get_object(
                 "ProfileRowTurboBoostStatusLabel"
+            );
+            profileContext.ListItem.AutoSwitchACIcon = profileListItemBuilder.get_object(
+                "ProfileRowACIcon"
+            );
+            profileContext.ListItem.AutoSwitchBatIcon = profileListItemBuilder.get_object(
+                "ProfileRowBatIcon"
             );
             profileContext.ListItem.Row = profileListItemBuilder.get_object(
                 "ProfileListBoxRow"
@@ -227,6 +244,11 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             this.ProfilesMap.set(profileContext.Profile.UUID, profileContext);
             this._syncOrdering();
         }
+        else
+        {
+            // update profile context with given profile
+            profileContext.Profile = profile;
+        }
 
         profileContext.Settings.NameEntry.set_text(profileContext.Profile.Name);
         profileContext.Settings.MinimumFrequencyScale.set_value(profileContext.Profile.MinimumFrequency);
@@ -237,12 +259,28 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         profileContext.ListItem.MaximumFrequencyLabel.set_text(profileContext.Profile.MaximumFrequency.toString());
         profileContext.ListItem.TurboBoostStatusLabel.set_text(profileContext.Profile.TurboBoost ? _("Yes") : _("No"));
 
+        this._settings.get_string("default-ac-profile") == profileContext.Profile.UUID ? 
+            profileContext.ListItem.AutoSwitchACIcon.set_visible(true) : profileContext.ListItem.AutoSwitchACIcon.set_visible(false);
+        this._settings.get_string("default-battery-profile") == profileContext.Profile.UUID ? 
+            profileContext.ListItem.AutoSwitchBatIcon.set_visible(true) : profileContext.ListItem.AutoSwitchBatIcon.set_visible(false);
+
         profileContext.Settings.DiscardButton.sensitive = false;
         profileContext.Settings.SaveButton.sensitive = false;
     }
 
     removeProfile(profile) {
         let profileContext = this.ProfilesMap.get(profile.UUID);
+
+        // set default profile to none if the removed profile was selected 
+        if (this.DefaultACComboBox.get_active_id() == profileContext.Profile.UUID)
+        {
+            this._settings.set_string("default-ac-profile", "");
+        }
+        if (this.DefaultBatComboBox.get_active_id() == profileContext.Profile.UUID)
+        {
+            this._settings.set_string("default-battery-profile", "");
+        }
+
         this.ProfilesListBox.remove(profileContext.ListItem.Row);
         this.ProfileStack.remove(profileContext.Settings.StackItem);
         this.ProfilesMap.delete(profile.UUID);
@@ -276,6 +314,40 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         return profileContext;
     }
 
+    onMainWidgetSwitchPage(mainWidget) {
+        if (mainWidget.get_current_page() == 1)
+        {
+            this.refreshAutoSwitchComboBoxes();
+        }
+    }
+
+    /**
+     * Refreshes the entries of default profile ComboBoxes from ProfilesMap and
+     * sets the active entries from gsettings
+     */
+    refreshAutoSwitchComboBoxes() {
+        this.DefaultACComboBox.remove_all();
+        this.DefaultBatComboBox.remove_all();
+
+        this.DefaultACComboBox.append("", _("None"));
+        this.DefaultBatComboBox.append("", _("None"));
+        
+        let profileArray = Array.from(this.ProfilesMap.values());
+        profileArray.sort((p1,p2) => this.getProfileIndex(p1.Profile) - this.getProfileIndex(p2.Profile));
+        for(let i in profileArray) {
+            let profile = profileArray[i].Profile;
+
+            this.DefaultACComboBox.append(profile.UUID, profile.Name);
+            this.DefaultBatComboBox.append(profile.UUID, profile.Name);
+        }
+
+        let id = this._settings.get_string("default-ac-profile");
+        this.DefaultACComboBox.set_active_id(id);
+
+        id = this._settings.get_string("default-battery-profile");
+        this.DefaultBatComboBox.set_active_id(id);
+    }
+
     onMainWidgetRealize(mainWidget) {
         mainWidget.expand = true;
         mainWidget.parent.border_width = 0;
@@ -286,6 +358,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         this._settings = Convenience.getSettings(SETTINGS_SCHEMA);
         this._settings.connect("changed", this._updateSettings.bind(this));
         this._updateSettings();
+
+        this.refreshAutoSwitchComboBoxes();
 
         this._selectFirstProfile();
     }
@@ -310,6 +384,18 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         let state = switchButton.active;
         this._settings.set_boolean("show-arrow-in-taskbar", state);
         this.status("ShowArrow: " + state);
+    }
+
+    onDefaultACComboBoxActiveNotify(comboBox) {
+        let id = comboBox.get_active_id();
+        this._settings.set_string("default-ac-profile", id);
+        this.status("Default AC profile: " + comboBox.get_active_text());
+    }
+
+    onDefaultBatComboBoxActiveNotify(comboBox) {
+        let id = comboBox.get_active_id();
+        this._settings.set_string("default-battery-profile", id);
+        this.status("Default battery profile: " + comboBox.get_active_text());
     }
 
     onProfilesAddToolButtonClicked(button) {
@@ -381,6 +467,16 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         profileContext.Settings.SaveButton.sensitive = true;
     }
 
+    onProfileDefaultBatChecktoggled(profileContext, checkButton) {
+        profileContext.Settings.DiscardButton.sensitive = true;
+        profileContext.Settings.SaveButton.sensitive = true;
+    }
+
+    onProfileDefaultACChecktoggled(profileContext, checkButton) {
+        profileContext.Settings.DiscardButton.sensitive = true;
+        profileContext.Settings.SaveButton.sensitive = true;
+    }
+
     onProfileDiscardButtonClicked(profileContext, button) {
         this.addOrUpdateProfile(profileContext.Profile);
     }
@@ -409,7 +505,15 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             _saved[idx] = value[1].Profile.save();
         }
 
-        _saved = GLib.Variant.new("a(iibss)", _saved);
-        this._settings.set_value("profiles", _saved);
+        this._saveProfiles(_saved);
+    }
+
+    /**
+     * Saves a profile array in iibssbb-form
+     * @param {Array} saved 
+     */
+    _saveProfiles(saved) {
+        saved = GLib.Variant.new("a(iibss)", saved);
+        this._settings.set_value("profiles", saved);
     }
 }

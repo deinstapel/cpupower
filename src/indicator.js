@@ -58,6 +58,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.cpufreq = 800;
         this.cpucount = 0;
         this.isTurboBoostActive = true;
+        this.isAutoSwitchActive = true;
         this.minVal = this._getMinCheck();
         this.maxVal = 100;
 
@@ -65,15 +66,17 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         if(GLib.file_test(LASTSETTINGS, GLib.FileTest.EXISTS))
         {
             let lines = Shell.get_file_contents_utf8_sync(LASTSETTINGS).split('\n');
-            if(lines.length > 2)
+            if(lines.length > 3)
             {
                 this.minVal = parseInt(lines[0]);
                 this.maxVal = parseInt(lines[1]);
                 this.isTurboBoostActive = (lines[2].indexOf('true') > -1);
+                this.isAutoSwitchActive = (lines[3].indexOf('true') > -1);
 
                 this._updateMin();
                 this._updateMax();
                 this._updateTurbo();
+                this._updateAutoSwitch();
             }
         } else {
             global.log('Cached last settings not found: ' + LASTSETTINGS);
@@ -91,6 +94,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             'g-properties-changed',
             this._onPowerChanged.bind(this)
         );
+        // select the right profile at login
+        this.powerActions(this._power_state);
 
         super.enable();
         this.timeout = Mainloop.timeout_add_seconds(1, () => this._updateFreq());
@@ -102,21 +107,51 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         if (new_state != this._power_state)
         {
-            if (new_state === UPower.DeviceState.FULLY_CHARGED)
-            {
-                global.log ("Power state changed: fully charged");
-            }
-            else if (new_state === UPower.DeviceState.DISCHARGING)
-            {
-                global.log ("Power state changed: discharging");
-            }
-            else if (new_state === UPower.DeviceState.CHARGING)
-            {
-                global.log ("Power state changed: charging");
-            }
+            this.powerActions(new_state);
         }
 
         this._power_state = new_state;
+    }
+
+    powerActions(powerState) {
+        if (powerState === UPower.DeviceState.FULLY_CHARGED)
+        {
+            global.log ("Power state changed: fully charged");
+        }
+        else if (powerState === UPower.DeviceState.DISCHARGING)
+        {
+            global.log ("Power state changed: discharging");
+            // switch to battery profile if auto switching is enabled
+            if (this.isAutoSwitchActive)
+            {
+                let defaultBatProfileID = this.settings.get_string("default-battery-profile");
+                for(var i = 0; i < this.profiles.length && defaultBatProfileID != ""; i++)
+                {
+                    if (this.profiles[i].Profile.UUID == defaultBatProfileID)
+                    {
+                        this._applyProfile(this.profiles[i].Profile);
+                        break;
+                    }
+                }
+            }
+        }
+        else if (powerState === UPower.DeviceState.CHARGING)
+        {
+            global.log ("Power state changed: charging");
+            // switch to AC profile if auto switching is enabled
+            if (this.isAutoSwitchActive)
+            {
+                let defaultACProfileID = this.settings.get_string("default-ac-profile");
+                for(var i = 0; i < this.profiles.length && defaultACProfileID != ""; i++)
+                {
+                    if (this.profiles[i].Profile.UUID == defaultACProfileID)
+                    {
+                        this._applyProfile(this.profiles[i].Profile);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     createMenu() {
@@ -146,6 +181,12 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.imTurboSwitch.connect('toggled', item => {
             this.isTurboBoostActive = item.state;
             this._updateTurbo();
+        });
+
+        this.imAutoSwitch = new PopupMenu.PopupSwitchMenuItem(_('Auto Switch:'), this.isAutoSwitchActive);
+        this.imAutoSwitch.connect('toggled', item => {
+            this.isAutoSwitchActive = item.state;
+            this._updateAutoSwitch();
         });
 
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
@@ -188,6 +229,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         }
 
         this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.section.addMenuItem(this.imAutoSwitch);
+        this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this.imPrefsBtn = new PopupMenu.PopupMenuItem(_('Preferences'));
         this.imPrefsBtn.connect('activate', this._onPreferencesActivate.bind(this));
@@ -224,7 +267,9 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
     _updateFile() {
         if(this.menu && !this.menu.isOpen) return;
-        let cmd = Math.floor(this.minVal) + '\n' + Math.floor(this.maxVal) + '\n' + (this.isTurboBoostActive ? 'true':'false') + '\n';
+        let cmd = Math.floor(this.minVal) + '\n' + Math.floor(this.maxVal) + '\n' 
+            + (this.isTurboBoostActive ? 'true':'false') + '\n' 
+            + (this.isAutoSwitchActive ? 'true':'false') + '\n';
         // global.log('Updating cpufreq settings cache file: ' + LASTSETTINGS);
         GLib.file_set_contents(LASTSETTINGS, cmd);
     }
@@ -247,6 +292,11 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this._updateFile();
     }
 
+    _updateAutoSwitch() {
+        this.powerActions(this._power_state);
+        this._updateFile();
+    }
+
     _updateUi() {
         this.imMinLabel.set_text(this._getMinText());
         Config.PACKAGE_VERSION.startsWith('3.34')
@@ -259,6 +309,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             : this.maxSlider.setValue(this.maxVal / 100.0);
 
         this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
+        this.imAutoSwitch.setToggleState(this.isAutoSwitchActive);
         for (let p of this.profiles) {
             p.setOrnament(
                 this.minVal === p.Profile.MinimumFrequency && 

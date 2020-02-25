@@ -19,67 +19,95 @@ msgstr ""
 msgid "Gnome-Shell Extension for the intel-pstate driver."
 msgstr "Gnome-Shell Erweiterung für intel-pstate"
 
-#: data/cpupower-preferences.glade:117
+#: data/cpupower-preferences.glade:124
 msgid "Show current frequency"
 msgstr "Aktuelle Frequenz anzeigen"
 
-#: data/cpupower-preferences.glade:130
+#: data/cpupower-preferences.glade:137
 msgid "Use GHz instead of MHz"
 msgstr "GHz statt MHz als Einheit nutzen"
 
-#: data/cpupower-preferences.glade:161
+#: data/cpupower-preferences.glade:150
+msgid "Show icon in taskbar"
+msgstr "Icon in Taskbar anzeigen"
+
+#: data/cpupower-preferences.glade:163
+msgid "Show arrow in taskbar"
+msgstr "Pfeil in Taskbar anzeigen"
+
+#: data/cpupower-preferences.glade:216
 msgid "About"
 msgstr "Über"
 
-#: data/cpupower-preferences.glade:183
+#: data/cpupower-preferences.glade:254
+msgid "Default AC profile"
+msgstr "Standardprofil Netzbetrieb"
+
+#: data/cpupower-preferences.glade:267
+msgid "Default battery profile"
+msgstr "Standardprofil Batteriebetrieb"
+
+#: data/cpupower-preferences.glade:278
+msgid "Set as default profile for battery operation"
+msgstr "Als Standardprofil für den Batteriebetrieb festlegen"
+
+#: data/cpupower-preferences.glade:237
+msgid "Set as standard profile for plugged in operation"
+msgstr "Als Standardprofil für den Netzbetrieb festlegen"
+
+#: data/cpupower-preferences.glade:237
+msgid "Auto Switch Configuration"
+msgstr "Auto-Wechsel Konfiguration"
+
+#: data/cpupower-preferences.glade:349
 msgid "General"
 msgstr "Allgemein"
 
-#: data/cpupower-preferences.glade:234
+#: data/cpupower-preferences.glade:400
 msgid "Add selected profile"
 msgstr "Profil hinzufügen"
 
-#: data/cpupower-preferences.glade:247
+#: data/cpupower-preferences.glade:413
 msgid "Remove selected profile"
 msgstr "Markiertes Profil entfernen"
 
-#: data/cpupower-preferences.glade:260
+#: data/cpupower-preferences.glade:426
 msgid "Move selected profile up"
 msgstr "Markiertes Profil nach oben verschieben"
 
-#: data/cpupower-preferences.glade:273
+#: data/cpupower-preferences.glade:439
 msgid "Move selected profile down"
 msgstr "Markiertes Profil nach unten verschieben"
 
-#: data/cpupower-preferences.glade:332
+#: data/cpupower-preferences.glade:498
 msgid "Profiles"
 msgstr "Profile"
 
-#: data/cpupower-preferences.glade:362 data/cpupower-preferences.glade:374
+#: data/cpupower-preferences.glade:528 data/cpupower-preferences.glade:540
 msgid "Profile name"
 msgstr "Profilname"
 
-#: data/cpupower-preferences.glade:387
+#: data/cpupower-preferences.glade:553
 msgid "Minimum frequency"
 msgstr "Minimale Frequenz"
 
-#: data/cpupower-preferences.glade:415
+#: data/cpupower-preferences.glade:581
 msgid "Maximum frequency"
 msgstr "Maximale Frequenz"
 
-#: data/cpupower-preferences.glade:427
+#: data/cpupower-preferences.glade:593
 msgid "Turbo boost"
 msgstr "Turbo Boost"
 
-#: data/cpupower-preferences.glade:465
+#: data/cpupower-preferences.glade:631
 msgid "Discard"
 msgstr "Verwerfen"
 
-#: data/cpupower-preferences.glade:485
+#: data/cpupower-preferences.glade:651
 msgid "Save"
 msgstr "Speichern"
 
-#: data/cpupower-preferences.glade:575
+#: data/cpupower-preferences.glade:780
 msgid "Turbo boost:"
 msgstr "Turbo Boost:"
 
@@ -107,23 +135,60 @@ msgstr "Frequenz in GHz oder MHz anzeigen"
 msgid "Control which unit is used for the frequency"
 msgstr "Einheit für Frequenz"
 
-#: src/indicator.js:151
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
+msgid "Show cpu chip icon in taskbar"
+msgstr "CPU-Chip Symbol in der Taskleiste anzeigen"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
+msgid "Show cpu chip icon in the top bar"
+msgstr "CPU-Chip Symbol in der Taskleiste anzeigen"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
+msgid "Show down arrow in taskbar"
+msgstr "Pfeil in der Taskleiste anzeigen"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
+msgid "Show down arrow in the top bar"
+msgstr "Pfeil in der Taskleiste anzeigen"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
+msgid "default AC profile ID"
+msgstr "Standardprofil für den Netzbetrieb"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
+msgid "The profile to switch to when plugged in"
+msgstr "Zu welchem Profil im Netzbetrieb gewechselt werden soll"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
+msgid "default battery profile ID"
+msgstr "Standardprofil für den Batteriebetrieb"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
+msgid "The profile to switch to when unplugged"
+msgstr "Zu welchem Profil im Batteriebetrieb gewechselt werden soll"
+
+
+#: src/indicator.js:172
 msgid "Minimum Frequency:"
 msgstr "Minimale Frequenz:"
 
-#: src/indicator.js:155
+#: src/indicator.js:176
 msgid "Maximum Frequency:"
 msgstr "Maximale Frequenz:"
 
-#: src/indicator.js:159
+#: src/indicator.js:180
 msgid "Turbo Boost:"
 msgstr "Turbo Boost:"
 
-#: src/indicator.js:187
+#: src/indicator.js:186
+msgid "Auto Switch:"
+msgstr "Auto-Wechsel:"
+
+#: src/indicator.js:210
 msgid "Current Frequency:"
 msgstr "Aktuelle Frequenz:"
 
-#: src/indicator.js:212
+#: src/indicator.js:235
 msgid "Preferences"
 msgstr "Einstellungen"
 
@@ -135,38 +200,21 @@ msgstr "Installation benötigt."
 msgid "Attempt installation"
 msgstr "Installation versuchen"
 
-#: src/preferences.js:263
+#: src/preferences.js:260
 msgid "Yes"
 msgstr "Ja"
 
-#: src/preferences.js:263
+#: src/preferences.js:260
 msgid "No"
 msgstr "Nein"
+
+#: src/preferences.js:332 src/preferences.js:333
+msgid "None"
+msgstr "Keins"
 
 #: src/unsupported.js:54
 msgid "Your computer does not support intel_pstate."
 msgstr "Dieser Rechner unterstützt intel_pstate nicht."
-
-#~ msgid "Name of the profile"
-#~ msgstr "Profilname"
-
-#~ msgid "Minimum Frequency"
-#~ msgstr "Minimale Frequenz"
-
-#~ msgid "Maximum Frequency"
-#~ msgstr "Maximale Frequenz"
-
-#~ msgid "Turbo Boost"
-#~ msgstr "Turbo Boost"
-
-#~ msgid "Use GHz instead of MHz as unit"
-#~ msgstr "GHz statt MHz als Einheit nutzen"
-
-#~ msgid "Remove profile %s ?"
-#~ msgstr "Profil %s entfernen?"
-
-#~ msgid "No Policykit installed."
-#~ msgstr "Policykit ist nicht installiert."
 
 #~ msgid "CPU"
 #~ msgstr "CPU"
