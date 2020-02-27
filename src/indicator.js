@@ -358,15 +358,15 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         }
         this._sampleFreq();
 
-        if(this.menu && !this.menu.isOpen) this.imCurrentLabel.set_text(this._getCurFreq());
+        if(this.menu && this.menu.isOpen) this.imCurrentLabel.set_text(this._getCurFreq());
         this.lbl.set_text(this._getCurFreq());
 
         return true;
     }
 
     _updateFreqMm(force) {
-        const menuOpen = this.menu && !this.menu.isOpen;
-        if(force || menuOpen) return true;
+        const menuOpen = this.menu && this.menu.isOpen;
+        if (!force && !menuOpen) return true;
 
         let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' turbo get');
         this.isTurboBoostActive = parseInt(String.fromCharCode.apply(null, out)) == 1;
