@@ -293,7 +293,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     _updateAutoSwitch() {
-        this.powerActions(this._power_state);
+        if (this._power_state) this.powerActions(this._power_state);
         this._updateFile();
     }
 
