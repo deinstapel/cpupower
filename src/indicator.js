@@ -196,7 +196,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             this.imMinLabel.set_text(this._getMinText());
             this._updateMin();
         });
-        this.imSliderMin.actor.add(this.minSlider.actor, {expand: true});
+        this.imSliderMin.add(this.minSlider, {expand: true});
 
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.maxSlider = new Slider.Slider(this.maxVal / 100);
@@ -205,7 +205,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             this.imMaxLabel.set_text(this._getMaxText());
             this._updateMax();
         });
-        this.imSliderMax.actor.add(this.maxSlider.actor, {expand: true});
+        this.imSliderMax.add(this.maxSlider, {expand: true});
 
         this.imCurrentTitle = new PopupMenu.PopupMenuItem(_('Current Frequency:'), {reactive:false});
         this.imCurrentLabel = new St.Label({text: this._getCurFreq()});

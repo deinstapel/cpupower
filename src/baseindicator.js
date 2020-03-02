@@ -46,7 +46,7 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
     constructor() {
         this._mainButton = new PanelMenu.Button(null, 'cpupower');
         this.menu = this._mainButton.menu;
-        this.actor = this._mainButton.actor;
+        this.actor = this._mainButton;
 
         this.settings = Convenience.getSettings(SETTINGS_ID);
 
