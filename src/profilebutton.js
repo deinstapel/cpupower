@@ -29,12 +29,13 @@ const Lang = imports.lang;
 const PanelMenu = imports.ui.panelMenu;
 const Panel = imports.ui.panel;
 const PopupMenu = imports.ui.popupMenu;
+const GObject = imports.gi.GObject;
 
 const DEFAULT_EMPTY_NAME = 'No name';
 
-var CPUFreqProfileButton = class CPUFreqProfileButton extends PopupMenu.PopupMenuItem {
-    constructor(profile) {
-        super(_(profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
-        this.Profile = profile;
-    }
-}
+var CPUFreqProfileButton = GObject.registerClass(class CPUFreqProfileButton extends PopupMenu.PopupMenuItem {
+    _init(profile) {
+		super._init(_(profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
+    	this.Profile = profile;
+	}
+});
