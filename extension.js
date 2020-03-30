@@ -35,6 +35,7 @@ const unsupported = Me.imports.src.unsupported;
 
 const check_installed = Me.imports.src.utils.check_installed;
 const notinstalled = Me.imports.src.notinstalled;
+const update = Me.imports.src.update;
 
 const indicator = Me.imports.src.indicator;
 
@@ -59,16 +60,26 @@ var enable = () => {
                 return;
             }
 
-            check_installed(installed => {
+            check_installed((installed, exitCode) => {
                 if (!installed) {
-                    _indicator = new notinstalled.NotInstalledIndicator(function (success) {
-                        if (success)
-                        {
-                            // reenable the extension to allow immediate operation.
-                            disable();
-                            enable();
-                        }
-                    });
+                    if (exitCode === 5) {
+                        _indicator = new update.UpdateIndicator(function (success) {
+                            if (success) {
+                                // reenable the extension to allow immediate operation.
+                                disable();
+                                enable();
+                            }
+                        });
+                    } else {
+                        _indicator = new notinstalled.NotInstalledIndicator(function (success) {
+                            if (success)
+                            {
+                                // reenable the extension to allow immediate operation.
+                                disable();
+                                enable();
+                            }
+                        });
+                    }
                 } else {
                     _indicator = new indicator.CPUFreqIndicator();
                 }

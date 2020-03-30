@@ -49,8 +49,8 @@ const baseindicator = Me.imports.src.baseindicator;
 const CPUFreqProfileButton = Me.imports.src.profilebutton.CPUFreqProfileButton;
 
 const LASTSETTINGS = GLib.get_user_cache_dir() + '/cpupower.last-settings';
-const CPUFREQCTL = Me.dir.get_path() + '/tool/cpufreqctl';
 const PKEXEC = GLib.find_program_in_path('pkexec');
+const CONFIG = Me.imports.src.config;
 
 var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseIndicator {
     constructor() {
@@ -275,19 +275,19 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     _updateMax() {
-        let cmd = [PKEXEC, CPUFREQCTL, 'max', Math.floor(this.maxVal).toString()].join(' ');
+        let cmd = [PKEXEC, CONFIG.CPUFREQCTL, 'max', Math.floor(this.maxVal).toString()].join(' ');
         Util.trySpawnCommandLine(cmd);
         this._updateFile();
     }
 
     _updateMin() {
-        let cmd = [PKEXEC, CPUFREQCTL, 'min', Math.floor(this.minVal).toString()].join(' ');
+        let cmd = [PKEXEC, CONFIG.CPUFREQCTL, 'min', Math.floor(this.minVal).toString()].join(' ');
         Util.trySpawnCommandLine(cmd);
         this._updateFile();
     }
 
     _updateTurbo() {
-        let cmd = [PKEXEC, CPUFREQCTL, 'turbo', (this.isTurboBoostActive ? '1' : '0')].join(' ');
+        let cmd = [PKEXEC, CONFIG.CPUFREQCTL, 'turbo', (this.isTurboBoostActive ? '1' : '0')].join(' ');
         Util.trySpawnCommandLine(cmd);
         this._updateFile();
     }
@@ -368,13 +368,13 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         const menuOpen = this.menu && this.menu.isOpen;
         if (!force && !menuOpen) return true;
 
-        let [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' turbo get');
+        let [res, out] = GLib.spawn_command_line_sync(CONFIG.CPUFREQCTL + ' turbo get');
         this.isTurboBoostActive = parseInt(String.fromCharCode.apply(null, out)) == 1;
 
-        [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' min get');
+        [res, out] = GLib.spawn_command_line_sync(CONFIG.CPUFREQCTL + ' min get');
         this.minVal = parseInt(String.fromCharCode.apply(null, out));
 
-        [res, out] = GLib.spawn_command_line_sync(CPUFREQCTL + ' max get');
+        [res, out] = GLib.spawn_command_line_sync(CONFIG.CPUFREQCTL + ' max get');
         this.maxVal = parseInt(String.fromCharCode.apply(null, out));
         if (menuOpen) {
             this._updateUi();
@@ -383,7 +383,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     _getMinCheck() {
-        let [res, out, err, exitcode] = GLib.spawn_command_line_sync(PKEXEC + ' ' + CPUFREQCTL + ' min check');
+        let [res, out, err, exitcode] = GLib.spawn_command_line_sync(PKEXEC + ' ' + CONFIG.CPUFREQCTL + ' min check');
         if (exitcode !== 0) {
             return 0;
         }

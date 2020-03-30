@@ -18,16 +18,16 @@ package: build
 
 install: package
 	@mkdir -p "$(EXTENSION_INSTALL_DIR)"
-	@unzip target/cpupower.zip -d "$(EXTENSION_INSTALL_DIR)"
+	@unzip -o target/cpupower-${VERSION}.zip -d "$(EXTENSION_INSTALL_DIR)"
 
 uninstall:
 	@rm -r "$(EXTENSION_INSTALL_DIR)"
 
 install-tool:
-	@./tool/installer.sh install
+	@./tool/installer.sh --prefix "$(PREFIX)" --tool-suffix "$(TOOL_SUFFIX)" install
 
 uninstall-tool:
-	@./tool/installer.sh uninstall
+	@./tool/installer.sh --prefix "$(PREFIX)" --tool-suffix "$(TOOL_SUFFIX)" uninstall
 
 release:
 	@./scripts/release.sh "$(VERSION)"

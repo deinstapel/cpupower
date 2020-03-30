@@ -26,7 +26,58 @@ set -e
 VERSION="8.0.0"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" #stackoverflow 59895
-PREFIX="${PREFIX-/usr}" # default install prefix is /usr
+PREFIX="/usr" # default install prefix is /usr
+
+function usage() {
+    echo "Usage: installer.sh [options] {supported,install,check,update,uninstall}"
+    echo
+    echo "Available options:"
+    echo "  --prefix PREFIX        Set the install prefix (default: /usr)"
+    echo "  --tool-suffix SUFFIX   Set the tool name suffix (default: <empty>)"
+    echo
+    exit 1
+}
+
+if [ $# -lt 1 ]
+then
+    usage
+fi
+
+ACTION=""
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+
+    # we have to use command line arguments here as pkexec does not support
+    # setting environment variables
+    case $key in
+        --prefix)
+            PREFIX="$2"
+            shift
+            shift
+            ;;
+        --tool-suffix)
+            TOOL_SUFFIX="$2"
+            shift
+            shift
+            ;;
+        supported|install|check|update|uninstall)
+            if [ -z "$ACTION" ]
+            then
+                ACTION="$1"
+            else
+                echo "Too many actions specified. Please give at most 1."
+                usage
+            fi
+            shift
+            ;;
+        *)
+            echo "Unknown argument $key"
+            usage
+            ;;
+    esac
+done
+
 RULE_IN="${DIR}/../data/mko.cpupower.policy.in"
 RULE_DIR="${PREFIX}/share/polkit-1/actions"
 CFC_IN="${DIR}/cpufreqctl"
@@ -51,30 +102,21 @@ fi
 V7_LEGACY_OUT="/usr/share/polkit-1/actions/mko.cpupower.policy"
 V8_LEGACY_OUT="/usr/share/polkit-1/actions/mko.cpupower.setcpufreq.policy"
 
-function usage() {
-    echo "Usage: installer.sh {supported,install,check,update,uninstall}"
-    exit 1
-}
-
-if [ $# -lt 1 ]
-then
-    usage
-fi
-
-if [ "$1" = "supported" ]
+if [ "$ACTION" = "supported" ]
 then
     ls /sys/devices/system/cpu/intel_pstate > /dev/null 2>&1 || \
         (echo "Unsupported" && exit 5) && echo "Supported"
     exit $?
 fi
 
-if [ "$1" = "check" ]
+if [ "$ACTION" = "check" ]
 then
     # pre v9 policy rules have security issues
     # cpufreqctl should always be located in /usr/local/bin or /usr/bin as of
     # https://github.com/martin31821/cpupower/issues/102
     # therefore check for occurence of prefix
-    if grep -vsq "${PREFIX}" "${V8_LEGACY_OUT}" || [ -f "${V7_LEGACY_OUT}" ]
+    if [ -f "${V8_LEGACY_OUT}" ] && ! grep -sq "${PREFIX}" "${V8_LEGACY_OUT}" || \
+               [ -f "${V7_LEGACY_OUT}" ]
     then
         echo "Your cpupower installation needs updating!"
         echo "Warning: Security issues were found with your installation! Update immediately!"
@@ -82,12 +124,13 @@ then
     fi
 
     sed -e "s:{{PATH}}:${CFC_OUT}:g" \
+        -e "s:{{VERSION}}:${VERSION}:g" \
         -e "s:{{ID}}:${RULE_ID}:g" "${RULE_IN}" | \
         cmp --silent "${RULE_OUT}" || (echo "Not installed" && exit 6) && echo "Installed"
     exit $?
 fi
 
-if [ "$1" = "install" ]
+if [ "$ACTION" = "install" ]
 then
     if [ "${EUID}" -ne 0 ]; then
         echo "The install action must be run as root for security reasons!"
@@ -112,7 +155,7 @@ then
     exit 0
 fi
 
-if [ "$1" = "update" ]
+if [ "$ACTION" = "update" ]
 then
     if [ -f "V7_LEGACY_OUT" ]
     then
@@ -122,7 +165,7 @@ then
         echo "Success"
     fi
 
-    if grep -vsq "${PREFIX}" "${V8_LEGACY_OUT}"
+    if [ -f "${V8_LEGACY_OUT}" ] && ! grep -sq "${PREFIX}" "${V8_LEGACY_OUT}"
     then
         echo -n "Uninstalling legacy v8 polkit rule... "
         rm "${V8_LEGACY_OUT}" || \
@@ -130,13 +173,13 @@ then
         echo "Success"
     fi
 
-    "${BASH_SOURCE[0]}" uninstall || exit $?
-    "${BASH_SOURCE[0]}" install || exit $?
+    "${BASH_SOURCE[0]}" --prefix "${PREFIX}" --tool-suffix "${TOOL_SUFFIX}" uninstall || exit $?
+    "${BASH_SOURCE[0]}" --prefix "${PREFIX}" --tool-suffix "${TOOL_SUFFIX}" install || exit $?
 
     exit 0
 fi
 
-if [ "$1" = "uninstall" ]
+if [ "$ACTION" = "uninstall" ]
 then
     echo -n "Uninstalling cpufreqctl tool... "
     if [ -f "${CFC_OUT}" ]
