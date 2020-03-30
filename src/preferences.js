@@ -39,6 +39,8 @@ const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.src.convenience;
 const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
 const EXTENSIONDIR = Me.dir.get_path();
+const CONFIG = Me.imports.src.config;
+const attempt_uninstallation = Me.imports.src.utils.attempt_uninstallation;
 
 const GLADE_FILE = EXTENSIONDIR + "/data/cpupower-preferences.glade";
 const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
@@ -64,7 +66,11 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             "ProfilesRemoveToolButton",
             "ProfilesMoveUpToolButton",
             "ProfilesMoveDownToolButton",
-            "ProfileStack"
+            "ProfileStack",
+            "CpufreqctlPathLabel",
+            "PolicykitRulePathLabel",
+            "InstallationWarningLabel",
+            "UninstallButton"
         );
         this.ProfilesMap = new Map();
     }
@@ -91,6 +97,17 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
         id = this._settings.get_string("default-battery-profile");
         this.DefaultBatComboBox.set_active_id(id);
+
+        if (CONFIG.IS_USER_INSTALL) {
+            this.InstallationWarningLabel.set_visible(false);
+            this.UninstallButton.set_sensitive(true);
+        } else {
+            this.InstallationWarningLabel.set_visible(true);
+            this.UninstallButton.set_sensitive(false);
+        }
+
+        this.CpufreqctlPathLabel.set_text(CONFIG.CPUFREQCTL);
+        this.PolicykitRulePathLabel.set_text(CONFIG.POLKIT);
 
         // Backward compatibility:
         // for the new Settings UI we introduced a profile-id, which is not present in the older versions.
@@ -436,6 +453,26 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         let dialog = profileListItemBuilder.get_object("AboutDialog");
         let parentWindow = this.MainWidget.get_toplevel();
         dialog.set_transient_for(parentWindow);
+        dialog.run();
+        dialog.hide();
+    }
+
+    onUninstallButtonClicked(button) {
+        let uninstallDialogBuilder = new Gtk.Builder();
+        uninstallDialogBuilder.add_objects_from_file(GLADE_FILE, ["UninstallMessageDialog"]);
+        let dialog = uninstallDialogBuilder.get_object("UninstallMessageDialog");
+        let uninstallButton = uninstallDialogBuilder.get_object("UninstallDialogUninstall");
+        let cancelButton = uninstallDialogBuilder.get_object("UninstallDialogCancel");
+        let parentWindow = this.MainWidget.get_toplevel();
+        dialog.set_transient_for(parentWindow);
+        uninstallButton.connect("clicked", () => {
+            attempt_uninstallation(() => {
+                dialog.close();
+            });
+        });
+        cancelButton.connect("clicked", () => {
+            dialog.close();
+        });
         dialog.run();
         dialog.hide();
     }

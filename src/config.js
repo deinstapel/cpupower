@@ -30,15 +30,17 @@ const GLib = imports.gi.GLib;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-const PREFIX = '/usr';
-let TOOL_SUFFIX = '';
+var PREFIX = '/usr';
+var TOOL_SUFFIX = '';
+var IS_USER_INSTALL = false;
 
-let CPUFREQCTL = PREFIX + '/bin/cpufreqctl';
-
-global.log('cpupower shit', Me.dir.get_path().includes('/home'));
+var CPUFREQCTL = PREFIX + '/bin/cpufreqctl';
+var POLKIT = PREFIX + '/share/polkit-1/actions/mko.cpupower.setcpufreq.policy';
 
 if (Me.dir.get_path().includes('/home')) {
     // we are installed in the /home directory, let's handle tool installation
     TOOL_SUFFIX = GLib.get_user_name();
     CPUFREQCTL = PREFIX + '/local/bin/cpufreqctl-' + TOOL_SUFFIX;
+    POLKIT = PREFIX + '/share/polkit-1/actions/mko.cpupower.setcpufreq.' + TOOL_SUFFIX + '.policy';
+    IS_USER_INSTALL = true;
 }

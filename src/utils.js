@@ -88,6 +88,14 @@ function attempt_installation(done)
     );
 }
 
+function attempt_uninstallation(done)
+{
+    spawn_process_check_exit_code(
+        [PKEXEC, INSTALLER, '--prefix', CONFIG.PREFIX, '--tool-suffix', CONFIG.TOOL_SUFFIX, 'uninstall'],
+        done
+    );
+}
+
 function attempt_update(done)
 {
     spawn_process_check_exit_code(
