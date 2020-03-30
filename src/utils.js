@@ -31,8 +31,8 @@ const GLib = imports.gi.GLib;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const EXTENSIONDIR = Me.dir.get_path();
-const INSTALLER = EXTENSIONDIR + '/src/installer.sh';
-const CPUFREQCTL = EXTENSIONDIR + '/src/cpufreqctl';
+const INSTALLER = EXTENSIONDIR + '/tool/installer.sh';
+const CPUFREQCTL = EXTENSIONDIR + '/tool/cpufreqctl';
 const PKEXEC = GLib.find_program_in_path('pkexec');
 
 function spawn_process_check_exit_code(argv, callback)

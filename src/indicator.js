@@ -49,7 +49,7 @@ const baseindicator = Me.imports.src.baseindicator;
 const CPUFreqProfileButton = Me.imports.src.profilebutton.CPUFreqProfileButton;
 
 const LASTSETTINGS = GLib.get_user_cache_dir() + '/cpupower.last-settings';
-const CPUFREQCTL = Me.dir.get_path() + '/src/cpufreqctl';
+const CPUFREQCTL = Me.dir.get_path() + '/tool/cpufreqctl';
 const PKEXEC = GLib.find_program_in_path('pkexec');
 
 var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseIndicator {

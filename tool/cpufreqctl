@@ -2,7 +2,7 @@
 
 # cpufreqctl - This script can configure the pstate driver of your intel CPU.
 #
-# Copyright (C) 2015-2017
+# Copyright (C) 2015-2020
 #     Martin Koppehel <psl.kontakt@gmail.com>,
 #     Fin Christensen <christensen.fin@gmail.com>,
 #
@@ -23,6 +23,8 @@
 
 set -e
 
+VERSION="8.0.0"
+
 log ()
 {
     echo "$@" >&2 || true
@@ -31,6 +33,7 @@ log ()
 show_usage ()
 {
     log "usage: cpufreqctl [-h] [turbo {get,0,1}] [min {get,check,VALUE}] [max {get,VALUE}]"
+    log "version $VERSION"
 }
 
 show_help ()
@@ -109,7 +112,7 @@ help_examples ()
 
 help_copyright ()
 {
-    log "cpufreqctl  Copyright (c) 2017  Martin Koppehel, Fin Christensen"
+    log "cpufreqctl $VERSION  Copyright (c) 2020  Martin Koppehel, Fin Christensen"
 }
 
 if [ $# -lt 1 ]
