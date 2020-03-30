@@ -76,3 +76,13 @@ software installed to use this extension:
 - Policykit (ships default with gnome)
 - intel_pstate needs to be enabled in the kernel (should be the default in almost all Distros)
 - bash
+
+## Developing
+
+Clone the repository and run:
+
+```shell
+$ make install PREFIX=/home/username/.local
+```
+
+and restart the gnome shell (`Alt+F2` `r`).
