@@ -2,7 +2,6 @@ on:
   push:
     tags:
     - 'v*'
-    - 'ci-test'
 
 name: release build
 
