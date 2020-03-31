@@ -40,7 +40,7 @@ const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
 
-const updateText = _('Your cpupower installation needs updating!\nWarning: Security issues were found with your installation!\nUpdate immediately!');
+const updateText = _('Your CPU Power Manager installation needs updating!\nWarning: Security issues were found with your installation!\nPlease update immediately!');
 
 var UpdateIndicator = class UpdateIndicator extends baseindicator.CPUFreqBaseIndicator {
     constructor(done) {

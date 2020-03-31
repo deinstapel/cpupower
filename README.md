@@ -2,6 +2,16 @@
 
 Gnome-Shell Extension for intel-pstate driver.
 
+## Prerequisites
+
+You need to have an **Intel Core i CPU** of at least the **second Generation (2xxx Model Number)** and the following
+software installed to use this extension:
+
+- Gnome (since it's an extension)
+- Policykit (ships default with gnome)
+- intel_pstate needs to be enabled in the kernel (should be the default in almost all Distros)
+- bash
+
 ## Installation
 
 The easiest way to install this extension is by using the
@@ -90,15 +100,23 @@ Run the following command to uninstall:
 $ sudo make uninstall uninstall-tool
 ```
 
-## Prerequisites
+## Translating
 
-You need to have an **Intel Core i CPU** of at least the **second Generation (2xxx Model Number)** and the following
-software installed to use this extension:
+In order to translate this extension you first need to install [`Poedit`](https://poedit.net/). You may use your distributions package manager to install it.
 
-- Gnome (since it's an extension)
-- Policykit (ships default with gnome)
-- intel_pstate needs to be enabled in the kernel (should be the default in almost all Distros)
-- bash
+When finished, [fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) this project and clone like described in the linked guide.
+
+### Creating a new translation
+
+Open Poedit and select `File` / `New From POT/PO File...` and select `cpupower/locale/template.pot`. Select the language you want to translate to. Now start translating.
+
+### Edit or update an existing translation
+
+Open Poedit and select `Open`. Navigate to the `cpupower/locale` folder and select the language file (`.po`) you want to edit/update. Now select `Catalog` / `Update from POT File...` and select `cpupower/locale/template.pot`. Now, you can start updating the translation.
+
+### Saving your work
+
+When finished save the file into the `locale` folder and [push](https://help.github.com/en/github/managing-files-in-a-repository/adding-a-file-to-a-repository-using-the-command-line) your changes to your fork. Now, you can create a [pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to make your translation available in the main cpupower installation.
 
 ## Developing
 

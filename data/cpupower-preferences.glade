@@ -578,7 +578,7 @@ Jimmy Scionti (@amivaleo)</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
-            <property name="label" translatable="yes">/usr/bin/cpufreqctl</property>
+            <property name="label">/usr/bin/cpufreqctl</property>
             <property name="ellipsize">middle</property>
             <property name="xalign">0</property>
             <attributes>
@@ -595,7 +595,7 @@ Jimmy Scionti (@amivaleo)</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
-            <property name="label" translatable="yes">/usr/share/polkit-1/actions/mko.cpupower.setcpufreq.policy</property>
+            <property name="label">/usr/share/polkit-1/actions/mko.cpupower.setcpufreq.policy</property>
             <property name="ellipsize">middle</property>
             <property name="xalign">0</property>
             <attributes>
@@ -946,7 +946,7 @@ Jimmy Scionti (@amivaleo)</property>
     <property name="type_hint">dialog</property>
     <property name="message_type">question</property>
     <property name="text" translatable="yes">Uninstall CPU Power Manager Tools</property>
-    <property name="secondary_text" translatable="yes">Are you sure you want to uninstall the cpufreqctl tool and the polkit rule?</property>
+    <property name="secondary_text" translatable="yes">Are you sure you want to uninstall the cpufreqctl tool and the policykit rule?</property>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>

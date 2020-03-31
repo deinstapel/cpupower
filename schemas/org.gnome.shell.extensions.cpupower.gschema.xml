@@ -27,12 +27,12 @@
 		</key>
 		<key name="default-ac-profile" type="s">
 			<default>""</default>
-			<summary>default AC profile ID</summary>
+			<summary>Default AC profile ID</summary>
 			<description>The profile to switch to when plugged in</description>
 		</key>
 		<key name="default-battery-profile" type="s">
 			<default>""</default>
-			<summary>default battery profile ID</summary>
+			<summary>Default battery profile ID</summary>
 			<description>The profile to switch to when unplugged</description>
 		</key>
 	</schema>
