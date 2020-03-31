@@ -56,6 +56,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-        asset_path: cpupower-${{ steps.ebuild.outputs.version }}.zip
-        asset_name: cpupower-${{ steps.ebuild.outputs.version }}.zip
+        asset_path: cpupower-${{ steps.gnome-zip.outputs.version }}.zip
+        asset_name: cpupower-${{ steps.gnome-zip.outputs.version }}.zip
         asset_content_type: application/zip
