@@ -4,7 +4,7 @@ on:
     - 'v*'
     - 'ci-test'
 
-name: release
+name: release build
 
 jobs:
   release:

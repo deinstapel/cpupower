@@ -1,6 +1,30 @@
-# CPU Power Manager for Gnome Shell
-
-Gnome-Shell Extension for intel-pstate driver.
+<h1 align="center">CPU Power Manager for Gnome Shell</h1>
+<p align="center">
+  <a href="https://extensions.gnome.org/extension/945/cpu-power-manager/">
+    <img alt="Get it on GNOME Extensions" width="228" src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true"/>
+  </a>
+  <br>
+  <a href="https://github.com/martin31821/cpupower/actions?query=workflow%3A%22release%22">
+    <img src="https://github.com/martin31821/cpupower/workflows/release/badge.svg" alt="release build">
+  </a>
+  <a href="https://github.com/martin31821/cpupower/releases">
+    <img alt="Lastest release" src="https://img.shields.io/github/v/release/martin31821/cpupower?label=latest%20release&sort=semver">
+  </a>
+  <img alt="Gnome" src="https://img.shields.io/badge/gnome-3.36-blue?logo=gnome&logoColor=white">
+  <a href="https://github.com/martin31821/cpupower/blob/master/LICENSE">
+    <img alt="License" src="https://img.shields.io/github/license/martin31821/cpupower.svg">
+  </a>
+  <a href="http://makeapullrequest.com">
+    <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" target="_blank" />
+  </a>
+  <br>
+  <i>Gnome-Shell Extension for intel-pstate driver</i>
+  <br><br>
+  <a href="#prerequisites">Prerequisites</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#translating">Translating</a> •
+  <a href="#developing">Developing</a>
+</p>
 
 ## Prerequisites
 
