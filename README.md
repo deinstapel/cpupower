@@ -47,7 +47,7 @@ frequency of your CPU with your user.
 
 ### Installing for another (admin) user
 
-Impersonate the (non-admin) user, clone the git repository, and run the following command:
+Impersonate the (admin) user, clone the git repository, and run the following command:
 
 > Note: Cloning and installing the extension while impersonating the other user, enables this user
 >       to install updates for this extension from extensions.gnome.org.
