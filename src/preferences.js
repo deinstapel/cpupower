@@ -469,8 +469,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             attempt_uninstallation(() => {
                 dialog.close();
                 GLib.spawn_sync(
-	                  null,
-	                  [
+                    null,
+                    [
                         'gdbus',
                         'call',
                         '--session',
@@ -482,9 +482,9 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                         'org.gnome.Shell.Extensions.ReloadExtension',
                         'cpupower@mko-sl.de',
                     ],
-	                  null,
-	                  GLib.SpawnFlags.SEARCH_PATH,
-	                  null,
+                    null,
+                    GLib.SpawnFlags.SEARCH_PATH,
+                    null,
                 );
                 this.MainWidget.get_toplevel().get_application().quit();
             });

@@ -35,7 +35,7 @@ const DEFAULT_EMPTY_NAME = 'No name';
 
 var CPUFreqProfileButton = GObject.registerClass(class CPUFreqProfileButton extends PopupMenu.PopupMenuItem {
     _init(profile) {
-		super._init(_(profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
-    	this.Profile = profile;
-	}
+    super._init(_(profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
+      this.Profile = profile;
+  }
 });
