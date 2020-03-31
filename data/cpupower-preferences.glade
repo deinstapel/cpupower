@@ -955,8 +955,9 @@ Jimmy Scionti (@amivaleo)</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox">
             <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
             <property name="homogeneous">True</property>
-            <property name="layout_style">end</property>
+            <property name="layout_style">expand</property>
             <child>
               <object class="GtkButton" id="UninstallDialogCancel">
                 <property name="label" translatable="yes">Cancel</property>
@@ -965,9 +966,10 @@ Jimmy Scionti (@amivaleo)</property>
                 <property name="receives_default">True</property>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
+                <property name="secondary">True</property>
               </packing>
             </child>
             <child>
@@ -976,12 +978,13 @@ Jimmy Scionti (@amivaleo)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="hexpand">True</property>
                 <style>
                   <class name="destructive-action"/>
                 </style>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>

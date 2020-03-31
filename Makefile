@@ -31,3 +31,7 @@ uninstall-tool:
 
 release:
 	@./scripts/release.sh "$(VERSION)"
+
+reload:
+	@echo Reloading extension 'cpupower@mko-sl.de'...
+	@gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell  --method org.gnome.Shell.Extensions.ReloadExtension cpupower@mko-sl.de

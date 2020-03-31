@@ -348,7 +348,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
         this.DefaultACComboBox.append("", _("None"));
         this.DefaultBatComboBox.append("", _("None"));
-        
+
         let profileArray = Array.from(this.ProfilesMap.values());
         profileArray.sort((p1,p2) => this.getProfileIndex(p1.Profile) - this.getProfileIndex(p2.Profile));
         for(let i in profileArray) {
@@ -468,6 +468,25 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         uninstallButton.connect("clicked", () => {
             attempt_uninstallation(() => {
                 dialog.close();
+                GLib.spawn_sync(
+	                  null,
+	                  [
+                        'gdbus',
+                        'call',
+                        '--session',
+                        '--dest',
+                        'org.gnome.Shell',
+                        '--object-path',
+                        '/org/gnome/Shell',
+                        '--method',
+                        'org.gnome.Shell.Extensions.ReloadExtension',
+                        'cpupower@mko-sl.de',
+                    ],
+	                  null,
+	                  GLib.SpawnFlags.SEARCH_PATH,
+	                  null,
+                );
+                this.MainWidget.get_toplevel().get_application().quit();
             });
         });
         cancelButton.connect("clicked", () => {
