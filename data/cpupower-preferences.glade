@@ -579,6 +579,7 @@ Jimmy Scionti (@amivaleo)</property>
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <property name="label">/usr/bin/cpufreqctl</property>
+            <property name="selectable">True</property>
             <property name="ellipsize">middle</property>
             <property name="xalign">0</property>
             <attributes>
@@ -596,6 +597,7 @@ Jimmy Scionti (@amivaleo)</property>
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <property name="label">/usr/share/polkit-1/actions/mko.cpupower.setcpufreq.policy</property>
+            <property name="selectable">True</property>
             <property name="ellipsize">middle</property>
             <property name="xalign">0</property>
             <attributes>
