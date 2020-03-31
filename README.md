@@ -13,9 +13,16 @@ frequency of your CPU with your user.
 
 ### Installing for another (admin) user
 
-Clone the git repository and run the following command:
+Impersonate the (non-admin) user, clone the git repository, and run the following command:
+
+> Note: Cloning and installing the extension while impersonating the other user, enables this user
+>       to install updates for this extension from extensions.gnome.org.
 
 ```shell
+$ sudo -u username bash
+$ cd /tmp
+$ git clone https://github.com/martin31821/cpupower.git
+$ cd cpupower
 $ make install PREFIX=/home/username/.local
 ```
 
@@ -31,12 +38,28 @@ $ make uninstall PREFIX=/home/username/.local
 
 ### Installing for another (non-admin) user
 
-Clone the git repository and run the following command:
+Impersonate the (non-admin) user, clone the git repository, and run the following command:
+
+> Note: Cloning and installing the extension while impersonating the other user, enables this user
+>       to install updates for this extension from extensions.gnome.org. However, the tool **must**
+>       be updated and installed by an administrator. The extension may stop working after the user
+>       installed an update and may need updating of the tool by an administrator.
 
 ```shell
+$ sudo -u username bash
+$ cd /tmp
+$ git clone https://github.com/martin31821/cpupower.git
+$ cd cpupower
 $ make install PREFIX=/home/username/.local
+```
+
+And with an admin user run the following commands:
+
+```shell
 $ sudo make install-tool TOOL_SUFFIX=username
 ```
+
+> Note: Also, use this command to update the tool for another user in an outdated installation.
 
 The extension will work out-of-the-box for the specified user only!
 
@@ -45,7 +68,7 @@ The extension will work out-of-the-box for the specified user only!
 #### Uninstalling
 
 ```shell
-$ make uninstall PREFIX=/home/username/.local
+$ sudo make uninstall PREFIX=/home/username/.local
 $ sudo make uninstall-tool TOOL_SUFFIX=username
 ```
 
@@ -79,10 +102,32 @@ software installed to use this extension:
 
 ## Developing
 
+### Option 1
+
 Clone the repository and run:
 
 ```shell
 $ make install PREFIX=/home/username/.local
 ```
 
-and restart the gnome shell (`Alt+F2` `r`).
+and restart the gnome shell (`Alt+F2` `r`) or when using wayland, log out and in again to restart the gnome-shell.
+
+### Option 2
+
+Clone the respository to `~/.local/share/gnome-shell/extensions/cpupower@mko-sl.de` and restart the gnome shell (`Alt+F2` `r`) or when using wayland, log out and in again to restart the gnome-shell.
+
+You can now enable the extension in your extension settings.
+
+### Viewing log output
+
+```shell
+$ journalctl -t gnome-shell -f
+```
+
+### Creating a new release
+
+Only core contributors to this project can make a new release. To create one, run:
+
+```shell
+$ make release
+```

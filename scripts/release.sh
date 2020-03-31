@@ -48,11 +48,26 @@ do
 done
 
 semver="${major}.${minor}.${patch}"
+
+echo -n "Update version to $semver? [y/N] " >&2
+read -r -n1 ans
+
+case "$ans" in
+    y|Y)
+        echo
+        ;;
+    *)
+        echo
+        echo "Aborting..."
+        exit 2
+        ;;
+esac
+
 echo "Updating version to $semver..." >&2
 
 grep --exclude="${BASH_SOURCE[0]}" -l -Z -r -e 'VERSION=' -e 'name="version"' | xargs -0 -l \
-    sed -i -e "s;VERSION=\".*\";VERSION=\"$semver\";g" \
-		       -e "s;<property name=\"version\">.*</property>;<property name=\"version\">$semver</property>;g"
+     sed -i -e "s;VERSION=\".*\";VERSION=\"$semver\";g" \
+		        -e "s;<property name=\"version\">.*</property>;<property name=\"version\">$semver</property>;g"
 
 make package
 
