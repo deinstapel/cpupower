@@ -18,8 +18,8 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-        draft: true
-        prerelease: true
+        draft: false
+        prerelease: false
     - name: Output Release URL File
       run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url
     - name: Save Release URL File for publish
