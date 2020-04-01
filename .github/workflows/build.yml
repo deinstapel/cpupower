@@ -1,0 +1,14 @@
+on:
+  push:
+    branches:
+    - master
+
+name: latest build
+
+jobs:
+  build:
+    name: Build project
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build
+      run: make package

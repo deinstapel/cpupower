@@ -4,6 +4,9 @@
     <img alt="Get it on GNOME Extensions" width="228" src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true"/>
   </a>
   <br>
+  <a href="https://github.com/martin31821/cpupower/actions?query=workflow%3A%22latest%20build%22">
+    <img src="https://github.com/martin31821/cpupower/workflows/latest%20build/badge.svg" alt="latest build">
+  </a>
   <a href="https://github.com/martin31821/cpupower/actions?query=workflow%3A%22release%20build%22">
     <img src="https://github.com/martin31821/cpupower/workflows/release%20build/badge.svg" alt="release build">
   </a>
