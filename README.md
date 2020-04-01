@@ -23,6 +23,7 @@
   <a href="#prerequisites">Prerequisites</a> •
   <a href="#installation">Installation</a> •
   <a href="#translating">Translating</a> •
+  <a href="#packaging">Packaging</a> •
   <a href="#developing">Developing</a>
 </p>
 
@@ -44,6 +45,11 @@ The easiest way to install this extension is by using the
 Click on the CPU icon in the top bar of your Gnome shell and follow the installation instructions.
 You need to enter your root password to install a policy kit rule. This rule is used to set the clock
 frequency of your CPU with your user.
+
+> Warning: Installing the polkit rule for any user on your system, enables all users on your system to run
+>          the installed `cpufreqctl` tool with root permissions. However, other users won't be able to use
+>          this extension due to installation paths and version compatibility. In theory however, they are
+>          able to run the `cpufreqctl` tool of another user with root permission in the command line.
 
 ### Installing for another (admin) user
 
@@ -97,7 +103,7 @@ $ sudo make install-tool TOOL_SUFFIX=username
 
 > Note: Using another PREFIX than `/usr` in this setup might include security risks and may not work.
 
-The extension will work out-of-the-box for the specified user only!
+The extension will work out-of-the-box for the user!
 
 #### Uninstalling
 
@@ -141,6 +147,16 @@ Open Poedit and select `Open`. Navigate to the `cpupower/locale` folder and sele
 ### Saving your work
 
 When finished save the file into the `locale` folder and [push](https://help.github.com/en/github/managing-files-in-a-repository/adding-a-file-to-a-repository-using-the-command-line) your changes to your fork. Now, you can create a [pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to make your translation available in the main cpupower installation.
+
+## Packaging
+
+You are a package maintainer and looking into packaging this extension? Great! Below is a short summary of how to properly install this extension (run as `root`):
+
+```shell
+# make install install-tool PREFIX=/usr
+```
+
+This will install a polkit rule to `/usr/share/polkit-1/actions/mko.cpupower.setcpufreq.policy` and an executable bash script to `/usr/bin/cpufreqctl`. The extension is installed to `/usr/share/gnome-shell/extensions/cpupower@mko-sl.de`. It still includes the `scripts` folder, the policykit rule template in `data/mko.cpupower.policy.in`, a useless copy of the tool and installer in the `tool` folder, and the `Makefile`. These are included in the distribution of the extension to enable user installation if the extension got installed over the GNOME extensions website. If you do not want to distribute those files in your package, you can safely remove them.
 
 ## Developing
 
