@@ -141,27 +141,27 @@ then
 
     if [ "$2" = "get" ]
     then
-  value=$(<"/sys/devices/system/cpu/intel_pstate/no_turbo")
-  if [ "${value}" -eq 0 ]
-  then
-      echo 1
-  else
-      echo 0
-  fi
-  exit
+        value=$(<"/sys/devices/system/cpu/intel_pstate/no_turbo")
+        if [ "${value}" -eq 0 ]
+        then
+            echo 1
+        else
+            echo 0
+        fi
+        exit
     fi
     if [ "$2" -lt 0 ] || [ "$2" -gt 1 ];
     then
         log "usage: cpufreqctl turbo {get,0,1}"
-  log "error: VALUE must be 0 or 1"
-  exit
+        log "error: VALUE must be 0 or 1"
+        exit
     fi
 
     if [ "$2" -eq 1 ]
     then
-  echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo
+        echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo
     else
-  echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
+        echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
     fi
     exit
 fi
@@ -179,26 +179,26 @@ then
 
     if [ "$2" = "get" ]
     then
-  value=$(</sys/devices/system/cpu/intel_pstate/max_perf_pct)
-  echo "${value}"
-  exit
+        value=$(</sys/devices/system/cpu/intel_pstate/max_perf_pct)
+        echo "${value}"
+        exit
     fi
 
     if [ "$2" = "check" ]
     then
-  preValue=$(</sys/devices/system/cpu/intel_pstate/max_perf_pct)
-  echo 100 > /sys/devices/system/cpu/intel_pstate/max_perf_pct
-  postValue=$(</sys/devices/system/cpu/intel_pstate/max_perf_pct)
-  echo "${preValue}" > /sys/devices/system/cpu/intel_pstate/max_perf_pct
-  echo "${postValue}"
-  exit
+        preValue=$(</sys/devices/system/cpu/intel_pstate/max_perf_pct)
+        echo 100 > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+        postValue=$(</sys/devices/system/cpu/intel_pstate/max_perf_pct)
+        echo "${preValue}" > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+        echo "${postValue}"
+        exit
     fi
 
     if [ "$2" -lt 0 ] || [ "$2" -gt 100 ];
     then
         log "usage: cpufreqctl max {get,VALUE}"
-  log "error: VALUE must be between 0 and 100"
-  exit
+        log "error: VALUE must be between 0 and 100"
+        exit
     fi
     echo "$2" > /sys/devices/system/cpu/intel_pstate/max_perf_pct
     exit
@@ -217,25 +217,29 @@ then
 
     if [ "$2" = "get" ]
     then
-  value=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
-  echo "${value}"
-  exit
+        value=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
+        echo "${value}"
+        exit
     fi
     if [ "$2" = "check" ]
     then
-  preValue=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
-  echo 0 > /sys/devices/system/cpu/intel_pstate/min_perf_pct
-  postValue=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
-  echo "${preValue}" > /sys/devices/system/cpu/intel_pstate/min_perf_pct
-  echo "${postValue}"
-  exit
+        preValue=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
+        echo 0 > /sys/devices/system/cpu/intel_pstate/min_perf_pct
+        postValue=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
+        echo "${preValue}" > /sys/devices/system/cpu/intel_pstate/min_perf_pct
+        echo "${postValue}"
+        exit
     fi
     if [ "$2" -lt 0 ] || [ "$2" -gt 100 ];
     then
         log "usage: cpufreqctl min {get,check,VALUE}"
-  log "error: VALUE must be between 0 and 100"
-  exit
+        log "error: VALUE must be between 0 and 100"
+        exit
     fi
     echo "$2" > /sys/devices/system/cpu/intel_pstate/min_perf_pct
     exit
 fi
+
+show_usage
+log "error: unknown action $*"
+exit 1
