@@ -17,7 +17,7 @@
                         <allow_active>yes</allow_active>
                 </defaults>
                 <annotate key="org.freedesktop.policykit.exec.path">{{PATH}}</annotate>
-                <annotate key="mko.cpupower.version">{{VERSION}}</annotate>
+                <annotate key="mko.cpupower.polkit-rule.version">3.0.0</annotate>
         </action>
 
 </policyconfig>

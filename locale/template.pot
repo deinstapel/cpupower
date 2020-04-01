@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-31 15:49+0200\n"
+"POT-Creation-Date: 2020-04-01 10:39+0200\n"
 "PO-Revision-Date: 2017-03-15 10:47+0100\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: \n"
@@ -96,51 +96,51 @@ msgstr ""
 msgid "CPU Power Manager is installed via your distributions package manager!"
 msgstr ""
 
-#: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:977
+#: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:979
 msgid "Uninstall"
 msgstr ""
 
-#: data/cpupower-preferences.glade:632
+#: data/cpupower-preferences.glade:634
 msgid "Installation"
 msgstr ""
 
-#: data/cpupower-preferences.glade:662 data/cpupower-preferences.glade:674
+#: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
 msgid "Profile name"
 msgstr ""
 
-#: data/cpupower-preferences.glade:687
+#: data/cpupower-preferences.glade:689
 msgid "Minimum frequency"
 msgstr ""
 
-#: data/cpupower-preferences.glade:715
+#: data/cpupower-preferences.glade:717
 msgid "Maximum frequency"
 msgstr ""
 
-#: data/cpupower-preferences.glade:727
+#: data/cpupower-preferences.glade:729
 msgid "Turbo boost"
 msgstr ""
 
-#: data/cpupower-preferences.glade:765
+#: data/cpupower-preferences.glade:767
 msgid "Discard"
 msgstr ""
 
-#: data/cpupower-preferences.glade:785
+#: data/cpupower-preferences.glade:787
 msgid "Save"
 msgstr ""
 
-#: data/cpupower-preferences.glade:914
+#: data/cpupower-preferences.glade:916
 msgid "Turbo boost:"
 msgstr ""
 
-#: data/cpupower-preferences.glade:948
+#: data/cpupower-preferences.glade:950
 msgid "Uninstall CPU Power Manager Tools"
 msgstr ""
 
-#: data/cpupower-preferences.glade:949
+#: data/cpupower-preferences.glade:951
 msgid "Are you sure you want to uninstall the cpufreqctl tool and the policykit rule?"
 msgstr ""
 
-#: data/cpupower-preferences.glade:963
+#: data/cpupower-preferences.glade:965
 msgid "Cancel"
 msgstr ""
 
@@ -249,13 +249,16 @@ msgid "Your computer does not support intel_pstate."
 msgstr ""
 
 #: src/update.js:43
+msgid "Your CPU Power Manager installation needs updating!"
+msgstr ""
+
+#: src/update.js:44
 msgid ""
-"Your CPU Power Manager installation needs updating!\n"
 "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
 msgstr ""
 
-#: src/update.js:60
+#: src/update.js:72
 msgid "Attempt tool update"
 msgstr ""
 

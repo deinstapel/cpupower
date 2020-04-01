@@ -2,18 +2,156 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-15 10:47+0100\n"
-"PO-Revision-Date: 2017-03-15 10:47+0100\n"
+"POT-Creation-Date: 2020-04-01 11:30+0200\n"
+"PO-Revision-Date: 2020-04-01 11:30+0200\n"
 "Last-Translator: Jan Kašík <honza.kasik@seznam.cz>\n"
 "Language-Team: \n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: data/cpupower-preferences.glade:61
+msgid "Gnome-Shell Extension for the intel-pstate driver."
+msgstr ""
+
+#: data/cpupower-preferences.glade:125
+msgid "Show current frequency"
+msgstr "Zobrazit aktuální frekvenci"
+
+#: data/cpupower-preferences.glade:138
+msgid "Use GHz instead of MHz"
+msgstr ""
+
+#: data/cpupower-preferences.glade:151
+#, fuzzy
+#| msgid "Show current cpu frequency in taskbar"
+msgid "Show icon in taskbar"
+msgstr "Zobrazit aktuální frekvenci procesoru v liště"
+
+#: data/cpupower-preferences.glade:164
+#, fuzzy
+#| msgid "Show current cpu frequency in taskbar"
+msgid "Show arrow in taskbar"
+msgstr "Zobrazit aktuální frekvenci procesoru v liště"
+
+#: data/cpupower-preferences.glade:217
+msgid "About"
+msgstr ""
+
+#: data/cpupower-preferences.glade:255
+msgid "Default AC profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:268
+#, fuzzy
+#| msgid "Name of the profile"
+msgid "Default battery profile"
+msgstr "Název profilu"
+
+#: data/cpupower-preferences.glade:279
+msgid "Set as default profile for battery operation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:291
+msgid "Set as standard profile for plugged in operation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:303
+msgid "Auto Switch Configuration"
+msgstr ""
+
+#: data/cpupower-preferences.glade:350
+msgid "General"
+msgstr ""
+
+#: data/cpupower-preferences.glade:401
+msgid "Add selected profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:414
+msgid "Remove selected profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:427
+msgid "Move selected profile up"
+msgstr ""
+
+#: data/cpupower-preferences.glade:440
+msgid "Move selected profile down"
+msgstr ""
+
+#: data/cpupower-preferences.glade:499
+msgid "Profiles"
+msgstr ""
+
+#: data/cpupower-preferences.glade:518
+msgid "Path to cpufreqctl:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:531
+msgid "Path to policykit rule:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:545
+msgid "CPU Power Manager is installed via your distributions package manager!"
+msgstr ""
+
+#: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:979
+msgid "Uninstall"
+msgstr ""
+
+#: data/cpupower-preferences.glade:634
+#, fuzzy
+#| msgid "Installation required."
+msgid "Installation"
+msgstr "Je vyžadována instalace"
+
+#: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
+msgid "Profile name"
+msgstr ""
+
+#: data/cpupower-preferences.glade:689
+msgid "Minimum frequency"
+msgstr ""
+
+#: data/cpupower-preferences.glade:717
+msgid "Maximum frequency"
+msgstr ""
+
+#: data/cpupower-preferences.glade:729
+msgid "Turbo boost"
+msgstr ""
+
+#: data/cpupower-preferences.glade:767
+msgid "Discard"
+msgstr ""
+
+#: data/cpupower-preferences.glade:787
+msgid "Save"
+msgstr ""
+
+#: data/cpupower-preferences.glade:916
+msgid "Turbo boost:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:950
+msgid "Uninstall CPU Power Manager Tools"
+msgstr ""
+
+#: data/cpupower-preferences.glade:951
+msgid ""
+"Are you sure you want to uninstall the cpufreqctl tool and the policykit "
+"rule?"
+msgstr ""
+
+#: data/cpupower-preferences.glade:965
+msgid "Cancel"
+msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
@@ -39,119 +177,112 @@ msgstr "Frekvence v liště je zobrazována v GHz nebo MHz"
 msgid "Control which unit is used for the frequency"
 msgstr "Nastavte jednotku používanou pro zobrazení frekvence"
 
-#: cpupower-preferences.glade:61
-msgid "Gnome-Shell Extension for the intel-pstate driver."
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
+#, fuzzy
+#| msgid "Show current cpu frequency in taskbar"
+msgid "Show cpu chip icon in taskbar"
+msgstr "Zobrazit aktuální frekvenci procesoru v liště"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
+#, fuzzy
+#| msgid "Show current cpu frequency in the top bar"
+msgid "Show cpu chip icon in the top bar"
+msgstr "Zobrazit aktuální frekvenci procesoru v horním panelu"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
+#, fuzzy
+#| msgid "Show current cpu frequency in taskbar"
+msgid "Show down arrow in taskbar"
+msgstr "Zobrazit aktuální frekvenci procesoru v liště"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
+#, fuzzy
+#| msgid "Show current cpu frequency in the top bar"
+msgid "Show down arrow in the top bar"
+msgstr "Zobrazit aktuální frekvenci procesoru v horním panelu"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
+msgid "Default AC profile ID"
 msgstr ""
 
-#: cpupower-preferences.glade:117
-msgid "Show current frequency"
-msgstr "Zobrazit aktuální frekvenci"
-
-#: cpupower-preferences.glade:130
-msgid "Use GHz instead of MHz"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
+msgid "The profile to switch to when plugged in"
 msgstr ""
 
-#: cpupower-preferences.glade:161
-msgid "About"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
+msgid "Default battery profile ID"
 msgstr ""
 
-#: cpupower-preferences.glade:183
-msgid "General"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
+msgid "The profile to switch to when unplugged"
 msgstr ""
 
-#: cpupower-preferences.glade:234
-msgid "Add selected profile"
-msgstr ""
-
-#: cpupower-preferences.glade:247
-msgid "Remove selected profile"
-msgstr ""
-
-#: cpupower-preferences.glade:260
-msgid "Move selected profile up"
-msgstr ""
-
-#: cpupower-preferences.glade:273
-msgid "Move selected profile down"
-msgstr ""
-
-#: cpupower-preferences.glade:332
-msgid "Profiles"
-msgstr ""
-
-#: cpupower-preferences.glade:362 cpupower-preferences.glade:374
-msgid "Profile name"
-msgstr ""
-
-#: cpupower-preferences.glade:387
-msgid "Minimum frequency"
-msgstr ""
-
-#: cpupower-preferences.glade:415
-msgid "Maximum frequency"
-msgstr ""
-
-#: cpupower-preferences.glade:427
-msgid "Turbo boost"
-msgstr ""
-
-#: cpupower-preferences.glade:465
-msgid "Discard"
-msgstr ""
-
-#: cpupower-preferences.glade:485
-msgid "Save"
-msgstr ""
-
-#: cpupower-preferences.glade:575
-msgid "Turbo boost:"
-msgstr ""
-
-#: extension.js:311
+#: src/indicator.js:172
 msgid "Minimum Frequency:"
 msgstr "Minimální frekvence:"
 
-#: extension.js:315
+#: src/indicator.js:176
 msgid "Maximum Frequency:"
 msgstr "Maximální frekvence:"
 
-#: extension.js:319
+#: src/indicator.js:180
 msgid "Turbo Boost:"
 msgstr "Turbo Boost:"
 
-#: extension.js:347
+#: src/indicator.js:186
+msgid "Auto Switch:"
+msgstr ""
+
+#: src/indicator.js:210
 msgid "Current Frequency:"
 msgstr "Aktuální frekvence:"
 
-#: extension.js:373
+#: src/indicator.js:235
 msgid "Preferences"
 msgstr "Nastavení"
 
-#: extension.js:525
-msgid "Your computer does not support intel_pstate."
-msgstr "Váš počítač nepodporuje intel_pstate."
-
-#: extension.js:542
+#: src/notinstalled.js:52
 msgid "Installation required."
 msgstr "Je vyžadována instalace"
 
-#: extension.js:548
+#: src/notinstalled.js:58
 msgid "Attempt installation"
 msgstr "Zkusit provést instalaci"
 
-#: prefs.js:233
+#: src/preferences.js:277
 msgid "Yes"
 msgstr ""
 
-#: prefs.js:233
+#: src/preferences.js:277
 msgid "No"
 msgstr ""
 
+#: src/preferences.js:349 src/preferences.js:350
+msgid "None"
+msgstr ""
+
+#: src/unsupported.js:47
+msgid "Your computer does not support intel_pstate."
+msgstr "Váš počítač nepodporuje intel_pstate."
+
+#: src/update.js:43
+msgid "Your CPU Power Manager installation needs updating!"
+msgstr ""
+
+#: src/update.js:44
+msgid ""
+"Warning: Security issues were found with your installation!\n"
+"Please update immediately!"
+msgstr ""
+
+#: src/update.js:72
+#, fuzzy
+#| msgid "Attempt installation"
+msgid "Attempt tool update"
+msgstr "Zkusit provést instalaci"
+
 #~ msgid "CPU"
 #~ msgstr "CPU"
-
-#~ msgid "Name of the profile"
-#~ msgstr "Název profilu"
 
 #~ msgid "Minimum Frequency"
 #~ msgstr "Minimální frekvence"

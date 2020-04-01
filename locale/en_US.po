@@ -2,18 +2,148 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-15 10:49+0100\n"
-"PO-Revision-Date: 2017-03-15 10:49+0100\n"
+"POT-Creation-Date: 2020-04-01 11:30+0200\n"
+"PO-Revision-Date: 2020-04-01 11:30+0200\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: \n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: data/cpupower-preferences.glade:61
+msgid "Gnome-Shell Extension for the intel-pstate driver."
+msgstr ""
+
+#: data/cpupower-preferences.glade:125
+msgid "Show current frequency"
+msgstr ""
+
+#: data/cpupower-preferences.glade:138
+msgid "Use GHz instead of MHz"
+msgstr ""
+
+#: data/cpupower-preferences.glade:151
+msgid "Show icon in taskbar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:164
+msgid "Show arrow in taskbar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:217
+msgid "About"
+msgstr ""
+
+#: data/cpupower-preferences.glade:255
+msgid "Default AC profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:268
+msgid "Default battery profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:279
+msgid "Set as default profile for battery operation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:291
+msgid "Set as standard profile for plugged in operation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:303
+msgid "Auto Switch Configuration"
+msgstr ""
+
+#: data/cpupower-preferences.glade:350
+msgid "General"
+msgstr ""
+
+#: data/cpupower-preferences.glade:401
+msgid "Add selected profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:414
+msgid "Remove selected profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:427
+msgid "Move selected profile up"
+msgstr ""
+
+#: data/cpupower-preferences.glade:440
+msgid "Move selected profile down"
+msgstr ""
+
+#: data/cpupower-preferences.glade:499
+msgid "Profiles"
+msgstr ""
+
+#: data/cpupower-preferences.glade:518
+msgid "Path to cpufreqctl:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:531
+msgid "Path to policykit rule:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:545
+msgid "CPU Power Manager is installed via your distributions package manager!"
+msgstr ""
+
+#: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:979
+msgid "Uninstall"
+msgstr ""
+
+#: data/cpupower-preferences.glade:634
+msgid "Installation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
+msgid "Profile name"
+msgstr ""
+
+#: data/cpupower-preferences.glade:689
+msgid "Minimum frequency"
+msgstr ""
+
+#: data/cpupower-preferences.glade:717
+msgid "Maximum frequency"
+msgstr ""
+
+#: data/cpupower-preferences.glade:729
+msgid "Turbo boost"
+msgstr ""
+
+#: data/cpupower-preferences.glade:767
+msgid "Discard"
+msgstr ""
+
+#: data/cpupower-preferences.glade:787
+msgid "Save"
+msgstr ""
+
+#: data/cpupower-preferences.glade:916
+msgid "Turbo boost:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:950
+msgid "Uninstall CPU Power Manager Tools"
+msgstr ""
+
+#: data/cpupower-preferences.glade:951
+msgid ""
+"Are you sure you want to uninstall the cpufreqctl tool and the policykit "
+"rule?"
+msgstr ""
+
+#: data/cpupower-preferences.glade:965
+msgid "Cancel"
+msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
@@ -56,7 +186,7 @@ msgid "Show down arrow in the top bar"
 msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
-msgid "default AC profile ID"
+msgid "Default AC profile ID"
 msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
@@ -64,107 +194,11 @@ msgid "The profile to switch to when plugged in"
 msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
-msgid "default battery profile ID"
+msgid "Default battery profile ID"
 msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
 msgid "The profile to switch to when unplugged"
-msgstr ""
-
-#: data/cpupower-preferences.glade:61
-msgid "Gnome-Shell Extension for the intel-pstate driver."
-msgstr ""
-
-#: data/cpupower-preferences.glade:124
-msgid "Show current frequency"
-msgstr ""
-
-#: data/cpupower-preferences.glade:137
-msgid "Use GHz instead of MHz"
-msgstr ""
-
-#: data/cpupower-preferences.glade:150
-msgid "Show icon in taskbar"
-msgstr ""
-
-#: data/cpupower-preferences.glade:163
-msgid "Show arrow in taskbar"
-msgstr ""
-
-#: data/cpupower-preferences.glade:216
-msgid "About"
-msgstr ""
-
-#: data/cpupower-preferences.glade:254
-msgid "Default AC profile"
-msgstr ""
-
-#: data/cpupower-preferences.glade:267
-msgid "Default battery profile"
-msgstr ""
-
-#: data/cpupower-preferences.glade:278
-msgid "Set as default profile for battery operation"
-msgstr ""
-
-#: data/cpupower-preferences.glade:237
-msgid "Set as standard profile for plugged in operation"
-msgstr ""
-
-#: data/cpupower-preferences.glade:237
-msgid "Auto Switch Configuration"
-msgstr ""
-
-#: data/cpupower-preferences.glade:349
-msgid "General"
-msgstr ""
-
-#: data/cpupower-preferences.glade:400
-msgid "Add selected profile"
-msgstr ""
-
-#: data/cpupower-preferences.glade:413
-msgid "Remove selected profile"
-msgstr ""
-
-#: data/cpupower-preferences.glade:426
-msgid "Move selected profile up"
-msgstr ""
-
-#: data/cpupower-preferences.glade:439
-msgid "Move selected profile down"
-msgstr ""
-
-#: data/cpupower-preferences.glade:498
-msgid "Profiles"
-msgstr ""
-
-#: data/cpupower-preferences.glade:528 data/cpupower-preferences.glade:540
-msgid "Profile name"
-msgstr ""
-
-#: data/cpupower-preferences.glade:553
-msgid "Minimum frequency"
-msgstr ""
-
-#: data/cpupower-preferences.glade:581
-msgid "Maximum frequency"
-msgstr ""
-
-#: data/cpupower-preferences.glade:593
-msgid "Turbo boost"
-msgstr ""
-
-#: data/cpupower-preferences.glade:631
-msgid "Discard"
-msgstr ""
-
-#: data/cpupower-preferences.glade:651
-msgid "Save"
-msgstr ""
-
-#: data/cpupower-preferences.glade:780
-msgid "Turbo boost:"
 msgstr ""
 
 #: src/indicator.js:172
@@ -191,28 +225,42 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: src/notinstalled.js:57
+#: src/notinstalled.js:52
 msgid "Installation required."
 msgstr ""
 
-#: src/notinstalled.js:63
+#: src/notinstalled.js:58
 msgid "Attempt installation"
 msgstr ""
 
-#: src/preferences.js:260
+#: src/preferences.js:277
 msgid "Yes"
 msgstr ""
 
-#: src/preferences.js:260
+#: src/preferences.js:277
 msgid "No"
 msgstr ""
 
-#: src/preferences.js:332 src/preferences.js:333
+#: src/preferences.js:349 src/preferences.js:350
 msgid "None"
 msgstr ""
 
-#: src/unsupported.js:54
+#: src/unsupported.js:47
 msgid "Your computer does not support intel_pstate."
+msgstr ""
+
+#: src/update.js:43
+msgid "Your CPU Power Manager installation needs updating!"
+msgstr ""
+
+#: src/update.js:44
+msgid ""
+"Warning: Security issues were found with your installation!\n"
+"Please update immediately!"
+msgstr ""
+
+#: src/update.js:72
+msgid "Attempt tool update"
 msgstr ""
 
 #~ msgid "CPU"

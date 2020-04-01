@@ -62,15 +62,26 @@ var enable = () => {
 
             check_installed((installed, exitCode) => {
                 if (!installed) {
-                    if (exitCode === 5) {
-                        _indicator = new update.UpdateIndicator(function (success) {
+                    switch (exitCode) {
+                    case 3:
+                        _indicator = new update.UpdateIndicator(update.UPDATE, function (success) {
                             if (success) {
                                 // reenable the extension to allow immediate operation.
                                 disable();
                                 enable();
                             }
                         });
-                    } else {
+                        break;
+                    case 4:
+                        _indicator = new update.UpdateIndicator(update.SECURITY_UPDATE, function (success) {
+                            if (success) {
+                                // reenable the extension to allow immediate operation.
+                                disable();
+                                enable();
+                            }
+                        });
+                        break;
+                    default:
                         _indicator = new notinstalled.NotInstalledIndicator(function (success) {
                             if (success)
                             {
@@ -79,6 +90,7 @@ var enable = () => {
                                 enable();
                             }
                         });
+                        break;
                     }
                 } else {
                     _indicator = new indicator.CPUFreqIndicator();

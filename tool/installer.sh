@@ -23,7 +23,13 @@
 
 set -e
 
-VERSION="8.0.0"
+EXIT_SUCCESS=0
+EXIT_INVALID_ARG=1
+EXIT_FAILED=2
+EXIT_NEEDS_UPDATE=3
+EXIT_NEEDS_SECURITY_UPDATE=4
+EXIT_NOT_INSTALLED=5
+EXIT_MUST_BE_ROOT=6
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" #stackoverflow 59895
 PREFIX="/usr" # default install prefix is /usr
@@ -35,7 +41,7 @@ function usage() {
     echo "  --prefix PREFIX        Set the install prefix (default: /usr)"
     echo "  --tool-suffix SUFFIX   Set the tool name suffix (default: <empty>)"
     echo
-    exit 1
+    exit ${EXIT_INVALID_ARG}
 }
 
 if [ $# -lt 1 ]
@@ -105,8 +111,8 @@ V8_LEGACY_OUT="/usr/share/polkit-1/actions/mko.cpupower.setcpufreq.policy"
 if [ "$ACTION" = "supported" ]
 then
     ls /sys/devices/system/cpu/intel_pstate > /dev/null 2>&1 || \
-        (echo "Unsupported" && exit 5) && echo "Supported"
-    exit $?
+        (echo "Unsupported" && exit ${EXIT_FAILED}) && echo "Supported"
+    exit ${EXIT_SUCCESS}
 fi
 
 if [ "$ACTION" = "check" ]
@@ -120,14 +126,25 @@ then
     then
         echo "Your cpupower installation needs updating!"
         echo "Warning: Security issues were found with your installation! Update immediately!"
-        exit 5
+        exit ${EXIT_NEEDS_SECURITY_UPDATE}
     fi
 
-    sed -e "s:{{PATH}}:${CFC_OUT}:g" \
-        -e "s:{{VERSION}}:${VERSION}:g" \
-        -e "s:{{ID}}:${RULE_ID}:g" "${RULE_IN}" | \
-        cmp --silent "${RULE_OUT}" || (echo "Not installed" && exit 6) && echo "Installed"
-    exit $?
+    if ! sed -e "s:{{PATH}}:${CFC_OUT}:g" \
+             -e "s:{{ID}}:${RULE_ID}:g" "${RULE_IN}" | \
+             cmp --silent "${RULE_OUT}"
+    then
+        if [ -f "${RULE_OUT}" ]
+        then
+            echo "Your cpupower installation needs updating!"
+            exit ${EXIT_NEEDS_UPDATE}
+        else
+            echo "Not installed"
+            exit ${EXIT_NOT_INSTALLED}
+        fi
+    fi
+    echo "Installed"
+
+    exit ${EXIT_SUCCESS}
 fi
 
 if [ "$ACTION" = "install" ]
@@ -136,23 +153,22 @@ then
         echo "The install action must be run as root for security reasons!"
         echo "Please have a look at https://github.com/martin31821/cpupower/issues/102"
         echo "for further details."
-        exit 4
+        exit ${EXIT_MUST_BE_ROOT}
     fi
 
     echo -n "Installing cpufreqctl tool... "
     mkdir -p "${CFC_DIR}"
-    install "${CFC_IN}" "${CFC_OUT}" || (echo "Failed" && exit 3)
+    install "${CFC_IN}" "${CFC_OUT}" || (echo "Failed" && exit ${EXIT_FAILED})
     echo "Success"
 
     echo -n "Installing policykit action... "
     mkdir -p "${RULE_DIR}"
     sed -e "s:{{PATH}}:${CFC_OUT}:g" \
-        -e "s:{{VERSION}}:${VERSION}:g" \
         -e "s:{{ID}}:${RULE_ID}:g" "${RULE_IN}" > "${RULE_OUT}" 2>/dev/null || \
-        (echo "Failed" && exit 2)
+        (echo "Failed" && exit ${EXIT_FAILED})
     echo "Success"
 
-    exit 0
+    exit ${EXIT_SUCCESS}
 fi
 
 if [ "$ACTION" = "update" ]
@@ -161,7 +177,7 @@ then
     then
         echo -n "Uninstalling legacy v7 polkit rule... "
         rm "${V7_LEGACY_OUT}" || \
-            (echo "Failed - cannot remove ${V7_LEGACY_OUT}" && exit 7)
+            (echo "Failed - cannot remove ${V7_LEGACY_OUT}" && exit ${EXIT_FAILED})
         echo "Success"
     fi
 
@@ -169,14 +185,14 @@ then
     then
         echo -n "Uninstalling legacy v8 polkit rule... "
         rm "${V8_LEGACY_OUT}" || \
-            (echo "Failed - cannot remove ${V8_LEGACY_OUT}" && exit 7)
+            (echo "Failed - cannot remove ${V8_LEGACY_OUT}" && exit ${EXIT_FAILED})
         echo "Success"
     fi
 
     "${BASH_SOURCE[0]}" --prefix "${PREFIX}" --tool-suffix "${TOOL_SUFFIX}" uninstall || exit $?
     "${BASH_SOURCE[0]}" --prefix "${PREFIX}" --tool-suffix "${TOOL_SUFFIX}" install || exit $?
 
-    exit 0
+    exit ${EXIT_SUCCESS}
 fi
 
 if [ "$ACTION" = "uninstall" ]
@@ -184,7 +200,7 @@ then
     echo -n "Uninstalling cpufreqctl tool... "
     if [ -f "${CFC_OUT}" ]
     then
-        rm "${CFC_OUT}" || (echo "Failed - cannot remove ${CFC_OUT}" && exit 7) && echo "Success"
+        rm "${CFC_OUT}" || (echo "Failed - cannot remove ${CFC_OUT}" && exit ${EXIT_FAILED}) && echo "Success"
     else
         echo "tool not installed at ${CFC_OUT}"
     fi
@@ -192,11 +208,11 @@ then
     echo -n "Uninstalling policykit action... "
     if [ -f "${RULE_OUT}" ]
     then
-        rm "${RULE_OUT}" || (echo "Failed - cannot remove ${RULE_OUT}" && exit 7) && echo "Success"
+        rm "${RULE_OUT}" || (echo "Failed - cannot remove ${RULE_OUT}" && exit ${EXIT_FAILED}) && echo "Success"
     else
         echo "policy not installed at ${RULE_OUT}"
     fi
-    exit 0
+    exit ${EXIT_SUCCESS}
 fi
 
 echo "Unknown parameter."

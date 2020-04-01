@@ -95,9 +95,9 @@ $ sudo make install-tool TOOL_SUFFIX=username
 
 > Note: Also, use this command to update the tool for another user in an outdated installation.
 
-The extension will work out-of-the-box for the specified user only!
-
 > Note: Using another PREFIX than `/usr` in this setup might include security risks and may not work.
+
+The extension will work out-of-the-box for the specified user only!
 
 #### Uninstalling
 

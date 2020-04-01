@@ -8,6 +8,8 @@ EXTENSION_FILES="$(shell find . -path './.git' -prune -o -path './target' -prune
 build:
 	@echo Compiling schemas...
 	@glib-compile-schemas ./schemas
+	@echo Updating translations...
+	@./scripts/update-translations.sh
 
 clean:
 	@rm -r target

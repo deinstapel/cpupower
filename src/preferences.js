@@ -448,9 +448,10 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     }
 
     onAboutButtonClicked(button) {
-        let profileListItemBuilder = new Gtk.Builder();
-        profileListItemBuilder.add_objects_from_file(GLADE_FILE, ["AboutDialog"]);
-        let dialog = profileListItemBuilder.get_object("AboutDialog");
+        let aboutBuilder = new Gtk.Builder();
+        aboutBuilder.set_translation_domain("gnome-shell-extension-cpupower");
+        aboutBuilder.add_objects_from_file(GLADE_FILE, ["AboutDialog"]);
+        let dialog = aboutBuilder.get_object("AboutDialog");
         let parentWindow = this.MainWidget.get_toplevel();
         dialog.set_transient_for(parentWindow);
         dialog.run();
@@ -459,6 +460,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
     onUninstallButtonClicked(button) {
         let uninstallDialogBuilder = new Gtk.Builder();
+        uninstallDialogBuilder.set_translation_domain("gnome-shell-extension-cpupower");
         uninstallDialogBuilder.add_objects_from_file(GLADE_FILE, ["UninstallMessageDialog"]);
         let dialog = uninstallDialogBuilder.get_object("UninstallMessageDialog");
         let uninstallButton = uninstallDialogBuilder.get_object("UninstallDialogUninstall");

@@ -2,18 +2,155 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-28 21:27+0200\n"
-"PO-Revision-Date: 2017-11-08 17:14+0100\n"
+"POT-Creation-Date: 2020-04-01 11:30+0200\n"
+"PO-Revision-Date: 2020-04-01 11:30+0200\n"
+"Last-Translator: Slobodan Terzić <slobodan.terzic@zoho.eu>\n"
 "Language-Team: \n"
+"Language: sr_RS@latin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ..\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"Last-Translator: Slobodan Terzić  <slobodan.terzic@zoho.eu>\n"
-"Language: sr_RS@latin\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: data/cpupower-preferences.glade:61
+msgid "Gnome-Shell Extension for the intel-pstate driver."
+msgstr "Proširenje Gomove školjke za intel_pstate drajver."
+
+#: data/cpupower-preferences.glade:125
+msgid "Show current frequency"
+msgstr "Prikaži trenutnu frekvenciju"
+
+#: data/cpupower-preferences.glade:138
+msgid "Use GHz instead of MHz"
+msgstr "Koristi GHz umesto MHz"
+
+#: data/cpupower-preferences.glade:151
+#, fuzzy
+#| msgid "Show current cpu frequency in taskbar"
+msgid "Show icon in taskbar"
+msgstr "Prikazuj trenutnu frekvenciju na traci zadataka"
+
+#: data/cpupower-preferences.glade:164
+#, fuzzy
+#| msgid "Show current cpu frequency in taskbar"
+msgid "Show arrow in taskbar"
+msgstr "Prikazuj trenutnu frekvenciju na traci zadataka"
+
+#: data/cpupower-preferences.glade:217
+msgid "About"
+msgstr "O proširenju"
+
+#: data/cpupower-preferences.glade:255
+msgid "Default AC profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:268
+msgid "Default battery profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:279
+msgid "Set as default profile for battery operation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:291
+msgid "Set as standard profile for plugged in operation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:303
+msgid "Auto Switch Configuration"
+msgstr ""
+
+#: data/cpupower-preferences.glade:350
+msgid "General"
+msgstr "Opšte"
+
+#: data/cpupower-preferences.glade:401
+msgid "Add selected profile"
+msgstr "Dodaj izabrani profil"
+
+#: data/cpupower-preferences.glade:414
+msgid "Remove selected profile"
+msgstr "Ukloni izabrani profil"
+
+#: data/cpupower-preferences.glade:427
+msgid "Move selected profile up"
+msgstr "Pomeri izabrani profil na gore"
+
+#: data/cpupower-preferences.glade:440
+msgid "Move selected profile down"
+msgstr "Pomeri izabrani profil na dole"
+
+#: data/cpupower-preferences.glade:499
+msgid "Profiles"
+msgstr "Profili"
+
+#: data/cpupower-preferences.glade:518
+msgid "Path to cpufreqctl:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:531
+msgid "Path to policykit rule:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:545
+msgid "CPU Power Manager is installed via your distributions package manager!"
+msgstr ""
+
+#: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:979
+msgid "Uninstall"
+msgstr ""
+
+#: data/cpupower-preferences.glade:634
+#, fuzzy
+#| msgid "Installation required."
+msgid "Installation"
+msgstr "Neophodna je instalacija"
+
+#: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
+msgid "Profile name"
+msgstr "Ime profila"
+
+#: data/cpupower-preferences.glade:689
+msgid "Minimum frequency"
+msgstr "Minimalna frekvencija"
+
+#: data/cpupower-preferences.glade:717
+msgid "Maximum frequency"
+msgstr "Maksimalna frekvencija"
+
+#: data/cpupower-preferences.glade:729
+msgid "Turbo boost"
+msgstr "Turbo pojačanje"
+
+#: data/cpupower-preferences.glade:767
+msgid "Discard"
+msgstr "Odbaci"
+
+#: data/cpupower-preferences.glade:787
+msgid "Save"
+msgstr "Snimi"
+
+#: data/cpupower-preferences.glade:916
+msgid "Turbo boost:"
+msgstr "Turbo pojačanje:"
+
+#: data/cpupower-preferences.glade:950
+msgid "Uninstall CPU Power Manager Tools"
+msgstr ""
+
+#: data/cpupower-preferences.glade:951
+msgid ""
+"Are you sure you want to uninstall the cpufreqctl tool and the policykit "
+"rule?"
+msgstr ""
+
+#: data/cpupower-preferences.glade:965
+msgid "Cancel"
+msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
@@ -39,113 +176,109 @@ msgstr "Frekvencija na traci zadataka se prikazuje u GHz ili MHz"
 msgid "Control which unit is used for the frequency"
 msgstr "Postavlja jedinicu koja se koristi za frekvenciju"
 
-#: data/cpupower-preferences.glade:61
-msgid "Gnome-Shell Extension for the intel-pstate driver."
-msgstr "Proširenje Gomove školjke za intel_pstate drajver."
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
+#, fuzzy
+#| msgid "Show current cpu frequency in taskbar"
+msgid "Show cpu chip icon in taskbar"
+msgstr "Prikazuj trenutnu frekvenciju na traci zadataka"
 
-#: data/cpupower-preferences.glade:117
-msgid "Show current frequency"
-msgstr "Prikaži trenutnu frekvenciju"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
+#, fuzzy
+#| msgid "Show current cpu frequency in the top bar"
+msgid "Show cpu chip icon in the top bar"
+msgstr "Prikazuj trenutnu frekvenciju na gornjoj traci"
 
-#: data/cpupower-preferences.glade:130
-msgid "Use GHz instead of MHz"
-msgstr "Koristi GHz umesto MHz"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
+#, fuzzy
+#| msgid "Show current cpu frequency in taskbar"
+msgid "Show down arrow in taskbar"
+msgstr "Prikazuj trenutnu frekvenciju na traci zadataka"
 
-#: data/cpupower-preferences.glade:161
-msgid "About"
-msgstr "O proširenju"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
+#, fuzzy
+#| msgid "Show current cpu frequency in the top bar"
+msgid "Show down arrow in the top bar"
+msgstr "Prikazuj trenutnu frekvenciju na gornjoj traci"
 
-#: data/cpupower-preferences.glade:183
-msgid "General"
-msgstr "Opšte"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
+msgid "Default AC profile ID"
+msgstr ""
 
-#: data/cpupower-preferences.glade:234
-msgid "Add selected profile"
-msgstr "Dodaj izabrani profil"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
+msgid "The profile to switch to when plugged in"
+msgstr ""
 
-#: data/cpupower-preferences.glade:247
-msgid "Remove selected profile"
-msgstr "Ukloni izabrani profil"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
+msgid "Default battery profile ID"
+msgstr ""
 
-#: data/cpupower-preferences.glade:260
-msgid "Move selected profile up"
-msgstr "Pomeri izabrani profil na gore"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
+msgid "The profile to switch to when unplugged"
+msgstr ""
 
-#: data/cpupower-preferences.glade:273
-msgid "Move selected profile down"
-msgstr "Pomeri izabrani profil na dole"
-
-#: data/cpupower-preferences.glade:332
-msgid "Profiles"
-msgstr "Profili"
-
-#: data/cpupower-preferences.glade:362 data/cpupower-preferences.glade:374
-msgid "Profile name"
-msgstr "Ime profila"
-
-#: data/cpupower-preferences.glade:387
-msgid "Minimum frequency"
-msgstr "Minimalna frekvencija"
-
-#: data/cpupower-preferences.glade:415
-msgid "Maximum frequency"
-msgstr "Maksimalna frekvencija"
-
-#: data/cpupower-preferences.glade:427
-msgid "Turbo boost"
-msgstr "Turbo pojačanje"
-
-#: data/cpupower-preferences.glade:465
-msgid "Discard"
-msgstr "Odbaci"
-
-#: data/cpupower-preferences.glade:485
-msgid "Save"
-msgstr "Snimi"
-
-#: data/cpupower-preferences.glade:575
-msgid "Turbo boost:"
-msgstr "Turbo pojačanje:"
-
-#: src/indicator.js:151
+#: src/indicator.js:172
 msgid "Minimum Frequency:"
 msgstr "Minimalna frekvencija:"
 
-#: src/indicator.js:155
+#: src/indicator.js:176
 msgid "Maximum Frequency:"
 msgstr "Maksimalna frekvencija:"
 
-#: src/indicator.js:159
+#: src/indicator.js:180
 msgid "Turbo Boost:"
 msgstr "Turbo pojačanje:"
 
-#: src/indicator.js:187
+#: src/indicator.js:186
+msgid "Auto Switch:"
+msgstr ""
+
+#: src/indicator.js:210
 msgid "Current Frequency:"
 msgstr "Trenutna frekvencija:"
 
-#: src/indicator.js:212
+#: src/indicator.js:235
 msgid "Preferences"
 msgstr "Podešavanje"
 
-#: src/notinstalled.js:57
+#: src/notinstalled.js:52
 msgid "Installation required."
 msgstr "Neophodna je instalacija"
 
-#: src/notinstalled.js:63
+#: src/notinstalled.js:58
 msgid "Attempt installation"
 msgstr "Pokušaj instalaciju"
 
-#: src/preferences.js:263
+#: src/preferences.js:277
 msgid "Yes"
 msgstr "Da"
 
-#: src/preferences.js:263
+#: src/preferences.js:277
 msgid "No"
 msgstr "Ne"
 
-#: src/unsupported.js:54
+#: src/preferences.js:349 src/preferences.js:350
+msgid "None"
+msgstr ""
+
+#: src/unsupported.js:47
 msgid "Your computer does not support intel_pstate."
 msgstr "Vaš računar ne podržava intel_pstate."
 
-msgid "CPU"
-msgstr "CPU"
+#: src/update.js:43
+msgid "Your CPU Power Manager installation needs updating!"
+msgstr ""
+
+#: src/update.js:44
+msgid ""
+"Warning: Security issues were found with your installation!\n"
+"Please update immediately!"
+msgstr ""
+
+#: src/update.js:72
+#, fuzzy
+#| msgid "Attempt installation"
+msgid "Attempt tool update"
+msgstr "Pokušaj instalaciju"
+
+#~ msgid "CPU"
+#~ msgstr "CPU"

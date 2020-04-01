@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-31 15:49+0200\n"
-"PO-Revision-Date: 2020-03-31 15:50+0200\n"
+"POT-Creation-Date: 2020-04-01 11:30+0200\n"
+"PO-Revision-Date: 2020-04-01 11:43+0200\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -94,50 +94,50 @@ msgstr "Pfad zur Policykit Regel:"
 #: data/cpupower-preferences.glade:545
 msgid "CPU Power Manager is installed via your distributions package manager!"
 msgstr ""
-"Der CPU Power Manager wurde über die Paketverwaltung deiner Distribution "
+"CPU Power Manager wurde über die Paketverwaltung deiner Distribution "
 "installiert!"
 
-#: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:977
+#: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:979
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
-#: data/cpupower-preferences.glade:632
+#: data/cpupower-preferences.glade:634
 msgid "Installation"
 msgstr "Installation"
 
-#: data/cpupower-preferences.glade:662 data/cpupower-preferences.glade:674
+#: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
 msgid "Profile name"
 msgstr "Profilname"
 
-#: data/cpupower-preferences.glade:687
+#: data/cpupower-preferences.glade:689
 msgid "Minimum frequency"
 msgstr "Minimale Frequenz"
 
-#: data/cpupower-preferences.glade:715
+#: data/cpupower-preferences.glade:717
 msgid "Maximum frequency"
 msgstr "Maximale Frequenz"
 
-#: data/cpupower-preferences.glade:727
+#: data/cpupower-preferences.glade:729
 msgid "Turbo boost"
 msgstr "Turbo Boost"
 
-#: data/cpupower-preferences.glade:765
+#: data/cpupower-preferences.glade:767
 msgid "Discard"
 msgstr "Verwerfen"
 
-#: data/cpupower-preferences.glade:785
+#: data/cpupower-preferences.glade:787
 msgid "Save"
 msgstr "Speichern"
 
-#: data/cpupower-preferences.glade:914
+#: data/cpupower-preferences.glade:916
 msgid "Turbo boost:"
 msgstr "Turbo Boost:"
 
-#: data/cpupower-preferences.glade:948
+#: data/cpupower-preferences.glade:950
 msgid "Uninstall CPU Power Manager Tools"
 msgstr "CPU Power Manager Werkzeuge deinstallieren"
 
-#: data/cpupower-preferences.glade:949
+#: data/cpupower-preferences.glade:951
 msgid ""
 "Are you sure you want to uninstall the cpufreqctl tool and the policykit "
 "rule?"
@@ -145,7 +145,7 @@ msgstr ""
 "Bist du dir sicher, dass du das cpufreqctl Werkzeug und die Policykit Regel "
 "deinstallieren möchtest?"
 
-#: data/cpupower-preferences.glade:963
+#: data/cpupower-preferences.glade:965
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -254,16 +254,18 @@ msgid "Your computer does not support intel_pstate."
 msgstr "Dieser Rechner unterstützt intel_pstate nicht."
 
 #: src/update.js:43
+msgid "Your CPU Power Manager installation needs updating!"
+msgstr "Deine CPU Power Manager Installation benötigt eine Aktualisierung!"
+
+#: src/update.js:44
 msgid ""
-"Your CPU Power Manager installation needs updating!\n"
 "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
 msgstr ""
-"Dein CPU Power Manager benötigt eine Aktualisierung!\n"
 "Warnung: Sicherheitsprobleme wurden in deiner Installation gefunden!\n"
 "Bitte unverzüglich aktualisieren!"
 
-#: src/update.js:60
+#: src/update.js:72
 msgid "Attempt tool update"
 msgstr "Aktualisierung versuchen"
 
