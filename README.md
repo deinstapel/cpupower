@@ -66,6 +66,8 @@ $ cd cpupower
 $ make install PREFIX=/home/username/.local
 ```
 
+Restart the gnome-shell (log out and back in) to make the extension available.
+
 The user can enable the extension in his settings and install the polkit rule and `cpufreqctl` tool by using the included installation guide.
 
 #### Uninstalling
@@ -102,6 +104,8 @@ $ sudo make install-tool TOOL_SUFFIX=username
 > Note: Also, use this command to update the tool for another user in an outdated installation.
 
 > Note: Using another PREFIX than `/usr` in this setup might include security risks and may not work.
+
+Restart the gnome-shell (log out and back in) to make the extension available.
 
 The extension will work out-of-the-box for the user!
 
