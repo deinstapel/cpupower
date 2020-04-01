@@ -468,31 +468,34 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         let parentWindow = this.MainWidget.get_toplevel();
         dialog.set_transient_for(parentWindow);
         uninstallButton.connect("clicked", () => {
-            attempt_uninstallation(() => {
+            attempt_uninstallation(success => {
                 dialog.close();
-                GLib.spawn_sync(
-                    null,
-                    [
-                        'gnome-extensions',
-                        'disable',
-                        'cpupower@mko-sl.de',
-                    ],
-                    null,
-                    GLib.SpawnFlags.SEARCH_PATH,
-                    null,
-                );
-                GLib.spawn_sync(
-                    null,
-                    [
-                        'gnome-extensions',
-                        'enable',
-                        'cpupower@mko-sl.de',
-                    ],
-                    null,
-                    GLib.SpawnFlags.SEARCH_PATH,
-                    null,
-                );
-                this.MainWidget.get_toplevel().get_application().quit();
+
+                if (success) {
+                    GLib.spawn_sync(
+                        null,
+                        [
+                            'gnome-extensions',
+                            'disable',
+                            'cpupower@mko-sl.de',
+                        ],
+                        null,
+                        GLib.SpawnFlags.SEARCH_PATH,
+                        null,
+                    );
+                    GLib.spawn_sync(
+                        null,
+                        [
+                            'gnome-extensions',
+                            'enable',
+                            'cpupower@mko-sl.de',
+                        ],
+                        null,
+                        GLib.SpawnFlags.SEARCH_PATH,
+                        null,
+                    );
+                    this.MainWidget.get_toplevel().get_application().quit();
+                }
             });
         });
         cancelButton.connect("clicked", () => {

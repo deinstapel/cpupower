@@ -46,11 +46,6 @@ Click on the CPU icon in the top bar of your Gnome shell and follow the installa
 You need to enter your root password to install a policy kit rule. This rule is used to set the clock
 frequency of your CPU with your user.
 
-> Warning: Installing the polkit rule for any user on your system, enables all users on your system to run
->          the installed `cpufreqctl` tool with root permissions. However, other users won't be able to use
->          this extension due to installation paths and version compatibility. In theory however, they are
->          able to run the `cpufreqctl` tool of another user with root permission in the command line.
-
 ### Installing for another (admin) user
 
 Impersonate the (admin) user, clone the git repository, and run the following command:
@@ -107,7 +102,7 @@ $ sudo make install-tool TOOL_SUFFIX=username
 
 Restart the gnome-shell (log out and back in) to make the extension available.
 
-The extension will work out-of-the-box for the user!
+The extension will work out-of-the-box for this user only!
 
 #### Uninstalling
 

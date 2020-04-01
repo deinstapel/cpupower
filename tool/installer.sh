@@ -84,8 +84,11 @@ do
     esac
 done
 
-RULE_IN="${DIR}/../data/mko.cpupower.policy.in"
-RULE_DIR="${PREFIX}/share/polkit-1/actions"
+ACTION_IN="${DIR}/../data/mko.cpupower.policy.in"
+ACTION_DIR="${PREFIX}/share/polkit-1/actions"
+RULE_IN="${DIR}/../data/10-mko.cpupower.setcpufreq.rules"
+RULE_DIR="${PREFIX}/share/polkit-1/rules.d"
+RULE_OUT="${RULE_DIR}/10-mko.cpupower.setcpufreq.rules"
 CFC_IN="${DIR}/cpufreqctl"
 
 # if TOOL_SUFFIX is provided, install to .../local/bin
@@ -96,13 +99,13 @@ if [ -z "${TOOL_SUFFIX}" ]
 then
     CFC_DIR="${PREFIX}/bin"
     CFC_OUT="${CFC_DIR}/cpufreqctl"
-    RULE_ID="mko.cpupower.setcpufreq"
-    RULE_OUT="${RULE_DIR}/${RULE_ID}.policy"
+    ACTION_ID="mko.cpupower.setcpufreq"
+    ACTION_OUT="${ACTION_DIR}/${ACTION_ID}.policy"
 else
     CFC_DIR="${PREFIX}/local/bin"
     CFC_OUT="${CFC_DIR}/cpufreqctl-${TOOL_SUFFIX}"
-    RULE_ID="mko.cpupower.setcpufreq.${TOOL_SUFFIX}"
-    RULE_OUT="${RULE_DIR}/${RULE_ID}.policy"
+    ACTION_ID="mko.cpupower.setcpufreq.${TOOL_SUFFIX}"
+    ACTION_OUT="${ACTION_DIR}/${ACTION_ID}.policy"
 fi
 
 V7_LEGACY_OUT="/usr/share/polkit-1/actions/mko.cpupower.policy"
@@ -130,10 +133,10 @@ then
     fi
 
     if ! sed -e "s:{{PATH}}:${CFC_OUT}:g" \
-             -e "s:{{ID}}:${RULE_ID}:g" "${RULE_IN}" | \
-             cmp --silent "${RULE_OUT}"
+             -e "s:{{ID}}:${ACTION_ID}:g" "${ACTION_IN}" | \
+             cmp --silent "${ACTION_OUT}"
     then
-        if [ -f "${RULE_OUT}" ]
+        if [ -f "${ACTION_OUT}" ]
         then
             echo "Your cpupower installation needs updating!"
             exit ${EXIT_NEEDS_UPDATE}
@@ -162,10 +165,15 @@ then
     echo "Success"
 
     echo -n "Installing policykit action... "
-    mkdir -p "${RULE_DIR}"
+    mkdir -p "${ACTION_DIR}"
     sed -e "s:{{PATH}}:${CFC_OUT}:g" \
-        -e "s:{{ID}}:${RULE_ID}:g" "${RULE_IN}" > "${RULE_OUT}" 2>/dev/null || \
+        -e "s:{{ID}}:${ACTION_ID}:g" "${ACTION_IN}" > "${ACTION_OUT}" 2>/dev/null || \
         (echo "Failed" && exit ${EXIT_FAILED})
+    echo "Success"
+
+    echo -n "Installing policykit rule... "
+    mkdir -p "${RULE_DIR}"
+    install -m 0644 "${RULE_IN}" "${RULE_OUT}" || (echo "Failed" && exit ${EXIT_FAILED})
     echo "Success"
 
     exit ${EXIT_SUCCESS}
@@ -206,12 +214,21 @@ then
     fi
 
     echo -n "Uninstalling policykit action... "
+    if [ -f "${ACTION_OUT}" ]
+    then
+        rm "${ACTION_OUT}" || (echo "Failed - cannot remove ${ACTION_OUT}" && exit ${EXIT_FAILED}) && echo "Success"
+    else
+        echo "policy action not installed at ${ACTION_OUT}"
+    fi
+
+    echo -n "Uninstalling policykit rule... "
     if [ -f "${RULE_OUT}" ]
     then
         rm "${RULE_OUT}" || (echo "Failed - cannot remove ${RULE_OUT}" && exit ${EXIT_FAILED}) && echo "Success"
     else
-        echo "policy not installed at ${RULE_OUT}"
+        echo "policy rule not installed at ${RULE_OUT}"
     fi
+
     exit ${EXIT_SUCCESS}
 fi
 
