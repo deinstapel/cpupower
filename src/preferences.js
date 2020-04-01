@@ -76,7 +76,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     }
 
     status() {
-        global.log(arguments[0]);
+        global.log('status', arguments[0]);
     }
 
     _updateSettings() {
@@ -473,15 +473,19 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                 GLib.spawn_sync(
                     null,
                     [
-                        'gdbus',
-                        'call',
-                        '--session',
-                        '--dest',
-                        'org.gnome.Shell',
-                        '--object-path',
-                        '/org/gnome/Shell',
-                        '--method',
-                        'org.gnome.Shell.Extensions.ReloadExtension',
+                        'gnome-extensions',
+                        'disable',
+                        'cpupower@mko-sl.de',
+                    ],
+                    null,
+                    GLib.SpawnFlags.SEARCH_PATH,
+                    null,
+                );
+                GLib.spawn_sync(
+                    null,
+                    [
+                        'gnome-extensions',
+                        'enable',
                         'cpupower@mko-sl.de',
                     ],
                     null,

@@ -168,19 +168,11 @@ Clone the repository and run:
 $ make install PREFIX=/home/username/.local
 ```
 
-and reload the extension with:
-
-```shell
-$ make reload
-```
+and reload the extension by restarting your gnome-shell.
 
 ### Option 2
 
-Clone the respository to `~/.local/share/gnome-shell/extensions/cpupower@mko-sl.de` and reload the extension with:
-
-```shell
-$ make reload
-```
+Clone the respository to `~/.local/share/gnome-shell/extensions/cpupower@mko-sl.de` and reload the extension by restarting your gnome-shell.
 
 You can now enable the extension in your extension settings.
 
