@@ -475,8 +475,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                     GLib.spawn_sync(
                         null,
                         [
-                            'gnome-extensions',
-                            'disable',
+                            'gnome-shell-extension-tool',
+                            '--disable-extension',
                             'cpupower@mko-sl.de',
                         ],
                         null,
@@ -486,8 +486,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                     GLib.spawn_sync(
                         null,
                         [
-                            'gnome-extensions',
-                            'enable',
+                            'gnome-shell-extension-tool',
+                            '--enable-extension',
                             'cpupower@mko-sl.de',
                         ],
                         null,

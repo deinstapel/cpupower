@@ -40,6 +40,13 @@ software installed to use this extension:
 - intel_pstate needs to be enabled in the kernel (should be the default in almost all Distros)
 - bash
 
+### Installing via Makefile
+
+In order to use the Makefile you need the following packages:
+
+ - make
+ - gettext
+
 ## Installation
 
 The easiest way to install this extension is by using the
@@ -48,6 +55,16 @@ The easiest way to install this extension is by using the
 Click on the CPU icon in the top bar of your Gnome shell and follow the installation instructions.
 You need to enter your root password to install a policy kit rule. This rule is used to set the clock
 frequency of your CPU with your user.
+
+## Ubuntu 20.04
+
+In order for this extension to work under Ubuntu 20.04, you need to enable the `universe` software repository under `Software & Updates` / `Ubuntu Software` / `Community maintained free and open-source software (universe)`.
+
+Next, install `gnome-shell-extension-prefs`:
+
+```shell
+$ sudo apt install gnome-shell-extension-prefs
+```
 
 ### Installing for another (admin) user
 
