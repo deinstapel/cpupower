@@ -30,12 +30,18 @@ const PanelMenu = imports.ui.panelMenu;
 const Panel = imports.ui.panel;
 const PopupMenu = imports.ui.popupMenu;
 const GObject = imports.gi.GObject;
+const Config = imports.misc.config;
 
 const DEFAULT_EMPTY_NAME = 'No name';
 
-var CPUFreqProfileButton = GObject.registerClass(class CPUFreqProfileButton extends PopupMenu.PopupMenuItem {
+var CPUFreqProfileButton = class CPUFreqProfileButton extends PopupMenu.PopupMenuItem {
     _init(profile) {
     super._init(_(profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
       this.Profile = profile;
   }
-});
+} ;
+
+// Re-wrapping our subclass in `GObject.registerClass()` for Gnome >3.30
+if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.30) {
+    CPUFreqProfileButton = GObject.registerClass({ GTypeName: 'CPUFreqProfileButton' }, CPUFreqProfileButton);
+}

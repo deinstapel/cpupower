@@ -34,6 +34,7 @@ const GObject = imports.gi.GObject;
 const PopupMenu = imports.ui.popupMenu;
 const Main = imports.ui.main;
 const Clutter = imports.gi.Clutter;
+const Config = imports.misc.config;
 
 // Relative and misc imports and definitions
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -46,7 +47,12 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
     constructor() {
         this._mainButton = new PanelMenu.Button(null, 'cpupower');
         this.menu = this._mainButton.menu;
-        this.actor = this._mainButton;
+
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
+            this.actor = this._mainButton;
+        } else {
+            this.actor = this._mainButton.actor;
+        }
 
         this.settings = Convenience.getSettings(SETTINGS_ID);
 

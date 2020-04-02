@@ -191,21 +191,31 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.minSlider = new Slider.Slider(this.minVal / 100);
-        this.minSlider.connect(parseFloat(Config.PACKAGE_VERSION.substring(0,4))>=3.34 ? 'notify::value' : 'value-changed', item => {
+        this.minSlider.connect(parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32 ? 'notify::value' : 'value-changed', item => {
             this.minVal = Math.floor(item.value * 100);
             this.imMinLabel.set_text(this._getMinText());
             this._updateMin();
         });
-        this.imSliderMin.add(this.minSlider, {expand: true});
+
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
+            this.imSliderMin.add(this.minSlider, {expand: true});
+        } else {
+            this.imSliderMin.actor.add(this.minSlider.actor, {expand: true});
+        }
 
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.maxSlider = new Slider.Slider(this.maxVal / 100);
-        this.maxSlider.connect(parseFloat(Config.PACKAGE_VERSION.substring(0,4))>=3.34 ? 'notify::value' : 'value-changed', item => {
+        this.maxSlider.connect(parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32 ? 'notify::value' : 'value-changed', item => {
             this.maxVal = Math.floor(item.value * 100);
             this.imMaxLabel.set_text(this._getMaxText());
             this._updateMax();
         });
-        this.imSliderMax.add(this.maxSlider, {expand: true});
+
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
+            this.imSliderMax.add(this.maxSlider, {expand: true});
+        } else {
+            this.imSliderMax.actor.add(this.maxSlider.actor, {expand: true});
+        }
 
         this.imCurrentTitle = new PopupMenu.PopupMenuItem(_('Current Frequency:'), {reactive:false});
         this.imCurrentLabel = new St.Label({text: this._getCurFreq()});
@@ -299,12 +309,12 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
     _updateUi() {
         this.imMinLabel.set_text(this._getMinText());
-        parseFloat(Config.PACKAGE_VERSION.substring(0,4))>=3.34
+        parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32
             ? this.minSlider.value = this.minVal / 100.0
             : this.minSlider.setValue(this.minVal / 100.0);
 
         this.imMaxLabel.set_text(this._getMaxText());
-        parseFloat(Config.PACKAGE_VERSION.substring(0,4))>=3.34
+        parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32
             ? this.maxSlider.value = this.maxVal / 100.0
             : this.maxSlider.setValue(this.maxVal / 100.0);
 
@@ -341,7 +351,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                 if(success) curfreq = parseInt(String.fromCharCode.apply(null, contents)) / 1000;
                 this.cpufreq = curfreq;
             });
-        }
+        };
 
         getfreq(getrand(0, this.cpucount));
     }

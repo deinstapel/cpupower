@@ -113,9 +113,14 @@ V8_LEGACY_OUT="/usr/share/polkit-1/actions/mko.cpupower.setcpufreq.policy"
 
 if [ "$ACTION" = "supported" ]
 then
-    ls /sys/devices/system/cpu/intel_pstate > /dev/null 2>&1 || \
-        (echo "Unsupported" && exit ${EXIT_FAILED}) && echo "Supported"
-    exit ${EXIT_SUCCESS}
+    if [ -d /sys/devices/system/cpu/intel_pstate ]
+    then
+        echo "Supported"
+        exit ${EXIT_SUCCESS}
+    else
+        echo "Unsupported"
+        exit ${EXIT_FAILED}
+    fi
 fi
 
 if [ "$ACTION" = "check" ]
