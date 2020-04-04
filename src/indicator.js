@@ -114,11 +114,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     powerActions(powerState) {
-        if (powerState === UPower.DeviceState.FULLY_CHARGED)
-        {
-            global.log ("Power state changed: fully charged");
-        }
-        else if (powerState === UPower.DeviceState.DISCHARGING)
+        if (powerState === UPower.DeviceState.DISCHARGING)
         {
             global.log ("Power state changed: discharging");
             // switch to battery profile if auto switching is enabled
@@ -135,9 +131,13 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                 }
             }
         }
-        else if (powerState === UPower.DeviceState.CHARGING)
+        else if (powerState === UPower.DeviceState.CHARGING ||
+            powerState === UPower.DeviceState.FULLY_CHARGED)
         {
-            global.log ("Power state changed: charging");
+            if (powerState === UPower.DeviceState.CHARGING)
+                global.log ("Power state changed: charging");
+            else
+                global.log ("Power state changed: fully charged");
             // switch to AC profile if auto switching is enabled
             if (this.isAutoSwitchActive)
             {
