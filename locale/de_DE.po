@@ -2,114 +2,152 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-02 19:06+0200\n"
-"PO-Revision-Date: 2017-05-02 19:11+0200\n"
+"POT-Creation-Date: 2020-04-01 11:30+0200\n"
+"PO-Revision-Date: 2020-04-01 11:43+0200\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.1\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: data/cpupower-preferences.glade:61
 msgid "Gnome-Shell Extension for the intel-pstate driver."
-msgstr "Gnome-Shell Erweiterung für intel-pstate"
+msgstr "Gnome-Shell Erweiterung für intel-pstate."
 
-#: data/cpupower-preferences.glade:124
+#: data/cpupower-preferences.glade:125
 msgid "Show current frequency"
 msgstr "Aktuelle Frequenz anzeigen"
 
-#: data/cpupower-preferences.glade:137
+#: data/cpupower-preferences.glade:138
 msgid "Use GHz instead of MHz"
 msgstr "GHz statt MHz als Einheit nutzen"
 
-#: data/cpupower-preferences.glade:150
+#: data/cpupower-preferences.glade:151
 msgid "Show icon in taskbar"
 msgstr "Icon in Taskbar anzeigen"
 
-#: data/cpupower-preferences.glade:163
+#: data/cpupower-preferences.glade:164
 msgid "Show arrow in taskbar"
 msgstr "Pfeil in Taskbar anzeigen"
 
-#: data/cpupower-preferences.glade:216
+#: data/cpupower-preferences.glade:217
 msgid "About"
 msgstr "Über"
 
-#: data/cpupower-preferences.glade:254
+#: data/cpupower-preferences.glade:255
 msgid "Default AC profile"
 msgstr "Standardprofil Netzbetrieb"
 
-#: data/cpupower-preferences.glade:267
+#: data/cpupower-preferences.glade:268
 msgid "Default battery profile"
 msgstr "Standardprofil Batteriebetrieb"
 
-#: data/cpupower-preferences.glade:278
+#: data/cpupower-preferences.glade:279
 msgid "Set as default profile for battery operation"
 msgstr "Als Standardprofil für den Batteriebetrieb festlegen"
 
-#: data/cpupower-preferences.glade:237
+#: data/cpupower-preferences.glade:291
 msgid "Set as standard profile for plugged in operation"
 msgstr "Als Standardprofil für den Netzbetrieb festlegen"
 
-#: data/cpupower-preferences.glade:237
+#: data/cpupower-preferences.glade:303
 msgid "Auto Switch Configuration"
 msgstr "Auto-Wechsel Konfiguration"
 
-#: data/cpupower-preferences.glade:349
+#: data/cpupower-preferences.glade:350
 msgid "General"
 msgstr "Allgemein"
 
-#: data/cpupower-preferences.glade:400
+#: data/cpupower-preferences.glade:401
 msgid "Add selected profile"
 msgstr "Profil hinzufügen"
 
-#: data/cpupower-preferences.glade:413
+#: data/cpupower-preferences.glade:414
 msgid "Remove selected profile"
 msgstr "Markiertes Profil entfernen"
 
-#: data/cpupower-preferences.glade:426
+#: data/cpupower-preferences.glade:427
 msgid "Move selected profile up"
 msgstr "Markiertes Profil nach oben verschieben"
 
-#: data/cpupower-preferences.glade:439
+#: data/cpupower-preferences.glade:440
 msgid "Move selected profile down"
 msgstr "Markiertes Profil nach unten verschieben"
 
-#: data/cpupower-preferences.glade:498
+#: data/cpupower-preferences.glade:499
 msgid "Profiles"
 msgstr "Profile"
 
-#: data/cpupower-preferences.glade:528 data/cpupower-preferences.glade:540
+#: data/cpupower-preferences.glade:518
+msgid "Path to cpufreqctl:"
+msgstr "Pfad zu cpufreqctl:"
+
+#: data/cpupower-preferences.glade:531
+msgid "Path to policykit rule:"
+msgstr "Pfad zur Policykit Regel:"
+
+#: data/cpupower-preferences.glade:545
+msgid "CPU Power Manager is installed via your distributions package manager!"
+msgstr ""
+"CPU Power Manager wurde über die Paketverwaltung deiner Distribution "
+"installiert!"
+
+#: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:979
+msgid "Uninstall"
+msgstr "Deinstallieren"
+
+#: data/cpupower-preferences.glade:634
+msgid "Installation"
+msgstr "Installation"
+
+#: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
 msgid "Profile name"
 msgstr "Profilname"
 
-#: data/cpupower-preferences.glade:553
+#: data/cpupower-preferences.glade:689
 msgid "Minimum frequency"
 msgstr "Minimale Frequenz"
 
-#: data/cpupower-preferences.glade:581
+#: data/cpupower-preferences.glade:717
 msgid "Maximum frequency"
 msgstr "Maximale Frequenz"
 
-#: data/cpupower-preferences.glade:593
+#: data/cpupower-preferences.glade:729
 msgid "Turbo boost"
 msgstr "Turbo Boost"
 
-#: data/cpupower-preferences.glade:631
+#: data/cpupower-preferences.glade:767
 msgid "Discard"
 msgstr "Verwerfen"
 
-#: data/cpupower-preferences.glade:651
+#: data/cpupower-preferences.glade:787
 msgid "Save"
 msgstr "Speichern"
 
-#: data/cpupower-preferences.glade:780
+#: data/cpupower-preferences.glade:916
 msgid "Turbo boost:"
 msgstr "Turbo Boost:"
+
+#: data/cpupower-preferences.glade:950
+msgid "Uninstall CPU Power Manager Tools"
+msgstr "CPU Power Manager Werkzeuge deinstallieren"
+
+#: data/cpupower-preferences.glade:951
+msgid ""
+"Are you sure you want to uninstall the cpufreqctl tool and the policykit "
+"rule?"
+msgstr ""
+"Bist du dir sicher, dass du das cpufreqctl Werkzeug und die Policykit Regel "
+"deinstallieren möchtest?"
+
+#: data/cpupower-preferences.glade:965
+msgid "Cancel"
+msgstr "Abbrechen"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
@@ -152,7 +190,7 @@ msgid "Show down arrow in the top bar"
 msgstr "Pfeil in der Taskleiste anzeigen"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
-msgid "default AC profile ID"
+msgid "Default AC profile ID"
 msgstr "Standardprofil für den Netzbetrieb"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
@@ -160,13 +198,12 @@ msgid "The profile to switch to when plugged in"
 msgstr "Zu welchem Profil im Netzbetrieb gewechselt werden soll"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
-msgid "default battery profile ID"
+msgid "Default battery profile ID"
 msgstr "Standardprofil für den Batteriebetrieb"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
 msgid "The profile to switch to when unplugged"
 msgstr "Zu welchem Profil im Batteriebetrieb gewechselt werden soll"
-
 
 #: src/indicator.js:172
 msgid "Minimum Frequency:"
@@ -192,29 +229,45 @@ msgstr "Aktuelle Frequenz:"
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: src/notinstalled.js:57
+#: src/notinstalled.js:52
 msgid "Installation required."
 msgstr "Installation benötigt."
 
-#: src/notinstalled.js:63
+#: src/notinstalled.js:58
 msgid "Attempt installation"
 msgstr "Installation versuchen"
 
-#: src/preferences.js:260
+#: src/preferences.js:277
 msgid "Yes"
 msgstr "Ja"
 
-#: src/preferences.js:260
+#: src/preferences.js:277
 msgid "No"
 msgstr "Nein"
 
-#: src/preferences.js:332 src/preferences.js:333
+#: src/preferences.js:349 src/preferences.js:350
 msgid "None"
 msgstr "Keins"
 
-#: src/unsupported.js:54
+#: src/unsupported.js:47
 msgid "Your computer does not support intel_pstate."
 msgstr "Dieser Rechner unterstützt intel_pstate nicht."
+
+#: src/update.js:43
+msgid "Your CPU Power Manager installation needs updating!"
+msgstr "Deine CPU Power Manager Installation benötigt eine Aktualisierung!"
+
+#: src/update.js:44
+msgid ""
+"Warning: Security issues were found with your installation!\n"
+"Please update immediately!"
+msgstr ""
+"Warnung: Sicherheitsprobleme wurden in deiner Installation gefunden!\n"
+"Bitte unverzüglich aktualisieren!"
+
+#: src/update.js:72
+msgid "Attempt tool update"
+msgstr "Aktualisierung versuchen"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"

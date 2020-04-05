@@ -31,6 +31,7 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const GtkBuilder = Gtk.Builder;
 const Gio = imports.gi.Gio;
+const Config = imports.misc.config;
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
 
@@ -39,6 +40,8 @@ const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.src.convenience;
 const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
 const EXTENSIONDIR = Me.dir.get_path();
+const CONFIG = Me.imports.src.config;
+const attempt_uninstallation = Me.imports.src.utils.attempt_uninstallation;
 
 const GLADE_FILE = EXTENSIONDIR + "/data/cpupower-preferences.glade";
 const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
@@ -64,13 +67,17 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             "ProfilesRemoveToolButton",
             "ProfilesMoveUpToolButton",
             "ProfilesMoveDownToolButton",
-            "ProfileStack"
+            "ProfileStack",
+            "CpufreqctlPathLabel",
+            "PolicykitRulePathLabel",
+            "InstallationWarningLabel",
+            "UninstallButton"
         );
         this.ProfilesMap = new Map();
     }
 
     status() {
-        global.log(arguments[0]);
+        global.log('status', arguments[0]);
     }
 
     _updateSettings() {
@@ -91,6 +98,17 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
         id = this._settings.get_string("default-battery-profile");
         this.DefaultBatComboBox.set_active_id(id);
+
+        if (CONFIG.IS_USER_INSTALL) {
+            this.InstallationWarningLabel.set_visible(false);
+            this.UninstallButton.set_sensitive(true);
+        } else {
+            this.InstallationWarningLabel.set_visible(true);
+            this.UninstallButton.set_sensitive(false);
+        }
+
+        this.CpufreqctlPathLabel.set_text(CONFIG.CPUFREQCTL);
+        this.PolicykitRulePathLabel.set_text(CONFIG.POLKIT);
 
         // Backward compatibility:
         // for the new Settings UI we introduced a profile-id, which is not present in the older versions.
@@ -331,7 +349,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
         this.DefaultACComboBox.append("", _("None"));
         this.DefaultBatComboBox.append("", _("None"));
-        
+
         let profileArray = Array.from(this.ProfilesMap.values());
         profileArray.sort((p1,p2) => this.getProfileIndex(p1.Profile) - this.getProfileIndex(p2.Profile));
         for(let i in profileArray) {
@@ -431,11 +449,84 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     }
 
     onAboutButtonClicked(button) {
-        let profileListItemBuilder = new Gtk.Builder();
-        profileListItemBuilder.add_objects_from_file(GLADE_FILE, ["AboutDialog"]);
-        let dialog = profileListItemBuilder.get_object("AboutDialog");
+        let aboutBuilder = new Gtk.Builder();
+        aboutBuilder.set_translation_domain("gnome-shell-extension-cpupower");
+        aboutBuilder.add_objects_from_file(GLADE_FILE, ["AboutDialog"]);
+        let dialog = aboutBuilder.get_object("AboutDialog");
         let parentWindow = this.MainWidget.get_toplevel();
         dialog.set_transient_for(parentWindow);
+        dialog.run();
+        dialog.hide();
+    }
+
+    onUninstallButtonClicked(button) {
+        let uninstallDialogBuilder = new Gtk.Builder();
+        uninstallDialogBuilder.set_translation_domain("gnome-shell-extension-cpupower");
+        uninstallDialogBuilder.add_objects_from_file(GLADE_FILE, ["UninstallMessageDialog"]);
+        let dialog = uninstallDialogBuilder.get_object("UninstallMessageDialog");
+        let uninstallButton = uninstallDialogBuilder.get_object("UninstallDialogUninstall");
+        let cancelButton = uninstallDialogBuilder.get_object("UninstallDialogCancel");
+        let parentWindow = this.MainWidget.get_toplevel();
+        dialog.set_transient_for(parentWindow);
+        uninstallButton.connect("clicked", () => {
+            attempt_uninstallation(success => {
+                dialog.close();
+
+                if (success) {
+                    if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
+                        GLib.spawn_sync(
+                            null,
+                            [
+                                'gnome-extensions',
+                                'disable',
+                                'cpupower@mko-sl.de',
+                            ],
+                            null,
+                            GLib.SpawnFlags.SEARCH_PATH,
+                            null,
+                        );
+                        GLib.spawn_sync(
+                            null,
+                            [
+                                'gnome-extensions',
+                                'enable',
+                                'cpupower@mko-sl.de',
+                            ],
+                            null,
+                            GLib.SpawnFlags.SEARCH_PATH,
+                            null,
+                        );
+                    } else {
+                        GLib.spawn_sync(
+                            null,
+                            [
+                                'gnome-shell-extension-tool',
+                                '--disable-extension',
+                                'cpupower@mko-sl.de',
+                            ],
+                            null,
+                            GLib.SpawnFlags.SEARCH_PATH,
+                            null,
+                        );
+                        GLib.spawn_sync(
+                            null,
+                            [
+                                'gnome-shell-extension-tool',
+                                '--enable-extension',
+                                'cpupower@mko-sl.de',
+                            ],
+                            null,
+                            GLib.SpawnFlags.SEARCH_PATH,
+                            null,
+                        );
+                    }
+                    this.MainWidget.get_toplevel().get_application().quit();
+                }
+            });
+        });
+        cancelButton.connect("clicked", () => {
+            dialog.close();
+        });
         dialog.run();
         dialog.hide();
     }

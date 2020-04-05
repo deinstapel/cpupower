@@ -3,8 +3,9 @@
  *  CPUPower for GNOME Shell preferences
  *  - Creates a widget to set the preferences of the cpupower extension
  *
- * Copyright (C) 2017
- *     Martin Koppehel <martin.koppehel@st.ovgu.de>
+ * Copyright (C) 2017-2020
+ *     Martin Koppehel <martin.koppehel@st.ovgu.de>,
+ *     Fin Christensen <christensen.fin@gmail.com>,
  *
  * This file is part of the gnome-shell extension cpupower.
  *
@@ -25,23 +26,21 @@
  *
  */
 
-const Lang = imports.lang;
-const PanelMenu = imports.ui.panelMenu;
-const Panel = imports.ui.panel;
-const PopupMenu = imports.ui.popupMenu;
-const GObject = imports.gi.GObject;
-const Config = imports.misc.config;
+const GLib = imports.gi.GLib;
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
 
-const DEFAULT_EMPTY_NAME = 'No name';
+var PREFIX = '/usr';
+var TOOL_SUFFIX = '';
+var IS_USER_INSTALL = false;
 
-var CPUFreqProfileButton = class CPUFreqProfileButton extends PopupMenu.PopupMenuItem {
-    _init(profile) {
-    super._init(_(profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
-      this.Profile = profile;
-  }
-} ;
+var CPUFREQCTL = PREFIX + '/bin/cpufreqctl';
+var POLKIT = PREFIX + '/share/polkit-1/actions/mko.cpupower.setcpufreq.policy';
 
-// Re-wrapping our subclass in `GObject.registerClass()` for Gnome >3.30
-if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.30) {
-    CPUFreqProfileButton = GObject.registerClass({ GTypeName: 'CPUFreqProfileButton' }, CPUFreqProfileButton);
+if (Me.dir.get_path().includes('/home')) {
+    // we are installed in the /home directory, let's handle tool installation
+    TOOL_SUFFIX = GLib.get_user_name();
+    CPUFREQCTL = PREFIX + '/local/bin/cpufreqctl-' + TOOL_SUFFIX;
+    POLKIT = PREFIX + '/share/polkit-1/actions/mko.cpupower.setcpufreq.' + TOOL_SUFFIX + '.policy';
+    IS_USER_INSTALL = true;
 }

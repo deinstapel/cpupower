@@ -31,44 +31,75 @@ const GLib = imports.gi.GLib;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const EXTENSIONDIR = Me.dir.get_path();
-const INSTALLER = EXTENSIONDIR + '/src/installer.sh';
-const CPUFREQCTL = EXTENSIONDIR + '/src/cpufreqctl';
+const INSTALLER = EXTENSIONDIR + '/tool/installer.sh';
 const PKEXEC = GLib.find_program_in_path('pkexec');
+const CONFIG = Me.imports.src.config;
 
 function spawn_process_check_exit_code(argv, callback)
 {
-    let [ok, pid] = GLib.spawn_async(EXTENSIONDIR, argv, null, GLib.SpawnFlags.DO_NOT_REAP_CHILD, null);
+    let [ok, pid] = GLib.spawn_async(
+        EXTENSIONDIR,
+        argv,
+        null,
+        GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+        null,
+    );
     if (!ok)
     {
         if (callback != null && callback != undefined)
             callback(false);
         return;
     }
-    GLib.child_watch_add(200, pid, function(callback, argv, process, exitCode) {
+    GLib.child_watch_add(200, pid, function(callback, argv, process, exitStatus) {
         GLib.spawn_close_pid(process);
+        let exitCode = 0;
+        try {
+            GLib.spawn_check_exit_status(exitStatus);
+        } catch (e) {
+            exitCode = e.code;
+        }
+
         if (callback != null && callback != undefined)
-            callback(exitCode == 0, exitCode); //GLib.spawn_check_exit_code will throw an exception... so we check against unix style exit codes here.
+            callback(exitCode == 0, exitCode);
     }.bind(null, callback, argv));
 }
 
 function check_supported(callback)
 {
-    spawn_process_check_exit_code([INSTALLER, 'supported'], callback);
+    spawn_process_check_exit_code(
+        [INSTALLER, '--prefix', CONFIG.PREFIX, '--tool-suffix', CONFIG.TOOL_SUFFIX, 'supported'],
+        callback,
+    );
 }
 
 function check_installed(callback)
 {
-    spawn_process_check_exit_code([INSTALLER, 'check'], callback);
-}
-
-function get_min_hardware_frequency(callback)
-{
-    spawn_process_check_exit_code([PKEXEC, CPUFREQCTL, 'min', 'check'], function (success, exitCode) {
-        callback(exitCode);
-    });
+    spawn_process_check_exit_code(
+        [INSTALLER, '--prefix', CONFIG.PREFIX, '--tool-suffix', CONFIG.TOOL_SUFFIX, 'check'],
+        callback,
+    );
 }
 
 function attempt_installation(done)
 {
-    spawn_process_check_exit_code([PKEXEC, INSTALLER, 'install'], done);
+    spawn_process_check_exit_code(
+        [PKEXEC, INSTALLER, '--prefix', CONFIG.PREFIX, '--tool-suffix', CONFIG.TOOL_SUFFIX, 'install'],
+        done
+    );
+}
+
+function attempt_uninstallation(done)
+{
+    spawn_process_check_exit_code(
+        [PKEXEC, INSTALLER, '--prefix', CONFIG.PREFIX, '--tool-suffix', CONFIG.TOOL_SUFFIX, 'uninstall'],
+        done
+    );
+}
+
+function attempt_update(done)
+{
+    spawn_process_check_exit_code(
+        [PKEXEC, INSTALLER, '--prefix', CONFIG.PREFIX, '--tool-suffix', CONFIG.TOOL_SUFFIX, 'update'],
+        done,
+    );
 }

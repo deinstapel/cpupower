@@ -2,18 +2,154 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-23 00:34+0200\n"
-"PO-Revision-Date: 2018-10-23 00:34+0200\n"
-"Last-Translator: Orhan Engin OKAY <orhanenginokay@hotmail.com\n"
+"POT-Creation-Date: 2020-04-01 11:30+0200\n"
+"PO-Revision-Date: 2020-04-01 11:30+0200\n"
+"Last-Translator: Orhan Engin OKAY <orhanenginokay@hotmail.com>\n"
 "Language-Team: Orhan Engin OKAY <orhanenginokay@hotmail.com\n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: data/cpupower-preferences.glade:61
+msgid "Gnome-Shell Extension for the intel-pstate driver."
+msgstr "İntel-pstate sürücüsü için Gnome-Shell Uzantısı."
+
+#: data/cpupower-preferences.glade:125
+msgid "Show current frequency"
+msgstr "Mevcut frekansı göster"
+
+#: data/cpupower-preferences.glade:138
+msgid "Use GHz instead of MHz"
+msgstr "MHz yerine GHz kullan"
+
+#: data/cpupower-preferences.glade:151
+#, fuzzy
+#| msgid "Show current cpu frequency in taskbar"
+msgid "Show icon in taskbar"
+msgstr "Mevcut cpu frekansını görev çubuğunda göster"
+
+#: data/cpupower-preferences.glade:164
+#, fuzzy
+#| msgid "Show current cpu frequency in taskbar"
+msgid "Show arrow in taskbar"
+msgstr "Mevcut cpu frekansını görev çubuğunda göster"
+
+#: data/cpupower-preferences.glade:217
+msgid "About"
+msgstr "Hakkında"
+
+#: data/cpupower-preferences.glade:255
+msgid "Default AC profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:268
+msgid "Default battery profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:279
+msgid "Set as default profile for battery operation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:291
+msgid "Set as standard profile for plugged in operation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:303
+msgid "Auto Switch Configuration"
+msgstr ""
+
+#: data/cpupower-preferences.glade:350
+msgid "General"
+msgstr "Genel"
+
+#: data/cpupower-preferences.glade:401
+msgid "Add selected profile"
+msgstr "Seçilen profili ekle"
+
+#: data/cpupower-preferences.glade:414
+msgid "Remove selected profile"
+msgstr "Seçilen profili kaldır"
+
+#: data/cpupower-preferences.glade:427
+msgid "Move selected profile up"
+msgstr "Seçilen profili üste çıkar"
+
+#: data/cpupower-preferences.glade:440
+msgid "Move selected profile down"
+msgstr "Seçilen profili aşağıya kaydır"
+
+#: data/cpupower-preferences.glade:499
+msgid "Profiles"
+msgstr "Profiller"
+
+#: data/cpupower-preferences.glade:518
+msgid "Path to cpufreqctl:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:531
+msgid "Path to policykit rule:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:545
+msgid "CPU Power Manager is installed via your distributions package manager!"
+msgstr ""
+
+#: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:979
+msgid "Uninstall"
+msgstr ""
+
+#: data/cpupower-preferences.glade:634
+#, fuzzy
+#| msgid "Installation required."
+msgid "Installation"
+msgstr "Yükleme gerekli.."
+
+#: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
+msgid "Profile name"
+msgstr "Profil adı"
+
+#: data/cpupower-preferences.glade:689
+msgid "Minimum frequency"
+msgstr "Minimum frekans"
+
+#: data/cpupower-preferences.glade:717
+msgid "Maximum frequency"
+msgstr "Maksimum frekans"
+
+#: data/cpupower-preferences.glade:729
+msgid "Turbo boost"
+msgstr "Turbo"
+
+#: data/cpupower-preferences.glade:767
+msgid "Discard"
+msgstr "At"
+
+#: data/cpupower-preferences.glade:787
+msgid "Save"
+msgstr "Kaydet"
+
+#: data/cpupower-preferences.glade:916
+msgid "Turbo boost:"
+msgstr "Turbo:"
+
+#: data/cpupower-preferences.glade:950
+msgid "Uninstall CPU Power Manager Tools"
+msgstr ""
+
+#: data/cpupower-preferences.glade:951
+msgid ""
+"Are you sure you want to uninstall the cpufreqctl tool and the policykit "
+"rule?"
+msgstr ""
+
+#: data/cpupower-preferences.glade:965
+msgid "Cancel"
+msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
@@ -39,113 +175,109 @@ msgstr "GHz ya da MHz frekansları görev çubuğunda gösterilir"
 msgid "Control which unit is used for the frequency"
 msgstr "Frekans için hangi birimin kullanıldığını kontrol et"
 
-#: cpupower-preferences.glade:61
-msgid "Gnome-Shell Extension for the intel-pstate driver."
-msgstr "İntel-pstate sürücüsü için Gnome-Shell Uzantısı."
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
+#, fuzzy
+#| msgid "Show current cpu frequency in taskbar"
+msgid "Show cpu chip icon in taskbar"
+msgstr "Mevcut cpu frekansını görev çubuğunda göster"
 
-#: cpupower-preferences.glade:117
-msgid "Show current frequency"
-msgstr "Mevcut frekansı göster"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
+#, fuzzy
+#| msgid "Show current cpu frequency in the top bar"
+msgid "Show cpu chip icon in the top bar"
+msgstr "Geçerli cpu frekansını üst çubuğa göster"
 
-#: cpupower-preferences.glade:130
-msgid "Use GHz instead of MHz"
-msgstr "MHz yerine GHz kullan"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
+#, fuzzy
+#| msgid "Show current cpu frequency in taskbar"
+msgid "Show down arrow in taskbar"
+msgstr "Mevcut cpu frekansını görev çubuğunda göster"
 
-#: cpupower-preferences.glade:161
-msgid "About"
-msgstr "Hakkında"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
+#, fuzzy
+#| msgid "Show current cpu frequency in the top bar"
+msgid "Show down arrow in the top bar"
+msgstr "Geçerli cpu frekansını üst çubuğa göster"
 
-#: cpupower-preferences.glade:183
-msgid "General"
-msgstr "Genel"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
+msgid "Default AC profile ID"
+msgstr ""
 
-#: cpupower-preferences.glade:234
-msgid "Add selected profile"
-msgstr "Seçilen profili ekle"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
+msgid "The profile to switch to when plugged in"
+msgstr ""
 
-#: cpupower-preferences.glade:247
-msgid "Remove selected profile"
-msgstr "Seçilen profili kaldır"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
+msgid "Default battery profile ID"
+msgstr ""
 
-#: cpupower-preferences.glade:260
-msgid "Move selected profile up"
-msgstr "Seçilen profili üste çıkar"
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
+msgid "The profile to switch to when unplugged"
+msgstr ""
 
-#: cpupower-preferences.glade:273
-msgid "Move selected profile down"
-msgstr "Seçilen profili aşağıya kaydır"
-
-#: cpupower-preferences.glade:332
-msgid "Profiles"
-msgstr "Profiller"
-
-#: cpupower-preferences.glade:362 cpupower-preferences.glade:374
-msgid "Profile name"
-msgstr "Profil adı"
-
-#: cpupower-preferences.glade:387
-msgid "Minimum frequency"
-msgstr "Minimum frekans"
-
-#: cpupower-preferences.glade:415
-msgid "Maximum frequency"
-msgstr "Maksimum frekans"
-
-#: cpupower-preferences.glade:427
-msgid "Turbo boost"
-msgstr "Turbo"
-
-#: cpupower-preferences.glade:465
-msgid "Discard"
-msgstr "At"
-
-#: cpupower-preferences.glade:485
-msgid "Save"
-msgstr "Kaydet"
-
-#: cpupower-preferences.glade:575
-msgid "Turbo boost:"
-msgstr "Turbo:"
-
-#: extension.js:311
+#: src/indicator.js:172
 msgid "Minimum Frequency:"
 msgstr "Minimum Frekans:"
 
-#: extension.js:315
+#: src/indicator.js:176
 msgid "Maximum Frequency:"
 msgstr "Maksimum Frekans:"
 
-#: extension.js:319
+#: src/indicator.js:180
 msgid "Turbo Boost:"
 msgstr "Turbo:"
 
-#: extension.js:347
+#: src/indicator.js:186
+msgid "Auto Switch:"
+msgstr ""
+
+#: src/indicator.js:210
 msgid "Current Frequency:"
 msgstr "Mevcut Frekans:"
 
-#: extension.js:373
+#: src/indicator.js:235
 msgid "Preferences"
 msgstr "Tercihler"
 
-#: extension.js:525
-msgid "Your computer does not support intel_pstate."
-msgstr "Bilgisayarınız intel_pstate desteklemiyor."
-
-#: extension.js:542
+#: src/notinstalled.js:52
 msgid "Installation required."
 msgstr "Yükleme gerekli.."
 
-#: extension.js:548
+#: src/notinstalled.js:58
 msgid "Attempt installation"
 msgstr "Attempt installation"
 
-#: prefs.js:233
+#: src/preferences.js:277
 msgid "Yes"
 msgstr "Evet"
 
-#: prefs.js:233
+#: src/preferences.js:277
 msgid "No"
 msgstr "Hayır"
+
+#: src/preferences.js:349 src/preferences.js:350
+msgid "None"
+msgstr ""
+
+#: src/unsupported.js:47
+msgid "Your computer does not support intel_pstate."
+msgstr "Bilgisayarınız intel_pstate desteklemiyor."
+
+#: src/update.js:43
+msgid "Your CPU Power Manager installation needs updating!"
+msgstr ""
+
+#: src/update.js:44
+msgid ""
+"Warning: Security issues were found with your installation!\n"
+"Please update immediately!"
+msgstr ""
+
+#: src/update.js:72
+#, fuzzy
+#| msgid "Attempt installation"
+msgid "Attempt tool update"
+msgstr "Attempt installation"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"

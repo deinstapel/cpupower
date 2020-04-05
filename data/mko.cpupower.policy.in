@@ -6,7 +6,7 @@
         <vendor>MKO Systems</vendor>
         <vendor_url>http://mko-sl.de</vendor_url>
 
-        <action id="mko.cpupower.setcpufreq">
+        <action id="{{ID}}">
                 <description>Set a new CPU Frequency to intel_pstate</description>
                 <description xml:lang="de">Neue CPU-Frequenzgrenzen an intel_pstate senden</description>
                 <message>No Authorization required to set frequency bounds.</message>
@@ -16,7 +16,8 @@
                         <allow_inactive>yes</allow_inactive>
                         <allow_active>yes</allow_active>
                 </defaults>
-                <annotate key="org.freedesktop.policykit.exec.path">xxxPATHxxx</annotate>
+                <annotate key="org.freedesktop.policykit.exec.path">{{PATH}}</annotate>
+                <annotate key="mko.cpupower.polkit-rule.version">3.0.0</annotate>
         </action>
 
 </policyconfig>
