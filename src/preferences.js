@@ -31,6 +31,7 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const GtkBuilder = Gtk.Builder;
 const Gio = imports.gi.Gio;
+const Config = imports.misc.config;
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
 
@@ -472,28 +473,53 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                 dialog.close();
 
                 if (success) {
-                    GLib.spawn_sync(
-                        null,
-                        [
-                            'gnome-shell-extension-tool',
-                            '--disable-extension',
-                            'cpupower@mko-sl.de',
-                        ],
-                        null,
-                        GLib.SpawnFlags.SEARCH_PATH,
-                        null,
-                    );
-                    GLib.spawn_sync(
-                        null,
-                        [
-                            'gnome-shell-extension-tool',
-                            '--enable-extension',
-                            'cpupower@mko-sl.de',
-                        ],
-                        null,
-                        GLib.SpawnFlags.SEARCH_PATH,
-                        null,
-                    );
+                    if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
+                        GLib.spawn_sync(
+                            null,
+                            [
+                                'gnome-extensions',
+                                'disable',
+                                'cpupower@mko-sl.de',
+                            ],
+                            null,
+                            GLib.SpawnFlags.SEARCH_PATH,
+                            null,
+                        );
+                        GLib.spawn_sync(
+                            null,
+                            [
+                                'gnome-extensions',
+                                'enable',
+                                'cpupower@mko-sl.de',
+                            ],
+                            null,
+                            GLib.SpawnFlags.SEARCH_PATH,
+                            null,
+                        );
+                    } else {
+                        GLib.spawn_sync(
+                            null,
+                            [
+                                'gnome-shell-extension-tool',
+                                '--disable-extension',
+                                'cpupower@mko-sl.de',
+                            ],
+                            null,
+                            GLib.SpawnFlags.SEARCH_PATH,
+                            null,
+                        );
+                        GLib.spawn_sync(
+                            null,
+                            [
+                                'gnome-shell-extension-tool',
+                                '--enable-extension',
+                                'cpupower@mko-sl.de',
+                            ],
+                            null,
+                            GLib.SpawnFlags.SEARCH_PATH,
+                            null,
+                        );
+                    }
                     this.MainWidget.get_toplevel().get_application().quit();
                 }
             });

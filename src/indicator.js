@@ -409,7 +409,11 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     _onPreferencesActivate(item) {
-        Util.trySpawnCommandLine('gnome-shell-extension-prefs cpupower@mko-sl.de'); //ensure this will get logged
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
+            Util.trySpawnCommandLine('gnome-extensions prefs cpupower@mko-sl.de');
+        } else {
+            Util.trySpawnCommandLine('gnome-shell-extension-prefs cpupower@mko-sl.de');
+        }
         return 0;
     }
 }
