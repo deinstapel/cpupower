@@ -56,16 +56,6 @@ Click on the CPU icon in the top bar of your Gnome shell and follow the installa
 You need to enter your root password to install a policy kit rule. This rule is used to set the clock
 frequency of your CPU with your user.
 
-### Ubuntu 20.04
-
-In order for this extension to work under Ubuntu 20.04, you need to enable the `universe` software repository under `Software & Updates` / `Ubuntu Software` / `Community maintained free and open-source software (universe)`.
-
-Next, install `gnome-shell-extension-prefs`:
-
-```shell
-$ sudo apt install gnome-shell-extension-prefs
-```
-
 ### Installing for another (admin) user
 
 Impersonate the (admin) user, clone the git repository, and run the following command:
