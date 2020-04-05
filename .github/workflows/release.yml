@@ -33,6 +33,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Install gettext
+      run: sudo apt-get install -y gettext
     - name: Release GNOME Extensions ZIP
       id: gnome-zip
       run: |
