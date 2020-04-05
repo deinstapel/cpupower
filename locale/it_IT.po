@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-01 11:30+0200\n"
-"PO-Revision-Date: 2020-04-01 11:30+0200\n"
+"PO-Revision-Date: 2020-04-05 21:18+0200\n"
 "Last-Translator: Jimmy Scionti <jimmy.scionti@gmail.com>\n"
-"Language-Team: \n"
+"Language-Team: Jimmy Scionti <jimmy.scionti@gmail.com>\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,16 +28,12 @@ msgid "Use GHz instead of MHz"
 msgstr "Usa GHz invece dei MHz"
 
 #: data/cpupower-preferences.glade:151
-#, fuzzy
-#| msgid "Show current cpu frequency in taskbar"
 msgid "Show icon in taskbar"
-msgstr "Mostra la frequenza corrente della cpu nella taskbar"
+msgstr "Mostra icona nel pannello"
 
 #: data/cpupower-preferences.glade:164
-#, fuzzy
-#| msgid "Show current cpu frequency in taskbar"
 msgid "Show arrow in taskbar"
-msgstr "Mostra la frequenza corrente della cpu nella taskbar"
+msgstr "Mostra freccia nel pannello"
 
 #: data/cpupower-preferences.glade:217
 msgid "About"
@@ -45,23 +41,23 @@ msgstr "Info"
 
 #: data/cpupower-preferences.glade:255
 msgid "Default AC profile"
-msgstr ""
+msgstr "Profilo quando in carica"
 
 #: data/cpupower-preferences.glade:268
 msgid "Default battery profile"
-msgstr ""
+msgstr "Profilo con batteria in uso"
 
 #: data/cpupower-preferences.glade:279
 msgid "Set as default profile for battery operation"
-msgstr ""
+msgstr "Imposta come profilo con batteria in uso"
 
 #: data/cpupower-preferences.glade:291
 msgid "Set as standard profile for plugged in operation"
-msgstr ""
+msgstr "Imposta come profilo quando in carica"
 
 #: data/cpupower-preferences.glade:303
 msgid "Auto Switch Configuration"
-msgstr ""
+msgstr "Configurazione switch automatico"
 
 #: data/cpupower-preferences.glade:350
 msgid "General"
@@ -89,25 +85,25 @@ msgstr "Profili"
 
 #: data/cpupower-preferences.glade:518
 msgid "Path to cpufreqctl:"
-msgstr ""
+msgstr "Percorso per cpufreqctl:"
 
 #: data/cpupower-preferences.glade:531
 msgid "Path to policykit rule:"
-msgstr ""
+msgstr "Percorso per policykit:"
 
 #: data/cpupower-preferences.glade:545
 msgid "CPU Power Manager is installed via your distributions package manager!"
 msgstr ""
+"CPU Power Manager è stato installato  col gestore pacchetti della "
+"distribuzione in uso!"
 
 #: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:979
 msgid "Uninstall"
-msgstr ""
+msgstr "Disinstalla"
 
 #: data/cpupower-preferences.glade:634
-#, fuzzy
-#| msgid "Installation required."
 msgid "Installation"
-msgstr "Installazione richiesta."
+msgstr "Installazione"
 
 #: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
 msgid "Profile name"
@@ -139,17 +135,17 @@ msgstr "Modalità turbo:"
 
 #: data/cpupower-preferences.glade:950
 msgid "Uninstall CPU Power Manager Tools"
-msgstr ""
+msgstr "Disinstalla CPU Power Manager Tools"
 
 #: data/cpupower-preferences.glade:951
 msgid ""
 "Are you sure you want to uninstall the cpufreqctl tool and the policykit "
 "rule?"
-msgstr ""
+msgstr "Confermare la disinstallazione di cpufreqctl e di policykit?"
 
 #: data/cpupower-preferences.glade:965
 msgid "Cancel"
-msgstr ""
+msgstr "Annulla"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
@@ -176,44 +172,36 @@ msgid "Control which unit is used for the frequency"
 msgstr "Controlla quale unità è utilizzata per la frequenza"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
-#, fuzzy
-#| msgid "Show current cpu frequency in taskbar"
 msgid "Show cpu chip icon in taskbar"
-msgstr "Mostra la frequenza corrente della cpu nella taskbar"
+msgstr "Mostra la l'icona della cpu nella taskbar"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
-#, fuzzy
-#| msgid "Show current cpu frequency in the top bar"
 msgid "Show cpu chip icon in the top bar"
-msgstr "Mostra la frequenza corrente della cpu nel pannello"
+msgstr "Mostra la l'icona della cpu nel pannello"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
-#, fuzzy
-#| msgid "Show current cpu frequency in taskbar"
 msgid "Show down arrow in taskbar"
-msgstr "Mostra la frequenza corrente della cpu nella taskbar"
+msgstr "Mostra la freccia nella taskbar"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
-#, fuzzy
-#| msgid "Show current cpu frequency in the top bar"
 msgid "Show down arrow in the top bar"
-msgstr "Mostra la frequenza corrente della cpu nel pannello"
+msgstr "Mostra la freccia nel pannello"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
 msgid "Default AC profile ID"
-msgstr ""
+msgstr "ID del profilo quando in carica"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
 msgid "The profile to switch to when plugged in"
-msgstr ""
+msgstr "Il profilo da usare quando in carica"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
 msgid "Default battery profile ID"
-msgstr ""
+msgstr "ID del profilo con batteria in uso"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
 msgid "The profile to switch to when unplugged"
-msgstr ""
+msgstr "Il profilo da usare con batteria in uso"
 
 #: src/indicator.js:172
 msgid "Minimum Frequency:"
@@ -229,7 +217,7 @@ msgstr "Modalità turbo:"
 
 #: src/indicator.js:186
 msgid "Auto Switch:"
-msgstr ""
+msgstr "Switch automatico:"
 
 #: src/indicator.js:210
 msgid "Current Frequency:"
@@ -257,27 +245,27 @@ msgstr "No"
 
 #: src/preferences.js:349 src/preferences.js:350
 msgid "None"
-msgstr ""
+msgstr "Vuoto"
 
 #: src/unsupported.js:47
 msgid "Your computer does not support intel_pstate."
-msgstr "Il tuo computer non supporta intel_pstate."
+msgstr "Il computer non supporta intel_pstate."
 
 #: src/update.js:43
 msgid "Your CPU Power Manager installation needs updating!"
-msgstr ""
+msgstr "CPU Power Manager deve essere aggiornato!"
 
 #: src/update.js:44
 msgid ""
 "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
 msgstr ""
+"Attentione! Sono stati trovati problemi nell'installazione corrente!\n"
+"Aggiornare immediatamente!"
 
 #: src/update.js:72
-#, fuzzy
-#| msgid "Attempt installation"
 msgid "Attempt tool update"
-msgstr "Tentativo di installazione"
+msgstr "Tentativo di aggiornamento"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"
