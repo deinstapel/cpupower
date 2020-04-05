@@ -2,8 +2,7 @@ PREFIX ?= /usr
 
 VERSION = "8.0.0"
 MSGFMT = /usr/bin/msgfmt
-PKGCONFIG = /usr/bin/pkg-config
-GLIB_COMPILE_SCHEMAS = $(shell $(PKGCONFIG) --variable=glib_compile_schemas gio-2.0)
+GLIB_COMPILE_SCHEMAS = /usr/bin/glib-compile-schemas
 EXTENSION_INSTALL_DIR = "$(PREFIX)/share/gnome-shell/extensions/cpupower@mko-sl.de"
 EXTENSION_FILES="$(shell find . -path './.git' -prune -o -path './target' -prune -o -print)"
 
