@@ -65,10 +65,13 @@ Fin Christensen (@fin-ger)
 Alex Pyrgiotis (@apyrgio)
 Tony Lambiris (@tonylambiris)
 Christopher Peredy (@mastercaution)</property>
-    <property name="translator_credits">Marek Pikuła (@MarPiRK)
+    <property name="translator_credits">Marek Pikuła (@MarekPikula)
 Jan Kasik (@honza-kasik)
 Alex Gluck (@AlexGluck)
-Jimmy Scionti (@amivaleo)</property>
+Jimmy Scionti (@amivaleo)
+Slobodan Terzić (@Faenriis)
+Laurent Tréguier (@LaurentTreguier)
+PB (@uno20001)</property>
     <property name="artists">Thanasis Georgiou (@sakisds)</property>
     <property name="logo">icons/cpu-symbolic.svg</property>
     <property name="license_type">gpl-3-0</property>
