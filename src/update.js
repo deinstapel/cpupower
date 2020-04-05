@@ -40,9 +40,6 @@ const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
 
-const updateText = _('Your CPU Power Manager installation needs updating!');
-const securityText = _('Warning: Security issues were found with your installation!\nPlease update immediately!');
-
 var UPDATE = 1;
 var SECURITY_UPDATE = 2;
 
@@ -57,13 +54,15 @@ var UpdateIndicator = class UpdateIndicator extends baseindicator.CPUFreqBaseInd
     createMenu() {
         super.createMenu();
 
-        let updateLabelText = updateText;
+        let updateText = _('Your CPU Power Manager installation needs updating!');
+        let securityText = _('Warning: Security issues were found with your installation!\n' +
+                             'Please update immediately!');
         if (this._updateType === SECURITY_UPDATE) {
-            updateLabelText += "\n";
-            updateLabelText += securityText;
+            updateText += "\n";
+            updateText += securityText;
         }
 
-        let updateLabel = new PopupMenu.PopupMenuItem(updateLabelText, {reactive: false});
+        let updateLabel = new PopupMenu.PopupMenuItem(updateText, {reactive: false});
         this.section.addMenuItem(updateLabel);
 
         let separator = new PopupMenu.PopupSeparatorMenuItem();
