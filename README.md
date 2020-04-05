@@ -177,6 +177,8 @@ You are a package maintainer and looking into packaging this extension? Great! B
 
 This will install a polkit rule to `/usr/share/polkit-1/actions/mko.cpupower.setcpufreq.policy` and an executable bash script to `/usr/bin/cpufreqctl`. The extension is installed to `/usr/share/gnome-shell/extensions/cpupower@mko-sl.de`. It still includes the `scripts` folder, the policykit rule template in `data/mko.cpupower.policy.in`, a useless copy of the tool in the `tool` folder, and the `Makefile`. These are included in the distribution of the extension to enable user installation if the extension got installed over the GNOME extensions website. If you do not want to distribute those files in your package, you can safely remove them.
 
+> If you find any issues in packaging this extension, please don't hesitate to report them!
+
 ## Developing
 
 ### Option 1
@@ -198,7 +200,7 @@ You can now enable the extension in your extension settings.
 ### Viewing log output
 
 ```shell
-$ journalctl -t gnome-shell -f
+$ journalctl /usr/bin/gnome-shell -f
 ```
 
 ### Creating a new release
