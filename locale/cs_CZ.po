@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-01 11:30+0200\n"
-"PO-Revision-Date: 2020-04-01 11:30+0200\n"
+"POT-Creation-Date: 2020-04-01 10:39+0200\n"
+"PO-Revision-Date: 2020-04-11 10:55+0200\n"
 "Last-Translator: Jan Kašík <honza.kasik@seznam.cz>\n"
 "Language-Team: \n"
 "Language: cs_CZ\n"
@@ -28,16 +28,12 @@ msgid "Use GHz instead of MHz"
 msgstr ""
 
 #: data/cpupower-preferences.glade:151
-#, fuzzy
-#| msgid "Show current cpu frequency in taskbar"
 msgid "Show icon in taskbar"
-msgstr "Zobrazit aktuální frekvenci procesoru v liště"
+msgstr ""
 
 #: data/cpupower-preferences.glade:164
-#, fuzzy
-#| msgid "Show current cpu frequency in taskbar"
 msgid "Show arrow in taskbar"
-msgstr "Zobrazit aktuální frekvenci procesoru v liště"
+msgstr ""
 
 #: data/cpupower-preferences.glade:217
 msgid "About"
@@ -48,10 +44,8 @@ msgid "Default AC profile"
 msgstr ""
 
 #: data/cpupower-preferences.glade:268
-#, fuzzy
-#| msgid "Name of the profile"
 msgid "Default battery profile"
-msgstr "Název profilu"
+msgstr ""
 
 #: data/cpupower-preferences.glade:279
 msgid "Set as default profile for battery operation"
@@ -106,10 +100,8 @@ msgid "Uninstall"
 msgstr ""
 
 #: data/cpupower-preferences.glade:634
-#, fuzzy
-#| msgid "Installation required."
 msgid "Installation"
-msgstr "Je vyžadována instalace"
+msgstr ""
 
 #: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
 msgid "Profile name"
@@ -178,28 +170,20 @@ msgid "Control which unit is used for the frequency"
 msgstr "Nastavte jednotku používanou pro zobrazení frekvence"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
-#, fuzzy
-#| msgid "Show current cpu frequency in taskbar"
 msgid "Show cpu chip icon in taskbar"
-msgstr "Zobrazit aktuální frekvenci procesoru v liště"
+msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
-#, fuzzy
-#| msgid "Show current cpu frequency in the top bar"
 msgid "Show cpu chip icon in the top bar"
-msgstr "Zobrazit aktuální frekvenci procesoru v horním panelu"
+msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
-#, fuzzy
-#| msgid "Show current cpu frequency in taskbar"
 msgid "Show down arrow in taskbar"
-msgstr "Zobrazit aktuální frekvenci procesoru v liště"
+msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
-#, fuzzy
-#| msgid "Show current cpu frequency in the top bar"
 msgid "Show down arrow in the top bar"
-msgstr "Zobrazit aktuální frekvenci procesoru v horním panelu"
+msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
 msgid "Default AC profile ID"
@@ -243,7 +227,7 @@ msgstr "Nastavení"
 
 #: src/notinstalled.js:52
 msgid "Installation required."
-msgstr "Je vyžadována instalace"
+msgstr "Je vyžadována instalace."
 
 #: src/notinstalled.js:58
 msgid "Attempt installation"
@@ -276,10 +260,8 @@ msgid ""
 msgstr ""
 
 #: src/update.js:72
-#, fuzzy
-#| msgid "Attempt installation"
 msgid "Attempt tool update"
-msgstr "Zkusit provést instalaci"
+msgstr ""
 
 #~ msgid "CPU"
 #~ msgstr "CPU"

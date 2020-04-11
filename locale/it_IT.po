@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-01 11:30+0200\n"
-"PO-Revision-Date: 2020-04-05 21:18+0200\n"
+"POT-Creation-Date: 2020-04-11 10:57+0200\n"
+"PO-Revision-Date: 2020-04-11 10:57+0200\n"
 "Last-Translator: Jimmy Scionti <jimmy.scionti@gmail.com>\n"
 "Language-Team: Jimmy Scionti <jimmy.scionti@gmail.com>\n"
 "Language: it_IT\n"
@@ -19,131 +19,131 @@ msgstr ""
 msgid "Gnome-Shell Extension for the intel-pstate driver."
 msgstr "Estensione Gnome-Shell per il driver intel-pstate."
 
-#: data/cpupower-preferences.glade:125
+#: data/cpupower-preferences.glade:128
 msgid "Show current frequency"
 msgstr "Mostra la frequenza corrente"
 
-#: data/cpupower-preferences.glade:138
+#: data/cpupower-preferences.glade:141
 msgid "Use GHz instead of MHz"
 msgstr "Usa GHz invece dei MHz"
 
-#: data/cpupower-preferences.glade:151
+#: data/cpupower-preferences.glade:154
 msgid "Show icon in taskbar"
 msgstr "Mostra icona nel pannello"
 
-#: data/cpupower-preferences.glade:164
+#: data/cpupower-preferences.glade:167
 msgid "Show arrow in taskbar"
 msgstr "Mostra freccia nel pannello"
 
-#: data/cpupower-preferences.glade:217
+#: data/cpupower-preferences.glade:220
 msgid "About"
 msgstr "Info"
 
-#: data/cpupower-preferences.glade:255
+#: data/cpupower-preferences.glade:258
 msgid "Default AC profile"
 msgstr "Profilo quando in carica"
 
-#: data/cpupower-preferences.glade:268
+#: data/cpupower-preferences.glade:271
 msgid "Default battery profile"
 msgstr "Profilo con batteria in uso"
 
-#: data/cpupower-preferences.glade:279
+#: data/cpupower-preferences.glade:282
 msgid "Set as default profile for battery operation"
 msgstr "Imposta come profilo con batteria in uso"
 
-#: data/cpupower-preferences.glade:291
+#: data/cpupower-preferences.glade:294
 msgid "Set as standard profile for plugged in operation"
 msgstr "Imposta come profilo quando in carica"
 
-#: data/cpupower-preferences.glade:303
+#: data/cpupower-preferences.glade:306
 msgid "Auto Switch Configuration"
 msgstr "Configurazione switch automatico"
 
-#: data/cpupower-preferences.glade:350
+#: data/cpupower-preferences.glade:353
 msgid "General"
 msgstr "Generale"
 
-#: data/cpupower-preferences.glade:401
+#: data/cpupower-preferences.glade:404
 msgid "Add selected profile"
 msgstr "Aggiungi il profilo selezionato"
 
-#: data/cpupower-preferences.glade:414
+#: data/cpupower-preferences.glade:417
 msgid "Remove selected profile"
 msgstr "Rimuovi il profilo selezionato"
 
-#: data/cpupower-preferences.glade:427
+#: data/cpupower-preferences.glade:430
 msgid "Move selected profile up"
 msgstr "Muovi in alto il profilo selezionato"
 
-#: data/cpupower-preferences.glade:440
+#: data/cpupower-preferences.glade:443
 msgid "Move selected profile down"
 msgstr "Muovi in basso il profilo selezionato"
 
-#: data/cpupower-preferences.glade:499
+#: data/cpupower-preferences.glade:502
 msgid "Profiles"
 msgstr "Profili"
 
-#: data/cpupower-preferences.glade:518
+#: data/cpupower-preferences.glade:521
 msgid "Path to cpufreqctl:"
 msgstr "Percorso per cpufreqctl:"
 
-#: data/cpupower-preferences.glade:531
+#: data/cpupower-preferences.glade:534
 msgid "Path to policykit rule:"
 msgstr "Percorso per policykit:"
 
-#: data/cpupower-preferences.glade:545
+#: data/cpupower-preferences.glade:548
 msgid "CPU Power Manager is installed via your distributions package manager!"
 msgstr ""
 "CPU Power Manager è stato installato  col gestore pacchetti della "
 "distribuzione in uso!"
 
-#: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:979
+#: data/cpupower-preferences.glade:563 data/cpupower-preferences.glade:982
 msgid "Uninstall"
 msgstr "Disinstalla"
 
-#: data/cpupower-preferences.glade:634
+#: data/cpupower-preferences.glade:637
 msgid "Installation"
 msgstr "Installazione"
 
-#: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
+#: data/cpupower-preferences.glade:667 data/cpupower-preferences.glade:679
 msgid "Profile name"
 msgstr "Nome del profilo"
 
-#: data/cpupower-preferences.glade:689
+#: data/cpupower-preferences.glade:692
 msgid "Minimum frequency"
 msgstr "Frequenza minima"
 
-#: data/cpupower-preferences.glade:717
+#: data/cpupower-preferences.glade:720
 msgid "Maximum frequency"
 msgstr "Frequenza massima"
 
-#: data/cpupower-preferences.glade:729
+#: data/cpupower-preferences.glade:732
 msgid "Turbo boost"
 msgstr "Modalità turbo"
 
-#: data/cpupower-preferences.glade:767
+#: data/cpupower-preferences.glade:770
 msgid "Discard"
 msgstr "Elimina"
 
-#: data/cpupower-preferences.glade:787
+#: data/cpupower-preferences.glade:790
 msgid "Save"
 msgstr "Salva"
 
-#: data/cpupower-preferences.glade:916
+#: data/cpupower-preferences.glade:919
 msgid "Turbo boost:"
 msgstr "Modalità turbo:"
 
-#: data/cpupower-preferences.glade:950
+#: data/cpupower-preferences.glade:953
 msgid "Uninstall CPU Power Manager Tools"
 msgstr "Disinstalla CPU Power Manager Tools"
 
-#: data/cpupower-preferences.glade:951
+#: data/cpupower-preferences.glade:954
 msgid ""
 "Are you sure you want to uninstall the cpufreqctl tool and the policykit "
 "rule?"
 msgstr "Confermare la disinstallazione di cpufreqctl e di policykit?"
 
-#: data/cpupower-preferences.glade:965
+#: data/cpupower-preferences.glade:968
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -219,11 +219,11 @@ msgstr "Modalità turbo:"
 msgid "Auto Switch:"
 msgstr "Switch automatico:"
 
-#: src/indicator.js:210
+#: src/indicator.js:220
 msgid "Current Frequency:"
 msgstr "Frequenza attuale:"
 
-#: src/indicator.js:235
+#: src/indicator.js:245
 msgid "Preferences"
 msgstr "Preferenze"
 
@@ -235,15 +235,15 @@ msgstr "Installazione richiesta."
 msgid "Attempt installation"
 msgstr "Tentativo di installazione"
 
-#: src/preferences.js:277
+#: src/preferences.js:278
 msgid "Yes"
 msgstr "Sì"
 
-#: src/preferences.js:277
+#: src/preferences.js:278
 msgid "No"
 msgstr "No"
 
-#: src/preferences.js:349 src/preferences.js:350
+#: src/preferences.js:350 src/preferences.js:351
 msgid "None"
 msgstr "Vuoto"
 
@@ -251,11 +251,11 @@ msgstr "Vuoto"
 msgid "Your computer does not support intel_pstate."
 msgstr "Il computer non supporta intel_pstate."
 
-#: src/update.js:43
+#: src/update.js:57
 msgid "Your CPU Power Manager installation needs updating!"
 msgstr "CPU Power Manager deve essere aggiornato!"
 
-#: src/update.js:44
+#: src/update.js:58
 msgid ""
 "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
@@ -263,7 +263,7 @@ msgstr ""
 "Attentione! Sono stati trovati problemi nell'installazione corrente!\n"
 "Aggiornare immediatamente!"
 
-#: src/update.js:72
+#: src/update.js:71
 msgid "Attempt tool update"
 msgstr "Tentativo di aggiornamento"
 

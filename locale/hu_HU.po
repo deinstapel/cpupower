@@ -2,140 +2,140 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-01 10:39+0200\n"
-"PO-Revision-Date: 2020-04-05 21:03+0200\n"
+"POT-Creation-Date: 2020-04-11 10:57+0200\n"
+"PO-Revision-Date: 2020-04-11 10:57+0200\n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Last-Translator: \n"
-"Language: hu\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: data/cpupower-preferences.glade:61
 msgid "Gnome-Shell Extension for the intel-pstate driver."
 msgstr "Gnome-Shell bővítmény intel-pstate driverhez."
 
-#: data/cpupower-preferences.glade:125
+#: data/cpupower-preferences.glade:128
 msgid "Show current frequency"
 msgstr "Jelenlegi frekvencia mutatása"
 
-#: data/cpupower-preferences.glade:138
+#: data/cpupower-preferences.glade:141
 msgid "Use GHz instead of MHz"
 msgstr "GHz használata MHz helyett"
 
-#: data/cpupower-preferences.glade:151
+#: data/cpupower-preferences.glade:154
 msgid "Show icon in taskbar"
 msgstr "Ikon mutatása a felső sávban"
 
-#: data/cpupower-preferences.glade:164
+#: data/cpupower-preferences.glade:167
 msgid "Show arrow in taskbar"
 msgstr "Nyíl mutatása a felső sávban"
 
-#: data/cpupower-preferences.glade:217
+#: data/cpupower-preferences.glade:220
 msgid "About"
 msgstr "A programról"
 
-#: data/cpupower-preferences.glade:255
+#: data/cpupower-preferences.glade:258
 msgid "Default AC profile"
 msgstr "Profil töltés esetén"
 
-#: data/cpupower-preferences.glade:268
+#: data/cpupower-preferences.glade:271
 msgid "Default battery profile"
 msgstr "Profil akkumulátor esetén"
 
-#: data/cpupower-preferences.glade:279
+#: data/cpupower-preferences.glade:282
 msgid "Set as default profile for battery operation"
 msgstr "Beállítás profilként akkumulátoros működés esetén"
 
-#: data/cpupower-preferences.glade:291
+#: data/cpupower-preferences.glade:294
 msgid "Set as standard profile for plugged in operation"
 msgstr "Beállítás profilként töltős működés esetén"
 
-#: data/cpupower-preferences.glade:303
+#: data/cpupower-preferences.glade:306
 msgid "Auto Switch Configuration"
 msgstr "Automatikus profilváltás konfigurációja"
 
-#: data/cpupower-preferences.glade:350
+#: data/cpupower-preferences.glade:353
 msgid "General"
 msgstr "Általános"
 
-#: data/cpupower-preferences.glade:401
+#: data/cpupower-preferences.glade:404
 msgid "Add selected profile"
 msgstr "Kiválasztott profil hozzáadása"
 
-#: data/cpupower-preferences.glade:414
+#: data/cpupower-preferences.glade:417
 msgid "Remove selected profile"
 msgstr "Kiválasztott profil eltávolítása"
 
-#: data/cpupower-preferences.glade:427
+#: data/cpupower-preferences.glade:430
 msgid "Move selected profile up"
 msgstr "Kiválasztott profil mozgatása felfelé"
 
-#: data/cpupower-preferences.glade:440
+#: data/cpupower-preferences.glade:443
 msgid "Move selected profile down"
 msgstr "Kiválaszott profil mozgatása lefelé"
 
-#: data/cpupower-preferences.glade:499
+#: data/cpupower-preferences.glade:502
 msgid "Profiles"
 msgstr "Profilok"
 
-#: data/cpupower-preferences.glade:518
+#: data/cpupower-preferences.glade:521
 msgid "Path to cpufreqctl:"
 msgstr "cpufreqctl útvonala:"
 
-#: data/cpupower-preferences.glade:531
+#: data/cpupower-preferences.glade:534
 msgid "Path to policykit rule:"
 msgstr "policykit szabály útvonala:"
 
-#: data/cpupower-preferences.glade:545
+#: data/cpupower-preferences.glade:548
 msgid "CPU Power Manager is installed via your distributions package manager!"
 msgstr "A CPU Power Manager a disztribúciód csomagkezelőjével lett telepítve!"
 
-#: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:979
+#: data/cpupower-preferences.glade:563 data/cpupower-preferences.glade:982
 msgid "Uninstall"
 msgstr "Eltávolítás"
 
-#: data/cpupower-preferences.glade:634
+#: data/cpupower-preferences.glade:637
 msgid "Installation"
 msgstr "Telepítés"
 
-#: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
+#: data/cpupower-preferences.glade:667 data/cpupower-preferences.glade:679
 msgid "Profile name"
 msgstr "Profilnév"
 
-#: data/cpupower-preferences.glade:689
+#: data/cpupower-preferences.glade:692
 msgid "Minimum frequency"
 msgstr "Minimális frekvencia"
 
-#: data/cpupower-preferences.glade:717
+#: data/cpupower-preferences.glade:720
 msgid "Maximum frequency"
 msgstr "Maximális frekvencia"
 
-#: data/cpupower-preferences.glade:729
+#: data/cpupower-preferences.glade:732
 msgid "Turbo boost"
 msgstr "Turbo boost"
 
-#: data/cpupower-preferences.glade:767
+#: data/cpupower-preferences.glade:770
 msgid "Discard"
 msgstr "Elvetés"
 
-#: data/cpupower-preferences.glade:787
+#: data/cpupower-preferences.glade:790
 msgid "Save"
 msgstr "Mentés"
 
-#: data/cpupower-preferences.glade:916
+#: data/cpupower-preferences.glade:919
 msgid "Turbo boost:"
 msgstr "Turbo Boost:"
 
-#: data/cpupower-preferences.glade:950
+#: data/cpupower-preferences.glade:953
 msgid "Uninstall CPU Power Manager Tools"
 msgstr "CPU Power Manager segédprogramok eltávolítása"
 
-#: data/cpupower-preferences.glade:951
+#: data/cpupower-preferences.glade:954
 msgid ""
 "Are you sure you want to uninstall the cpufreqctl tool and the policykit "
 "rule?"
@@ -143,7 +143,7 @@ msgstr ""
 "Biztosan el akarod távolítani a cpufreqctl segédprogramot és a policykit "
 "szabályt?"
 
-#: data/cpupower-preferences.glade:965
+#: data/cpupower-preferences.glade:968
 msgid "Cancel"
 msgstr "Mégse"
 
@@ -221,11 +221,11 @@ msgstr "Turbo Boost:"
 msgid "Auto Switch:"
 msgstr "Automatikus profilváltás:"
 
-#: src/indicator.js:210
+#: src/indicator.js:220
 msgid "Current Frequency:"
 msgstr "Jelenlegi frekvencia:"
 
-#: src/indicator.js:235
+#: src/indicator.js:245
 msgid "Preferences"
 msgstr "Beállítások"
 
@@ -237,15 +237,15 @@ msgstr "Telepítés szükséges."
 msgid "Attempt installation"
 msgstr "Telepítés mégkísérlése"
 
-#: src/preferences.js:277
+#: src/preferences.js:278
 msgid "Yes"
 msgstr "Igen"
 
-#: src/preferences.js:277
+#: src/preferences.js:278
 msgid "No"
 msgstr "Nem"
 
-#: src/preferences.js:349 src/preferences.js:350
+#: src/preferences.js:350 src/preferences.js:351
 msgid "None"
 msgstr "Nincs"
 
@@ -253,19 +253,19 @@ msgstr "Nincs"
 msgid "Your computer does not support intel_pstate."
 msgstr "A számítógéped nem támogatja az intel_pstate drivert."
 
-#: src/update.js:43
+#: src/update.js:57
 msgid "Your CPU Power Manager installation needs updating!"
 msgstr "A CPU Power Manager frissítésre szorul!"
 
-#: src/update.js:44
+#: src/update.js:58
 msgid ""
 "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
 msgstr "Figyelmeztetés: "
 
-#: src/update.js:72
+#: src/update.js:71
 msgid "Attempt tool update"
 msgstr "Frissítés megkísérlése"
 
-msgid "CPU"
-msgstr "CPU"
+#~ msgid "CPU"
+#~ msgstr "CPU"
