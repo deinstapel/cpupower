@@ -4,8 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-11 10:58+0200\n"
 "PO-Revision-Date: 2020-04-11 10:58+0200\n"
-"Last-Translator: Marek Pikuła <marek@pikula.co>\n"
-"Language-Team: Marek Pikuła <marek@pikula.co>\n"
+"Last-Translator: Marcin Panniak <martinplr@gmail.com>\n"
+"Language-Team: Marcin Panniak <martinplr@gmail.com>\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,189 +18,191 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:61
 msgid "Gnome-Shell Extension for the intel-pstate driver."
-msgstr ""
+msgstr "Rozszerzenie GNOME Shell dla sterownika intel-pstate."
 
 #: data/cpupower-preferences.glade:128
 msgid "Show current frequency"
-msgstr ""
+msgstr "Wyświetlaj aktualną częstotliwość"
 
 #: data/cpupower-preferences.glade:141
 msgid "Use GHz instead of MHz"
-msgstr ""
+msgstr "Wyświetlaj GHz zamiast MHz"
 
 #: data/cpupower-preferences.glade:154
 msgid "Show icon in taskbar"
-msgstr ""
+msgstr "Wyświetlaj ikonę na pasku zadań"
 
 #: data/cpupower-preferences.glade:167
 msgid "Show arrow in taskbar"
-msgstr ""
+msgstr "Wyświetlaj strzałkę na pasku zadań"
 
 #: data/cpupower-preferences.glade:220
 msgid "About"
-msgstr ""
+msgstr "O wtyczce"
 
 #: data/cpupower-preferences.glade:258
 msgid "Default AC profile"
-msgstr ""
+msgstr "Domyślny profil zasilania"
 
 #: data/cpupower-preferences.glade:271
 msgid "Default battery profile"
-msgstr ""
+msgstr "Domyślny profil baterii"
 
 #: data/cpupower-preferences.glade:282
 msgid "Set as default profile for battery operation"
-msgstr ""
+msgstr "Ustaw jako domyślny profil dla zasilania bateryjnego"
 
 #: data/cpupower-preferences.glade:294
 msgid "Set as standard profile for plugged in operation"
-msgstr ""
+msgstr "Ustaw jako domyślny profil dla zasilania"
 
 #: data/cpupower-preferences.glade:306
 msgid "Auto Switch Configuration"
-msgstr ""
+msgstr "Konfiguracja automatycznego przełączania"
 
 #: data/cpupower-preferences.glade:353
 msgid "General"
-msgstr ""
+msgstr "Ogólne"
 
 #: data/cpupower-preferences.glade:404
 msgid "Add selected profile"
-msgstr ""
+msgstr "Dodaj profil"
 
 #: data/cpupower-preferences.glade:417
 msgid "Remove selected profile"
-msgstr ""
+msgstr "Usuń wybrany profil"
 
 #: data/cpupower-preferences.glade:430
 msgid "Move selected profile up"
-msgstr ""
+msgstr "Przenieś wybrany profil w górę"
 
 #: data/cpupower-preferences.glade:443
 msgid "Move selected profile down"
-msgstr ""
+msgstr "Przenieś wybrany profil w dół"
 
 #: data/cpupower-preferences.glade:502
 msgid "Profiles"
-msgstr ""
+msgstr "Profile"
 
 #: data/cpupower-preferences.glade:521
 msgid "Path to cpufreqctl:"
-msgstr ""
+msgstr "Ścieżka cpufreqctl:"
 
 #: data/cpupower-preferences.glade:534
 msgid "Path to policykit rule:"
-msgstr ""
+msgstr "Ścieżka reguł policykit:"
 
 #: data/cpupower-preferences.glade:548
 msgid "CPU Power Manager is installed via your distributions package manager!"
-msgstr ""
+msgstr "CPU Power Manager jest instalowany z menedżera pakietów dystrybucji!"
 
 #: data/cpupower-preferences.glade:563 data/cpupower-preferences.glade:982
 msgid "Uninstall"
-msgstr ""
+msgstr "Odinstaluj"
 
 #: data/cpupower-preferences.glade:637
 msgid "Installation"
-msgstr ""
+msgstr "Instalacja"
 
 #: data/cpupower-preferences.glade:667 data/cpupower-preferences.glade:679
 msgid "Profile name"
-msgstr ""
+msgstr "Nazwa profilu"
 
 #: data/cpupower-preferences.glade:692
 msgid "Minimum frequency"
-msgstr ""
+msgstr "Minimalna częstotliwość"
 
 #: data/cpupower-preferences.glade:720
 msgid "Maximum frequency"
-msgstr ""
+msgstr "Maksymalna częstotliwość"
 
 #: data/cpupower-preferences.glade:732
 msgid "Turbo boost"
-msgstr ""
+msgstr "Turbo boost"
 
 #: data/cpupower-preferences.glade:770
 msgid "Discard"
-msgstr ""
+msgstr "Odrzuć"
 
 #: data/cpupower-preferences.glade:790
 msgid "Save"
-msgstr ""
+msgstr "Zapisz"
 
 #: data/cpupower-preferences.glade:919
 msgid "Turbo boost:"
-msgstr ""
+msgstr "Turbo boost:"
 
 #: data/cpupower-preferences.glade:953
 msgid "Uninstall CPU Power Manager Tools"
-msgstr ""
+msgstr "Odinstaluj CPU Power Manager"
 
 #: data/cpupower-preferences.glade:954
 msgid ""
 "Are you sure you want to uninstall the cpufreqctl tool and the policykit "
 "rule?"
 msgstr ""
+"Czy na pewno chcesz odinstalować narzędzie cpufreqctl i regułę "
+"policykit?"
 
 #: data/cpupower-preferences.glade:968
 msgid "Cancel"
-msgstr ""
+msgstr "Anuluj"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
-msgstr ""
+msgstr "Domyślne profile"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
 msgid "Your CPUpower profiles"
-msgstr ""
+msgstr "Twoje profile CPUpower"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
 msgid "Show current cpu frequency in taskbar"
-msgstr ""
+msgstr "Pokaż bieżącą częstotliwość procesora na pasku zadań"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
 msgid "Show current cpu frequency in the top bar"
-msgstr ""
+msgstr "Pokaż aktualną częstotliwość procesora w górnym pasku"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
 msgid "Frequency in taskbar is shown in GHz or MHz"
-msgstr ""
+msgstr "Częstotliwość na pasku zadań jest pokazywana w GHz lub MHz"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
 msgid "Control which unit is used for the frequency"
-msgstr ""
+msgstr "Kontroluj, która jednostka jest używana dla częstotliwości"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
 msgid "Show cpu chip icon in taskbar"
-msgstr ""
+msgstr "Pokaż ikonę procesora na pasku zadań"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
 msgid "Show cpu chip icon in the top bar"
-msgstr ""
+msgstr "Pokaż ikonę procesora na górnym pasku"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
 msgid "Show down arrow in taskbar"
-msgstr ""
+msgstr "Pokaż strzałkę w dół na pasku zadań"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
 msgid "Show down arrow in the top bar"
-msgstr ""
+msgstr "Pokaż strzałkę w dół na górnym pasku"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
 msgid "Default AC profile ID"
-msgstr ""
+msgstr "Domyślny identyfikator profilu zasilania"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
 msgid "The profile to switch to when plugged in"
-msgstr ""
+msgstr "Profil, na który ma się przełączać po podłączeniu"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
 msgid "Default battery profile ID"
-msgstr ""
+msgstr "Domyślny identyfikator profilu baterii"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
 msgid "The profile to switch to when unplugged"
-msgstr ""
+msgstr "Profil, na który ma się przełączać po odłączeniu"
 
 #: src/indicator.js:172
 msgid "Minimum Frequency:"
@@ -216,7 +218,7 @@ msgstr "Turbo Boost:"
 
 #: src/indicator.js:186
 msgid "Auto Switch:"
-msgstr ""
+msgstr "Automatyczne przełączania:"
 
 #: src/indicator.js:220
 msgid "Current Frequency:"
@@ -228,41 +230,43 @@ msgstr "Preferencje"
 
 #: src/notinstalled.js:52
 msgid "Installation required."
-msgstr ""
+msgstr "Wymagana instalacja."
 
 #: src/notinstalled.js:58
 msgid "Attempt installation"
-msgstr ""
+msgstr "Spróbuj zainstalować"
 
 #: src/preferences.js:278
 msgid "Yes"
-msgstr ""
+msgstr "Tak"
 
 #: src/preferences.js:278
 msgid "No"
-msgstr ""
+msgstr "Nie"
 
 #: src/preferences.js:350 src/preferences.js:351
 msgid "None"
-msgstr ""
+msgstr "Żaden"
 
 #: src/unsupported.js:47
 msgid "Your computer does not support intel_pstate."
-msgstr ""
+msgstr "Twój komputer nie obsługuje sterownika intel-pstate."
 
 #: src/update.js:57
 msgid "Your CPU Power Manager installation needs updating!"
-msgstr ""
+msgstr "CPU Power Manager wymaga aktualizacji!"
 
 #: src/update.js:58
 msgid ""
 "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
 msgstr ""
+"Ostrzeżenie: znaleziono problemy z bezpieczeństwem podczas instalacji!\n"
+"Zaktualizuj natychmiast!"
 
 #: src/update.js:71
 msgid "Attempt tool update"
-msgstr ""
+msgstr "Aktualizuj"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"
