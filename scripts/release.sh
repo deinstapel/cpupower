@@ -15,6 +15,8 @@ major=0
 minor=0
 patch=0
 
+old_version="$semver"
+
 # break down the version number into it's components
 regex="([0-9]+).([0-9]+).([0-9]+)"
 if [[ "$semver" =~ $regex ]]
@@ -70,6 +72,10 @@ grep --exclude="${BASH_SOURCE[0]}" -l -Z -r -e 'VERSION=' -e 'name="version"' | 
 		        -e "s;<property name=\"version\">.*</property>;<property name=\"version\">$semver</property>;g"
 
 make package
+
+git add -A
+git commit -s -m "(make-release) Update version from ${old_version} to ${semver}"
+git push origin master:master
 
 git tag -sm "Update version to $semver" "v$semver"
 git push --tags
