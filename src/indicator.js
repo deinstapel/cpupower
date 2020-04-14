@@ -403,9 +403,9 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
     _getCurFreq() {
         if(this.lblUnit)
-            return (this.cpufreq.toString() / 1000).toFixed(2) + 'GHz';
+            return (this.cpufreq.toString() / 1000).toFixed(2) + '㎓';
         else
-            return this.cpufreq.toString() + 'MHz';
+            return this.cpufreq.toString() + '㎒';
     }
 
     _onPreferencesActivate(item) {
