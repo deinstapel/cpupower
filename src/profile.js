@@ -49,7 +49,7 @@ var CPUFreqProfile = class CPUFreqProfile {
         if (input.length < 5 || !input[4])
         {
             this.UUID = GenerateUUID();
-            // global.log("Generated UUID: " + this.UUID);
+            // log("Generated UUID: " + this.UUID);
             return true;
         }
         else

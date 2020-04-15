@@ -79,7 +79,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                 this._updateAutoSwitch();
             }
         } else {
-            global.log('Cached last settings not found: ' + LASTSETTINGS);
+            log('Cached last settings not found: ' + LASTSETTINGS);
         }
 
         this._updateFreqMm(true);
@@ -116,7 +116,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     powerActions(powerState) {
         if (powerState === UPower.DeviceState.DISCHARGING)
         {
-            global.log ("Power state changed: discharging");
+            log ("Power state changed: discharging");
             // switch to battery profile if auto switching is enabled
             if (this.isAutoSwitchActive)
             {
@@ -135,9 +135,9 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             powerState === UPower.DeviceState.FULLY_CHARGED)
         {
             if (powerState === UPower.DeviceState.CHARGING)
-                global.log ("Power state changed: charging");
+                log ("Power state changed: charging");
             else
-                global.log ("Power state changed: fully charged");
+                log ("Power state changed: fully charged");
             // switch to AC profile if auto switching is enabled
             if (this.isAutoSwitchActive)
             {
@@ -280,7 +280,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         let cmd = Math.floor(this.minVal) + '\n' + Math.floor(this.maxVal) + '\n' 
             + (this.isTurboBoostActive ? 'true':'false') + '\n' 
             + (this.isAutoSwitchActive ? 'true':'false') + '\n';
-        // global.log('Updating cpufreq settings cache file: ' + LASTSETTINGS);
+        // log('Updating cpufreq settings cache file: ' + LASTSETTINGS);
         GLib.file_set_contents(LASTSETTINGS, cmd);
     }
 
@@ -346,7 +346,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                     return;
                 }
 
-                // global.log("Sampled freq for cpu#" + n + ": " + contents);
+                // log("Sampled freq for cpu#" + n + ": " + contents);
 
                 if(success) curfreq = parseInt(String.fromCharCode.apply(null, contents)) / 1000;
                 this.cpufreq = curfreq;

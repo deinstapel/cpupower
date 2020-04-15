@@ -99,7 +99,7 @@ var enable = () => {
             });
         });
     } catch (e) {
-        global.logError(e.message);
+        logError(e.message);
     }
 };
 

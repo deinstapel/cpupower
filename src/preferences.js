@@ -77,7 +77,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     }
 
     status() {
-        global.log('status', arguments[0]);
+        log('[cpupower-status] ' + arguments[0]);
     }
 
     _updateSettings() {
