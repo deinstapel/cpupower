@@ -34,14 +34,22 @@ const Config = imports.misc.config;
 
 const DEFAULT_EMPTY_NAME = 'No name';
 
-var CPUFreqProfileButton = class CPUFreqProfileButton extends PopupMenu.PopupMenuItem {
-    _init(profile) {
-    super._init(_(profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
-      this.Profile = profile;
-  }
-} ;
+var CPUFreqProfileButton;
 
-// Re-wrapping our subclass in `GObject.registerClass()` for Gnome >3.30
-if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.30) {
+// Handle different sub-classing paradigm between Gnome > 3.32 and Gnome <= 3.32
+if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
+    CPUFreqProfileButton = class CPUFreqProfileButton extends PopupMenu.PopupMenuItem {
+        _init(profile) {
+            super._init(_(profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
+            this.Profile = profile;
+        }
+    };
     CPUFreqProfileButton = GObject.registerClass({ GTypeName: 'CPUFreqProfileButton' }, CPUFreqProfileButton);
+} else {
+    CPUFreqProfileButton = class CPUFreqProfileButton extends PopupMenu.PopupMenuItem {
+        constructor(profile) {
+            super(_(profile.Name || DEFAULT_EMPTY_NAME), { reactive:true });
+            this.Profile = profile;
+        }
+    };
 }
