@@ -1,6 +1,6 @@
 PREFIX ?= /usr
 
-VERSION="9.0.1"
+VERSION="9.0.2"
 
 MSGFMT = /usr/bin/msgfmt
 GLIB_COMPILE_SCHEMAS = /usr/bin/glib-compile-schemas

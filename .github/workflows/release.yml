@@ -38,7 +38,7 @@ jobs:
     - name: Release GNOME Extensions ZIP
       id: gnome-zip
       run: |
-        VERSION="9.0.1"
+        VERSION="9.0.2"
         echo "::set-output name=version::$VERSION"
         make package
         cp target/cpupower-$VERSION.zip $GITHUB_WORKSPACE/cpupower-$VERSION.zip
