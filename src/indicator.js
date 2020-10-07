@@ -191,6 +191,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.minSlider = new Slider.Slider(this.minVal / 100);
+        this.minSlider.x_expand = true;
         this.minSlider.connect(parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32 ? 'notify::value' : 'value-changed', item => {
             this.minVal = Math.floor(item.value * 100);
             this.imMinLabel.set_text(this._getMinText());
@@ -198,13 +199,14 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         });
 
         if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
-            this.imSliderMin.add(this.minSlider, {expand: true});
+            this.imSliderMin.add_child(this.minSlider);
         } else {
             this.imSliderMin.actor.add(this.minSlider.actor, {expand: true});
         }
 
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.maxSlider = new Slider.Slider(this.maxVal / 100);
+        this.maxSlider.x_expand = true;
         this.maxSlider.connect(parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32 ? 'notify::value' : 'value-changed', item => {
             this.maxVal = Math.floor(item.value * 100);
             this.imMaxLabel.set_text(this._getMaxText());
@@ -212,7 +214,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         });
 
         if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
-            this.imSliderMax.add(this.maxSlider, {expand: true});
+            this.imSliderMax.add_child(this.maxSlider);
         } else {
             this.imSliderMax.actor.add(this.maxSlider.actor, {expand: true});
         }
