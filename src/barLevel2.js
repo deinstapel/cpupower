@@ -17,6 +17,14 @@ var BarLevel = GObject.registerClass({
             'overdrive-start', 'overdrive-start', 'overdrive-start',
             GObject.ParamFlags.READWRITE,
             1, 2, 1),
+        'blocked-minimum': GObject.ParamSpec.double(
+            'blocked-minimum', 'blocked-minimum', 'blocked-minimum',
+            GObject.ParamFlags.READWRITE,
+            0, 2, 0),
+        'blocked-maximum': GObject.ParamSpec.double(
+            'blocked-maximum', 'blocked-maximum', 'blocked-maximum',
+            GObject.ParamFlags.READWRITE,
+            0, 2, 1),
     },
 }, class BarLevel extends St.DrawingArea {
     _init(params) {
@@ -24,6 +32,8 @@ var BarLevel = GObject.registerClass({
         this._value = 0;
         this._overdriveStart = 1;
         this._barLevelWidth = 0;
+        this._blockedMin = 0;
+        this._blockedMax = this._maxValue;
 
         let defaultParams = {
             style_class: 'barlevel',
@@ -57,6 +67,36 @@ var BarLevel = GObject.registerClass({
 
         this._value = value;
         this.notify('value');
+        this.queue_repaint();
+    }
+
+    get blocked_minimum() {
+        return this._blockedMin
+    }
+
+    set blocked_minimum(value) {
+        value = Math.max(Math.min(value, this.blocked_maximum), 0);
+
+        if (this._blockedMin == value)
+            return;
+        
+        this._blockedMin = value;
+        this.notify('blocked-minimum');
+        this.queue_repaint();
+    }
+
+    get blocked_maximum() {
+        return this._blockedMax
+    }
+
+    set blocked_maximum(value) {
+        value = Math.max(Math.min(value, this._maxValue), this.blocked_minimum);
+
+        if (this._blockedMax == value)
+            return;
+        
+        this._blockedMax = value;
+        this.notify('blocked-maximum');
         this.queue_repaint();
     }
 

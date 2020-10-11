@@ -206,7 +206,14 @@ var Slider = GObject.registerClass({
             newvalue = 1;
         else
             newvalue = (relX - handleRadius) / (width - 2 * handleRadius);
-        this.value = newvalue * this._maxValue;
+
+        if (newvalue * this._maxValue < this._blockedMin)
+            this.value = this._blockedMin;
+        else if (newvalue * this._maxValue > this._blockedMax) {
+            this.value = this._blockedMax;
+        }
+        else
+            this.value = newvalue * this._maxValue;
     }
 
     _getMinimumIncrement() {
