@@ -28,7 +28,6 @@
 const St = imports.gi.St;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
-const Slider = imports.ui.slider;
 const GLib = imports.gi.GLib;
 const Util = imports.misc.util;
 const Mainloop = imports.mainloop;
@@ -44,6 +43,7 @@ const _ = Gettext.gettext;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
+const Slider = Me.imports.src.slider2;
 const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
 const baseindicator = Me.imports.src.baseindicator;
 const CPUFreqProfileButton = Me.imports.src.profilebutton.CPUFreqProfileButton;
