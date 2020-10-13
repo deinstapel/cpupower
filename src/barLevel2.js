@@ -177,23 +177,52 @@ var BarLevel = GObject.registerClass({
         if (overdriveActive)
             overdriveSeparatorWidth = themeNode.get_length('-barlevel-overdrive-separator-width');
 
+        let deadBarColor = barLevelColor;
+        let deadBarBorderColor = barLevelBorderColor;
+
         /* background bar */
-        cr.arc(width - barLevelBorderRadius - barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * (3 / 4), TAU * (1 / 4));
+        let bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMax / this._maxValue) + barLevelBorderRadius;
+        let startBlockedMax = this._blockedMax < this._maxValue ? bx : width - barLevelBorderRadius - barLevelBorderWidth
+        if (this._blockedMax < this._maxValue)
+            cr.lineTo(startBlockedMax, (height + barLevelHeight) / 2);
+        else
+            cr.arc(startBlockedMax, height / 2, barLevelBorderRadius, TAU * (3 / 4), TAU * (1 / 4));
         cr.lineTo(endX, (height + barLevelHeight) / 2);
         cr.lineTo(endX, (height - barLevelHeight) / 2);
-        cr.lineTo(width - barLevelBorderRadius - barLevelBorderWidth, (height - barLevelHeight) / 2);
+        cr.lineTo(startBlockedMax, (height - barLevelHeight) / 2);
         Clutter.cairo_set_source_color(cr, barLevelColor);
         cr.fillPreserve();
         Clutter.cairo_set_source_color(cr, barLevelBorderColor);
         cr.setLineWidth(barLevelBorderWidth);
         cr.stroke();
 
+        // blocked minimum
+        bx = 0;
+        if (this._blockedMin > 0) {
+            bx = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMin / this._maxValue;
+            // bx = Math.min(bx, overdriveSeparatorX - overdriveSeparatorWidth / 2);
+            cr.arc(barLevelBorderRadius + barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * (1 / 4), TAU * (3 / 4));
+            cr.lineTo(bx, (height - barLevelHeight) / 2);
+            cr.lineTo(bx, (height + barLevelHeight) / 2);
+            cr.lineTo(barLevelBorderRadius + barLevelBorderWidth, (height + barLevelHeight) / 2);
+            if (this._value > 0)
+                Clutter.cairo_set_source_color(cr, deadBarColor);
+            cr.fillPreserve();
+            Clutter.cairo_set_source_color(cr, deadBarBorderColor);
+            cr.setLineWidth(barLevelBorderWidth);
+            cr.stroke();
+        }
+
         /* normal progress bar */
         let x = Math.min(endX, overdriveSeparatorX - overdriveSeparatorWidth / 2);
-        cr.arc(barLevelBorderRadius + barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * (1 / 4), TAU * (3 / 4));
+        let startX = this._blockedMin > 0 ? bx : barLevelBorderRadius + barLevelBorderWidth + bx;
+        if (this._blockedMin > 0)
+            cr.lineTo(startX, (height - barLevelHeight) / 2);
+        else
+            cr.arc(startX, height / 2, barLevelBorderRadius, TAU * (1 / 4), TAU * (3 / 4));
         cr.lineTo(x, (height - barLevelHeight) / 2);
         cr.lineTo(x, (height + barLevelHeight) / 2);
-        cr.lineTo(barLevelBorderRadius + barLevelBorderWidth, (height + barLevelHeight) / 2);
+        cr.lineTo(startX, (height + barLevelHeight) / 2);
         if (this._value > 0)
             Clutter.cairo_set_source_color(cr, barLevelActiveColor);
         cr.fillPreserve();
@@ -231,6 +260,21 @@ var BarLevel = GObject.registerClass({
             cr.stroke();
         }
 
+        // blocked maximum
+        if (this._blockedMax < this._maxValue) {
+            bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMax / this._maxValue) + barLevelBorderRadius;
+            // bx = Math.min(bx, overdriveSeparatorX - overdriveSeparatorWidth / 2);
+            cr.arc(width - barLevelBorderRadius - barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * (3 / 4), TAU * (1 / 4));
+            cr.lineTo(bx, (height + barLevelHeight) / 2);
+            cr.lineTo(bx, (height - barLevelHeight) / 2);
+            cr.lineTo(width - barLevelBorderRadius - barLevelBorderWidth, (height - barLevelHeight) / 2);
+            Clutter.cairo_set_source_color(cr, deadBarColor);
+            cr.fillPreserve();
+            Clutter.cairo_set_source_color(cr, deadBarBorderColor);
+            cr.setLineWidth(barLevelBorderWidth);
+            cr.stroke();
+        }
+
         /* draw overdrive separator */
         if (overdriveActive) {
             cr.moveTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, (height - barLevelHeight) / 2);
@@ -243,6 +287,41 @@ var BarLevel = GObject.registerClass({
             else
                 Clutter.cairo_set_source_color(cr, barLevelColor);
             cr.fill();
+        }
+
+        let blocked_sep_height = height / 4;
+        let blocked_sep_width = Math.max(2, barLevelHeight / 2);
+        
+        // draw blocked minimum region seperator
+        if (this._blockedMin > 0) {
+            bx = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMin / this._maxValue;
+            bx = Math.round(bx); // let borders appear as sharp as other seperator (maybe bad idea) 1/2
+            cr.moveTo(bx, (height - barLevelHeight) / 2 - blocked_sep_height);
+            cr.lineTo(bx, (height + barLevelHeight) / 2 + blocked_sep_height);
+            cr.lineTo(bx - blocked_sep_width, (height + barLevelHeight) / 2 + blocked_sep_height);
+            cr.lineTo(bx - blocked_sep_width, (height - barLevelHeight) / 2 - blocked_sep_height);
+            cr.lineTo(bx, (height - barLevelHeight) / 2 - blocked_sep_height);
+            Clutter.cairo_set_source_color(cr, deadBarColor);
+            cr.fillPreserve();
+            Clutter.cairo_set_source_color(cr, deadBarBorderColor);
+            cr.setLineWidth(barLevelBorderWidth)
+            cr.stroke();
+        }
+
+        // draw blocked maximum region seperator
+        if (this._blockedMax < this._maxValue) {
+            bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMax / this._maxValue) + barLevelBorderRadius;
+            bx = Math.round(bx); // let borders appear as sharp as other seperator (maybe bad idea) 2/2
+            cr.moveTo(bx, (height - barLevelHeight) / 2 - blocked_sep_height);
+            cr.lineTo(bx, (height + barLevelHeight) / 2 + blocked_sep_height);
+            cr.lineTo(bx + blocked_sep_width, (height + barLevelHeight) / 2 + blocked_sep_height);
+            cr.lineTo(bx + blocked_sep_width, (height - barLevelHeight) / 2 - blocked_sep_height);
+            cr.lineTo(bx, (height - barLevelHeight) / 2 - blocked_sep_height);
+            Clutter.cairo_set_source_color(cr, deadBarColor);
+            cr.fillPreserve();
+            Clutter.cairo_set_source_color(cr, deadBarBorderColor);
+            cr.setLineWidth(barLevelBorderWidth)
+            cr.stroke();
         }
 
         cr.$dispose();
