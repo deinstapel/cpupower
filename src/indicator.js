@@ -190,7 +190,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         });
 
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
-        this.minSlider = new Slider.Slider(this.minVal / 100);
+        this.minSlider = new Slider.Slider2(this.minVal / 100);
         this.minSlider.x_expand = true;
         this.minSlider.connect('notify::value', item => {
             this.minVal = Math.floor(item.value * 100);
@@ -205,7 +205,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         }
 
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
-        this.maxSlider = new Slider.Slider(this.maxVal / 100);
+        this.maxSlider = new Slider.Slider2(this.maxVal / 100);
         this.maxSlider.x_expand = true;
         this.maxSlider.connect('notify::value', item => {
             this.maxVal = Math.floor(item.value * 100);

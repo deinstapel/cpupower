@@ -5,16 +5,17 @@ const { Atk, Clutter, GObject } = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const BarLevel = Me.imports.src.barLevel2;
+const BarLevel2 = Me.imports.src.barLevel2;
 
 var SLIDER_SCROLL_STEP = 0.02; /* Slider scrolling step in % */
 
-var Slider = GObject.registerClass({
+var Slider2 = GObject.registerClass({
+    GTypeName: 'Slider2',
     Signals: {
         'drag-begin': {},
         'drag-end': {},
     },
-}, class Slider extends BarLevel.BarLevel {
+}, class Slider2 extends BarLevel2.BarLevel2 {
     _init(value) {
         super._init({
             value,

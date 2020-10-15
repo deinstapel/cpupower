@@ -4,7 +4,8 @@
 const { Atk, Clutter, GObject, St } = imports.gi;
 const Config = imports.misc.config;
 
-var BarLevel = GObject.registerClass({
+var BarLevel2 = GObject.registerClass({
+    GTypeName: 'BarLevel2',
     Properties: {
         'value': GObject.ParamSpec.double(
             'value', 'value', 'value',
@@ -27,7 +28,7 @@ var BarLevel = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             0, 2, 1),
     },
-}, class BarLevel extends St.DrawingArea {
+}, class BarLevel2 extends St.DrawingArea {
     _init(params) {
         this._maxValue = 1;
         this._value = 0;
