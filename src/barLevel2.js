@@ -2,6 +2,7 @@
 /* exported BarLevel */
 
 const { Atk, Clutter, GObject, St } = imports.gi;
+const Config = imports.misc.config;
 
 var BarLevel = GObject.registerClass({
     Properties: {
@@ -143,27 +144,35 @@ var BarLevel = GObject.registerClass({
         let themeNode = this.get_theme_node();
         let [width, height] = this.get_surface_size();
 
-        let barLevelHeight = themeNode.get_length('-barlevel-height');
+        // fix for old Gnome releases
+        let prefix = parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.29 ? "-barlevel" : "-slider";
+
+        let barLevelHeight = themeNode.get_length(prefix + '-height');
         let barLevelBorderRadius = Math.min(width, barLevelHeight) / 2;
         let fgColor = themeNode.get_foreground_color();
 
-        let barLevelColor = themeNode.get_color('-barlevel-background-color');
-        let barLevelActiveColor = themeNode.get_color('-barlevel-active-background-color');
-        let barLevelOverdriveColor = themeNode.get_color('-barlevel-overdrive-color');
+        let barLevelColor = themeNode.get_color(prefix + '-background-color');
+        let barLevelActiveColor = themeNode.get_color(prefix + '-active-background-color');
+        let barLevelOverdriveColor;
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.29) {
+            barLevelOverdriveColor = themeNode.get_color('-barlevel-overdrive-color');
+        }
 
-        let barLevelBorderWidth = Math.min(themeNode.get_length('-barlevel-border-width'), 1);
+        let barLevelBorderWidth = Math.min(themeNode.get_length(prefix + '-border-width'), 1);
         let [hasBorderColor, barLevelBorderColor] =
-            themeNode.lookup_color('-barlevel-border-color', false);
+            themeNode.lookup_color(prefix + '-border-color', false);
         if (!hasBorderColor)
             barLevelBorderColor = barLevelColor;
         let [hasActiveBorderColor, barLevelActiveBorderColor] =
-            themeNode.lookup_color('-barlevel-active-border-color', false);
+            themeNode.lookup_color(prefix + '-active-border-color', false);
         if (!hasActiveBorderColor)
             barLevelActiveBorderColor = barLevelActiveColor;
-        let [hasOverdriveBorderColor, barLevelOverdriveBorderColor] =
-            themeNode.lookup_color('-barlevel-overdrive-border-color', false);
-        if (!hasOverdriveBorderColor)
-            barLevelOverdriveBorderColor = barLevelOverdriveColor;
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.29) {
+            let [hasOverdriveBorderColor, barLevelOverdriveBorderColor] =
+                themeNode.lookup_color('-barlevel-overdrive-border-color', false);
+            if (!hasOverdriveBorderColor)
+                barLevelOverdriveBorderColor = barLevelOverdriveColor;
+        }
 
         const TAU = Math.PI * 2;
 
@@ -172,7 +181,7 @@ var BarLevel = GObject.registerClass({
             endX = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._value / this._maxValue;
 
         let overdriveSeparatorX = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._overdriveStart / this._maxValue;
-        let overdriveActive = this._overdriveStart !== this._maxValue;
+        let overdriveActive = this._overdriveStart !== this._maxValue && parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.29;
         let overdriveSeparatorWidth = 0;
         if (overdriveActive)
             overdriveSeparatorWidth = themeNode.get_length('-barlevel-overdrive-separator-width');

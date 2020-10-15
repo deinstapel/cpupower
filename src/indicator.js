@@ -192,7 +192,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.minSlider = new Slider.Slider(this.minVal / 100);
         this.minSlider.x_expand = true;
-        this.minSlider.connect(parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32 ? 'notify::value' : 'value-changed', item => {
+        this.minSlider.connect('notify::value', item => {
             this.minVal = Math.floor(item.value * 100);
             this.imMinLabel.set_text(this._getMinText());
             this._updateMin();
@@ -201,13 +201,13 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
             this.imSliderMin.add_child(this.minSlider);
         } else {
-            this.imSliderMin.actor.add(this.minSlider.actor, {expand: true});
+            this.imSliderMin.actor.add(this.minSlider, {expand: true});
         }
 
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.maxSlider = new Slider.Slider(this.maxVal / 100);
         this.maxSlider.x_expand = true;
-        this.maxSlider.connect(parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32 ? 'notify::value' : 'value-changed', item => {
+        this.maxSlider.connect('notify::value', item => {
             this.maxVal = Math.floor(item.value * 100);
             this.imMaxLabel.set_text(this._getMaxText());
             this._updateMax();
@@ -216,7 +216,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
             this.imSliderMax.add_child(this.maxSlider);
         } else {
-            this.imSliderMax.actor.add(this.maxSlider.actor, {expand: true});
+            this.imSliderMax.actor.add(this.maxSlider, {expand: true});
         }
 
         this.imCurrentTitle = new PopupMenu.PopupMenuItem(_('Current Frequency:'), {reactive:false});
@@ -311,14 +311,10 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
     _updateUi() {
         this.imMinLabel.set_text(this._getMinText());
-        parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32
-            ? this.minSlider.value = this.minVal / 100.0
-            : this.minSlider.setValue(this.minVal / 100.0);
+        this.minSlider.value = this.minVal / 100.0
 
         this.imMaxLabel.set_text(this._getMaxText());
-        parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32
-            ? this.maxSlider.value = this.maxVal / 100.0
-            : this.maxSlider.setValue(this.maxVal / 100.0);
+        this.maxSlider.value = this.maxVal / 100.0
 
         this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
         this.imAutoSwitch.setToggleState(this.isAutoSwitchActive);
