@@ -159,7 +159,7 @@ var Slider2 = GObject.registerClass({
             delta = -dy * SLIDER_SCROLL_STEP;
         }
 
-        this.value = Math.min(Math.max(this._blockedMin, this._value + delta), this._blockedMax);
+        this.value = Math.min(Math.max(this.blocked_minimum, this._value + delta), this.blocked_maximum);
 
         return Clutter.EVENT_STOP;
     }
@@ -209,7 +209,7 @@ var Slider2 = GObject.registerClass({
             newvalue = (relX - handleRadius) / (width - 2 * handleRadius);
 
         newvalue = newvalue * this._maxValue;
-        this.value = Math.min(Math.max(this._blockedMin, newvalue), this._blockedMax);
+        this.value = Math.min(Math.max(this.blocked_minimum, newvalue), this.blocked_maximum);
     }
 
     _getMinimumIncrement() {
