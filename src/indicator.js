@@ -55,12 +55,14 @@ const CONFIG = Me.imports.src.config;
 var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseIndicator {
     constructor() {
         super();
+        this.cpuMin = this._getMinMaxCheck("min");
+        this.cpuMax = this._getMinMaxCheck("max");
         this.cpufreq = 800;
         this.cpucount = 0;
         this.isTurboBoostActive = true;
         this.isAutoSwitchActive = true;
-        this.minVal = this._getMinCheck();
-        this.maxVal = 100;
+        this.minVal = this.cpuMin;
+        this.maxVal = this.cpuMin;
 
         // read the cached settings file.
         if(GLib.file_test(LASTSETTINGS, GLib.FileTest.EXISTS))
@@ -192,6 +194,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.minSlider = new Slider.Slider2(this.minVal / 100);
         this.minSlider.x_expand = true;
+        this.minSlider.blocked_minimum = this.cpuMin / 100;
+        this.minSlider.blocked_maximum = this.cpuMax / 100;
         this.minSlider.connect('notify::value', item => {
             this.minVal = Math.floor(item.value * 100);
             this.imMinLabel.set_text(this._getMinText());
@@ -207,6 +211,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.maxSlider = new Slider.Slider2(this.maxVal / 100);
         this.maxSlider.x_expand = true;
+        this.maxSlider.blocked_minimum = this.cpuMin / 100;
+        this.maxSlider.blocked_maximum = this.cpuMax / 100;
         this.maxSlider.connect('notify::value', item => {
             this.maxVal = Math.floor(item.value * 100);
             this.imMaxLabel.set_text(this._getMaxText());
@@ -390,8 +396,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         return true;
     }
 
-    _getMinCheck() {
-        let [res, out, err, exitcode] = GLib.spawn_command_line_sync(PKEXEC + ' ' + CONFIG.CPUFREQCTL + ' min check');
+    _getMinMaxCheck(arg) {
+        let [res, out, err, exitcode] = GLib.spawn_command_line_sync(PKEXEC + ' ' + CONFIG.CPUFREQCTL + ' ' + arg + ' check');
         if (exitcode !== 0) {
             return 0;
         }
