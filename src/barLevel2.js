@@ -190,16 +190,20 @@ var BarLevel2 = GObject.registerClass({
         let deadBarColor = barLevelColor;
         let deadBarBorderColor = barLevelBorderColor;
 
+        // performance optimization
+        let barLevelTop = (height - barLevelHeight) / 2;
+        let barLevelBottom = (height + barLevelHeight) / 2;
+
         /* background bar */
         let bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMax / this._maxValue) + barLevelBorderRadius;
         let startBlockedMax = this._blockedMax < this._maxValue ? bx : width - barLevelBorderRadius - barLevelBorderWidth
         if (this._blockedMax < this._maxValue)
-            cr.lineTo(startBlockedMax, (height + barLevelHeight) / 2);
+            cr.lineTo(startBlockedMax, barLevelBottom);
         else
             cr.arc(startBlockedMax, height / 2, barLevelBorderRadius, TAU * (3 / 4), TAU * (1 / 4));
-        cr.lineTo(endX, (height + barLevelHeight) / 2);
-        cr.lineTo(endX, (height - barLevelHeight) / 2);
-        cr.lineTo(startBlockedMax, (height - barLevelHeight) / 2);
+        cr.lineTo(endX, barLevelBottom);
+        cr.lineTo(endX, barLevelTop);
+        cr.lineTo(startBlockedMax, barLevelTop);
         Clutter.cairo_set_source_color(cr, barLevelColor);
         cr.fillPreserve();
         Clutter.cairo_set_source_color(cr, barLevelBorderColor);
@@ -212,9 +216,9 @@ var BarLevel2 = GObject.registerClass({
             bx = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMin / this._maxValue;
             // bx = Math.min(bx, overdriveSeparatorX - overdriveSeparatorWidth / 2);
             cr.arc(barLevelBorderRadius + barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * (1 / 4), TAU * (3 / 4));
-            cr.lineTo(bx, (height - barLevelHeight) / 2);
-            cr.lineTo(bx, (height + barLevelHeight) / 2);
-            cr.lineTo(barLevelBorderRadius + barLevelBorderWidth, (height + barLevelHeight) / 2);
+            cr.lineTo(bx, barLevelTop);
+            cr.lineTo(bx, barLevelBottom);
+            cr.lineTo(barLevelBorderRadius + barLevelBorderWidth, barLevelBottom);
             if (this._value > 0)
                 Clutter.cairo_set_source_color(cr, deadBarColor);
             cr.fillPreserve();
@@ -227,12 +231,12 @@ var BarLevel2 = GObject.registerClass({
         let x = Math.min(endX, overdriveSeparatorX - overdriveSeparatorWidth / 2);
         let startX = this._blockedMin > 0 ? bx : barLevelBorderRadius + barLevelBorderWidth + bx;
         if (this._blockedMin > 0)
-            cr.lineTo(startX, (height - barLevelHeight) / 2);
+            cr.lineTo(startX, barLevelTop);
         else
             cr.arc(startX, height / 2, barLevelBorderRadius, TAU * (1 / 4), TAU * (3 / 4));
-        cr.lineTo(x, (height - barLevelHeight) / 2);
-        cr.lineTo(x, (height + barLevelHeight) / 2);
-        cr.lineTo(startX, (height + barLevelHeight) / 2);
+        cr.lineTo(x, barLevelTop);
+        cr.lineTo(x, barLevelBottom);
+        cr.lineTo(startX, barLevelBottom);
         if (this._value > 0)
             Clutter.cairo_set_source_color(cr, barLevelActiveColor);
         cr.fillPreserve();
@@ -243,11 +247,11 @@ var BarLevel2 = GObject.registerClass({
         /* overdrive progress barLevel */
         x = Math.min(endX, overdriveSeparatorX) + overdriveSeparatorWidth / 2;
         if (this._value > this._overdriveStart) {
-            cr.moveTo(x, (height - barLevelHeight) / 2);
-            cr.lineTo(endX, (height - barLevelHeight) / 2);
-            cr.lineTo(endX, (height + barLevelHeight) / 2);
-            cr.lineTo(x, (height + barLevelHeight) / 2);
-            cr.lineTo(x, (height - barLevelHeight) / 2);
+            cr.moveTo(x, barLevelTop);
+            cr.lineTo(endX, barLevelTop);
+            cr.lineTo(endX, barLevelBottom);
+            cr.lineTo(x, barLevelBottom);
+            cr.lineTo(x, barLevelTop);
             Clutter.cairo_set_source_color(cr, barLevelOverdriveColor);
             cr.fillPreserve();
             Clutter.cairo_set_source_color(cr, barLevelOverdriveBorderColor);
@@ -262,9 +266,9 @@ var BarLevel2 = GObject.registerClass({
             else
                 Clutter.cairo_set_source_color(cr, barLevelOverdriveColor);
             cr.arc(endX, height / 2, barLevelBorderRadius, TAU * (3 / 4), TAU * (1 / 4));
-            cr.lineTo(Math.floor(endX), (height + barLevelHeight) / 2);
-            cr.lineTo(Math.floor(endX), (height - barLevelHeight) / 2);
-            cr.lineTo(endX, (height - barLevelHeight) / 2);
+            cr.lineTo(Math.floor(endX), barLevelBottom);
+            cr.lineTo(Math.floor(endX), barLevelTop);
+            cr.lineTo(endX, barLevelTop);
             cr.fillPreserve();
             cr.setLineWidth(barLevelBorderWidth);
             cr.stroke();
@@ -275,9 +279,9 @@ var BarLevel2 = GObject.registerClass({
             bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMax / this._maxValue) + barLevelBorderRadius;
             // bx = Math.min(bx, overdriveSeparatorX - overdriveSeparatorWidth / 2);
             cr.arc(width - barLevelBorderRadius - barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * (3 / 4), TAU * (1 / 4));
-            cr.lineTo(bx, (height + barLevelHeight) / 2);
-            cr.lineTo(bx, (height - barLevelHeight) / 2);
-            cr.lineTo(width - barLevelBorderRadius - barLevelBorderWidth, (height - barLevelHeight) / 2);
+            cr.lineTo(bx, barLevelBottom);
+            cr.lineTo(bx, barLevelTop);
+            cr.lineTo(width - barLevelBorderRadius - barLevelBorderWidth, barLevelTop);
             Clutter.cairo_set_source_color(cr, deadBarColor);
             cr.fillPreserve();
             Clutter.cairo_set_source_color(cr, deadBarBorderColor);
@@ -287,11 +291,11 @@ var BarLevel2 = GObject.registerClass({
 
         /* draw overdrive separator */
         if (overdriveActive) {
-            cr.moveTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, (height - barLevelHeight) / 2);
-            cr.lineTo(overdriveSeparatorX + overdriveSeparatorWidth / 2, (height - barLevelHeight) / 2);
-            cr.lineTo(overdriveSeparatorX + overdriveSeparatorWidth / 2, (height + barLevelHeight) / 2);
-            cr.lineTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, (height + barLevelHeight) / 2);
-            cr.lineTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, (height - barLevelHeight) / 2);
+            cr.moveTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, barLevelTop);
+            cr.lineTo(overdriveSeparatorX + overdriveSeparatorWidth / 2, barLevelTop);
+            cr.lineTo(overdriveSeparatorX + overdriveSeparatorWidth / 2, barLevelBottom);
+            cr.lineTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, barLevelBottom);
+            cr.lineTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, barLevelTop);
             if (this._value <= this._overdriveStart)
                 Clutter.cairo_set_source_color(cr, fgColor);
             else
@@ -306,11 +310,11 @@ var BarLevel2 = GObject.registerClass({
         if (this._blockedMin > 0) {
             bx = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMin / this._maxValue;
             bx = Math.round(bx); // let borders appear as sharp as other seperator (maybe bad idea) 1/2
-            cr.moveTo(bx, (height - barLevelHeight) / 2 - blocked_sep_height);
-            cr.lineTo(bx, (height + barLevelHeight) / 2 + blocked_sep_height);
-            cr.lineTo(bx - blocked_sep_width, (height + barLevelHeight) / 2 + blocked_sep_height);
-            cr.lineTo(bx - blocked_sep_width, (height - barLevelHeight) / 2 - blocked_sep_height);
-            cr.lineTo(bx, (height - barLevelHeight) / 2 - blocked_sep_height);
+            cr.moveTo(bx, barLevelTop - blocked_sep_height);
+            cr.lineTo(bx, barLevelBottom + blocked_sep_height);
+            cr.lineTo(bx - blocked_sep_width, barLevelBottom + blocked_sep_height);
+            cr.lineTo(bx - blocked_sep_width, barLevelTop - blocked_sep_height);
+            cr.lineTo(bx, barLevelTop - blocked_sep_height);
             Clutter.cairo_set_source_color(cr, deadBarColor);
             cr.fillPreserve();
             Clutter.cairo_set_source_color(cr, deadBarBorderColor);
@@ -322,11 +326,11 @@ var BarLevel2 = GObject.registerClass({
         if (this._blockedMax < this._maxValue) {
             bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMax / this._maxValue) + barLevelBorderRadius;
             bx = Math.round(bx); // let borders appear as sharp as other seperator (maybe bad idea) 2/2
-            cr.moveTo(bx, (height - barLevelHeight) / 2 - blocked_sep_height);
-            cr.lineTo(bx, (height + barLevelHeight) / 2 + blocked_sep_height);
-            cr.lineTo(bx + blocked_sep_width, (height + barLevelHeight) / 2 + blocked_sep_height);
-            cr.lineTo(bx + blocked_sep_width, (height - barLevelHeight) / 2 - blocked_sep_height);
-            cr.lineTo(bx, (height - barLevelHeight) / 2 - blocked_sep_height);
+            cr.moveTo(bx, barLevelTop - blocked_sep_height);
+            cr.lineTo(bx, barLevelBottom + blocked_sep_height);
+            cr.lineTo(bx + blocked_sep_width, barLevelBottom + blocked_sep_height);
+            cr.lineTo(bx + blocked_sep_width, barLevelTop - blocked_sep_height);
+            cr.lineTo(bx, barLevelTop - blocked_sep_height);
             Clutter.cairo_set_source_color(cr, deadBarColor);
             cr.fillPreserve();
             Clutter.cairo_set_source_color(cr, deadBarBorderColor);
