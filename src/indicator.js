@@ -47,6 +47,7 @@ const Slider = Me.imports.src.slider2;
 const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
 const baseindicator = Me.imports.src.baseindicator;
 const CPUFreqProfileButton = Me.imports.src.profilebutton.CPUFreqProfileButton;
+const checkCpuLimit = Me.imports.src.utils.checkCpuLimit;
 
 const LASTSETTINGS = GLib.get_user_cache_dir() + '/cpupower.last-settings';
 const PKEXEC = GLib.find_program_in_path('pkexec');
@@ -55,14 +56,14 @@ const CONFIG = Me.imports.src.config;
 var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseIndicator {
     constructor() {
         super();
-        this.cpuMin = this._getMinMaxCheck("min");
-        this.cpuMax = this._getMinMaxCheck("max");
+        this.cpuMinLimit = checkCpuLimit("min");
+        this.cpuMaxLimit = checkCpuLimit("max");
         this.cpufreq = 800;
         this.cpucount = 0;
         this.isTurboBoostActive = true;
         this.isAutoSwitchActive = true;
-        this.minVal = this.cpuMin;
-        this.maxVal = this.cpuMin;
+        this.minVal = this.cpuMinLimit;
+        this.maxVal = this.cpuMinLimit;
 
         // read the cached settings file.
         if(GLib.file_test(LASTSETTINGS, GLib.FileTest.EXISTS))
@@ -194,8 +195,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.minSlider = new Slider.Slider2(this.minVal / 100);
         this.minSlider.x_expand = true;
-        this.minSlider.blocked_minimum = this.cpuMin / 100;
-        this.minSlider.blocked_maximum = this.cpuMax / 100;
+        this.minSlider.limit_minimum = this.cpuMinLimit / 100;
+        this.minSlider.limit_maximum = this.cpuMaxLimit / 100;
         this.minSlider.connect('notify::value', item => {
             this.minVal = Math.floor(item.value * 100);
             this.imMinLabel.set_text(this._getMinText());
@@ -211,8 +212,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
         this.maxSlider = new Slider.Slider2(this.maxVal / 100);
         this.maxSlider.x_expand = true;
-        this.maxSlider.blocked_minimum = this.cpuMin / 100;
-        this.maxSlider.blocked_maximum = this.cpuMax / 100;
+        this.maxSlider.limit_minimum = this.cpuMinLimit / 100;
+        this.maxSlider.limit_maximum = this.cpuMaxLimit / 100;
         this.maxSlider.connect('notify::value', item => {
             this.maxVal = Math.floor(item.value * 100);
             this.imMaxLabel.set_text(this._getMaxText());
@@ -394,15 +395,6 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             this._updateUi();
         }
         return true;
-    }
-
-    _getMinMaxCheck(arg) {
-        let [res, out, err, exitcode] = GLib.spawn_command_line_sync(PKEXEC + ' ' + CONFIG.CPUFREQCTL + ' ' + arg + ' check');
-        if (exitcode !== 0) {
-            return 0;
-        }
-        const str = String.fromCharCode.apply(null, out);
-        return parseInt(str);
     }
 
     _getCurFreq() {

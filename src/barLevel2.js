@@ -19,12 +19,12 @@ var BarLevel2 = GObject.registerClass({
             'overdrive-start', 'overdrive-start', 'overdrive-start',
             GObject.ParamFlags.READWRITE,
             1, 2, 1),
-        'blocked-minimum': GObject.ParamSpec.double(
-            'blocked-minimum', 'blocked-minimum', 'blocked-minimum',
+        'limit-minimum': GObject.ParamSpec.double(
+            'limit-minimum', 'limit-minimum', 'limit-minimum',
             GObject.ParamFlags.READWRITE,
             0, 2, 0),
-        'blocked-maximum': GObject.ParamSpec.double(
-            'blocked-maximum', 'blocked-maximum', 'blocked-maximum',
+        'limit-maximum': GObject.ParamSpec.double(
+            'limit-maximum', 'limit-maximum', 'limit-maximum',
             GObject.ParamFlags.READWRITE,
             0, 2, 1),
     },
@@ -34,8 +34,8 @@ var BarLevel2 = GObject.registerClass({
         this._value = 0;
         this._overdriveStart = 1;
         this._barLevelWidth = 0;
-        this._blockedMin = 0;
-        this._blockedMax = this._maxValue;
+        this._limitMin = 0;
+        this._limitMax = this._maxValue;
 
         let defaultParams = {
             style_class: 'barlevel',
@@ -72,33 +72,33 @@ var BarLevel2 = GObject.registerClass({
         this.queue_repaint();
     }
 
-    get blocked_minimum() {
-        return this._blockedMin
+    get limit_minimum() {
+        return this._limitMin
     }
 
-    set blocked_minimum(value) {
-        value = Math.max(Math.min(value, this.blocked_maximum), 0);
+    set limit_minimum(value) {
+        value = Math.max(Math.min(value, this.limit_maximum), 0);
 
-        if (this._blockedMin == value)
+        if (this._limitMin == value)
             return;
         
-        this._blockedMin = value;
-        this.notify('blocked-minimum');
+        this._limitMin = value;
+        this.notify('limit-minimum');
         this.queue_repaint();
     }
 
-    get blocked_maximum() {
-        return this._blockedMax
+    get limit_maximum() {
+        return this._limitMax
     }
 
-    set blocked_maximum(value) {
-        value = Math.max(Math.min(value, this._maxValue), this.blocked_minimum);
+    set limit_maximum(value) {
+        value = Math.max(Math.min(value, this._maxValue), this.limit_minimum);
 
-        if (this._blockedMax == value)
+        if (this._limitMax == value)
             return;
         
-        this._blockedMax = value;
-        this.notify('blocked-maximum');
+        this._limitMax = value;
+        this.notify('limit-maximum');
         this.queue_repaint();
     }
 
@@ -195,25 +195,25 @@ var BarLevel2 = GObject.registerClass({
         let barLevelBottom = (height + barLevelHeight) / 2;
 
         /* background bar */
-        let bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMax / this._maxValue) + barLevelBorderRadius;
-        let startBlockedMax = this._blockedMax < this._maxValue ? bx : width - barLevelBorderRadius - barLevelBorderWidth
-        if (this._blockedMax < this._maxValue)
-            cr.lineTo(startBlockedMax, barLevelBottom);
+        let bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._limitMax / this._maxValue) + barLevelBorderRadius;
+        let startLimitMax = this._limitMax < this._maxValue ? bx : width - barLevelBorderRadius - barLevelBorderWidth
+        if (this._limitMax < this._maxValue)
+            cr.lineTo(startLimitMax, barLevelBottom);
         else
-            cr.arc(startBlockedMax, height / 2, barLevelBorderRadius, TAU * (3 / 4), TAU * (1 / 4));
+            cr.arc(startLimitMax, height / 2, barLevelBorderRadius, TAU * (3 / 4), TAU * (1 / 4));
         cr.lineTo(endX, barLevelBottom);
         cr.lineTo(endX, barLevelTop);
-        cr.lineTo(startBlockedMax, barLevelTop);
+        cr.lineTo(startLimitMax, barLevelTop);
         Clutter.cairo_set_source_color(cr, barLevelColor);
         cr.fillPreserve();
         Clutter.cairo_set_source_color(cr, barLevelBorderColor);
         cr.setLineWidth(barLevelBorderWidth);
         cr.stroke();
 
-        // blocked minimum
+        // limit minimum
         bx = 0;
-        if (this._blockedMin > 0) {
-            bx = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMin / this._maxValue;
+        if (this._limitMin > 0) {
+            bx = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._limitMin / this._maxValue;
             // bx = Math.min(bx, overdriveSeparatorX - overdriveSeparatorWidth / 2);
             cr.arc(barLevelBorderRadius + barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * (1 / 4), TAU * (3 / 4));
             cr.lineTo(bx, barLevelTop);
@@ -229,8 +229,8 @@ var BarLevel2 = GObject.registerClass({
 
         /* normal progress bar */
         let x = Math.min(endX, overdriveSeparatorX - overdriveSeparatorWidth / 2);
-        let startX = this._blockedMin > 0 ? bx : barLevelBorderRadius + barLevelBorderWidth + bx;
-        if (this._blockedMin > 0)
+        let startX = this._limitMin > 0 ? bx : barLevelBorderRadius + barLevelBorderWidth + bx;
+        if (this._limitMin > 0)
             cr.lineTo(startX, barLevelTop);
         else
             cr.arc(startX, height / 2, barLevelBorderRadius, TAU * (1 / 4), TAU * (3 / 4));
@@ -274,9 +274,9 @@ var BarLevel2 = GObject.registerClass({
             cr.stroke();
         }
 
-        // blocked maximum
-        if (this._blockedMax < this._maxValue) {
-            bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMax / this._maxValue) + barLevelBorderRadius;
+        // limit maximum
+        if (this._limitMax < this._maxValue) {
+            bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._limitMax / this._maxValue) + barLevelBorderRadius;
             // bx = Math.min(bx, overdriveSeparatorX - overdriveSeparatorWidth / 2);
             cr.arc(width - barLevelBorderRadius - barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * (3 / 4), TAU * (1 / 4));
             cr.lineTo(bx, barLevelBottom);
@@ -303,18 +303,18 @@ var BarLevel2 = GObject.registerClass({
             cr.fill();
         }
 
-        let blocked_sep_height = height / 4;
-        let blocked_sep_width = Math.max(2, barLevelHeight / 2);
+        let limit_sep_height = height / 4;
+        let limit_sep_width = Math.max(2, barLevelHeight / 2);
         
         // draw blocked minimum region seperator
-        if (this._blockedMin > 0) {
-            bx = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMin / this._maxValue;
+        if (this._limitMin > 0) {
+            bx = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._limitMin / this._maxValue;
             bx = Math.round(bx); // let borders appear as sharp as other seperator (maybe bad idea) 1/2
-            cr.moveTo(bx, barLevelTop - blocked_sep_height);
-            cr.lineTo(bx, barLevelBottom + blocked_sep_height);
-            cr.lineTo(bx - blocked_sep_width, barLevelBottom + blocked_sep_height);
-            cr.lineTo(bx - blocked_sep_width, barLevelTop - blocked_sep_height);
-            cr.lineTo(bx, barLevelTop - blocked_sep_height);
+            cr.moveTo(bx, barLevelTop - limit_sep_height);
+            cr.lineTo(bx, barLevelBottom + limit_sep_height);
+            cr.lineTo(bx - limit_sep_width, barLevelBottom + limit_sep_height);
+            cr.lineTo(bx - limit_sep_width, barLevelTop - limit_sep_height);
+            cr.lineTo(bx, barLevelTop - limit_sep_height);
             Clutter.cairo_set_source_color(cr, deadBarColor);
             cr.fillPreserve();
             Clutter.cairo_set_source_color(cr, deadBarBorderColor);
@@ -323,14 +323,14 @@ var BarLevel2 = GObject.registerClass({
         }
 
         // draw blocked maximum region seperator
-        if (this._blockedMax < this._maxValue) {
-            bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._blockedMax / this._maxValue) + barLevelBorderRadius;
+        if (this._limitMax < this._maxValue) {
+            bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._limitMax / this._maxValue) + barLevelBorderRadius;
             bx = Math.round(bx); // let borders appear as sharp as other seperator (maybe bad idea) 2/2
-            cr.moveTo(bx, barLevelTop - blocked_sep_height);
-            cr.lineTo(bx, barLevelBottom + blocked_sep_height);
-            cr.lineTo(bx + blocked_sep_width, barLevelBottom + blocked_sep_height);
-            cr.lineTo(bx + blocked_sep_width, barLevelTop - blocked_sep_height);
-            cr.lineTo(bx, barLevelTop - blocked_sep_height);
+            cr.moveTo(bx, barLevelTop - limit_sep_height);
+            cr.lineTo(bx, barLevelBottom + limit_sep_height);
+            cr.lineTo(bx + limit_sep_width, barLevelBottom + limit_sep_height);
+            cr.lineTo(bx + limit_sep_width, barLevelTop - limit_sep_height);
+            cr.lineTo(bx, barLevelTop - limit_sep_height);
             Clutter.cairo_set_source_color(cr, deadBarColor);
             cr.fillPreserve();
             Clutter.cairo_set_source_color(cr, deadBarBorderColor);
