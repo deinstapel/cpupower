@@ -1,6 +1,16 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 /* exported BarLevel */
 
+/*
+ * barLevel2.js: Gjs bar level with visual limits
+ *
+ * This file is based on barLevel.js from the original Gnome Shell authors:
+ * https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/3.38.1/js/ui/barLevel.js 
+ *
+ * GNOME Shell is distributed under the terms of the GNU General Public License, version 2 or later. 
+ * See <https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/3.38.1/COPYING> for details.
+ */
+
 const { Atk, Clutter, GObject, St } = imports.gi;
 const Config = imports.misc.config;
 
@@ -214,7 +224,6 @@ var BarLevel2 = GObject.registerClass({
         bx = 0;
         if (this._limitMin > 0) {
             bx = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._limitMin / this._maxValue;
-            // bx = Math.min(bx, overdriveSeparatorX - overdriveSeparatorWidth / 2);
             cr.arc(barLevelBorderRadius + barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * (1 / 4), TAU * (3 / 4));
             cr.lineTo(bx, barLevelTop);
             cr.lineTo(bx, barLevelBottom);
@@ -277,7 +286,6 @@ var BarLevel2 = GObject.registerClass({
         // limit maximum
         if (this._limitMax < this._maxValue) {
             bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._limitMax / this._maxValue) + barLevelBorderRadius;
-            // bx = Math.min(bx, overdriveSeparatorX - overdriveSeparatorWidth / 2);
             cr.arc(width - barLevelBorderRadius - barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * (3 / 4), TAU * (1 / 4));
             cr.lineTo(bx, barLevelBottom);
             cr.lineTo(bx, barLevelTop);
@@ -309,7 +317,7 @@ var BarLevel2 = GObject.registerClass({
         // draw blocked minimum region seperator
         if (this._limitMin > 0) {
             bx = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._limitMin / this._maxValue;
-            bx = Math.round(bx); // let borders appear as sharp as other seperator (maybe bad idea) 1/2
+            bx = Math.round(bx);
             cr.moveTo(bx, barLevelTop - limit_sep_height);
             cr.lineTo(bx, barLevelBottom + limit_sep_height);
             cr.lineTo(bx - limit_sep_width, barLevelBottom + limit_sep_height);
@@ -325,7 +333,7 @@ var BarLevel2 = GObject.registerClass({
         // draw blocked maximum region seperator
         if (this._limitMax < this._maxValue) {
             bx = (barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._limitMax / this._maxValue) + barLevelBorderRadius;
-            bx = Math.round(bx); // let borders appear as sharp as other seperator (maybe bad idea) 2/2
+            bx = Math.round(bx);
             cr.moveTo(bx, barLevelTop - limit_sep_height);
             cr.lineTo(bx, barLevelBottom + limit_sep_height);
             cr.lineTo(bx + limit_sep_width, barLevelBottom + limit_sep_height);

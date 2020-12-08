@@ -1,6 +1,16 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 /* exported Slider */
 
+/*
+ * slider2.js: Gjs slider with visual limits
+ *
+ * This file is based on slider.js from the original Gnome Shell authors:
+ * https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/3.38.1/js/ui/slider.js
+ *
+ * GNOME Shell is distributed under the terms of the GNU General Public License, version 2 or later. 
+ * See <https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/3.38.1/COPYING> for details.
+ */
+
 const { Atk, Clutter, GObject } = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
