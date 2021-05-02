@@ -1,8 +1,8 @@
-#!/bin/bash
+#! /bin/sh
 
 # cpufreqctl - This script can configure the pstate driver of your intel CPU.
 #
-# Copyright (C) 2015-2020
+# Copyright (C) 2015-2021
 #     Martin Koppehel <psl.kontakt@gmail.com>,
 #     Fin Christensen <christensen.fin@gmail.com>,
 #
@@ -21,225 +21,829 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-set -e
+set -o errexit -o nounset
 
 VERSION="9.0.4"
 
 log ()
 {
-    echo "$@" >&2 || true
+    echo "$@" >&2
 }
 
-show_usage ()
+EXIT_CODE=0
+# exit with the last set exit code
+bail ()
 {
-    log "usage: cpufreqctl [-h] [turbo {get,0,1}] [min {get,check,VALUE}] [max {get,VALUE}]"
-    log "version $VERSION"
+    exit "$EXIT_CODE"
 }
 
-show_help ()
+# error with no arguments provided
+no_arguments ()
 {
-    log "usage: cpufreqctl [-h] ACTION PARAMETER"
-    log
-    log "This script can configure the pstate driver of your intel CPU."
-    log
-    help_arguments
-    help_actions
-    help_turbo
-    help_min
-    help_max
-    help_examples
-    help_copyright
+    log "error: no arguments provided!"
+    EXIT_CODE=3
 }
 
-help_arguments ()
+# error with invalid argument
+# $1    argument
+# [$2]  subcommand if available
+invalid_argument ()
 {
-    log "optional arguments:"
-    log "    -h, --help   show this help message and exit"
-    log
+    if [ $# = 1 ]
+    then
+        log "error: invalid argument '$1' provided!"
+    else
+        log "error: invalid argument '$1' provided in subcommand '$2'!"
+    fi
+    EXIT_CODE=4
 }
 
-help_actions ()
+# error with out of range
+# $1  number
+# $2  range
+out_of_range ()
 {
-    log "available actions:"
-    log "    turbo        control or read the turbo boost state of your cpu"
-    log "    min          get or set the minimum cpu frequency (in %, [0;100])"
-    log "                 or get the smallest allowed value"
-    log "    max          get or set the maximum cpu frequency (in %, [0;100])"
-    log
+    log "error: number '$1' is out of range $2!"
+    EXIT_CODE=5
+}
+
+# error with no backend
+no_backend ()
+{
+    log "error: the cpufreqctl backend is not set!"
+    log "       define the CPUFREQCTL_BACKEND environment variable to set it"
+    log "       use 'cpufreqctl backends list' to see a list of available backends"
+    EXIT_CODE=6
+}
+
+# error with backend does not exist
+# $1  backend
+invalid_backend ()
+{
+    log "error: the backend '$1' does not exist!"
+    log "       use 'cpufreqctl backends list' to see a list of available backends"
+    EXIT_CODE=7
+}
+
+fake_init ()
+{
+    FAKE_DIR=/tmp/cpufreqctl-fake-backend
+    if [ ! -d "${FAKE_DIR}" ]
+    then
+        mkdir -p "${FAKE_DIR}"
+        echo off > "${FAKE_DIR}/turbo"
+        echo 20 > "${FAKE_DIR}/min_pct"
+        echo 80 > "${FAKE_DIR}/max_pct"
+    fi
+}
+
+fake_turbo_get ()
+{
+    fake_init
+    cat "${FAKE_DIR}/turbo"
+}
+
+fake_turbo_set ()
+{
+    fake_init
+    echo "$1" > "${FAKE_DIR}/turbo"
+}
+
+fake_min_get ()
+{
+    fake_init
+    cat "${FAKE_DIR}/min_pct"
+}
+
+fake_min_set ()
+{
+    fake_init
+    echo "$1" > "${FAKE_DIR}/min_pct"
+}
+
+fake_max_get ()
+{
+    fake_init
+    cat "${FAKE_DIR}/max_pct"
+}
+
+fake_max_set ()
+{
+    fake_init
+    echo "$1" > "${FAKE_DIR}/max_pct"
+}
+
+intel_pstate_turbo_get ()
+{
+    value=$(cat "/sys/devices/system/cpu/intel_pstate/no_turbo")
+    if [ "${value}" -eq 0 ]
+    then
+        echo on
+    else
+        echo off
+    fi
+}
+
+intel_pstate_turbo_set ()
+{
+    case "$1" in
+        on)
+            echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo
+            ;;
+        off)
+            echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
+            ;;
+    esac
+}
+
+intel_pstate_min_get ()
+{
+    cat /sys/devices/system/cpu/intel_pstate/min_perf_pct
+}
+
+intel_pstate_min_set ()
+{
+    echo "$1" > /sys/devices/system/cpu/intel_pstate/min_perf_pct
+}
+
+intel_pstate_max_get ()
+{
+    cat /sys/devices/system/cpu/intel_pstate/max_perf_pct
+}
+
+intel_pstate_max_set ()
+{
+    echo "$1" > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+}
+
+backend ()
+{
+    if [ -z "${CPUFREQCTL_BACKEND-}" ]
+    then
+        no_backend
+        bail
+    fi
+
+    case "${CPUFREQCTL_BACKEND}" in
+        fake|intel_pstate)
+            function_name="$1"
+            shift
+            "${CPUFREQCTL_BACKEND}"_"${function_name}" "$@"
+            ;;
+        *)
+            invalid_backend "${CPUFREQCTL_BACKEND}"
+            bail
+            ;;
+    esac
+}
+
+help_copyright ()
+{
+    log "cpufreqctl $VERSION  Copyright (c) 2015-2021  Martin Koppehel, Fin Christensen"
+}
+
+usage_turbo ()
+{
+    log "usage: cpufreqctl turbo [-h] {get,set}"
 }
 
 help_turbo ()
 {
     log "turbo parameters:"
-    log "    get          get the current turbo boost state"
-    log "    0            turn turbo boost off"
-    log "    1            turn turbo boost on"
-    log
+    log "    get [-h]           get the current turbo boost state"
+    log "    set [-h] {on,off}  set the turbo boost state"
+}
+
+turbo ()
+{
+    if [ $# -lt 1 ]
+    then
+        no_arguments
+        usage_turbo
+        bail
+    fi
+
+    while true
+    do
+        case "$1" in
+            -h|--help)
+                usage_turbo
+                log
+                log "Control the turbo boost setting of your CPU"
+                log
+                help_turbo
+                log
+                help_copyright
+                break
+                ;;
+            get)
+                shift
+                turbo_get "$@"
+                break
+                ;;
+            set)
+                shift
+                turbo_set "$@"
+                break
+                ;;
+            *)
+                invalid_argument "$1" "turbo"
+                usage_turbo
+                bail
+                ;;
+        esac
+    done
+}
+
+usage_turbo_get ()
+{
+    log "usage: cpufreqctl turbo get [-h]"
+}
+
+turbo_get ()
+{
+    if [ $# -gt 0 ]
+    then
+        while true
+        do
+            case "$1" in
+                -h|--help)
+                    usage_turbo_get
+                    log
+                    log "Get the current turbo boost setting of your CPU"
+                    log
+                    help_copyright
+                    break
+                    ;;
+                *)
+                    invalid_argument "$1" "turbo get"
+                    usage_turbo_get
+                    bail
+                    ;;
+            esac
+        done
+    else
+        backend turbo_get
+    fi
+}
+
+usage_turbo_set ()
+{
+    log "usage: cpufreqctl turbo set [-h] {on,off}"
+}
+
+turbo_set ()
+{
+    if [ $# -lt 1 ]
+    then
+        no_arguments
+        usage_turbo_set
+        bail
+    fi
+
+    while true
+    do
+        case "$1" in
+            -h|--help)
+                usage_turbo_set
+                log
+                log "Set the turbo boost setting of your CPU"
+                log
+                help_copyright
+                break
+                ;;
+            on)
+                backend turbo_set on
+                break
+                ;;
+            off)
+                backend turbo_set off
+                break
+                ;;
+            *)
+                invalid_argument "$1" "turbo set"
+                usage_turbo_get
+                bail
+                ;;
+        esac
+    done
+}
+
+usage_min ()
+{
+    log "usage: cpufreqctl min {get,set}"
 }
 
 help_min ()
 {
     log "min parameters:"
-    log "    get          get the current set minimum frequency (in %, [0;100])"
-    log "    check        get the smallest allowed minimum frequency for your cpu model"
-    log "    VALUE        set the current minimum frequency to a value in [0;100]"
-    log "                 the values is automatically clamped to the minimum allowed cpu"
-    log "                 frequency"
-    log
+    log "    get [-h]        get the current minimum frequency (in %, [0;100])"
+    log "    set [-h] VALUE  set the minimum frequency to a value in [0;100]"
+    log "                    the value is automatically clamped to the nearest allowed"
+    log "                    CPU frequency"
+}
+
+min()
+{
+    if [ $# -lt 1 ]
+    then
+        no_arguments
+        usage_min
+        bail
+    fi
+
+    while true
+    do
+        case "$1" in
+            -h|--help)
+                usage_min
+                log
+                log "Control the minimum frequency setting of your CPU"
+                log
+                help_min
+                log
+                help_copyright
+                break
+                ;;
+            get)
+                shift
+                min_get "$@"
+                break
+                ;;
+            set)
+                shift
+                min_set "$@"
+                break
+                ;;
+            *)
+                invalid_argument "$1" "min"
+                usage_min
+                bail
+                ;;
+        esac
+    done
+}
+
+usage_min_get ()
+{
+    log "usage: cpufreqctl min get [-h]"
+}
+
+min_get ()
+{
+    if [ $# -gt 0 ]
+    then
+        while true
+        do
+            case "$1" in
+                -h|--help)
+                    usage_min_get
+                    log
+                    log "Get the current minimum frequency setting of your CPU"
+                    log
+                    help_copyright
+                    break
+                    ;;
+                *)
+                    invalid_argument "$1" "min get"
+                    usage_min_get
+                    bail
+                    ;;
+            esac
+        done
+    else
+        backend min_get
+    fi
+}
+
+usage_min_set ()
+{
+    log "usage: cpufreqctl min set [-h] VALUE[0;100]"
+}
+
+help_min_set ()
+{
+    log "min set parameters:"
+    log "    VALUE  the minimum frequency in the range [0;100]"
+    log "           the value is automatically clamped to the nearest allowed CPU frequency"
+}
+
+min_set ()
+{
+    if [ $# -lt 1 ]
+    then
+        no_arguments
+        usage_min_set
+        bail
+    fi
+
+    while true
+    do
+        case "$1" in
+            -h|--help)
+                usage_min_set
+                log
+                log "Set the minimum frequency setting of your CPU"
+                log
+                help_min_set
+                log
+                help_copyright
+                break
+                ;;
+            *[!0-9]*) # not a number
+                invalid_argument "$1" "min set"
+                usage_min_set
+                bail
+                ;;
+            *) # must be a number now
+                if [ "$1" -lt 0 ] || [ "$1" -gt 100 ]
+                then
+                    out_of_range "$1" "[0;100]"
+                    usage_min_set
+                    bail
+                fi
+
+                backend min_set "$1"
+                break
+                ;;
+        esac
+    done
+}
+
+usage_max ()
+{
+    log "usage: cpufreqctl max {get,set}"
 }
 
 help_max ()
 {
     log "max parameters:"
-    log "    get          get the current set maximum frequency (in %, [0;100])"
-    log "    VALUE        set the current maximum frequency to a value in [0;100]"
-    log
+    log "    get [-h]        get the current maximum frequency (in %, [0;100])"
+    log "    set [-h] VALUE  set the maximum frequency to a value in [0;100]"
+    log "                    the value is automatically clamped to the nearest allowed"
+    log "                    CPU frequency"
 }
 
-help_examples ()
+max()
 {
+    if [ $# -lt 1 ]
+    then
+        no_arguments
+        usage_max
+        bail
+    fi
+
+    while true
+    do
+        case "$1" in
+            -h|--help)
+                usage_max
+                log
+                log "Control the maximum frequency setting of your CPU"
+                log
+                help_max
+                log
+                help_copyright
+                break
+                ;;
+            get)
+                shift
+                max_get "$@"
+                break
+                ;;
+            set)
+                shift
+                max_set "$@"
+                break
+                ;;
+            *)
+                invalid_argument "$1" "max"
+                usage_max
+                bail
+                ;;
+        esac
+    done
+}
+
+usage_max_get ()
+{
+    log "usage: cpufreqctl max get [-h]"
+}
+
+max_get ()
+{
+    if [ $# -gt 0 ]
+    then
+        while true
+        do
+            case "$1" in
+                -h|--help)
+                    usage_max_get
+                    log
+                    log "Get the current maximum frequency setting of your CPU"
+                    log
+                    help_copyright
+                    break
+                    ;;
+                *)
+                    invalid_argument "$1" "max get"
+                    usage_max_get
+                    bail
+                    ;;
+            esac
+        done
+    else
+        backend max_get
+    fi
+}
+
+usage_max_set ()
+{
+    log "usage: cpufreqctl max set [-h] VALUE[0;100]"
+}
+
+help_max_set ()
+{
+    log "max set parameters:"
+    log "    VALUE  the maximum frequency in the range [0;100]"
+    log "           the value is automatically clamped to the nearest allowed CPU frequency"
+}
+
+max_set ()
+{
+    if [ $# -lt 1 ]
+    then
+        no_arguments
+        usage_max_set
+        bail
+    fi
+
+    while true
+    do
+        case "$1" in
+            -h|--help)
+                usage_max_set
+                log
+                log "Set the maximum frequency setting of your CPU"
+                log
+                help_max_set
+                log
+                help_copyright
+                break
+                ;;
+            *[!0-9]*) # not a number
+                invalid_argument "$1" "max set"
+                usage_max_set
+                bail
+                ;;
+            *) # must be a number now
+                if [ "$1" -lt 0 ] || [ "$1" -gt 100 ]
+                then
+                    out_of_range "$1" "[0;100]"
+                    usage_max_set
+                    bail
+                fi
+
+                backend max_set "$1"
+                break
+                ;;
+        esac
+    done
+}
+
+usage_backends ()
+{
+    log "usage: cpufreqctl backends [-h] {list,current}"
+}
+
+help_backends ()
+{
+    log "backends parameters:"
+    log "    list [-h]     get a complete list of available backends"
+    log "    current [-h]  get the currently configured backend"
+    log
+    log "environment variables:"
+    log "    CPUFREQCTL_BACKEND  define this variable in your environment to configure"
+    log "                        the backend of cpufreqctl. E.g. put"
+    log "                            export CPUFREQCTL_BACKEND=\"intel_pstate\""
+    log "                        into your shell profile"
+}
+
+backends ()
+{
+    if [ $# -lt 1 ]
+    then
+        no_arguments
+        usage_backends
+        bail
+    fi
+
+    while true
+    do
+        case "$1" in
+            -h|--help)
+                usage_backends
+                log
+                log "List the backends available for several different CPU architectures"
+                log
+                help_backends
+                log
+                help_copyright
+                break
+                ;;
+            list)
+                shift
+                backends_list "$@"
+                break
+                ;;
+            current)
+                shift
+                backends_current "$@"
+                break
+                ;;
+            *)
+                invalid_argument "$1" "backends"
+                usage_backends
+                bail
+                ;;
+        esac
+    done
+}
+
+usage_backends_list ()
+{
+    log "usage: cpufreqctl backends list [-h]"
+}
+
+backends_list ()
+{
+    if [ $# -gt 0 ]
+    then
+        while true
+        do
+            case "$1" in
+                -h|--help)
+                    usage_backends_list
+                    log
+                    log "List the backends available for several different CPU architectures"
+                    log
+                    help_copyright
+                    break
+                    ;;
+                *)
+                    invalid_argument "$1" "backends list"
+                    usage_backends_list
+                    bail
+                    ;;
+            esac
+        done
+    else
+        if [ -t 1 ]
+        then
+            # printing to stdout, not a pipe
+            log "fake          a fake backend used for development purposes"
+            log "intel_pstate  a backend for Intel Core i CPUs of at least the second generation"
+            log "              (2xxx model number)"
+        else
+            # printing to a pipe/non-tty
+            echo fake
+            echo intel_pstate
+        fi
+    fi
+}
+
+usage_backends_current ()
+{
+    log "usage: cpufreqctl backends current [-h]"
+}
+
+backends_current ()
+{
+    if [ $# -gt 0 ]
+    then
+        while true
+        do
+            case "$1" in
+                -h|--help)
+                    usage_backends_current
+                    log
+                    log "Show the currently by environment variable configured backend"
+                    log
+                    help_copyright
+                    break
+                    ;;
+                *)
+                    invalid_argument "$1" "backends current"
+                    usage_backends_current
+                    bail
+                    ;;
+            esac
+        done
+    else
+        case "${CPUFREQCTL_BACKEND-}" in
+            fake|intel_pstate)
+                echo "${CPUFREQCTL_BACKEND}"
+                ;;
+            "")
+                no_backend
+                bail
+                ;;
+            *)
+                invalid_backend "${CPUFREQCTL_BACKEND}"
+                bail
+                ;;
+        esac
+    fi
+}
+
+usage_main ()
+{
+    log "usage: cpufreqctl [-hV] {turbo,min,max}"
+}
+
+help_main ()
+{
+    log "optional arguments:"
+    log "    -h, --help     show this help message and exit"
+    log "    -V, --version  show the version of this program and exit"
+    log
+    log "available actions:"
+    log "    turbo [-h] {get,set}  control the turbo boost setting of your CPU"
+    log "    min [-h] {get,set}    control the minimum cpu frequency setting of your CPU"
+    log "    max [-h] {get,set}    control the maximum cpu frequency setting of your CPU"
+    log
+    help_turbo
+    log
+    help_min
+    log
+    help_max
+    log
+    help_backends
+    log
     log "examples:"
     log "    Set the maximum frequency to 50%"
-    log "        cpufreqctl max 50"
+    log "        cpufreqctl max set 50"
     log
     log "    Get the turbo boost state"
     log "        cpufreqctl turbo get"
     log
     log "    Get smallest allowed minimum cpu frequency for your model"
     log "        cpufreqctl min check"
-    log
 }
 
-help_copyright ()
+main()
 {
-    log "cpufreqctl $VERSION  Copyright (c) 2020  Martin Koppehel, Fin Christensen"
+    if [ $# -lt 1 ]
+    then
+        no_arguments
+        usage_main
+        bail
+    fi
+
+    while true
+    do
+        case "$1" in
+            -h|--help)
+                usage_main
+                log
+                log "Control the frequency setting of your CPU"
+                log
+                help_main
+                log
+                help_copyright
+                break
+                ;;
+            -V|--version)
+                log "version: $VERSION"
+                break
+                ;;
+            turbo)
+                shift
+                turbo "$@"
+                break
+                ;;
+            min)
+                shift
+                min "$@"
+                break
+                ;;
+            max)
+                shift
+                max "$@"
+                break
+                ;;
+            backends)
+                shift
+                backends "$@"
+                break
+                ;;
+            *)
+                invalid_argument "$1"
+                usage_main
+                bail
+                ;;
+        esac
+    done
 }
 
-if [ $# -lt 1 ]
-then
-    show_usage
-    log "error: you must specify an action!"
-    exit
-fi
-
-if [ "$1" = "-h" ] || [ "$1" = "--help" ]
-then
-    show_help
-    exit
-fi
-
-if [ "$1" = "turbo" ]
-then
-    if [ -z "$2" ]
-    then
-        log "usage: cpufreqctl turbo {get,0,1}"
-        log
-        help_turbo
-        help_copyright
-        exit
-    fi
-
-    if [ "$2" = "get" ]
-    then
-        value=$(<"/sys/devices/system/cpu/intel_pstate/no_turbo")
-        if [ "${value}" -eq 0 ]
-        then
-            echo 1
-        else
-            echo 0
-        fi
-        exit
-    fi
-    if [ "$2" -lt 0 ] || [ "$2" -gt 1 ];
-    then
-        log "usage: cpufreqctl turbo {get,0,1}"
-        log "error: VALUE must be 0 or 1"
-        exit
-    fi
-
-    if [ "$2" -eq 1 ]
-    then
-        echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo
-    else
-        echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
-    fi
-    exit
-fi
-
-if [ "$1" = "max" ]
-then
-    if [ -z "$2" ]
-    then
-        log "usage: cpufreqctl max {get,VALUE}"
-        log
-        help_max
-        help_copyright
-        exit
-    fi
-
-    if [ "$2" = "get" ]
-    then
-        value=$(</sys/devices/system/cpu/intel_pstate/max_perf_pct)
-        echo "${value}"
-        exit
-    fi
-
-    if [ "$2" = "check" ]
-    then
-        preValue=$(</sys/devices/system/cpu/intel_pstate/max_perf_pct)
-        echo 100 > /sys/devices/system/cpu/intel_pstate/max_perf_pct
-        postValue=$(</sys/devices/system/cpu/intel_pstate/max_perf_pct)
-        echo "${preValue}" > /sys/devices/system/cpu/intel_pstate/max_perf_pct
-        echo "${postValue}"
-        exit
-    fi
-
-    if [ "$2" -lt 0 ] || [ "$2" -gt 100 ];
-    then
-        log "usage: cpufreqctl max {get,VALUE}"
-        log "error: VALUE must be between 0 and 100"
-        exit
-    fi
-    echo "$2" > /sys/devices/system/cpu/intel_pstate/max_perf_pct
-    exit
-fi
-
-if [ "$1" = "min" ]
-then
-    if [ -z "$2" ]
-    then
-        log "usage: cpufreqctl mini {get,check,VALUE}"
-        log
-        help_min
-        help_copyright
-        exit
-    fi
-
-    if [ "$2" = "get" ]
-    then
-        value=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
-        echo "${value}"
-        exit
-    fi
-    if [ "$2" = "check" ]
-    then
-        preValue=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
-        echo 0 > /sys/devices/system/cpu/intel_pstate/min_perf_pct
-        postValue=$(</sys/devices/system/cpu/intel_pstate/min_perf_pct)
-        echo "${preValue}" > /sys/devices/system/cpu/intel_pstate/min_perf_pct
-        echo "${postValue}"
-        exit
-    fi
-    if [ "$2" -lt 0 ] || [ "$2" -gt 100 ];
-    then
-        log "usage: cpufreqctl min {get,check,VALUE}"
-        log "error: VALUE must be between 0 and 100"
-        exit
-    fi
-    echo "$2" > /sys/devices/system/cpu/intel_pstate/min_perf_pct
-    exit
-fi
-
-show_usage
-log "error: unknown action $*"
-exit 1
+main "$@"
