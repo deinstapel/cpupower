@@ -34,7 +34,7 @@ EXIT_CODE=0
 # exit with the last set exit code
 bail ()
 {
-    exit "$EXIT_CODE"
+    exit "${EXIT_CODE}"
 }
 
 # error with no arguments provided
@@ -85,6 +85,22 @@ invalid_backend ()
     EXIT_CODE=7
 }
 
+# error with internal error
+# $1  component
+internal_error ()
+{
+    log "error: an internal error occurred in component '$1'!"
+    EXIT_CODE=8
+}
+
+# error with unsupported backend
+# $1  backend
+not_supported ()
+{
+    log "error: the backend '$1' is not supported on your system!"
+    EXIT_CODE=9
+}
+
 fake_init ()
 {
     FAKE_DIR=/tmp/cpufreqctl-fake-backend
@@ -97,10 +113,15 @@ fake_init ()
     fi
 }
 
+fake_supported ()
+{
+    true
+}
+
 fake_turbo_get ()
 {
     fake_init
-    cat "${FAKE_DIR}/turbo"
+    report_turbo_get --turbo "$(cat "${FAKE_DIR}/turbo")"
 }
 
 fake_turbo_set ()
@@ -112,25 +133,70 @@ fake_turbo_set ()
 fake_min_get ()
 {
     fake_init
-    cat "${FAKE_DIR}/min_pct"
+    report_min_get --min "$(cat "${FAKE_DIR}/min_pct")"
 }
 
 fake_min_set ()
 {
     fake_init
-    echo "$1" > "${FAKE_DIR}/min_pct"
+
+    min="$1"
+    if [ "${min}" -lt 10 ]
+    then
+        min="10"
+    fi
+
+    echo "${min}" > "${FAKE_DIR}/min_pct"
 }
 
 fake_max_get ()
 {
     fake_init
-    cat "${FAKE_DIR}/max_pct"
+    report_max_get --max "$(cat "${FAKE_DIR}/max_pct")"
 }
 
 fake_max_set ()
 {
     fake_init
-    echo "$1" > "${FAKE_DIR}/max_pct"
+
+    max="$1"
+    min=$(cat "${FAKE_DIR}/min_pct")
+    if [ "${max}" -lt "${min}" ]
+    then
+        max="${min}"
+    fi
+
+    echo "${max}" > "${FAKE_DIR}/max_pct"
+}
+
+fake_info_frequencies ()
+{
+    fake_init
+    report_info_frequencies --mode continuous --min 10 --max 100
+}
+
+fake_info_current ()
+{
+    fake_init
+
+    shuf -i 800000-3600000 -n 12 | sort -n | awk '
+        NR == 1 {
+            printf "%d ", $1
+        }
+        {
+            sum += $1
+        }
+        END {
+            printf "%d %.0f\n", $1, sum / NR
+        }' | while read -r min max avg
+    do
+        report_info_current --min "${min}" --max "${max}" --avg "${avg}"
+    done
+}
+
+intel_pstate_supported ()
+{
+    test -d /sys/devices/system/cpu/intel_pstate
 }
 
 intel_pstate_turbo_get ()
@@ -138,9 +204,9 @@ intel_pstate_turbo_get ()
     value=$(cat "/sys/devices/system/cpu/intel_pstate/no_turbo")
     if [ "${value}" -eq 0 ]
     then
-        echo on
+        report_turbo_get --turbo on
     else
-        echo off
+        report_turbo_get --turbo off
     fi
 }
 
@@ -153,12 +219,16 @@ intel_pstate_turbo_set ()
         off)
             echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
             ;;
+        *)
+            internal_error intel_pstate_turbo_set
+            bail
+            ;;
     esac
 }
 
 intel_pstate_min_get ()
 {
-    cat /sys/devices/system/cpu/intel_pstate/min_perf_pct
+    report_min_get --min "$(cat /sys/devices/system/cpu/intel_pstate/min_perf_pct)"
 }
 
 intel_pstate_min_set ()
@@ -168,12 +238,224 @@ intel_pstate_min_set ()
 
 intel_pstate_max_get ()
 {
-    cat /sys/devices/system/cpu/intel_pstate/max_perf_pct
+    report_max_get --max "$(cat /sys/devices/system/cpu/intel_pstate/max_perf_pct)"
 }
 
 intel_pstate_max_set ()
 {
     echo "$1" > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+}
+
+intel_pstate_info_frequencies ()
+{
+    prev=$(cat /sys/devices/system/cpu/intel_pstate/max_perf_pct)
+    echo 100 > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+    max=$(cat /sys/devices/system/cpu/intel_pstate/max_perf_pct)
+    echo "${prev}" > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+
+    prev=$(cat /sys/devices/system/cpu/intel_pstate/min_perf_pct)
+    echo 0 > /sys/devices/system/cpu/intel_pstate/min_perf_pct
+    min=$(cat /sys/devices/system/cpu/intel_pstate/min_perf_pct)
+    echo "${prev}" > /sys/devices/system/cpu/intel_pstate/min_perf_pct
+
+    report_info_frequencies --mode continuous --min "${min}" --max "${max}"
+}
+
+intel_pstate_info_current ()
+{
+    for scaling_cur_freq in /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq
+    do
+        cat "${scaling_cur_freq}" &
+    done | sort -n | awk '
+        NR == 1 {
+            printf "%d ", $1
+        }
+        {
+            sum += $1
+        }
+        END {
+            printf "%d %.0f\n", $1, sum / NR
+        }' | while read -r min max avg
+    do
+        report_info_current --min "${min}" --max "${max}" --avg "${avg}"
+    done
+}
+
+cpufreq_supported ()
+{
+    test -d /sys/devices/system/cpu/cpufreq
+}
+
+cpufreq_max_freq ()
+{
+    # default to currently set maximum frequency
+    freq=$(cat /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq)
+
+    # if cpuinfo is reported, use this value
+    if [ -e /sys/devices/system/cpu/cpufreq/policy0/cpuinfo_max_freq ]
+    then
+        freq=$(cat /sys/devices/system/cpu/cpufreq/policy0/cpuinfo_max_freq)
+    fi
+
+    # if cpu reports available frequencies, use the highest value
+    if [ -e /sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies ]
+    then
+        frequencies=$(cat /sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies)
+        # shellcheck disable=SC2086
+        frequencies=$(printf '%s\n' ${frequencies} | sort -n)
+        freq=$(echo "${frequencies}" | tail -n 1)
+    fi
+
+    # if a bios limit is reported, use it
+    if [ -e /sys/devices/system/cpu/cpufreq/policy0/bios_limit ]
+    then
+        freq=$(cat /sys/devices/system/cpu/cpufreq/policy0/bios_limit)
+    fi
+
+    echo "${freq}"
+}
+
+cpufreq_make_pct ()
+{
+    if [ -z "${CPUFREQ_MAX-}" ]
+    then
+        CPUFREQ_MAX=$(cpufreq_max_freq)
+    fi
+
+    awk -v max="${CPUFREQ_MAX}" '{ printf "%.0f\n", $0 / max * 100 }'
+}
+
+cpufreq_make_abs ()
+{
+    if [ -z "${CPUFREQ_MAX-}" ]
+    then
+        CPUFREQ_MAX=$(cpufreq_max_freq)
+    fi
+
+    awk -v max="${CPUFREQ_MAX}" '{ printf "%.0f\n", $0 / 100 * max }'
+}
+
+cpufreq_turbo_get ()
+{
+    value=$(cat /sys/devices/system/cpu/cpufreq/boost)
+    if [ "${value}" -eq 0 ]
+    then
+        report_turbo_get --turbo off
+    else
+        report_turbo_get --turbo on
+    fi
+}
+
+cpufreq_turbo_set ()
+{
+    case "$1" in
+        on)
+            echo 1 > /sys/devices/system/cpu/cpufreq/boost
+            ;;
+        off)
+            echo 0 > /sys/devices/system/cpu/cpufreq/boost
+            ;;
+        *)
+            internal_error cpufreq_turbo_set
+            bail
+            ;;
+    esac
+}
+
+cpufreq_min_read ()
+{
+    for scaling_min_freq in /sys/devices/system/cpu/cpufreq/policy*/scaling_min_freq
+    do
+        cat "${scaling_min_freq}" &
+    done | awk '
+        {
+            sum += $1
+        }
+        END {
+            printf "%.0f\n", sum / NR
+        }'
+}
+
+cpufreq_min_write ()
+{
+    for scaling_min_freq in /sys/devices/system/cpu/cpufreq/policy*/scaling_min_freq
+    do
+        echo "$1" > "${scaling_min_freq}" &
+    done
+    wait
+}
+
+cpufreq_min_get ()
+{
+    report_min_get --min "$(cpufreq_min_read | cpufreq_make_pct)"
+}
+
+cpufreq_min_set ()
+{
+    cpufreq_min_write "$(echo "$1" | cpufreq_make_abs)"
+}
+
+cpufreq_max_read ()
+{
+    for scaling_max_freq in /sys/devices/system/cpu/cpufreq/policy*/scaling_max_freq
+    do
+        cat "${scaling_max_freq}" &
+    done | awk '
+        {
+            sum += $1
+        }
+        END {
+            printf "%.0f\n", sum / NR
+        }' | cpufreq_make_pct
+}
+
+cpufreq_max_write ()
+{
+    for scaling_max_freq in /sys/devices/system/cpu/cpufreq/policy*/scaling_max_freq
+    do
+        echo "$1" > "${scaling_max_freq}" &
+    done
+    wait
+}
+
+cpufreq_max_get ()
+{
+    report_max_get --max "$(cpufreq_max_read)"
+}
+
+cpufreq_max_set ()
+{
+    cpufreq_max_write "$(echo "$1" | cpufreq_make_abs)"
+}
+
+cpufreq_info_frequencies ()
+{
+    prev=$(cpufreq_min_read)
+    cpufreq_min_write 0
+    min=$(cpufreq_min_read)
+    cpufreq_min_write "${prev}"
+
+    report_info_frequencies --mode continuous --min "$(echo "${min}" | cpufreq_make_pct)" --max 100
+}
+
+cpufreq_info_current ()
+{
+    for scaling_cur_freq in /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq
+    do
+        cat "${scaling_cur_freq}" &
+    done | sort -n | awk '
+        NR == 1 {
+            printf "%d ", $1
+        }
+        {
+            sum += $1
+        }
+        END {
+            printf "%d %.0f\n", $1, sum / NR
+        }' | while read -r min max avg
+    do
+        report_info_current --min "${min}" --max "${max}" --avg "${avg}"
+    done
 }
 
 backend ()
@@ -185,7 +467,13 @@ backend ()
     fi
 
     case "${CPUFREQCTL_BACKEND}" in
-        fake|intel_pstate)
+        fake|intel_pstate|cpufreq)
+            if ! "${CPUFREQCTL_BACKEND}"_supported
+            then
+                not_supported "${CPUFREQCTL_BACKEND}"
+                bail
+            fi
+
             function_name="$1"
             shift
             "${CPUFREQCTL_BACKEND}"_"${function_name}" "$@"
@@ -197,9 +485,271 @@ backend ()
     esac
 }
 
+report_info_frequencies () {
+    MODE=""
+    MIN=""
+    MAX=""
+    FREQUENCIES=""
+    while true
+    do
+        if [ $# -le 0 ]
+        then
+            break
+        fi
+
+        case "$1" in
+            --mode)
+                shift
+                MODE="$1"
+                shift
+                ;;
+            --min)
+                shift
+                MIN="$1"
+                shift
+                ;;
+            --max)
+                shift
+                MAX="$1"
+                shift
+                ;;
+            *)
+                FREQUENCIES="$*"
+                break
+                ;;
+        esac
+    done
+
+    case "${FORMAT}" in
+        human)
+            case "${MODE}" in
+                continuous)
+                    log "mode: continuous"
+                    log "min: ${MIN}"
+                    log "max: ${MAX}"
+                    ;;
+                discrete)
+                    log "mode: discrete"
+                    log "frequencies: ${FREQUENCIES}"
+                    ;;
+                *)
+                    internal_error report_info_frequencies
+                    bail
+                    ;;
+            esac
+            ;;
+        json)
+            case "${MODE}" in
+                continuous)
+                    echo '{'
+                    echo '  "mode": "continuous",'
+                    echo "  \"min\": ${MIN},"
+                    echo "  \"max\": ${MAX}"
+                    echo '}'
+                    ;;
+                discrete)
+                    echo '{'
+                    echo '  "mode": "discrete",'
+                    echo '  "frequencies": ['
+                    echo "${FREQUENCIES}" | awk -v indent=4 '
+                        BEGIN {
+                            ORS=""
+                            RS=" "
+                            p=""
+                        }
+                        {
+                            printf "%s%" indent "s%s", p, " ", $0
+                            p=",\n"
+                        }'
+                    echo '  ]'
+                    echo '}'
+                    ;;
+                *)
+                    internal_error report_info_frequencies
+                    bail
+                    ;;
+            esac
+            ;;
+        *)
+            internal_error report_info_frequencies
+            bail
+            ;;
+    esac
+}
+
+report_info_current()
+{
+    MIN=""
+    MAX=""
+    AVG=""
+
+    while true
+    do
+        if [ $# -le 0 ]
+        then
+            break
+        fi
+
+        case "$1" in
+            --min)
+                shift
+                MIN="$1"
+                shift
+                ;;
+            --max)
+                shift
+                MAX="$1"
+                shift
+                ;;
+            --avg)
+                shift
+                AVG="$1"
+                shift
+                ;;
+            *)
+                internal_error report_info_current
+                bail
+                ;;
+        esac
+    done
+
+    case "${FORMAT}" in
+        human)
+            log "min: ${MIN}"
+            log "max: ${MAX}"
+            log "avg: ${AVG}"
+            ;;
+        json)
+            echo '{'
+            echo "  \"min\": ${MIN},"
+            echo "  \"max\": ${MAX},"
+            echo "  \"avg\": ${AVG}"
+            echo '}'
+            ;;
+        *)
+            internal_error report_info_current
+            bail
+            ;;
+    esac
+}
+
+report_turbo_get ()
+{
+    TURBO=""
+
+    while true
+    do
+        if [ $# -le 0 ]
+        then
+            break
+        fi
+
+        case "$1" in
+            --turbo)
+                shift
+                TURBO="$1"
+                shift
+                ;;
+            *)
+                internal_error report_turbo_get
+                bail
+                ;;
+        esac
+    done
+
+    case "${FORMAT}" in
+        human)
+            log "${TURBO}"
+            ;;
+        json)
+            echo "\"${TURBO}\""
+            ;;
+        *)
+            internal_error report_turbo_get
+            bail
+            ;;
+    esac
+}
+
+report_min_get ()
+{
+    MIN=""
+
+    while true
+    do
+        if [ $# -le 0 ]
+        then
+            break
+        fi
+
+        case "$1" in
+            --min)
+                shift
+                MIN="$1"
+                shift
+                ;;
+            *)
+                internal_error report_min_get
+                bail
+                ;;
+        esac
+    done
+
+    case "${FORMAT}" in
+        human)
+            log "${MIN}"
+            ;;
+        json)
+            echo "${MIN}"
+            ;;
+        *)
+            internal_error report_min_get
+            bail
+            ;;
+    esac
+}
+
+report_max_get ()
+{
+    MAX=""
+
+    while true
+    do
+        if [ $# -le 0 ]
+        then
+            break
+        fi
+
+        case "$1" in
+            --max)
+                shift
+                MAX="$1"
+                shift
+                ;;
+            *)
+                internal_error report_max_get
+                bail
+                ;;
+        esac
+    done
+
+    case "${FORMAT}" in
+        human)
+            log "${MAX}"
+            ;;
+        json)
+            echo "${MAX}"
+            ;;
+        *)
+            internal_error report_max_get
+            bail
+            ;;
+    esac
+}
+
 help_copyright ()
 {
-    log "cpufreqctl $VERSION  Copyright (c) 2015-2021  Martin Koppehel, Fin Christensen"
+    log "cpufreqctl ${VERSION}  Copyright (c) 2015-2021  Martin Koppehel, Fin Christensen"
 }
 
 usage_turbo ()
@@ -425,7 +975,8 @@ help_min_set ()
 {
     log "min set parameters:"
     log "    VALUE  the minimum frequency in the range [0;100]"
-    log "           the value is automatically clamped to the nearest allowed CPU frequency"
+    log "           the value is automatically clamped to the nearest allowed CPU"
+    log "           frequency"
 }
 
 min_set ()
@@ -566,7 +1117,8 @@ help_max_set ()
 {
     log "max set parameters:"
     log "    VALUE  the maximum frequency in the range [0;100]"
-    log "           the value is automatically clamped to the nearest allowed CPU frequency"
+    log "           the value is automatically clamped to the nearest allowed CPU"
+    log "           frequency"
 }
 
 max_set ()
@@ -698,17 +1250,26 @@ backends_list ()
             esac
         done
     else
-        if [ -t 1 ]
-        then
-            # printing to stdout, not a pipe
-            log "fake          a fake backend used for development purposes"
-            log "intel_pstate  a backend for Intel Core i CPUs of at least the second generation"
-            log "              (2xxx model number)"
-        else
-            # printing to a pipe/non-tty
-            echo fake
-            echo intel_pstate
-        fi
+        case "${FORMAT}" in
+            human)
+                log "fake          a fake backend used for development purposes"
+                log "cpufreq       a general purpose backend for most modern CPUs (including AMD"
+                log "              Ryzen)"
+                log "intel_pstate  a backend for Intel Core i CPUs of at least the second generation"
+                log "              (2xxx model number)"
+                ;;
+            json)
+                echo '['
+                echo '  "fake",'
+                echo '  "cpufreq",'
+                echo '  "intel_pstate"'
+                echo ']'
+                ;;
+            *)
+                internal_error backends_list
+                bail
+                ;;
+        esac
     fi
 }
 
@@ -741,8 +1302,19 @@ backends_current ()
         done
     else
         case "${CPUFREQCTL_BACKEND-}" in
-            fake|intel_pstate)
-                echo "${CPUFREQCTL_BACKEND}"
+            fake|intel_pstate|cpufreq)
+                case "${FORMAT}" in
+                    human)
+                        log "${CPUFREQCTL_BACKEND}"
+                        ;;
+                    json)
+                        echo "\"${CPUFREQCTL_BACKEND}\""
+                        ;;
+                    *)
+                        internal_error backends_current
+                        bail
+                        ;;
+                esac
                 ;;
             "")
                 no_backend
@@ -756,27 +1328,173 @@ backends_current ()
     fi
 }
 
+usage_info ()
+{
+    log "usage: cpufreqctl info [-h] {frequencies,current}"
+}
+
+help_info ()
+{
+    log "info parameters:"
+    log "    frequencies [-h]  show the available frequencies and ranges"
+    log "    current [-h]      show the current average frequency of the CPU"
+}
+
+info ()
+{
+    if [ $# -lt 1 ]
+    then
+        no_arguments
+        usage_info
+        bail
+    fi
+
+    while true
+    do
+        case "$1" in
+            -h|--help)
+                usage_info
+                log
+                log "Show information on your CPU"
+                log
+                help_info
+                log
+                help_copyright
+                break
+                ;;
+            frequencies)
+                shift
+                info_frequencies "$@"
+                break
+                ;;
+            current)
+                shift
+                info_current "$@"
+                break
+                ;;
+            *)
+                invalid_argument "$1" "info"
+                usage_info
+                bail
+                ;;
+        esac
+    done
+}
+
+usage_info_frequencies ()
+{
+    log "usage: cpufreqctl info frequencies [-h]"
+}
+
+help_info_frequencies ()
+{
+    log "info frequencies output:"
+    log "    There are two modes in which the CPU frequency can be configured,"
+    log "    depending on the scaling driver in the Linux kernel."
+    log
+    log "    mode: continuous"
+    log "        The continuous mode reports minimum and maximum values. The"
+    log "        values are percentages of the maximum possible frequency."
+    log "        Any value between the minimum and maximum is allowed. E.g.:"
+    log "            min: 20"
+    log "            max: 100"
+    log "    mode: discrete"
+    log "        The discrete mode reports all allowed value as a space"
+    log "        separated list of frequency percentages of the maximum"
+    log "        allowed frequency. E.g:"
+    log "            frequencies: 61 78 100"
+}
+
+info_frequencies ()
+{
+    if [ $# -lt 1 ]
+    then
+        backend info_frequencies
+    else
+        while true
+        do
+            case "$1" in
+                -h|--help)
+                    usage_info_frequencies
+                    log
+                    log "Show the frequency scaling capabilities of your CPU"
+                    log
+                    help_info_frequencies
+                    log
+                    help_copyright
+                    break
+                    ;;
+                *)
+                    invalid_argument "$1" "info frequencies"
+                    usage_info_frequencies
+                    bail
+                    ;;
+            esac
+        done
+    fi
+}
+
+usage_info_current ()
+{
+    log "usage: cpufreqctl info current [-h]"
+}
+
+info_current ()
+{
+    if [ $# -lt 1 ]
+    then
+        backend info_current
+    else
+        while true
+        do
+            case "$1" in
+                -h|--help)
+                    usage_info_current
+                    log
+                    log "Show the current average frequency of your CPU"
+                    log
+                    help_copyright
+                    break
+                    ;;
+                *)
+                    invalid_argument "$1" "info current"
+                    usage_info_current
+                    bail
+                    ;;
+            esac
+        done
+    fi
+}
+
 usage_main ()
 {
-    log "usage: cpufreqctl [-hV] {turbo,min,max}"
+    log "usage: cpufreqctl [-fhV] {turbo,min,max,info,backends}"
 }
 
 help_main ()
 {
     log "optional arguments:"
-    log "    -h, --help     show this help message and exit"
-    log "    -V, --version  show the version of this program and exit"
+    log "    -f, --format FORMAT  specify the output format, one of [human, json]"
+    log "                         (default human)"
+    log "    -h, --help           show this help message and exit"
+    log "    -V, --version        show the version of this program and exit"
     log
     log "available actions:"
-    log "    turbo [-h] {get,set}  control the turbo boost setting of your CPU"
-    log "    min [-h] {get,set}    control the minimum cpu frequency setting of your CPU"
-    log "    max [-h] {get,set}    control the maximum cpu frequency setting of your CPU"
+    log "    turbo [-h] {get,set}             control the turbo boost setting of your CPU"
+    log "    min [-h] {get,set}               control the minimum cpu frequency setting"
+    log "                                     of your CPU"
+    log "    max [-h] {get,set}               control the maximum cpu frequency setting"
+    log "                                     of your CPU"
+    log "    info [-h] {frequencies,current}  show information on your CPU"
+    log "    backends [-h] {list,current}     show information on the available backends"
     log
     help_turbo
     log
     help_min
     log
     help_max
+    log
+    help_info
     log
     help_backends
     log
@@ -787,8 +1505,8 @@ help_main ()
     log "    Get the turbo boost state"
     log "        cpufreqctl turbo get"
     log
-    log "    Get smallest allowed minimum cpu frequency for your model"
-    log "        cpufreqctl min check"
+    log "    Find out about the supported frequencies and ranges of your CPU model"
+    log "        cpufreqctl info frequencies"
 }
 
 main()
@@ -799,6 +1517,8 @@ main()
         usage_main
         bail
     fi
+
+    FORMAT="human"
 
     while true
     do
@@ -814,8 +1534,25 @@ main()
                 break
                 ;;
             -V|--version)
-                log "version: $VERSION"
+                log "version: ${VERSION}"
                 break
+                ;;
+            -f|--format)
+                shift
+                case "$1" in
+                    human)
+                        FORMAT="human"
+                        ;;
+                    json)
+                        FORMAT="json"
+                        ;;
+                    *)
+                        invalid_argument "--format $1"
+                        usage_main
+                        bail
+                        ;;
+                esac
+                shift
                 ;;
             turbo)
                 shift
@@ -835,6 +1572,11 @@ main()
             backends)
                 shift
                 backends "$@"
+                break
+                ;;
+            info)
+                shift
+                info "$@"
                 break
                 ;;
             *)
