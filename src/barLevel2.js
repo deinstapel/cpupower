@@ -20,23 +20,23 @@ var BarLevel2 = GObject.registerClass({
         'value': GObject.ParamSpec.double(
             'value', 'value', 'value',
             GObject.ParamFlags.READWRITE,
-            0, 2, 0),
+            0, Number.MAX_SAFE_INTEGER, 0),
         'maximum-value': GObject.ParamSpec.double(
             'maximum-value', 'maximum-value', 'maximum-value',
             GObject.ParamFlags.READWRITE,
-            1, 2, 1),
+            1, Number.MAX_SAFE_INTEGER, 1),
         'overdrive-start': GObject.ParamSpec.double(
             'overdrive-start', 'overdrive-start', 'overdrive-start',
             GObject.ParamFlags.READWRITE,
-            1, 2, 1),
+            1, Number.MAX_SAFE_INTEGER, 1),
         'limit-minimum': GObject.ParamSpec.double(
             'limit-minimum', 'limit-minimum', 'limit-minimum',
             GObject.ParamFlags.READWRITE,
-            0, 2, 0),
+            0, Number.MAX_SAFE_INTEGER, 0),
         'limit-maximum': GObject.ParamSpec.double(
             'limit-maximum', 'limit-maximum', 'limit-maximum',
             GObject.ParamFlags.READWRITE,
-            0, 2, 1),
+            0, Number.MAX_SAFE_INTEGER, 1),
     },
 }, class BarLevel2 extends St.DrawingArea {
     _init(params) {

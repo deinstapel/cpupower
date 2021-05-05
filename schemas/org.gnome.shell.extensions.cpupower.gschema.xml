@@ -35,5 +35,31 @@
 			<summary>Default battery profile ID</summary>
 			<description>The profile to switch to when unplugged</description>
 		</key>
+    <key name="cpufreqctl-backend" type="s">
+      <default>"automatic"</default>
+      <choices>
+        <choice value="automatic" />
+        <choice value="fake" />
+        <choice value="cpufreq" />
+        <choice value="intel_pstate" />
+      </choices>
+      <summary>The backend used for the cpufreqctl tool</summary>
+      <description>
+        This backend controls how the extensions will interact with the hardware and selects the scaling-driver used by the Linux kernel for setting and querying CPU frequencies and turbo boost settings. The 'fake' backend must only be used for development purposes and is not available in production.
+      </description>
+    </key>
+    <key name="frequency-sampling-mode" type="s">
+      <default>"average"</default>
+      <choices>
+        <choice value="average" />
+        <choice value="minimum" />
+        <choice value="maximum" />
+        <choice value="random" />
+      </choices>
+      <summary>The frequency sampling mode</summary>
+      <description>
+        The CPU frequencies displayed by the extension are sampled using one of those methods
+      </description>
+    </key>
 	</schema>
 </schemalist>

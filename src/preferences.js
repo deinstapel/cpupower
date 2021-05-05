@@ -42,7 +42,7 @@ const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
 const EXTENSIONDIR = Me.dir.get_path();
 const CONFIG = Me.imports.src.config;
 const attempt_uninstallation = Me.imports.src.utils.attempt_uninstallation;
-const checkCpuLimit = Me.imports.src.utils.checkCpuLimit;
+const Cpufreqctl = Me.imports.src.utils.Cpufreqctl;
 
 const GLADE_FILE = EXTENSIONDIR + "/data/cpupower-preferences.glade";
 const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
@@ -75,9 +75,6 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             "UninstallButton"
         );
         this.ProfilesMap = new Map();
-
-        this.cpuMinLimit = checkCpuLimit("min");
-        this.cpuMaxLimit = checkCpuLimit("max");
     }
 
     status() {
@@ -146,6 +143,43 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         }
     }
 
+    _checkFrequencies(cb) {
+        Cpufreqctl.info.frequencies(this._settings.get_string("cpufreqctl-backend"), (result) => {
+            if (result.ok) {
+                if (result.exitCode != 0) {
+                    let exitReason = Cpufreqctl.exitCodeToString(result.exitCode);
+                    log("Failed to query supported frequency ranges from cpufreqctl, reason " +
+                        exitReason + "! Assuming full range...");
+                    log(result.response);
+                    cb({
+                        min: 0,
+                        max: 100,
+                    });
+                } else {
+                    if (result.response.mode === "continuous") {
+                        cb({
+                            min: result.response.min,
+                            max: result.response.max,
+                        });
+                    } else {
+                        log("Cpufreqctl signaled unsupported frequency mode " +
+                            result.response.mode + "! Assuming full range...");
+                        cb({
+                            min: 0,
+                            max: 100,
+                        });
+                    }
+                }
+            } else {
+                log("Failed to query supported frequency ranges from cpufreqctl! Assuming full range...");
+                cb({
+                    min: 0,
+                    max: 100,
+                });
+            }
+        });
+    }
+
     // Dat is so magic, world is exploooooooding
     _loadWidgets() {
         for (let i in arguments) {
@@ -184,7 +218,11 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                     TurboBoostSwitch: null,
                     CpuInfoGrid: null,
                     DiscardButton: null,
-                    SaveButton: null
+                    SaveButton: null,
+                    LimitMinLabel: null,
+                    LimitMaxLabel: null,
+                    MinimumFrequencyAdjustment: null,
+                    MaximumFrequencyAdjustment: null,
                 },
                 ListItem: {
                     Row: null,
@@ -231,22 +269,18 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             profileContext.Settings.CpuInfoGrid = profileSettingsBuilder.get_object(
                 "ProfileInfoGrid"
             );
-
-            // set limit labels
-            let limitLabel = profileSettingsBuilder.get_object("ProfileLimitMinLabel");
-            limitLabel.set_text(this.cpuMinLimit + "%");
-
-            limitLabel = profileSettingsBuilder.get_object("ProfileLimitMaxLabel");
-            limitLabel.set_text(this.cpuMaxLimit + "%");
-
-            // modify adjustments
-            let tempAdjstement = profileSettingsBuilder.get_object("MinimumFrequencyAdjustment");
-            tempAdjstement.set_lower(this.cpuMinLimit);
-            tempAdjstement.set_upper(this.cpuMaxLimit);
-
-            tempAdjstement = profileSettingsBuilder.get_object("MaximumFrequencyAdjustment");
-            tempAdjstement.set_lower(this.cpuMinLimit);
-            tempAdjstement.set_upper(this.cpuMaxLimit);
+            profileContext.Settings.LimitMinLabel = profileSettingsBuilder.get_object(
+                "ProfileLimitMinLabel"
+            );
+            profileContext.Settings.LimitMaxLabel = profileSettingsBuilder.get_object(
+                "ProfileLimitMaxLabel"
+            );
+            profileContext.Settings.MinimumFrequencyAdjustment = profileSettingsBuilder.get_object(
+                "MinimumFrequencyAdjustment"
+            );
+            profileContext.Settings.MaximumFrequencyAdjustment = profileSettingsBuilder.get_object(
+                "MaximumFrequencyAdjustment"
+            );
 
             let profileListItemBuilder = new Gtk.Builder();
             profileListItemBuilder.set_translation_domain("gnome-shell-extension-cpupower");
@@ -292,18 +326,34 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             profileContext.Profile = profile;
         }
 
+        this._checkFrequencies((result) => {
+            this.cpuMinLimit = result.min;
+            this.cpuMaxLimit = result.max;
+
+            // set limit labels
+            profileContext.Settings.LimitMinLabel.set_text(this.cpuMinLimit + "%");
+            profileContext.Settings.LimitMaxLabel.set_text(this.cpuMaxLimit + "%");
+
+            // modify adjustments
+            profileContext.Settings.MinimumFrequencyAdjustment.set_lower(this.cpuMinLimit);
+            profileContext.Settings.MinimumFrequencyAdjustment.set_upper(this.cpuMaxLimit);
+            profileContext.Settings.MaximumFrequencyAdjustment.set_lower(this.cpuMinLimit);
+            profileContext.Settings.MaximumFrequencyAdjustment.set_upper(this.cpuMaxLimit);
+
+            profileContext.Settings.MinimumFrequencyScale.set_value(profileContext.Profile.MinimumFrequency);
+            profileContext.Settings.MaximumFrequencyScale.set_value(profileContext.Profile.MaximumFrequency);
+        });
+
         profileContext.Settings.NameEntry.set_text(profileContext.Profile.Name);
-        profileContext.Settings.MinimumFrequencyScale.set_value(profileContext.Profile.MinimumFrequency);
-        profileContext.Settings.MaximumFrequencyScale.set_value(profileContext.Profile.MaximumFrequency);
         profileContext.Settings.TurboBoostSwitch.set_active(profileContext.Profile.TurboBoost);
         profileContext.ListItem.NameLabel.set_text(profileContext.Profile.Name);
         profileContext.ListItem.MinimumFrequencyLabel.set_text(profileContext.Profile.MinimumFrequency.toString());
         profileContext.ListItem.MaximumFrequencyLabel.set_text(profileContext.Profile.MaximumFrequency.toString());
         profileContext.ListItem.TurboBoostStatusLabel.set_text(profileContext.Profile.TurboBoost ? _("Yes") : _("No"));
 
-        this._settings.get_string("default-ac-profile") == profileContext.Profile.UUID ? 
+        this._settings.get_string("default-ac-profile") == profileContext.Profile.UUID ?
             profileContext.ListItem.AutoSwitchACIcon.set_visible(true) : profileContext.ListItem.AutoSwitchACIcon.set_visible(false);
-        this._settings.get_string("default-battery-profile") == profileContext.Profile.UUID ? 
+        this._settings.get_string("default-battery-profile") == profileContext.Profile.UUID ?
             profileContext.ListItem.AutoSwitchBatIcon.set_visible(true) : profileContext.ListItem.AutoSwitchBatIcon.set_visible(false);
 
         profileContext.Settings.DiscardButton.sensitive = false;
@@ -313,7 +363,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     removeProfile(profile) {
         let profileContext = this.ProfilesMap.get(profile.UUID);
 
-        // set default profile to none if the removed profile was selected 
+        // set default profile to none if the removed profile was selected
         if (this.DefaultACComboBox.get_active_id() == profileContext.Profile.UUID)
         {
             this._settings.set_string("default-ac-profile", "");

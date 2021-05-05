@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# cpufreqctl - This script can configure the pstate driver of your intel CPU.
+# cpufreqctl - This script can configure the frequency scaling driver of your CPU.
 #
 # Copyright (C) 2015-2021
 #     Martin Koppehel <psl.kontakt@gmail.com>,
@@ -24,6 +24,7 @@
 set -o errexit -o nounset
 
 VERSION="9.0.4"
+PRODUCTION=no
 
 log ()
 {
@@ -67,15 +68,6 @@ out_of_range ()
     EXIT_CODE=5
 }
 
-# error with no backend
-no_backend ()
-{
-    log "error: the cpufreqctl backend is not set!"
-    log "       define the CPUFREQCTL_BACKEND environment variable to set it"
-    log "       use 'cpufreqctl backends list' to see a list of available backends"
-    EXIT_CODE=6
-}
-
 # error with backend does not exist
 # $1  backend
 invalid_backend ()
@@ -115,7 +107,7 @@ fake_init ()
 
 fake_supported ()
 {
-    true
+    test "${PRODUCTION}" = no
 }
 
 fake_turbo_get ()
@@ -180,17 +172,21 @@ fake_info_current ()
     fake_init
 
     shuf -i 800000-3600000 -n 12 | sort -n | awk '
+        BEGIN {
+            srand()
+        }
         NR == 1 {
             printf "%d ", $1
         }
         {
             sum += $1
+            r[NR] = $1
         }
         END {
-            printf "%d %.0f\n", $1, sum / NR
-        }' | while read -r min max avg
+            printf "%d %.0f %d\n", $1, sum / NR, r[int(rand() * NR) + 1]
+        }' | while read -r min max avg rnd
     do
-        report_info_current --min "${min}" --max "${max}" --avg "${avg}"
+        report_info_current --min "${min}" --max "${max}" --avg "${avg}" --rnd "${rnd}"
     done
 }
 
@@ -267,17 +263,21 @@ intel_pstate_info_current ()
     do
         cat "${scaling_cur_freq}" &
     done | sort -n | awk '
+        BEGIN {
+            srand()
+        }
         NR == 1 {
             printf "%d ", $1
         }
         {
             sum += $1
+            r[NR] = $1
         }
         END {
-            printf "%d %.0f\n", $1, sum / NR
-        }' | while read -r min max avg
+            printf "%d %.0f %d\n", $1, sum / NR, r[int(rand() * NR) + 1]
+        }' | while read -r min max avg rnd
     do
-        report_info_current --min "${min}" --max "${max}" --avg "${avg}"
+        report_info_current --min "${min}" --max "${max}" --avg "${avg}" --rnd "${rnd}"
     done
 }
 
@@ -444,45 +444,53 @@ cpufreq_info_current ()
     do
         cat "${scaling_cur_freq}" &
     done | sort -n | awk '
+        BEGIN {
+            srand()
+        }
         NR == 1 {
             printf "%d ", $1
         }
         {
             sum += $1
+            r[NR] = $1
         }
         END {
-            printf "%d %.0f\n", $1, sum / NR
-        }' | while read -r min max avg
+            printf "%d %.0f %d\n", $1, sum / NR, r[int(rand() * NR) + 1]
+        }' | while read -r min max avg rnd
     do
-        report_info_current --min "${min}" --max "${max}" --avg "${avg}"
+        report_info_current --min "${min}" --max "${max}" --avg "${avg}" --rnd "${rnd}"
     done
+}
+
+backend_select()
+{
+    if [ "${CPUFREQCTL_BACKEND}" = "automatic" ]
+    then
+        CPUFREQCTL_BACKEND="intel_pstate"
+        if intel_pstate_supported
+        then
+            CPUFREQCTL_BACKEND="intel_pstate"
+        elif cpufreq_supported
+        then
+            CPUFREQCTL_BACKEND="cpufreq"
+        else
+            not_supported "automatic"
+            bail
+        fi
+    fi
 }
 
 backend ()
 {
-    if [ -z "${CPUFREQCTL_BACKEND-}" ]
+    if ! "${CPUFREQCTL_BACKEND}"_supported
     then
-        no_backend
+        not_supported "${CPUFREQCTL_BACKEND}"
         bail
     fi
 
-    case "${CPUFREQCTL_BACKEND}" in
-        fake|intel_pstate|cpufreq)
-            if ! "${CPUFREQCTL_BACKEND}"_supported
-            then
-                not_supported "${CPUFREQCTL_BACKEND}"
-                bail
-            fi
-
-            function_name="$1"
-            shift
-            "${CPUFREQCTL_BACKEND}"_"${function_name}" "$@"
-            ;;
-        *)
-            invalid_backend "${CPUFREQCTL_BACKEND}"
-            bail
-            ;;
-    esac
+    function_name="$1"
+    shift
+    "${CPUFREQCTL_BACKEND}"_"${function_name}" "$@"
 }
 
 report_info_frequencies () {
@@ -582,6 +590,7 @@ report_info_current()
     MIN=""
     MAX=""
     AVG=""
+    RND=""
 
     while true
     do
@@ -606,6 +615,11 @@ report_info_current()
                 AVG="$1"
                 shift
                 ;;
+            --rnd)
+                shift
+                RND="$1"
+                shift
+                ;;
             *)
                 internal_error report_info_current
                 bail
@@ -615,15 +629,17 @@ report_info_current()
 
     case "${FORMAT}" in
         human)
-            log "min: ${MIN}"
-            log "max: ${MAX}"
-            log "avg: ${AVG}"
+            log "Mininum frequency of all cores: ${MIN}"
+            log "Maximum frequency of all cores: ${MAX}"
+            log "Average frequency of all cores: ${AVG}"
+            log "Frequency of a random core: ${RND}"
             ;;
         json)
             echo '{'
             echo "  \"min\": ${MIN},"
             echo "  \"max\": ${MAX},"
-            echo "  \"avg\": ${AVG}"
+            echo "  \"avg\": ${AVG},"
+            echo "  \"rnd\": ${RND}"
             echo '}'
             ;;
         *)
@@ -1163,171 +1179,6 @@ max_set ()
     done
 }
 
-usage_backends ()
-{
-    log "usage: cpufreqctl backends [-h] {list,current}"
-}
-
-help_backends ()
-{
-    log "backends parameters:"
-    log "    list [-h]     get a complete list of available backends"
-    log "    current [-h]  get the currently configured backend"
-    log
-    log "environment variables:"
-    log "    CPUFREQCTL_BACKEND  define this variable in your environment to configure"
-    log "                        the backend of cpufreqctl. E.g. put"
-    log "                            export CPUFREQCTL_BACKEND=\"intel_pstate\""
-    log "                        into your shell profile"
-}
-
-backends ()
-{
-    if [ $# -lt 1 ]
-    then
-        no_arguments
-        usage_backends
-        bail
-    fi
-
-    while true
-    do
-        case "$1" in
-            -h|--help)
-                usage_backends
-                log
-                log "List the backends available for several different CPU architectures"
-                log
-                help_backends
-                log
-                help_copyright
-                break
-                ;;
-            list)
-                shift
-                backends_list "$@"
-                break
-                ;;
-            current)
-                shift
-                backends_current "$@"
-                break
-                ;;
-            *)
-                invalid_argument "$1" "backends"
-                usage_backends
-                bail
-                ;;
-        esac
-    done
-}
-
-usage_backends_list ()
-{
-    log "usage: cpufreqctl backends list [-h]"
-}
-
-backends_list ()
-{
-    if [ $# -gt 0 ]
-    then
-        while true
-        do
-            case "$1" in
-                -h|--help)
-                    usage_backends_list
-                    log
-                    log "List the backends available for several different CPU architectures"
-                    log
-                    help_copyright
-                    break
-                    ;;
-                *)
-                    invalid_argument "$1" "backends list"
-                    usage_backends_list
-                    bail
-                    ;;
-            esac
-        done
-    else
-        case "${FORMAT}" in
-            human)
-                log "fake          a fake backend used for development purposes"
-                log "cpufreq       a general purpose backend for most modern CPUs (including AMD"
-                log "              Ryzen)"
-                log "intel_pstate  a backend for Intel Core i CPUs of at least the second generation"
-                log "              (2xxx model number)"
-                ;;
-            json)
-                echo '['
-                echo '  "fake",'
-                echo '  "cpufreq",'
-                echo '  "intel_pstate"'
-                echo ']'
-                ;;
-            *)
-                internal_error backends_list
-                bail
-                ;;
-        esac
-    fi
-}
-
-usage_backends_current ()
-{
-    log "usage: cpufreqctl backends current [-h]"
-}
-
-backends_current ()
-{
-    if [ $# -gt 0 ]
-    then
-        while true
-        do
-            case "$1" in
-                -h|--help)
-                    usage_backends_current
-                    log
-                    log "Show the currently by environment variable configured backend"
-                    log
-                    help_copyright
-                    break
-                    ;;
-                *)
-                    invalid_argument "$1" "backends current"
-                    usage_backends_current
-                    bail
-                    ;;
-            esac
-        done
-    else
-        case "${CPUFREQCTL_BACKEND-}" in
-            fake|intel_pstate|cpufreq)
-                case "${FORMAT}" in
-                    human)
-                        log "${CPUFREQCTL_BACKEND}"
-                        ;;
-                    json)
-                        echo "\"${CPUFREQCTL_BACKEND}\""
-                        ;;
-                    *)
-                        internal_error backends_current
-                        bail
-                        ;;
-                esac
-                ;;
-            "")
-                no_backend
-                bail
-                ;;
-            *)
-                invalid_backend "${CPUFREQCTL_BACKEND}"
-                bail
-                ;;
-        esac
-    fi
-}
-
 usage_info ()
 {
     log "usage: cpufreqctl info [-h] {frequencies,current}"
@@ -1474,10 +1325,14 @@ usage_main ()
 help_main ()
 {
     log "optional arguments:"
-    log "    -f, --format FORMAT  specify the output format, one of [human, json]"
-    log "                         (default human)"
-    log "    -h, --help           show this help message and exit"
-    log "    -V, --version        show the version of this program and exit"
+    log "    -b, --backend BACKEND  specify the backend to be used, one of:"
+    log "                           [automatic, fake, cpufreq, intel_pstate]"
+    log "                           the 'fake' backend is not available in production"
+    log "                           (default automatic)"
+    log "    -f, --format FORMAT    specify the output format, one of [human, json]"
+    log "                           (default human)"
+    log "    -h, --help             show this help message and exit"
+    log "    -V, --version          show the version of this program and exit"
     log
     log "available actions:"
     log "    turbo [-h] {get,set}             control the turbo boost setting of your CPU"
@@ -1495,8 +1350,6 @@ help_main ()
     help_max
     log
     help_info
-    log
-    help_backends
     log
     log "examples:"
     log "    Set the maximum frequency to 50%"
@@ -1519,6 +1372,7 @@ main()
     fi
 
     FORMAT="human"
+    CPUFREQCTL_BACKEND="automatic"
 
     while true
     do
@@ -1554,28 +1408,40 @@ main()
                 esac
                 shift
                 ;;
+            -b|--backend)
+                shift
+                case "$1" in
+                    automatic|fake|cpufreq|intel_pstate)
+                        CPUFREQCTL_BACKEND="$1"
+                        ;;
+                    *)
+                        invalid_backend "$1"
+                        bail
+                        ;;
+                esac
+                shift
+                ;;
             turbo)
                 shift
+                backend_select
                 turbo "$@"
                 break
                 ;;
             min)
                 shift
+                backend_select
                 min "$@"
                 break
                 ;;
             max)
                 shift
+                backend_select
                 max "$@"
-                break
-                ;;
-            backends)
-                shift
-                backends "$@"
                 break
                 ;;
             info)
                 shift
+                backend_select
                 info "$@"
                 break
                 ;;

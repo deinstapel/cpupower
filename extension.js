@@ -30,7 +30,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.src.convenience;
 const Main = imports.ui.main;
 
-const check_supported = Me.imports.src.utils.check_supported;
+const utils = Me.imports.src.utils;
 const unsupported = Me.imports.src.unsupported;
 
 const check_installed = Me.imports.src.utils.check_installed;
@@ -53,50 +53,42 @@ const _enableIndicator = () => {
 
 var enable = () => {
     try {
-        check_supported(supported => {
-            if (!supported) {
-                _indicator = new unsupported.UnsupportedIndicator();
-                _enableIndicator();
-                return;
-            }
-
-            check_installed((installed, exitCode) => {
-                if (!installed) {
-                    switch (exitCode) {
-                    case 3:
-                        _indicator = new update.UpdateIndicator(update.UPDATE, function (success) {
-                            if (success) {
-                                // reenable the extension to allow immediate operation.
-                                disable();
-                                enable();
-                            }
-                        });
-                        break;
-                    case 4:
-                        _indicator = new update.UpdateIndicator(update.SECURITY_UPDATE, function (success) {
-                            if (success) {
-                                // reenable the extension to allow immediate operation.
-                                disable();
-                                enable();
-                            }
-                        });
-                        break;
-                    default:
-                        _indicator = new notinstalled.NotInstalledIndicator(function (success) {
-                            if (success)
-                            {
-                                // reenable the extension to allow immediate operation.
-                                disable();
-                                enable();
-                            }
-                        });
-                        break;
-                    }
-                } else {
-                    _indicator = new indicator.CPUFreqIndicator();
+        check_installed((installed, exitCode) => {
+            if (!installed) {
+                switch (exitCode) {
+                case utils.INSTALLER_NEEDS_UPDATE:
+                    _indicator = new update.UpdateIndicator(update.UPDATE, function (success) {
+                        if (success) {
+                            // reenable the extension to allow immediate operation.
+                            disable();
+                            enable();
+                        }
+                    });
+                    break;
+                case utils.INSTALLER_NEEDS_SECURITY_UPDATE:
+                    _indicator = new update.UpdateIndicator(update.SECURITY_UPDATE, function (success) {
+                        if (success) {
+                            // reenable the extension to allow immediate operation.
+                            disable();
+                            enable();
+                        }
+                    });
+                    break;
+                default:
+                    _indicator = new notinstalled.NotInstalledIndicator(exitCode, function (success) {
+                        if (success)
+                        {
+                            // reenable the extension to allow immediate operation.
+                            disable();
+                            enable();
+                        }
+                    });
+                    break;
                 }
-                _enableIndicator();
-            });
+            } else {
+                _indicator = new indicator.CPUFreqIndicator();
+            }
+            _enableIndicator();
         });
     } catch (e) {
         logError(e.message);

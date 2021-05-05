@@ -23,7 +23,7 @@
  * along with gnome-shell extension cpupower.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
- */    
+ */
 // 32bit random number without 0
 const GenerateUUID = () => Math.floor(1 + Math.random() * 0xFFFFFFFE).toString();
 

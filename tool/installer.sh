@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # installer.sh - This script installs a policykit action for the cpu power gnome-shell extension.
 #
@@ -31,10 +31,10 @@ EXIT_NEEDS_SECURITY_UPDATE=4
 EXIT_NOT_INSTALLED=5
 EXIT_MUST_BE_ROOT=6
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" #stackoverflow 59895
+DIR="$(CDPATH="" cd -- "$(dirname -- "$0")" && pwd)" #stackoverflow 29832037
 PREFIX="/usr" # default install prefix is /usr
 
-function usage() {
+usage() {
     echo "Usage: installer.sh [options] {supported,install,check,update,uninstall}"
     echo
     echo "Available options:"
@@ -50,7 +50,7 @@ then
 fi
 
 ACTION=""
-while [[ $# -gt 0 ]]
+while [ $# -gt 0 ]
 do
     key="$1"
 
@@ -111,18 +111,6 @@ fi
 V7_LEGACY_OUT="/usr/share/polkit-1/actions/mko.cpupower.policy"
 V8_LEGACY_OUT="/usr/share/polkit-1/actions/mko.cpupower.setcpufreq.policy"
 
-if [ "$ACTION" = "supported" ]
-then
-    if [ -d /sys/devices/system/cpu/intel_pstate ]
-    then
-        echo "Supported"
-        exit ${EXIT_SUCCESS}
-    else
-        echo "Unsupported"
-        exit ${EXIT_FAILED}
-    fi
-fi
-
 if [ "$ACTION" = "check" ]
 then
     # pre v9 policy rules have security issues
@@ -157,26 +145,26 @@ fi
 
 if [ "$ACTION" = "install" ]
 then
-    if [ "${EUID}" -ne 0 ]; then
+    if [ "$(id -u)" -ne 0 ]; then
         echo "The install action must be run as root for security reasons!"
         echo "Please have a look at https://github.com/martin31821/cpupower/issues/102"
         echo "for further details."
         exit ${EXIT_MUST_BE_ROOT}
     fi
 
-    echo -n "Installing cpufreqctl tool... "
+    printf "Installing cpufreqctl tool... "
     mkdir -p "${CFC_DIR}"
     install "${CFC_IN}" "${CFC_OUT}" || (echo "Failed" && exit ${EXIT_FAILED})
     echo "Success"
 
-    echo -n "Installing policykit action... "
+    printf "Installing policykit action... "
     mkdir -p "${ACTION_DIR}"
     sed -e "s:{{PATH}}:${CFC_OUT}:g" \
         -e "s:{{ID}}:${ACTION_ID}:g" "${ACTION_IN}" > "${ACTION_OUT}" 2>/dev/null || \
         (echo "Failed" && exit ${EXIT_FAILED})
     echo "Success"
 
-    echo -n "Installing policykit rule... "
+    printf "Installing policykit rule... "
     mkdir -p "${RULE_DIR}"
     install -m 0644 "${RULE_IN}" "${RULE_OUT}" || (echo "Failed" && exit ${EXIT_FAILED})
     echo "Success"
@@ -188,7 +176,7 @@ if [ "$ACTION" = "update" ]
 then
     if [ -f "V7_LEGACY_OUT" ]
     then
-        echo -n "Uninstalling legacy v7 polkit rule... "
+        printf "Uninstalling legacy v7 polkit rule... "
         rm "${V7_LEGACY_OUT}" || \
             (echo "Failed - cannot remove ${V7_LEGACY_OUT}" && exit ${EXIT_FAILED})
         echo "Success"
@@ -196,21 +184,21 @@ then
 
     if [ -f "${V8_LEGACY_OUT}" ] && ! grep -sq "${PREFIX}" "${V8_LEGACY_OUT}"
     then
-        echo -n "Uninstalling legacy v8 polkit rule... "
+        printf "Uninstalling legacy v8 polkit rule... "
         rm "${V8_LEGACY_OUT}" || \
             (echo "Failed - cannot remove ${V8_LEGACY_OUT}" && exit ${EXIT_FAILED})
         echo "Success"
     fi
 
-    "${BASH_SOURCE[0]}" --prefix "${PREFIX}" --tool-suffix "${TOOL_SUFFIX}" uninstall || exit $?
-    "${BASH_SOURCE[0]}" --prefix "${PREFIX}" --tool-suffix "${TOOL_SUFFIX}" install || exit $?
+    "$0" --prefix "${PREFIX}" --tool-suffix "${TOOL_SUFFIX}" uninstall || exit $?
+    "$0" --prefix "${PREFIX}" --tool-suffix "${TOOL_SUFFIX}" install || exit $?
 
     exit ${EXIT_SUCCESS}
 fi
 
 if [ "$ACTION" = "uninstall" ]
 then
-    echo -n "Uninstalling cpufreqctl tool... "
+    printf "Uninstalling cpufreqctl tool... "
     if [ -f "${CFC_OUT}" ]
     then
         rm "${CFC_OUT}" || (echo "Failed - cannot remove ${CFC_OUT}" && exit ${EXIT_FAILED}) && echo "Success"
@@ -218,7 +206,7 @@ then
         echo "tool not installed at ${CFC_OUT}"
     fi
 
-    echo -n "Uninstalling policykit action... "
+    printf "Uninstalling policykit action... "
     if [ -f "${ACTION_OUT}" ]
     then
         rm "${ACTION_OUT}" || (echo "Failed - cannot remove ${ACTION_OUT}" && exit ${EXIT_FAILED}) && echo "Success"
@@ -226,7 +214,7 @@ then
         echo "policy action not installed at ${ACTION_OUT}"
     fi
 
-    echo -n "Uninstalling policykit rule... "
+    printf "Uninstalling policykit rule... "
     if [ -f "${RULE_OUT}" ]
     then
         rm "${RULE_OUT}" || (echo "Failed - cannot remove ${RULE_OUT}" && exit ${EXIT_FAILED}) && echo "Success"

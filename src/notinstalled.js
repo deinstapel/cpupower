@@ -30,27 +30,46 @@
 const PopupMenu = imports.ui.popupMenu;
 
 // Relative and misc imports and definitions
+const Gio = imports.gi.Gio;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.src.convenience;
 const baseindicator = Me.imports.src.baseindicator;
 const attempt_installation = Me.imports.src.utils.attempt_installation;
+const utils = Me.imports.src.utils;
 
 const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
 const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
 const _ = Gettext.gettext;
 
 var NotInstalledIndicator = class NotInstalledIndicator extends baseindicator.CPUFreqBaseIndicator {
-    constructor(done) {
+    constructor(exitCode, done) {
         super();
         this._done = done;
+        this._exitCode = exitCode;
         this.createMenu();
     }
 
     createMenu() {
         super.createMenu();
-        let notInstalledLabel = new PopupMenu.PopupMenuItem(_('Installation required.'), {reactive: false});
-        this.section.addMenuItem(notInstalledLabel);
+
+        if (this._exitCode == utils.INSTALLER_NOT_INSTALLED) {
+            let notInstalledLabel = new PopupMenu.PopupMenuItem(_('Installation required.'), {reactive: false});
+            this.section.addMenuItem(notInstalledLabel);
+        } else {
+            let errorLabel = new PopupMenu.PopupMenuItem(_(
+                'Oh no! This should not have happened.\n'
+                    + 'An error occurred while checking the installation!'
+            ), {reactive: false});
+            let reportLabel = new PopupMenu.PopupMenuItem(_(
+                'Please consider reporting this to the developers\n'
+                    + 'of this extension by submitting an issue on Github.'), {reactive: true});
+            reportLabel.connect('activate', function() {
+                Gio.AppInfo.launch_default_for_uri("https://github.com/martin31821/cpupower/issues/new", null);
+            });
+            this.section.addMenuItem(errorLabel);
+            this.section.addMenuItem(reportLabel);
+        }
 
         let separator = new PopupMenu.PopupSeparatorMenuItem();
         this.section.addMenuItem(separator);

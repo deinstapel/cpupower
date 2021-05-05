@@ -69,8 +69,12 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
 
         this.createIndicator();
 
+        this.settings.connect('changed', this.onSettingsChanged.bind(this));
+    }
 
-        this.settings.connect('changed', () => {this.createIndicator(); this.createMenu()});
+    onSettingsChanged() {
+        this.createIndicator();
+        this.createMenu();
     }
 
     createIndicator() {
