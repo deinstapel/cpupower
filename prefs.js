@@ -39,6 +39,7 @@ function init()
 function buildPrefsWidget()
 {
     let preferences = new CPUPowerPreferences();
-    preferences.MainWidget.show_all();
-    return preferences.MainWidget;
+    //preferences.MainWidget.show_all();
+
+    return preferences.show();
 }

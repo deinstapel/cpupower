@@ -73,7 +73,7 @@ out_of_range ()
 invalid_backend ()
 {
     log "error: the backend '$1' does not exist!"
-    log "       use 'cpufreqctl backends list' to see a list of available backends"
+    log "       use 'cpufreqctl --help' to see a list of available backends"
     EXIT_CODE=7
 }
 
@@ -1319,7 +1319,7 @@ info_current ()
 
 usage_main ()
 {
-    log "usage: cpufreqctl [-fhV] {turbo,min,max,info,backends}"
+    log "usage: cpufreqctl [-fhV] {turbo,min,max,info}"
 }
 
 help_main ()
@@ -1341,7 +1341,6 @@ help_main ()
     log "    max [-h] {get,set}               control the maximum cpu frequency setting"
     log "                                     of your CPU"
     log "    info [-h] {frequencies,current}  show information on your CPU"
-    log "    backends [-h] {list,current}     show information on the available backends"
     log
     help_turbo
     log

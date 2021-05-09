@@ -111,41 +111,51 @@ var CPUFREQCTL_INTERNAL_ERROR = 8;
 var CPUFREQCTL_NOT_SUPPORTED = 9;
 
 function __cpufreqctl(pkexec_needed, backend, params, cb) {
-    let args = [CONFIG.CPUFREQCTL, "--backend", backend, "--format", "json"].concat(params);
+    let args = [
+        CONFIG.CPUFREQCTL,
+        "--backend", backend,
+        "--format", "json"
+    ].concat(params);
+
     if (pkexec_needed) {
         args.unshift(PKEXEC);
     }
 
-    let [ok, pid, stdin, stdout, stderr] = GLib.spawn_async_with_pipes(
-        EXTENSIONDIR,
-        args,
-        null,
-        GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-        null,
+    let launcher = Gio.SubprocessLauncher.new(
+        Gio.SubprocessFlags.STDOUT_PIPE
     );
-    if (!ok) {
-        if (cb !== null && cb !== undefined) {
-            cb({ ok: false });
-        }
-        return;
-    }
-
-    const out_reader = new Gio.DataInputStream({
-        base_stream: new Gio.UnixInputStream({fd: stdout}),
+    launcher.set_cwd(EXTENSIONDIR);
+    let proc = launcher.spawnv(args);
+    let stdoutStream = new Gio.DataInputStream({
+        base_stream: proc.get_stdout_pipe(),
+        close_base_stream: true,
     });
-    GLib.child_watch_add(200, pid, function(cb, process, exitStatus) {
-        GLib.spawn_close_pid(process);
-        let exitCode = 0;
-        try {
-            GLib.spawn_check_exit_status(exitStatus);
-        } catch (e) {
-            exitCode = e.code;
+    proc.wait_async(null, (proc, result) => {
+        // this only throws if async call got cancelled, but we
+        // explicitly passed null for the cancellable
+        let ok = proc.wait_finish(result);
+        if (!ok) {
+            if (cb !== null && cb !== undefined) {
+                cb({
+                    ok: false,
+                    exitCode: null,
+                    response: null,
+                });
+            }
+            return;
         }
-        const [stdout, length] = out_reader.read_upto("", 0, null);
+
+        let exitCode = proc.get_exit_status();
+        let [stdout, _length] = stdoutStream.read_upto("", 0, null);
 
         let response;
         if (exitCode === CPUFREQCTL_SUCCESS) {
-            response = JSON.parse(stdout);
+            try {
+                response = JSON.parse(stdout);
+            } catch (e) {
+                log(e);
+                log(stdout);
+            }
         } else {
             response = stdout;
         }
@@ -157,7 +167,7 @@ function __cpufreqctl(pkexec_needed, backend, params, cb) {
                 response: response,
             });
         }
-    }.bind(null, cb));
+    });
 }
 
 var Cpufreqctl = {

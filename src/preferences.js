@@ -51,16 +51,22 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     constructor() {
         this.Builder = new Gtk.Builder();
         this.Builder.set_translation_domain("gnome-shell-extension-cpupower");
-        this.Builder.add_objects_from_file(GLADE_FILE, ["MainWidget"]);
+        this.Builder.add_objects_from_file(
+            GLADE_FILE,
+            ["MainWidget", "AboutButton"],
+        );
         this.Builder.connect_signals_full((builder, object, signal, handler) => {
             object.connect(signal, this[handler].bind(this));
         });
         this._loadWidgets(
             "MainWidget",
+            "AboutButton",
             "ShowIconSwitch",
             "ShowArrowSwitch",
             "ShowCurrentFrequencySwitch",
             "UseGHzInsteadOfMHzSwitch",
+            "ShowFrequencyAsComboBox",
+            "FrequencyScalingDriverComboBox",
             "DefaultACComboBox",
             "DefaultBatComboBox",
             "ProfilesListBox",
@@ -72,7 +78,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             "CpufreqctlPathLabel",
             "PolicykitRulePathLabel",
             "InstallationWarningLabel",
-            "UninstallButton"
+            "UninstallButton",
         );
         this.ProfilesMap = new Map();
     }
@@ -202,6 +208,23 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                 break;
             }
         }
+    }
+
+    show() {
+        let self = this;
+        GLib.timeout_add(GLib.PRIORITY_DEFAULT, 0, () => {
+            let window = self.MainWidget.get_toplevel();
+            let headerbar = window.get_titlebar();
+
+            headerbar.title = _('CPU Power Manager');
+            headerbar.subtitle = _('Preferences');
+            headerbar.pack_start(self.AboutButton);
+            self.AboutButton.show_all();
+
+            return GLib.SOURCE_REMOVE;
+        });
+
+        return this.MainWidget;
     }
 
     addOrUpdateProfile(profile) {
@@ -476,6 +499,16 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         let state = switchButton.active;
         this._settings.set_boolean("show-arrow-in-taskbar", state);
         this.status("ShowArrow: " + state);
+    }
+
+    onShowFrequencyAsComboBoxActiveNotify(comboBox) {
+        let state = comboBox.get_active_id();
+        this.status("ShowFrequencyAs: " + state);
+    }
+
+    onFrequencyScalingDriverComboBoxActiveNotify(comboBox) {
+        let state = comboBox.get_active_id();
+        this.status("FrequencyScalingDriver: " + state);
     }
 
     onDefaultACComboBoxActiveNotify(comboBox) {
