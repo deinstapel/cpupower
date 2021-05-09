@@ -100,7 +100,13 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         value = this._settings.get_boolean("show-arrow-in-taskbar");
         this.ShowArrowSwitch.set_active(value);
 
-        let id = this._settings.get_string("default-ac-profile");
+        let id = this._settings.get_string("frequency-sampling-mode");
+        this.ShowFrequencyAsComboBox.set_active_id(id);
+
+        id = this._settings.get_string("cpufreqctl-backend");
+        this.FrequencyScalingDriverComboBox.set_active_id(id);
+
+        id = this._settings.get_string("default-ac-profile");
         this.DefaultACComboBox.set_active_id(id);
 
         id = this._settings.get_string("default-battery-profile");
@@ -467,9 +473,6 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         mainWidget.expand = true;
         mainWidget.parent.border_width = 0;
 
-        //let window = mainWidget.get_parent_window();
-        //window.set_events(EventMask.BUTTON_RELEASE_MASK);
-
         this._settings = Convenience.getSettings(SETTINGS_SCHEMA);
         this._settings.connect("changed", this._updateSettings.bind(this));
         this._updateSettings();
@@ -503,11 +506,13 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
     onShowFrequencyAsComboBoxActiveNotify(comboBox) {
         let state = comboBox.get_active_id();
+        this._settings.set_string("frequency-sampling-mode", state);
         this.status("ShowFrequencyAs: " + state);
     }
 
     onFrequencyScalingDriverComboBoxActiveNotify(comboBox) {
         let state = comboBox.get_active_id();
+        this._settings.set_string("cpufreqctl-backend", state);
         this.status("FrequencyScalingDriver: " + state);
     }
 

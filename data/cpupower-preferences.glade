@@ -284,10 +284,10 @@ PB (@uno20001)</property>
                             <property name="can-focus">False</property>
                             <property name="tooltip-text" translatable="yes">Set the method for retrieving the current frequency for your CPU</property>
                             <items>
-                              <item translatable="yes">Avergage of all cores</item>
-                              <item translatable="yes">Minimum of all cores</item>
-                              <item translatable="yes">Maximum of all cores</item>
-                              <item translatable="yes">Value of a random core</item>
+                              <item id="average" translatable="yes">Avergage of all cores</item>
+                              <item id="minimum" translatable="yes">Minimum of all cores</item>
+                              <item id="maximum" translatable="yes">Maximum of all cores</item>
+                              <item id="random" translatable="yes">Value of a random core</item>
                             </items>
                             <signal name="notify::active" handler="onShowFrequencyAsComboBoxActiveNotify" swapped="no"/>
                             <accessibility>
@@ -499,9 +499,9 @@ PB (@uno20001)</property>
                             <property name="tooltip-text" translatable="yes">Set the scaling driver backend used to control and query the CPU frequency and turbo boost setting</property>
                             <property name="active">0</property>
                             <items>
-                              <item translatable="yes">Automatic</item>
-                              <item translatable="yes">cpufreq</item>
-                              <item translatable="yes">intel_pstate</item>
+                              <item id="automatic" translatable="yes">Automatic</item>
+                              <item id="cpufreq" translatable="yes">cpufreq</item>
+                              <item id="intel_pstate" translatable="yes">intel_pstate</item>
                             </items>
                             <signal name="notify::active" handler="onFrequencyScalingDriverComboBoxActiveNotify" swapped="no"/>
                             <child internal-child="accessible">
