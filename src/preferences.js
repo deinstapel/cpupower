@@ -53,7 +53,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         this.Builder.set_translation_domain("gnome-shell-extension-cpupower");
         this.Builder.add_objects_from_file(
             GLADE_FILE,
-            ["MainWidget", "AboutButton"],
+            ["MainWidget", "AboutButton", "FrequencyScalingDriverListStore"],
         );
         this.Builder.connect_signals_full((builder, object, signal, handler) => {
             object.connect(signal, this[handler].bind(this));
@@ -67,6 +67,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             "UseGHzInsteadOfMHzSwitch",
             "ShowFrequencyAsComboBox",
             "FrequencyScalingDriverComboBox",
+            "FrequencyScalingDriverListStore",
             "DefaultACComboBox",
             "DefaultBatComboBox",
             "ProfilesListBox",
@@ -469,6 +470,40 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         this.DefaultBatComboBox.set_active_id(id);
     }
 
+    loadBackendsComboBox() {
+        let liststore = this.FrequencyScalingDriverListStore;
+        let combobox = this.FrequencyScalingDriverComboBox;
+        let backend = this._settings.get_string("cpufreqctl-backend");
+        liststore.clear();
+        Cpufreqctl.backends.automatic((result) => {
+            let iter = liststore.append();
+            let chosen_backend = result.response;
+            if (!result.ok) {
+                chosen_backend = _("unavailable");
+            }
+            liststore.set(
+                iter,
+                [0, 1, 2],
+                [_("Automatic") + " (" + chosen_backend + ")", "automatic", true],
+            );
+            Cpufreqctl.backends.list(backend, (result) => {
+                if (!result.ok) {
+                    return;
+                }
+                for (const backend in result.response) {
+                    const supported = result.response[backend];
+                    iter = liststore.append();
+                    liststore.set(
+                        iter,
+                        [0, 1, 2],
+                        [backend, backend, supported],
+                    );
+                }
+                combobox.set_active_id(backend);
+            });
+        });
+    }
+
     onMainWidgetRealize(mainWidget) {
         mainWidget.expand = true;
         mainWidget.parent.border_width = 0;
@@ -477,6 +512,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         this._settings.connect("changed", this._updateSettings.bind(this));
         this._updateSettings();
 
+        this.loadBackendsComboBox();
         this.refreshAutoSwitchComboBoxes();
 
         this._selectFirstProfile();

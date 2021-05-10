@@ -28,7 +28,7 @@ PRODUCTION=no
 
 log ()
 {
-    echo "$@" >&2
+    printf "%b\n" "$@" >&2
 }
 
 EXIT_CODE=0
@@ -73,7 +73,7 @@ out_of_range ()
 invalid_backend ()
 {
     log "error: the backend '$1' does not exist!"
-    log "       use 'cpufreqctl --help' to see a list of available backends"
+    log "       use 'cpufreqctl backends list' to see a list of available backends"
     EXIT_CODE=7
 }
 
@@ -283,7 +283,7 @@ intel_pstate_info_current ()
 
 cpufreq_supported ()
 {
-    test -d /sys/devices/system/cpu/cpufreq
+    test -d /sys/devices/system/cpu/cpu0/cpufreq
 }
 
 cpufreq_max_freq ()
@@ -1317,9 +1317,205 @@ info_current ()
     fi
 }
 
+usage_backends ()
+{
+    log "usage: cpufreqctl backends [-h] {list,current}"
+}
+
+help_backends ()
+{
+    log "backends parameters:"
+    log "    list [-h]     show a complete list of available backends"
+    log "    current [-h]  show the currently used backend"
+}
+
+backends ()
+{
+    if [ $# -lt 1 ]
+    then
+        no_arguments
+        usage_backends
+        bail
+    fi
+
+    while true
+    do
+        case "$1" in
+            -h|--help)
+                usage_backends
+                log
+                log "Show information on the backends available for several different CPU architectures"
+                log
+                help_backends
+                log
+                help_copyright
+                break
+                ;;
+            list)
+                shift
+                backends_list "$@"
+                break
+                ;;
+            current)
+                shift
+                backends_current "$@"
+                break
+                ;;
+            *)
+                invalid_argument "$1" "backends"
+                usage_backends
+                bail
+                ;;
+        esac
+    done
+}
+
+usage_backends_list ()
+{
+    log "usage: cpufreqctl backends list [-h]"
+}
+
+backends_list ()
+{
+    if [ $# -gt 0 ]
+    then
+        while true
+        do
+            case "$1" in
+                -h|--help)
+                    usage_backends_list
+                    log
+                    log "Show the backends available for several different CPU architectures"
+                    log
+                    help_copyright
+                    break
+                    ;;
+                *)
+                    invalid_argument "$1" "backends list"
+                    usage_backends_list
+                    bail
+                    ;;
+            esac
+        done
+    else
+        case "${FORMAT}" in
+            human)
+                log "\e[1mbackend names (\e[1;32msupported\e[0;1m / \e[1;31munsupported\e[0;1m)\e[0m"
+                if [ "${PRODUCTION}" = "no" ]
+                then
+                    if fake_supported
+                    then
+                        FAKE="\e[1;32mfake\e[0m"
+                    else
+                        FAKE="\e[1;31mfake\e[0m"
+                    fi
+                    log "${FAKE}          a fake backend used for development purposes"
+                fi
+
+                if cpufreq_supported
+                then
+                    CPUFREQ="\e[1;32mcpufreq\e[0m"
+                else
+                    CPUFREQ="\e[1;31mcpufreq\e[0m"
+                fi
+                log "${CPUFREQ}       a general purpose backend for most modern CPUs (including AMD"
+                log "              Ryzen)"
+
+                if intel_pstate_supported
+                then
+                    INTEL_PSTATE="\e[1;32mintel_pstate\e[0m"
+                else
+                    INTEL_PSTATE="\e[1;31mintel_pstate\e[0m"
+                fi
+                log "${INTEL_PSTATE}  a backend for Intel Core i CPUs of at least the second generation"
+                log "              (2xxx model number)"
+                ;;
+            json)
+                echo '{'
+
+                if [ "${PRODUCTION}" = "no" ]
+                then
+                    if fake_supported
+                    then
+                        FAKE="true"
+                    else
+                        FAKE="false"
+                    fi
+                    echo "  \"fake\": ${FAKE},"
+                fi
+
+                if cpufreq_supported
+                then
+                    CPUFREQ="true"
+                else
+                    CPUFREQ="false"
+                fi
+                echo "  \"cpufreq\": ${CPUFREQ},"
+
+                if intel_pstate_supported
+                then
+                    INTEL_PSTATE="true"
+                else
+                    INTEL_PSTATE="false"
+                fi
+                echo "  \"intel_pstate\": ${INTEL_PSTATE}"
+
+                echo '}'
+                ;;
+            *)
+                internal_error backends_list
+                bail
+                ;;
+        esac
+    fi
+}
+
+usage_backends_current ()
+{
+    log "usage: cpufreqctl backends current [-h]"
+}
+
+backends_current ()
+{
+    if [ $# -gt 0 ]
+    then
+        while true
+        do
+            case "$1" in
+                -h|--help)
+                    usage_backends_current
+                    log
+                    log "Show the currently used backend"
+                    log
+                    help_copyright
+                    break
+                    ;;
+                *)
+                    invalid_argument "$1" "backends current"
+                    usage_backends_current
+                    bail
+                    ;;
+            esac
+        done
+    else
+        case "${FORMAT}" in
+            human)
+                log "${CPUFREQCTL_BACKEND}"
+                ;;
+            json)
+                echo "\"${CPUFREQCTL_BACKEND}\""
+                ;;
+            *)
+                internal_error backends_current
+                bail
+                ;;
+        esac
+    fi
+}
+
 usage_main ()
 {
-    log "usage: cpufreqctl [-fhV] {turbo,min,max,info}"
+    log "usage: cpufreqctl [-fhV] {turbo,min,max,info,backends}"
 }
 
 help_main ()
@@ -1341,6 +1537,7 @@ help_main ()
     log "    max [-h] {get,set}               control the maximum cpu frequency setting"
     log "                                     of your CPU"
     log "    info [-h] {frequencies,current}  show information on your CPU"
+    log "    backends [-h] {list,current}     show information on the available backends"
     log
     help_turbo
     log
@@ -1349,6 +1546,8 @@ help_main ()
     help_max
     log
     help_info
+    log
+    help_backends
     log
     log "examples:"
     log "    Set the maximum frequency to 50%"
@@ -1442,6 +1641,12 @@ main()
                 shift
                 backend_select
                 info "$@"
+                break
+                ;;
+            backends)
+                shift
+                backend_select
+                backends "$@"
                 break
                 ;;
             *)

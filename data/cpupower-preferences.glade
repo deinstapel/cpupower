@@ -110,6 +110,16 @@ PB (@uno20001)</property>
       </object>
     </child>
   </object>
+  <object class="GtkListStore" id="FrequencyScalingDriverListStore">
+    <columns>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name backend -->
+      <column type="gchararray"/>
+      <!-- column-name supported -->
+      <column type="gboolean"/>
+    </columns>
+  </object>
   <object class="GtkNotebook" id="MainWidget">
     <property name="width-request">400</property>
     <property name="height-request">400</property>
@@ -493,17 +503,20 @@ PB (@uno20001)</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkComboBoxText" id="FrequencyScalingDriverComboBox">
+                          <object class="GtkComboBox" id="FrequencyScalingDriverComboBox">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="tooltip-text" translatable="yes">Set the scaling driver backend used to control and query the CPU frequency and turbo boost setting</property>
-                            <property name="active">0</property>
-                            <items>
-                              <item id="automatic" translatable="yes">Automatic</item>
-                              <item id="cpufreq" translatable="yes">cpufreq</item>
-                              <item id="intel_pstate" translatable="yes">intel_pstate</item>
-                            </items>
+                            <property name="model">FrequencyScalingDriverListStore</property>
+                            <property name="id-column">1</property>
                             <signal name="notify::active" handler="onFrequencyScalingDriverComboBoxActiveNotify" swapped="no"/>
+                            <child>
+                              <object class="GtkCellRendererText" id="FrequencyScalingDriverCellRenderer"/>
+                              <attributes>
+                                <attribute name="sensitive">2</attribute>
+                                <attribute name="text">0</attribute>
+                              </attributes>
+                            </child>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="FrequencyScalingDriverComboBox-atkobject">
                                 <property name="AtkObject::accessible-name" translatable="yes">Frequency scaling driver selection</property>

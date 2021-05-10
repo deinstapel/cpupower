@@ -203,6 +203,17 @@ var Cpufreqctl = {
             __cpufreqctl(false, backend, ["info", "current"], cb);
         },
     },
+    backends: {
+        list: function(backend, cb) {
+            __cpufreqctl(false, backend, ["backends", "list"], cb);
+        },
+        current: function(backend, cb) {
+            __cpufreqctl(false, backend, ["backends", "current"], cb);
+        },
+        automatic: function(cb) {
+            __cpufreqctl(false, "automatic", ["backends", "current"], cb);
+        },
+    },
     exitCodeToString: function(exitCode) {
         switch (exitCode) {
         case CPUFREQCTL_SUCCESS:
