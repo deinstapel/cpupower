@@ -23,6 +23,8 @@
 
 set -e
 
+VERSION="9.0.4"
+
 EXIT_SUCCESS=0
 EXIT_INVALID_ARG=1
 EXIT_FAILED=2
@@ -125,6 +127,9 @@ then
         exit ${EXIT_NEEDS_SECURITY_UPDATE}
     fi
 
+    echo "sed -e \"s:{{PATH}}:${CFC_OUT}:g\" -e \"s:{{ID}}:${ACTION_ID}:g\" \"${ACTION_IN}\" | cmp --silent \"${ACTION_OUT}\""
+
+    # check if a newly generated polkit policy is equal to the installed policy
     if ! sed -e "s:{{PATH}}:${CFC_OUT}:g" \
              -e "s:{{ID}}:${ACTION_ID}:g" "${ACTION_IN}" | \
              cmp --silent "${ACTION_OUT}"
@@ -138,6 +143,15 @@ then
             exit ${EXIT_NOT_INSTALLED}
         fi
     fi
+
+    # check if cpufreqctl version matches extension version
+    CURRENT_VERSION="$(${CFC_OUT} --version 2>&1 | grep -oP '\d+\.\d+\.\d+')"
+    if [ "${VERSION}" != "${CURRENT_VERSION}" ]
+    then
+        echo "Your cpupower installation needs updating!"
+        exit ${EXIT_NEEDS_UPDATE}
+    fi
+
     echo "Installed"
 
     exit ${EXIT_SUCCESS}
