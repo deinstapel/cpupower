@@ -42,6 +42,7 @@ const _ = Gettext.gettext;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
+const EXTENSIONDIR = Me.dir.get_path();
 const Cpufreqctl = Me.imports.src.utils.Cpufreqctl;
 
 const Slider = Me.imports.src.slider2;
@@ -498,7 +499,10 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     _onPreferencesActivate(item) {
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) >= 40) {
+            log(Util.trySpawnCommandLine('pwd'));
+            Util.trySpawnCommandLine(EXTENSIONDIR + '/prefs4/main.js');
+        } else if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
             Util.trySpawnCommandLine('gnome-extensions prefs cpupower@mko-sl.de');
         } else {
             Util.trySpawnCommandLine('gnome-shell-extension-prefs cpupower@mko-sl.de');

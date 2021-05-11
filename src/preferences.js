@@ -226,7 +226,6 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             headerbar.title = _('CPU Power Manager');
             headerbar.subtitle = _('Preferences');
             headerbar.pack_start(self.AboutButton);
-            self.AboutButton.show_all();
 
             return GLib.SOURCE_REMOVE;
         });

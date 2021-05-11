@@ -1358,6 +1358,7 @@ backends ()
                 ;;
             current)
                 shift
+                backend_select
                 backends_current "$@"
                 break
                 ;;
@@ -1645,7 +1646,6 @@ main()
                 ;;
             backends)
                 shift
-                backend_select
                 backends "$@"
                 break
                 ;;
