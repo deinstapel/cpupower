@@ -110,6 +110,11 @@ fake_supported ()
     test "${PRODUCTION}" = no
 }
 
+fake_reset()
+{
+    rm -rf /tmp/cpufreqctl-fake-backend
+}
+
 fake_turbo_get ()
 {
     fake_init
@@ -193,6 +198,13 @@ fake_info_current ()
 intel_pstate_supported ()
 {
     test -d /sys/devices/system/cpu/intel_pstate
+}
+
+intel_pstate_reset ()
+{
+    intel_pstate_max_set 100
+    intel_pstate_min_set 0
+    intel_pstate_turbo_set "on"
 }
 
 intel_pstate_turbo_get ()
@@ -284,6 +296,13 @@ intel_pstate_info_current ()
 cpufreq_supported ()
 {
     test -d /sys/devices/system/cpu/cpu0/cpufreq
+}
+
+cpufreq_reset ()
+{
+    cpufreq_max_set 100
+    cpufreq_min_set 0
+    cpufreq_turbo_set "on"
 }
 
 cpufreq_max_freq ()
@@ -1179,6 +1198,38 @@ max_set ()
     done
 }
 
+usage_reset ()
+{
+    log "usage: cpufreqctl reset [-h]"
+}
+
+reset ()
+{
+    if [ $# -gt 0 ]
+    then
+        while true
+        do
+            case "$1" in
+                -h|--help)
+                    usage_reset
+                    log
+                    log "Reset the settings of the current backend"
+                    log
+                    help_copyright
+                    break
+                    ;;
+                *)
+                    invalid_argument "$1" "reset"
+                    usage_reset
+                    bail
+                    ;;
+            esac
+        done
+    else
+        backend reset
+    fi
+}
+
 usage_info ()
 {
     log "usage: cpufreqctl info [-h] {frequencies,current}"
@@ -1516,7 +1567,7 @@ backends_current ()
 
 usage_main ()
 {
-    log "usage: cpufreqctl [-fhV] {turbo,min,max,info,backends}"
+    log "usage: cpufreqctl [-fhV] {turbo,min,max,reset,info,backends}"
 }
 
 help_main ()
@@ -1537,6 +1588,7 @@ help_main ()
     log "                                     of your CPU"
     log "    max [-h] {get,set}               control the maximum cpu frequency setting"
     log "                                     of your CPU"
+    log "    reset [-h]                       reset the settings of the current backend"
     log "    info [-h] {frequencies,current}  show information on your CPU"
     log "    backends [-h] {list,current}     show information on the available backends"
     log
@@ -1636,6 +1688,12 @@ main()
                 shift
                 backend_select
                 max "$@"
+                break
+                ;;
+            reset)
+                shift
+                backend_select
+                reset "$@"
                 break
                 ;;
             info)

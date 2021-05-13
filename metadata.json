@@ -1,11 +1,11 @@
 {
-	"localedir":"/usr/local/share/locale",
+	"localedir": "/usr/local/share/locale",
 	"shell-version": [
 		"3.26", "3.28", "3.30", "3.32", "3.34", "3.36", "3.38", "40"
 	],
 	"uuid": "cpupower@mko-sl.de",
 	"name": "CPU Power Manager",
 	"url": "https://github.com/martin31821/cpupower",
-	"description": "Manage Intel_pstate CPU Frequency scaling driver",
+	"description": "Manage your CPU's frequency scaling driver",
 	"schema": "org.gnome.shell.extensions.cpupower"
 }

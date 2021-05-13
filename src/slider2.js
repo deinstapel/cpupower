@@ -1,33 +1,31 @@
-/* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
-/* exported Slider */
-
 /*
  * slider2.js: Gjs slider with visual limits
  *
  * This file is based on slider.js from the original Gnome Shell authors:
  * https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/3.38.1/js/ui/slider.js
  *
- * GNOME Shell is distributed under the terms of the GNU General Public License, version 2 or later. 
+ * GNOME Shell is distributed under the terms of the GNU General Public License, version 2 or later.
  * See <https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/3.38.1/COPYING> for details.
  */
 
-const { Atk, Clutter, GObject } = imports.gi;
+const {Atk, Clutter, GObject} = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const BarLevel2 = Me.imports.src.barLevel2;
 
+/* exported Slider2 */
 var Slider2 = GObject.registerClass({
-    GTypeName: 'Slider2',
+    GTypeName: "Slider2",
     Signals: {
-        'drag-begin': {},
-        'drag-end': {},
+        "drag-begin": {},
+        "drag-end": {},
     },
 }, class Slider2 extends BarLevel2.BarLevel2 {
     _init(value) {
         super._init({
             value,
-            style_class: 'slider',
+            style_class: "slider",
             can_focus: true,
             reactive: true,
             accessible_role: Atk.Role.SLIDER,
@@ -37,7 +35,7 @@ var Slider2 = GObject.registerClass({
         this._releaseId = 0;
         this._dragging = false;
 
-        this._customAccessible.connect('get-minimum-increment', this._getMinimumIncrement.bind(this));
+        this._customAccessible.connect("get-minimum-increment", this._getMinimumIncrement.bind(this));
     }
 
     vfunc_repaint() {
@@ -48,11 +46,11 @@ var Slider2 = GObject.registerClass({
         let themeNode = this.get_theme_node();
         let [width, height] = this.get_surface_size();
 
-        let handleRadius = themeNode.get_length('-slider-handle-radius');
+        let handleRadius = themeNode.get_length("-slider-handle-radius");
 
-        let handleBorderWidth = themeNode.get_length('-slider-handle-border-width');
+        let handleBorderWidth = themeNode.get_length("-slider-handle-border-width");
         let [hasHandleColor, handleBorderColor] =
-            themeNode.lookup_color('-slider-handle-border-color', false);
+            themeNode.lookup_color("-slider-handle-border-color", false);
 
         const ceiledHandleRadius = Math.ceil(handleRadius + handleBorderWidth);
         const handleX = ceiledHandleRadius +
@@ -76,25 +74,27 @@ var Slider2 = GObject.registerClass({
     }
 
     startDragging(event) {
-        if (this._dragging)
+        if (this._dragging) {
             return Clutter.EVENT_PROPAGATE;
+        }
 
         this._dragging = true;
 
         let device = event.get_device();
         let sequence = event.get_event_sequence();
 
-        if (sequence != null)
+        if (sequence) {
             device.sequence_grab(sequence, this);
-        else
+        } else {
             device.grab(this);
+        }
 
         this._grabbedDevice = device;
         this._grabbedSequence = sequence;
 
-        // We need to emit 'drag-begin' before moving the handle to make
-        // sure that no 'notify::value' signal is emitted before this one.
-        this.emit('drag-begin');
+        // We need to emit "drag-begin" before moving the handle to make
+        // sure that no "notify::value" signal is emitted before this one.
+        this.emit("drag-begin");
 
         let absX, absY;
         [absX, absY] = event.get_coords();
@@ -109,23 +109,25 @@ var Slider2 = GObject.registerClass({
                 this._releaseId = 0;
             }
 
-            if (this._grabbedSequence != null)
+            if (this._grabbedSequence) {
                 this._grabbedDevice.sequence_ungrab(this._grabbedSequence);
-            else
+            } else {
                 this._grabbedDevice.ungrab();
+            }
 
             this._grabbedSequence = null;
             this._grabbedDevice = null;
             this._dragging = false;
 
-            this.emit('drag-end');
+            this.emit("drag-end");
         }
         return Clutter.EVENT_STOP;
     }
 
     vfunc_button_release_event() {
-        if (this._dragging && !this._grabbedSequence)
+        if (this._dragging && !this._grabbedSequence) {
             return this._endDragging();
+        }
 
         return Clutter.EVENT_PROPAGATE;
     }
@@ -136,14 +138,15 @@ var Slider2 = GObject.registerClass({
         let sequence = event.get_event_sequence();
 
         if (!this._dragging &&
-            event.type() == Clutter.EventType.TOUCH_BEGIN) {
+            event.type() === Clutter.EventType.TOUCH_BEGIN) {
             this.startDragging(event);
             return Clutter.EVENT_STOP;
-        } else if (device.sequence_get_grabbed_actor(sequence) == this) {
-            if (event.type() == Clutter.EventType.TOUCH_UPDATE)
+        } else if (device.sequence_get_grabbed_actor(sequence) === this) {
+            if (event.type() === Clutter.EventType.TOUCH_UPDATE) {
                 return this._motionEvent(this, event);
-            else if (event.type() == Clutter.EventType.TOUCH_END)
+            } else if (event.type() === Clutter.EventType.TOUCH_END) {
                 return this._endDragging();
+            }
         }
 
         return Clutter.EVENT_PROPAGATE;
@@ -152,15 +155,16 @@ var Slider2 = GObject.registerClass({
     scroll(event) {
         let direction = event.get_scroll_direction();
 
-        if (event.is_pointer_emulated())
+        if (event.is_pointer_emulated()) {
             return Clutter.EVENT_PROPAGATE;
+        }
 
         let delta = this._getMinimumIncrement();
-        if (direction == Clutter.ScrollDirection.DOWN) {
+        if (direction === Clutter.ScrollDirection.DOWN) {
             delta *= -1;
-        } else if (direction == Clutter.ScrollDirection.UP) {
+        } else if (direction === Clutter.ScrollDirection.UP) {
             delta *= 1;
-        } else if (direction == Clutter.ScrollDirection.SMOOTH) {
+        } else if (direction === Clutter.ScrollDirection.SMOOTH) {
             let [, dy] = event.get_scroll_delta();
             // Even though the slider is horizontal, use dy to match
             // the UP/DOWN above.
@@ -177,8 +181,9 @@ var Slider2 = GObject.registerClass({
     }
 
     vfunc_motion_event() {
-        if (this._dragging && !this._grabbedSequence)
+        if (this._dragging && !this._grabbedSequence) {
             return this._motionEvent(this, Clutter.get_current_event());
+        }
 
         return Clutter.EVENT_PROPAGATE;
     }
@@ -192,7 +197,7 @@ var Slider2 = GObject.registerClass({
 
     vfunc_key_press_event(keyPressEvent) {
         let key = keyPressEvent.keyval;
-        if (key == Clutter.KEY_Right || key == Clutter.KEY_Left) {
+        if (key === Clutter.KEY_Right || key === Clutter.KEY_Left) {
             let delta = this._getMinimumIncrement();
             if (key === Clutter.KEY_Left) {
                 delta *= -1;
@@ -209,17 +214,18 @@ var Slider2 = GObject.registerClass({
         relX = absX - sliderX;
 
         let width = this._barLevelWidth;
-        let handleRadius = this.get_theme_node().get_length('-slider-handle-radius');
+        let handleRadius = this.get_theme_node().get_length("-slider-handle-radius");
 
         let newvalue;
-        if (relX < handleRadius)
+        if (relX < handleRadius) {
             newvalue = 0;
-        else if (relX > width - handleRadius)
+        } else if (relX > width - handleRadius) {
             newvalue = 1;
-        else
+        } else {
             newvalue = (relX - handleRadius) / (width - 2 * handleRadius);
+        }
 
-        newvalue = newvalue * this._maxValue;
+        newvalue *= this._maxValue;
         this.value = Math.min(Math.max(this.limit_minimum, newvalue), this.limit_maximum);
     }
 

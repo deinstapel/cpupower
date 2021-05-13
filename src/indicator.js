@@ -29,20 +29,20 @@ const St = imports.gi.St;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const Util = imports.misc.util;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const UPower = imports.gi.UPowerGlib;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
 const Config = imports.misc.config;
 
-const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
+const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
 const _ = Gettext.gettext;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const EXTENSIONDIR = Me.dir.get_path();
+const utils = Me.imports.src.utils;
 const Cpufreqctl = Me.imports.src.utils.Cpufreqctl;
 
 const Slider = Me.imports.src.slider2;
@@ -50,10 +50,9 @@ const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
 const baseindicator = Me.imports.src.baseindicator;
 const CPUFreqProfileButton = Me.imports.src.profilebutton.CPUFreqProfileButton;
 
-const LASTSETTINGS = GLib.get_user_cache_dir() + '/cpupower.last-settings';
-const PKEXEC = GLib.find_program_in_path('pkexec');
-const CONFIG = Me.imports.src.config;
+const LASTSETTINGS = `${GLib.get_user_cache_dir()}/cpupower.last-settings`;
 
+/* exported CPUFreqIndicator */
 var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseIndicator {
     constructor() {
         super();
@@ -65,146 +64,164 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.maxVal = 100;
 
         // read the cached settings file.
-        if(GLib.file_test(LASTSETTINGS, GLib.FileTest.EXISTS))
-        {
-            let lines = Shell.get_file_contents_utf8_sync(LASTSETTINGS).split('\n');
-            if(lines.length > 3)
-            {
+        if (GLib.file_test(LASTSETTINGS, GLib.FileTest.EXISTS)) {
+            let lines = Shell.get_file_contents_utf8_sync(LASTSETTINGS).split("\n");
+            if (lines.length > 3) {
                 this.minVal = parseInt(lines[0]);
                 this.maxVal = parseInt(lines[1]);
-                this.isTurboBoostActive = (lines[2].indexOf('true') > -1);
-                this.isAutoSwitchActive = (lines[3].indexOf('true') > -1);
+                this.isTurboBoostActive = lines[2].indexOf("true") > -1;
+                this.isAutoSwitchActive = lines[3].indexOf("true") > -1;
 
-                this._updateMin();
-                this._updateMax();
-                this._updateTurbo();
-                this._updateAutoSwitch();
+                this.updateMin();
+                this.updateMax();
+                this.updateTurbo();
+                this.updateAutoSwitch();
             }
         } else {
-            log('Cached last settings not found: ' + LASTSETTINGS);
+            log(`Cached last settings not found: ${LASTSETTINGS}`);
         }
 
         this.createIndicator();
 
-        this._checkFrequencies((result) => {
+        this.checkFrequencies((result) => {
             this.cpuMinLimit = result.min;
             this.cpuMaxLimit = result.max;
             this.createMenu();
-            this._updateFreqMm(true);
+            this.updateFreqMinMax(true);
         });
     }
 
     onSettingsChanged() {
-        this._checkFrequencies((result) => {
+        this.checkFrequencies((result) => {
             this.cpuMinLimit = result.min;
             this.cpuMaxLimit = result.max;
             this.createIndicator();
             this.createMenu();
-            this._updateFreqMm(true);
+            this.updateFreqMinMax(true);
         });
     }
 
     enable() {
-        this._power = Main.panel.statusArea["aggregateMenu"]._power;
-        this._power_state = this._power._proxy.State;
-        this._powerConnectSignalId = this._power._proxy.connect(
-            'g-properties-changed',
-            this._onPowerChanged.bind(this)
+        this.power = Main.panel.statusArea["aggregateMenu"]._power;
+        this.powerState = this.power._proxy.State;
+        this.powerConnectSignalId = this.power._proxy.connect(
+            "g-properties-changed",
+            this.onPowerChanged.bind(this),
         );
         // select the right profile at login
-        this.powerActions(this._power_state);
+        this.powerActions(this.powerState);
 
         super.enable();
 
-        this.timeout = Mainloop.timeout_add_seconds(1, () => this._updateFreq());
-        this.timeout_mm = Mainloop.timeout_add_seconds(1, () => this._updateFreqMm(false));
+        this.timeout = Mainloop.timeout_add_seconds(1, () => this.updateFreq());
+        this.timeoutMinMax = Mainloop.timeout_add_seconds(1, () => this.updateFreqMinMax(false));
     }
 
-    _onPowerChanged() {
-        let new_state = this._power._proxy.State;
+    onPowerChanged() {
+        let newState = this.power._proxy.State;
 
-        if (new_state != this._power_state)
-        {
-            this.powerActions(new_state);
+        if (newState !== this.powerState) {
+            this.powerActions(newState);
         }
 
-        this._power_state = new_state;
+        this.powerState = newState;
     }
 
     powerActions(powerState) {
-        if (powerState === UPower.DeviceState.DISCHARGING)
-        {
-            log ("Power state changed: discharging");
+        if (powerState === UPower.DeviceState.DISCHARGING) {
+            log("Power state changed: discharging");
             // switch to battery profile if auto switching is enabled
-            if (this.isAutoSwitchActive)
-            {
+            if (this.isAutoSwitchActive) {
                 let defaultBatProfileID = this.settings.get_string("default-battery-profile");
-                for(var i = 0; i < this.profiles.length && defaultBatProfileID != ""; i++)
-                {
-                    if (this.profiles[i].Profile.UUID == defaultBatProfileID)
-                    {
-                        this._applyProfile(this.profiles[i].Profile);
+                for (let i = 0; i < this.profiles.length && defaultBatProfileID !== ""; i++) {
+                    if (this.profiles[i].Profile.UUID === defaultBatProfileID) {
+                        this.applyProfile(this.profiles[i].Profile);
+                        break;
+                    }
+                }
+            }
+        } else if (powerState === UPower.DeviceState.CHARGING ||
+                   powerState === UPower.DeviceState.FULLY_CHARGED) {
+            if (powerState === UPower.DeviceState.CHARGING) {
+                log("Power state changed: charging");
+            } else {
+                log("Power state changed: fully charged");
+            }
+            // switch to AC profile if auto switching is enabled
+            if (this.isAutoSwitchActive) {
+                let defaultACProfileID = this.settings.get_string("default-ac-profile");
+                for (var i = 0; i < this.profiles.length && defaultACProfileID !== ""; i++) {
+                    if (this.profiles[i].Profile.UUID === defaultACProfileID) {
+                        this.applyProfile(this.profiles[i].Profile);
                         break;
                     }
                 }
             }
         }
-        else if (powerState === UPower.DeviceState.CHARGING ||
-            powerState === UPower.DeviceState.FULLY_CHARGED)
-        {
-            if (powerState === UPower.DeviceState.CHARGING)
-                log ("Power state changed: charging");
-            else
-                log ("Power state changed: fully charged");
-            // switch to AC profile if auto switching is enabled
-            if (this.isAutoSwitchActive)
-            {
-                let defaultACProfileID = this.settings.get_string("default-ac-profile");
-                for(var i = 0; i < this.profiles.length && defaultACProfileID != ""; i++)
-                {
-                    if (this.profiles[i].Profile.UUID == defaultACProfileID)
-                    {
-                        this._applyProfile(this.profiles[i].Profile);
-                        break;
-                    }
-                }
-            }
+    }
+
+    showError(msg, report) {
+        this.hasError = true;
+        this.lbl.set_text("");
+        this.mainSection.removeAll();
+        this.mainSection.addMenuItem(new PopupMenu.PopupMenuItem(msg, {reactive: false}));
+
+        if (report) {
+            let reportLabel = new PopupMenu.PopupMenuItem(
+                _("Please consider reporting this to the developers\n" +
+                  "of this extension by submitting an issue on Github."),
+                {reactive: true},
+            );
+            reportLabel.connect("activate", function () {
+                Gio.AppInfo.launch_default_for_uri("https://github.com/martin31821/cpupower/issues/new", null);
+            });
+            this.mainSection.addMenuItem(reportLabel);
+        }
+
+        this.mainSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.imPrefsBtn = new PopupMenu.PopupMenuItem(_("Preferences"));
+        this.imPrefsBtn.connect("activate", this.onPreferencesActivate.bind(this));
+        this.mainSection.addMenuItem(this.imPrefsBtn);
+    }
+
+    clearError() {
+        if (this.hasError) {
+            this.createMenu();
         }
     }
 
     createMenu() {
         super.createMenu();
 
-        let _profiles = this.settings.get_value('profiles');
-        _profiles = _profiles.deep_unpack();
+        let profiles = this.settings.get_value("profiles");
+        profiles = profiles.deep_unpack();
         this.profiles = [];
-        for(var j = 0; j < _profiles.length; j++)
-        {
+        for (var j = 0; j < profiles.length; j++) {
             var profile = new CPUFreqProfile();
-            profile.load(_profiles[j]);
+            profile.load(profiles[j]);
             var profileButton = new CPUFreqProfileButton(profile);
             this.profiles.push(profileButton);
         }
         this.profiles.reverse();
 
-        this.imMinTitle = new PopupMenu.PopupMenuItem(_('Minimum Frequency'), {reactive: false});
-        this.imMinLabel = new St.Label({text: this._getMinText()});
+        this.imMinTitle = new PopupMenu.PopupMenuItem(_("Minimum Frequency"), {reactive: false});
+        this.imMinLabel = new St.Label({text: this.getMinText()});
         this.imMinTitle.actor.add_child(this.imMinLabel);
 
-        this.imMaxTitle = new PopupMenu.PopupMenuItem(_('Maximum Frequency:'), {reactive: false});
-        this.imMaxLabel = new St.Label({text: this._getMaxText()});
+        this.imMaxTitle = new PopupMenu.PopupMenuItem(_("Maximum Frequency:"), {reactive: false});
+        this.imMaxLabel = new St.Label({text: this.getMaxText()});
         this.imMaxTitle.actor.add_child(this.imMaxLabel);
 
-        this.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(_('Turbo Boost:'), this.isTurboBoostActive);
-        this.imTurboSwitch.connect('toggled', item => {
+        this.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(_("Turbo Boost:"), this.isTurboBoostActive);
+        this.imTurboSwitch.connect("toggled", (item) => {
             this.isTurboBoostActive = item.state;
-            this._updateTurbo();
+            this.updateTurbo();
         });
 
-        this.imAutoSwitch = new PopupMenu.PopupSwitchMenuItem(_('Auto Switch:'), this.isAutoSwitchActive);
-        this.imAutoSwitch.connect('toggled', item => {
+        this.imAutoSwitch = new PopupMenu.PopupSwitchMenuItem(_("Auto Switch:"), this.isAutoSwitchActive);
+        this.imAutoSwitch.connect("toggled", (item) => {
             this.isAutoSwitchActive = item.state;
-            this._updateAutoSwitch();
+            this.updateAutoSwitch();
         });
 
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
@@ -218,17 +235,17 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.imSliderMin.connect("key-press-event", (_actor, event) => {
             return this.minSlider.emit("key-press-event", event);
         });
-        this.minSlider.connect('notify::value', item => {
+        this.minSlider.connect("notify::value", (item) => {
             this.minVal = Math.floor(item.value);
-            this.imMinLabel.set_text(this._getMinText());
+            this.imMinLabel.set_text(this.getMinText());
             this.maxSlider.limit_minimum = this.minVal;
             this._updateMin();
         });
 
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
             this.imSliderMin.add_child(this.minSlider);
         } else {
-            this.imSliderMin.actor.add(this.minSlider, {expand: true});
+            this.imSliderMin.actor.add(this.minSlider.actor, {expand: true});
         }
 
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
@@ -242,147 +259,182 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.imSliderMax.connect("key-press-event", (_actor, event) => {
             return this.maxSlider.emit("key-press-event", event);
         });
-        this.maxSlider.connect('notify::value', item => {
+        this.maxSlider.connect("notify::value", (item) => {
             this.maxVal = Math.floor(item.value);
-            this.imMaxLabel.set_text(this._getMaxText());
+            this.imMaxLabel.set_text(this.getMaxText());
             this.minSlider.limit_maximum = this.maxVal;
             this._updateMax();
         });
 
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
             this.imSliderMax.add_child(this.maxSlider);
         } else {
             this.imSliderMax.actor.add(this.maxSlider.actor, {expand: true});
         }
 
-        this.imCurrentTitle = new PopupMenu.PopupMenuItem(_('Current Frequency:'), {reactive:false});
-        this.imCurrentLabel = new St.Label({text: this._getCurFreq()});
+        this.imCurrentTitle = new PopupMenu.PopupMenuItem(_("Current Frequency:"), {reactive: false});
+        this.imCurrentLabel = new St.Label({text: this.getCurFreq()});
         this.imCurrentTitle.actor.add_child(this.imCurrentLabel);
 
-        this.section.addMenuItem(this.imMinTitle);
-        this.section.addMenuItem(this.imSliderMin);
-        this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.section.addMenuItem(this.imMaxTitle);
-        this.section.addMenuItem(this.imSliderMax);
-        this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.section.addMenuItem(this.imTurboSwitch);
-        this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.section.addMenuItem(this.imCurrentTitle);
-        this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.mainSection.addMenuItem(this.imMinTitle);
+        this.mainSection.addMenuItem(this.imSliderMin);
+        this.mainSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.mainSection.addMenuItem(this.imMaxTitle);
+        this.mainSection.addMenuItem(this.imSliderMax);
+        this.mainSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.mainSection.addMenuItem(this.imTurboSwitch);
+        this.mainSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.mainSection.addMenuItem(this.imCurrentTitle);
+        this.mainSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        for(var i = 0; i < this.profiles.length; i++)
-        {
-            this.profiles[i].connect('activate', item => this._applyProfile(item.Profile));
-            this.section.addMenuItem(this.profiles[i]);
+        for (var i = 0; i < this.profiles.length; i++) {
+            this.profiles[i].connect("activate", (item) => this.applyProfile(item.Profile));
+            this.mainSection.addMenuItem(this.profiles[i]);
         }
 
-        this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.section.addMenuItem(this.imAutoSwitch);
-        this.section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.mainSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.mainSection.addMenuItem(this.imAutoSwitch);
 
-        this.imPrefsBtn = new PopupMenu.PopupMenuItem(_('Preferences'));
-        this.imPrefsBtn.connect('activate', this._onPreferencesActivate.bind(this));
-        this.section.addMenuItem(this.imPrefsBtn);
+        this.imPrefsBtn = new PopupMenu.PopupMenuItem(_("Preferences"));
+        this.imPrefsBtn.connect("activate", this.onPreferencesActivate.bind(this));
+        this.mainSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.mainSection.addMenuItem(this.imPrefsBtn);
+
+        this.hasError = false;
+        let backend = this.settings.get_string("cpufreqctl-backend");
+        Cpufreqctl.backends.current(backend, (result) => {
+            if (!result.ok) {
+                switch (result.exitCode) {
+                case utils.CPUFREQCTL_NOT_SUPPORTED:
+                    this.showError(
+                        `${_("Oh no! Something went wrong.")}\n` +
+                            `${_("The currently selected frequency scaling driver is not supported on your CPU!")}`,
+                        false,
+                    );
+                    break;
+                default:
+                    this.showError(
+                        `${_("Oh no! Something went wrong.")}\n` +
+                            `${_("An internal error occurred:")} ${Cpufreqctl.exitCodeToString(result.exitCode)}`,
+                        true,
+                    );
+                }
+            } else {
+                this.clearError();
+            }
+        });
     }
 
-    _applyProfile(profile) {
+    applyProfile(profile) {
         this.minVal = profile.MinimumFrequency;
-        this._updateMin();
+        this.updateMin();
 
         this.maxVal = profile.MaximumFrequency;
-        this._updateMax();
+        this.updateMax();
 
         this.isTurboBoostActive = profile.TurboBoost;
-        this._updateTurbo();
+        this.updateTurbo();
 
-        this._updateUi();
+        this.updateUi();
     }
 
     disable() {
-        this._power._proxy.disconnect(this._powerConnectSignalId);
+        this.power._proxy.disconnect(this.powerConnectSignalId);
         super.disable();
         Mainloop.source_remove(this.timeout);
-        Mainloop.source_remove(this.timeout_mm);
+        Mainloop.source_remove(this.timeoutMinMax);
     }
 
-    _getMinText() {
-        return Math.floor(this.minVal).toString() + '%';
+    getMinText() {
+        return `${Math.floor(this.minVal).toString()}%`;
     }
 
-    _getMaxText() {
-        return Math.floor(this.maxVal).toString() + '%';
+    getMaxText() {
+        return `${Math.floor(this.maxVal).toString()}%`;
     }
 
-    _updateFile() {
-        if(this.menu && !this.menu.isOpen) return;
-        let cmd = Math.floor(this.minVal) + '\n' + Math.floor(this.maxVal) + '\n'
-            + (this.isTurboBoostActive ? 'true':'false') + '\n'
-            + (this.isAutoSwitchActive ? 'true':'false') + '\n';
-        // log('Updating cpufreq settings cache file: ' + LASTSETTINGS);
+    updateFile() {
+        if (this.menu && !this.menu.isOpen) {
+            return;
+        }
+        let cmd = `${Math.floor(this.minVal)}\n` +
+            `${Math.floor(this.maxVal)}\n` +
+            `${this.isTurboBoostActive ? "true" : "false"}\n` +
+            `${this.isAutoSwitchActive ? "true" : "false"}\n`;
+        // log("Updating cpufreq settings cache file: " + LASTSETTINGS);
         GLib.file_set_contents(LASTSETTINGS, cmd);
     }
 
-    _updateMax() {
+    updateMax() {
         let backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.max.set(backend, Math.floor(this.maxVal).toString(), (result) => {
-            this._updateFile();
+        Cpufreqctl.max.set(backend, Math.floor(this.maxVal).toString(), (_result) => {
+            this.updateFile();
         });
     }
 
-    _updateMin() {
+    updateMin() {
         let backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.min.set(backend, Math.floor(this.minVal).toString(), (result) => {
-            this._updateFile();
+        Cpufreqctl.min.set(backend, Math.floor(this.minVal).toString(), (_result) => {
+            this.updateFile();
         });
     }
 
-    _updateTurbo() {
+    updateTurbo() {
         let backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.turbo.set(backend, this.isTurboBoostActive ? "on" : "off", (result) => {
-            this._updateFile();
+        Cpufreqctl.turbo.set(backend, this.isTurboBoostActive ? "on" : "off", (_result) => {
+            this.updateFile();
         });
     }
 
-    _updateAutoSwitch() {
-        if (this._power_state) this.powerActions(this._power_state);
-        this._updateFile();
+    updateAutoSwitch() {
+        if (this.power_state) {
+            this.powerActions(this.power_state);
+        }
+        this.updateFile();
     }
 
-    _updateUi() {
-        this.imMinLabel.set_text(this._getMinText());
-        parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32
-            ? this.minSlider.value = this.minVal
-            : this.minSlider.setValue(this.minVal);
+    updateUi() {
+        if (this.hasError) {
+            return;
+        }
 
-        this.imMaxLabel.set_text(this._getMaxText());
-        parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32
-            ? this.maxSlider.value = this.maxVal
-            : this.maxSlider.setValue(this.maxVal);
+        this.imMinLabel.set_text(this.getMinText());
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
+            this.minSlider.value = this.minVal;
+        } else {
+            this.minSlider.setValue(this.minVal);
+        }
+
+        this.imMaxLabel.set_text(this.getMaxText());
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
+            this.maxSlider.value = this.maxVal;
+        } else {
+            this.maxSlider.setValue(this.maxVal);
+        }
 
         this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
         this.imAutoSwitch.setToggleState(this.isAutoSwitchActive);
         for (let p of this.profiles) {
             p.setOrnament(
                 this.minVal === p.Profile.MinimumFrequency &&
-                this.maxVal === p.Profile.MaximumFrequency &&
-                this.isTurboBoostActive === p.Profile.TurboBoost ?
-                PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE
+                    this.maxVal === p.Profile.MaximumFrequency &&
+                    this.isTurboBoostActive === p.Profile.TurboBoost
+                    ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE,
             );
         }
     }
 
-    _updateFreq() {
+    updateFreq() {
         // Only update current frequency if it is shown next to the indicator or the menu is open
-        if (!(this.lblActive || this.menu && this.menu.isOpen)) {
+        if (this.hasError || !(this.lblActive || this.menu && this.menu.isOpen)) {
             return true;
         }
 
-        const indicator = this;
-        const backend = this.settings.get_string('cpufreqctl-backend');
+        const backend = this.settings.get_string("cpufreqctl-backend");
         Cpufreqctl.info.current(backend, (result) => {
             if (result.ok && result.exitCode === 0) {
                 let value;
-                switch (indicator.settings.get_string("frequency-sampling-mode")) {
+                switch (this.settings.get_string("frequency-sampling-mode")) {
                 case "average":
                     value = result.response.avg;
                     break;
@@ -400,88 +452,76 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                     value = result.response.avg;
                     break;
                 }
-                indicator.cpufreq = value / 1000;
-                if (indicator.menu && indicator.menu.isOpen) {
-                    indicator.imCurrentLabel.set_text(indicator._getCurFreq());
+                this.cpufreq = value / 1000;
+                if (this.menu && this.menu.isOpen) {
+                    this.imCurrentLabel.set_text(this.getCurFreq());
                 }
-                indicator.lbl.set_text(indicator._getCurFreq());
+                this.lbl.set_text(this.getCurFreq());
             }
         });
 
         return true;
     }
 
-    _updateFreqMm(force) {
+    updateFreqMinMax(force) {
         const menuOpen = this.menu && this.menu.isOpen;
         if (!force && !menuOpen) {
             return true;
         }
 
-        let indicator = this;
-
         // merging multiple async callbacks in js is a pain...
         let counter = 0;
-        function _updateUi() {
+        const updateUi = () => {
             counter += 1;
             if ((force || menuOpen) && counter >= 3) {
-                indicator._updateUi();
+                this.updateUi();
             }
-        }
+        };
 
-        const backend = this.settings.get_string('cpufreqctl-backend');
+        const backend = this.settings.get_string("cpufreqctl-backend");
         Cpufreqctl.turbo.get(backend, (result) => {
             if (result.ok && result.exitCode === 0) {
-                indicator.isTurboBoostActive = result.response === "on";
+                this.isTurboBoostActive = result.response === "on";
             }
-            _updateUi();
+            updateUi();
         });
 
         Cpufreqctl.min.get(backend, (result) => {
             if (result.ok && result.exitCode === 0) {
-                indicator.minVal = result.response;
+                this.minVal = result.response;
             }
-            _updateUi();
+            updateUi();
         });
 
         Cpufreqctl.max.get(backend, (result) => {
             if (result.ok && result.exitCode === 0) {
-                indicator.maxVal = result.response;
+                this.maxVal = result.response;
             }
-            _updateUi();
+            updateUi();
         });
 
         return true;
     }
 
-    _checkFrequencies(cb) {
+    checkFrequencies(cb) {
         Cpufreqctl.info.frequencies(this.settings.get_string("cpufreqctl-backend"), (result) => {
-            if (result.ok) {
-                if (result.exitCode != 0) {
-                    let exitReason = Cpufreqctl.exitCodeToString(result.exitCode);
-                    log("Failed to query supported frequency ranges from cpufreqctl, reason " +
-                        exitReason + "! Assuming full range...");
-                    log(result.response);
-                    cb({
-                        min: 0,
-                        max: 100,
-                    });
-                } else {
-                    if (result.response.mode === "continuous") {
-                        cb({
-                            min: result.response.min,
-                            max: result.response.max,
-                        });
-                    } else {
-                        log("Cpufreqctl signaled unsupported frequency mode " +
-                            result.response.mode + "! Assuming full range...");
-                        cb({
-                            min: 0,
-                            max: 100,
-                        });
-                    }
-                }
+            if (!result.ok || result.exitCode !== 0) {
+                let exitReason = Cpufreqctl.exitCodeToString(result.exitCode);
+                log(`Failed to query supported frequency ranges from cpufreqctl, reason ${exitReason}! ` +
+                    "Assuming full range...");
+                log(result.response);
+                cb({
+                    min: 0,
+                    max: 100,
+                });
+            } else if (result.response.mode === "continuous") {
+                cb({
+                    min: result.response.min,
+                    max: result.response.max,
+                });
             } else {
-                log("Failed to query supported frequency ranges from cpufreqctl! Assuming full range...");
+                log(`Cpufreqctl signaled unsupported frequency mode ${result.response.mode}! ` +
+                    "Assuming full range...");
                 cb({
                     min: 0,
                     max: 100,
@@ -490,24 +530,22 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         });
     }
 
-    _getCurFreq() {
-        if(this.lblUnit) {
-            return (this.cpufreq.toString() / 1000).toFixed(2) + 'GHz';
+    getCurFreq() {
+        if (this.lblUnit) {
+            return `${(this.cpufreq / 1000).toFixed(2)} GHz`;
         } else {
-            return Math.round(this.cpufreq.toString()) + 'MHz';
+            return `${Math.round(this.cpufreq)} MHz`;
         }
     }
 
-    _onPreferencesActivate(item) {
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) >= 40) {
-            log(Util.trySpawnCommandLine('pwd'));
-            Util.trySpawnCommandLine(EXTENSIONDIR + '/prefs4/main.js');
-        } else if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
-            Util.trySpawnCommandLine('gnome-extensions prefs cpupower@mko-sl.de');
+    onPreferencesActivate(_item) {
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) >= 40) {
+            Util.trySpawnCommandLine(`${EXTENSIONDIR}/src/prefs40/main.js`);
+        } else if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
+            Util.trySpawnCommandLine("gnome-extensions prefs cpupower@mko-sl.de");
         } else {
-            Util.trySpawnCommandLine('gnome-shell-extension-prefs cpupower@mko-sl.de');
+            Util.trySpawnCommandLine("gnome-shell-extension-prefs cpupower@mko-sl.de");
         }
         return 0;
     }
-}
-
+};

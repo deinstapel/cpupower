@@ -32,11 +32,11 @@ const Gio = imports.gi.Gio;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const EXTENSIONDIR = Me.dir.get_path();
-const INSTALLER = EXTENSIONDIR + '/tool/installer.sh';
-const PKEXEC = GLib.find_program_in_path('pkexec');
+const INSTALLER = `${EXTENSIONDIR}/tool/installer.sh`;
+const PKEXEC = GLib.find_program_in_path("pkexec");
 const CONFIG = Me.imports.src.config;
 
-function spawn_process_check_exit_code(argv, callback) {
+function spawnProcessCheckExitCode(argv, callback) {
     let [ok, pid] = GLib.spawn_async(
         EXTENSIONDIR,
         argv,
@@ -45,12 +45,12 @@ function spawn_process_check_exit_code(argv, callback) {
         null,
     );
     if (!ok) {
-        if (callback != null && callback != undefined) {
+        if (callback) {
             callback(false);
         }
         return;
     }
-    GLib.child_watch_add(200, pid, function(callback, argv, process, exitStatus) {
+    GLib.child_watch_add(200, pid, (process, exitStatus) => {
         GLib.spawn_close_pid(process);
         let exitCode = 0;
         try {
@@ -59,70 +59,89 @@ function spawn_process_check_exit_code(argv, callback) {
             exitCode = e.code;
         }
 
-        if (callback != null && callback != undefined) {
-            callback(exitCode == 0, exitCode);
+        if (callback) {
+            callback(exitCode === 0, exitCode);
         }
-    }.bind(null, callback, argv));
+    });
 }
 
+/* exported INSTALLER_SUCCESS */
 var INSTALLER_SUCCESS = 0;
+/* exported INSTALLER_INVALID_ARG */
 var INSTALLER_INVALID_ARG = 1;
+/* exported INSTALLER_FAILED */
 var INSTALLER_FAILED = 2;
+/* exported INSTALLER_NEEDS_UPDATE */
 var INSTALLER_NEEDS_UPDATE = 3;
+/* exported INSTALLER_NEEDS_SECURITY_UPDATE */
 var INSTALLER_NEEDS_SECURITY_UPDATE = 4;
+/* exported INSTALLER_NOT_INSTALLED */
 var INSTALLER_NOT_INSTALLED = 5;
+/* exported INSTALLER_MUST_BE_ROOT */
 var INSTALLER_MUST_BE_ROOT = 6;
 
-function check_installed(callback) {
-    spawn_process_check_exit_code(
-        [INSTALLER, '--prefix', CONFIG.PREFIX, '--tool-suffix', CONFIG.TOOL_SUFFIX, 'check'],
+/* exported checkInstalled */
+function checkInstalled(callback) {
+    spawnProcessCheckExitCode(
+        [INSTALLER, "--prefix", CONFIG.PREFIX, "--tool-suffix", CONFIG.TOOL_SUFFIX, "check"],
         callback,
     );
 }
 
-function attempt_installation(done) {
-    spawn_process_check_exit_code(
-        [PKEXEC, INSTALLER, '--prefix', CONFIG.PREFIX, '--tool-suffix', CONFIG.TOOL_SUFFIX, 'install'],
-        done
-    );
-}
-
-function attempt_uninstallation(done) {
-    spawn_process_check_exit_code(
-        [PKEXEC, INSTALLER, '--prefix', CONFIG.PREFIX, '--tool-suffix', CONFIG.TOOL_SUFFIX, 'uninstall'],
-        done
-    );
-}
-
-function attempt_update(done) {
-    spawn_process_check_exit_code(
-        [PKEXEC, INSTALLER, '--prefix', CONFIG.PREFIX, '--tool-suffix', CONFIG.TOOL_SUFFIX, 'update'],
+/* exported attemptInstallation */
+function attemptInstallation(done) {
+    spawnProcessCheckExitCode(
+        [PKEXEC, INSTALLER, "--prefix", CONFIG.PREFIX, "--tool-suffix", CONFIG.TOOL_SUFFIX, "install"],
         done,
     );
 }
 
+/* exported attemptUninstallation */
+function attemptUninstallation(done) {
+    spawnProcessCheckExitCode(
+        [PKEXEC, INSTALLER, "--prefix", CONFIG.PREFIX, "--tool-suffix", CONFIG.TOOL_SUFFIX, "uninstall"],
+        done,
+    );
+}
+
+/* exported attemptUpdate */
+function attemptUpdate(done) {
+    spawnProcessCheckExitCode(
+        [PKEXEC, INSTALLER, "--prefix", CONFIG.PREFIX, "--tool-suffix", CONFIG.TOOL_SUFFIX, "update"],
+        done,
+    );
+}
+
+/* exported CPUFREQCTL_SUCCESS */
 var CPUFREQCTL_SUCCESS = 0;
+/* exported CPUFREQCTL_NO_ARGUMENTS */
 var CPUFREQCTL_NO_ARGUMENTS = 3;
+/* exported CPUFREQCTL_INVALID_ARGUMENT */
 var CPUFREQCTL_INVALID_ARGUMENT = 4;
+/* exported CPUFREQCTL_OUT_OF_RANGE */
 var CPUFREQCTL_OUT_OF_RANGE = 5;
+/* exported CPUFREQCTL_NO_BACKEND */
 var CPUFREQCTL_NO_BACKEND = 6;
+/* exported CPUFREQCTL_INVALID_BACKEND */
 var CPUFREQCTL_INVALID_BACKEND = 7;
+/* exported CPUFREQCTL_INTERNAL_ERROR */
 var CPUFREQCTL_INTERNAL_ERROR = 8;
+/* exported CPUFREQCTL_NOT_SUPPORTED */
 var CPUFREQCTL_NOT_SUPPORTED = 9;
 
-function __cpufreqctl(pkexec_needed, backend, params, cb) {
+function runCpufreqctl(pkexecNeeded, backend, params, cb) {
     let args = [
         CONFIG.CPUFREQCTL,
         "--backend", backend,
-        "--format", "json"
+        "--format", "json",
     ].concat(params);
 
-    if (pkexec_needed) {
+    if (pkexecNeeded) {
         args.unshift(PKEXEC);
     }
 
     let launcher = Gio.SubprocessLauncher.new(
-        Gio.SubprocessFlags.STDOUT_PIPE
+        Gio.SubprocessFlags.STDOUT_PIPE,
     );
     launcher.set_cwd(EXTENSIONDIR);
     let proc = launcher.spawnv(args);
@@ -135,7 +154,7 @@ function __cpufreqctl(pkexec_needed, backend, params, cb) {
         // explicitly passed null for the cancellable
         let ok = proc.wait_finish(result);
         if (!ok) {
-            if (cb !== null && cb !== undefined) {
+            if (cb) {
                 cb({
                     ok: false,
                     exitCode: null,
@@ -160,61 +179,65 @@ function __cpufreqctl(pkexec_needed, backend, params, cb) {
             response = stdout;
         }
 
-        if (cb !== null && cb !== undefined) {
+        if (cb) {
             cb({
-                ok: true,
-                exitCode: exitCode,
-                response: response,
+                ok: exitCode === 0,
+                exitCode,
+                response,
             });
         }
     });
 }
 
+/* exported Cpufreqctl */
 var Cpufreqctl = {
     turbo: {
-        get: function(backend, cb) {
-            __cpufreqctl(false, backend, ["turbo", "get"], cb);
+        get(backend, cb) {
+            runCpufreqctl(false, backend, ["turbo", "get"], cb);
         },
-        set: function(backend, value, cb) {
-            __cpufreqctl(true, backend, ["turbo", "set", value], cb);
+        set(backend, value, cb) {
+            runCpufreqctl(true, backend, ["turbo", "set", value], cb);
         },
     },
     min: {
-        get: function(backend, cb) {
-            __cpufreqctl(false, backend, ["min", "get"], cb);
+        get(backend, cb) {
+            runCpufreqctl(false, backend, ["min", "get"], cb);
         },
-        set: function(backend, value, cb) {
-            __cpufreqctl(true, backend, ["min", "set", value], cb);
+        set(backend, value, cb) {
+            runCpufreqctl(true, backend, ["min", "set", value], cb);
         },
     },
     max: {
-        get: function(backend, cb) {
-            __cpufreqctl(false, backend, ["max", "get"], cb);
+        get(backend, cb) {
+            runCpufreqctl(false, backend, ["max", "get"], cb);
         },
-        set: function(backend, value, cb) {
-            __cpufreqctl(true, backend, ["max", "set", value], cb);
+        set(backend, value, cb) {
+            runCpufreqctl(true, backend, ["max", "set", value], cb);
         },
     },
+    reset(backend, cb) {
+        runCpufreqctl(true, backend, ["reset"], cb);
+    },
     info: {
-        frequencies: function(backend, cb) {
-            __cpufreqctl(false, backend, ["info", "frequencies"], cb);
+        frequencies(backend, cb) {
+            runCpufreqctl(true, backend, ["info", "frequencies"], cb);
         },
-        current: function(backend, cb) {
-            __cpufreqctl(false, backend, ["info", "current"], cb);
+        current(backend, cb) {
+            runCpufreqctl(false, backend, ["info", "current"], cb);
         },
     },
     backends: {
-        list: function(backend, cb) {
-            __cpufreqctl(false, backend, ["backends", "list"], cb);
+        list(backend, cb) {
+            runCpufreqctl(false, backend, ["backends", "list"], cb);
         },
-        current: function(backend, cb) {
-            __cpufreqctl(false, backend, ["backends", "current"], cb);
+        current(backend, cb) {
+            runCpufreqctl(false, backend, ["backends", "current"], cb);
         },
-        automatic: function(cb) {
-            __cpufreqctl(false, "automatic", ["backends", "current"], cb);
+        automatic(cb) {
+            runCpufreqctl(false, "automatic", ["backends", "current"], cb);
         },
     },
-    exitCodeToString: function(exitCode) {
+    exitCodeToString(exitCode) {
         switch (exitCode) {
         case CPUFREQCTL_SUCCESS:
             return "SUCCESS";
@@ -237,4 +260,3 @@ var Cpufreqctl = {
         }
     },
 };
-

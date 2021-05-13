@@ -43,7 +43,7 @@ usage() {
     echo "  --prefix PREFIX        Set the install prefix (default: /usr)"
     echo "  --tool-suffix SUFFIX   Set the tool name suffix (default: <empty>)"
     echo
-    exit ${EXIT_INVALID_ARG}
+    exit "${EXIT_INVALID_ARG}"
 }
 
 if [ $# -lt 1 ]
@@ -58,7 +58,7 @@ do
 
     # we have to use command line arguments here as pkexec does not support
     # setting environment variables
-    case $key in
+    case ${key} in
         --prefix)
             PREFIX="$2"
             shift
@@ -70,7 +70,7 @@ do
             shift
             ;;
         supported|install|check|update|uninstall)
-            if [ -z "$ACTION" ]
+            if [ -z "${ACTION}" ]
             then
                 ACTION="$1"
             else
@@ -80,7 +80,7 @@ do
             shift
             ;;
         *)
-            echo "Unknown argument $key"
+            echo "Unknown argument ${key}"
             usage
             ;;
     esac
@@ -113,7 +113,7 @@ fi
 V7_LEGACY_OUT="/usr/share/polkit-1/actions/mko.cpupower.policy"
 V8_LEGACY_OUT="/usr/share/polkit-1/actions/mko.cpupower.setcpufreq.policy"
 
-if [ "$ACTION" = "check" ]
+if [ "${ACTION}" = "check" ]
 then
     # pre v9 policy rules have security issues
     # cpufreqctl should always be located in /usr/local/bin or /usr/bin as of
@@ -124,10 +124,8 @@ then
     then
         echo "Your cpupower installation needs updating!"
         echo "Warning: Security issues were found with your installation! Update immediately!"
-        exit ${EXIT_NEEDS_SECURITY_UPDATE}
+        exit "${EXIT_NEEDS_SECURITY_UPDATE}"
     fi
-
-    echo "sed -e \"s:{{PATH}}:${CFC_OUT}:g\" -e \"s:{{ID}}:${ACTION_ID}:g\" \"${ACTION_IN}\" | cmp --silent \"${ACTION_OUT}\""
 
     # check if a newly generated polkit policy is equal to the installed policy
     if ! sed -e "s:{{PATH}}:${CFC_OUT}:g" \
@@ -137,10 +135,10 @@ then
         if [ -f "${ACTION_OUT}" ]
         then
             echo "Your cpupower installation needs updating!"
-            exit ${EXIT_NEEDS_UPDATE}
+            exit "${EXIT_NEEDS_UPDATE}"
         else
             echo "Not installed"
-            exit ${EXIT_NOT_INSTALLED}
+            exit "${EXIT_NOT_INSTALLED}"
         fi
     fi
 
@@ -149,50 +147,50 @@ then
     if [ "${VERSION}" != "${CURRENT_VERSION}" ]
     then
         echo "Your cpupower installation needs updating!"
-        exit ${EXIT_NEEDS_UPDATE}
+        exit "${EXIT_NEEDS_UPDATE}"
     fi
 
     echo "Installed"
 
-    exit ${EXIT_SUCCESS}
+    exit "${EXIT_SUCCESS}"
 fi
 
-if [ "$ACTION" = "install" ]
+if [ "${ACTION}" = "install" ]
 then
     if [ "$(id -u)" -ne 0 ]; then
         echo "The install action must be run as root for security reasons!"
         echo "Please have a look at https://github.com/martin31821/cpupower/issues/102"
         echo "for further details."
-        exit ${EXIT_MUST_BE_ROOT}
+        exit "${EXIT_MUST_BE_ROOT}"
     fi
 
     printf "Installing cpufreqctl tool... "
     mkdir -p "${CFC_DIR}"
-    install "${CFC_IN}" "${CFC_OUT}" || (echo "Failed" && exit ${EXIT_FAILED})
+    install "${CFC_IN}" "${CFC_OUT}" || (echo "Failed" && exit "${EXIT_FAILED}")
     echo "Success"
 
     printf "Installing policykit action... "
     mkdir -p "${ACTION_DIR}"
     sed -e "s:{{PATH}}:${CFC_OUT}:g" \
         -e "s:{{ID}}:${ACTION_ID}:g" "${ACTION_IN}" > "${ACTION_OUT}" 2>/dev/null || \
-        (echo "Failed" && exit ${EXIT_FAILED})
+        (echo "Failed" && exit "${EXIT_FAILED}")
     echo "Success"
 
     printf "Installing policykit rule... "
     mkdir -p "${RULE_DIR}"
-    install -m 0644 "${RULE_IN}" "${RULE_OUT}" || (echo "Failed" && exit ${EXIT_FAILED})
+    install -m 0644 "${RULE_IN}" "${RULE_OUT}" || (echo "Failed" && exit "${EXIT_FAILED}")
     echo "Success"
 
-    exit ${EXIT_SUCCESS}
+    exit "${EXIT_SUCCESS}"
 fi
 
-if [ "$ACTION" = "update" ]
+if [ "${ACTION}" = "update" ]
 then
     if [ -f "V7_LEGACY_OUT" ]
     then
         printf "Uninstalling legacy v7 polkit rule... "
         rm "${V7_LEGACY_OUT}" || \
-            (echo "Failed - cannot remove ${V7_LEGACY_OUT}" && exit ${EXIT_FAILED})
+            (echo "Failed - cannot remove ${V7_LEGACY_OUT}" && exit "${EXIT_FAILED}")
         echo "Success"
     fi
 
@@ -200,22 +198,22 @@ then
     then
         printf "Uninstalling legacy v8 polkit rule... "
         rm "${V8_LEGACY_OUT}" || \
-            (echo "Failed - cannot remove ${V8_LEGACY_OUT}" && exit ${EXIT_FAILED})
+            (echo "Failed - cannot remove ${V8_LEGACY_OUT}" && exit "${EXIT_FAILED}")
         echo "Success"
     fi
 
     "$0" --prefix "${PREFIX}" --tool-suffix "${TOOL_SUFFIX}" uninstall || exit $?
     "$0" --prefix "${PREFIX}" --tool-suffix "${TOOL_SUFFIX}" install || exit $?
 
-    exit ${EXIT_SUCCESS}
+    exit "${EXIT_SUCCESS}"
 fi
 
-if [ "$ACTION" = "uninstall" ]
+if [ "${ACTION}" = "uninstall" ]
 then
     printf "Uninstalling cpufreqctl tool... "
     if [ -f "${CFC_OUT}" ]
     then
-        rm "${CFC_OUT}" || (echo "Failed - cannot remove ${CFC_OUT}" && exit ${EXIT_FAILED}) && echo "Success"
+        rm "${CFC_OUT}" || (echo "Failed - cannot remove ${CFC_OUT}" && exit "${EXIT_FAILED}") && echo "Success"
     else
         echo "tool not installed at ${CFC_OUT}"
     fi
@@ -223,7 +221,7 @@ then
     printf "Uninstalling policykit action... "
     if [ -f "${ACTION_OUT}" ]
     then
-        rm "${ACTION_OUT}" || (echo "Failed - cannot remove ${ACTION_OUT}" && exit ${EXIT_FAILED}) && echo "Success"
+        rm "${ACTION_OUT}" || (echo "Failed - cannot remove ${ACTION_OUT}" && exit "${EXIT_FAILED}") && echo "Success"
     else
         echo "policy action not installed at ${ACTION_OUT}"
     fi
@@ -231,12 +229,12 @@ then
     printf "Uninstalling policykit rule... "
     if [ -f "${RULE_OUT}" ]
     then
-        rm "${RULE_OUT}" || (echo "Failed - cannot remove ${RULE_OUT}" && exit ${EXIT_FAILED}) && echo "Success"
+        rm "${RULE_OUT}" || (echo "Failed - cannot remove ${RULE_OUT}" && exit "${EXIT_FAILED}") && echo "Success"
     else
         echo "policy rule not installed at ${RULE_OUT}"
     fi
 
-    exit ${EXIT_SUCCESS}
+    exit "${EXIT_SUCCESS}"
 fi
 
 echo "Unknown parameter."

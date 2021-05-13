@@ -31,33 +31,31 @@ const Convenience = Me.imports.src.convenience;
 const Main = imports.ui.main;
 
 const utils = Me.imports.src.utils;
-const unsupported = Me.imports.src.unsupported;
-
-const check_installed = Me.imports.src.utils.check_installed;
+const checkInstalled = Me.imports.src.utils.checkInstalled;
 const notinstalled = Me.imports.src.notinstalled;
 const update = Me.imports.src.update;
-
 const indicator = Me.imports.src.indicator;
 
 
-let _indicator = null;
-var init = (meta) => {
-    Convenience.initTranslations('gnome-shell-extension-cpupower');
-};
+let indicatorInstance;
+/* exported init */
+function init(_meta) {
+    Convenience.initTranslations("gnome-shell-extension-cpupower");
+}
 
+function enableIndicator() {
+    Main.panel.addToStatusArea("cpupower", indicatorInstance.mainButton);
+    indicatorInstance.enable();
+}
 
-const _enableIndicator = () => {
-    Main.panel.addToStatusArea('cpupower', _indicator._mainButton);
-    _indicator.enable();
-};
-
-var enable = () => {
+/* exported enable */
+function enable() {
     try {
-        check_installed((installed, exitCode) => {
+        checkInstalled((installed, exitCode) => {
             if (!installed) {
                 switch (exitCode) {
                 case utils.INSTALLER_NEEDS_UPDATE:
-                    _indicator = new update.UpdateIndicator(update.UPDATE, function (success) {
+                    indicatorInstance = new update.UpdateIndicator(update.UPDATE, function (success) {
                         if (success) {
                             // reenable the extension to allow immediate operation.
                             disable();
@@ -66,7 +64,7 @@ var enable = () => {
                     });
                     break;
                 case utils.INSTALLER_NEEDS_SECURITY_UPDATE:
-                    _indicator = new update.UpdateIndicator(update.SECURITY_UPDATE, function (success) {
+                    indicatorInstance = new update.UpdateIndicator(update.SECURITY_UPDATE, function (success) {
                         if (success) {
                             // reenable the extension to allow immediate operation.
                             disable();
@@ -75,9 +73,8 @@ var enable = () => {
                     });
                     break;
                 default:
-                    _indicator = new notinstalled.NotInstalledIndicator(exitCode, function (success) {
-                        if (success)
-                        {
+                    indicatorInstance = new notinstalled.NotInstalledIndicator(exitCode, function (success) {
+                        if (success) {
                             // reenable the extension to allow immediate operation.
                             disable();
                             enable();
@@ -86,18 +83,19 @@ var enable = () => {
                     break;
                 }
             } else {
-                _indicator = new indicator.CPUFreqIndicator();
+                indicatorInstance = new indicator.CPUFreqIndicator();
             }
-            _enableIndicator();
+            enableIndicator();
         });
     } catch (e) {
         logError(e.message);
     }
-};
+}
 
-var disable = () => {
-    if (_indicator != null) {
-        _indicator.disable();
-        _indicator.destroy();
+/* exported disable */
+function disable() {
+    if (indicatorInstance !== null) {
+        indicatorInstance.disable();
+        indicatorInstance.destroy();
     }
-};
+}

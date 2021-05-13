@@ -33,49 +33,51 @@ const PopupMenu = imports.ui.popupMenu;
 const Gio = imports.gi.Gio;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.src.convenience;
 const baseindicator = Me.imports.src.baseindicator;
-const attempt_installation = Me.imports.src.utils.attempt_installation;
+const attemptInstallation = Me.imports.src.utils.attemptInstallation;
 const utils = Me.imports.src.utils;
 
-const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
-const Gettext = imports.gettext.domain('gnome-shell-extension-cpupower');
+const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
 const _ = Gettext.gettext;
 
+/* exported NotInstalledIndicator */
 var NotInstalledIndicator = class NotInstalledIndicator extends baseindicator.CPUFreqBaseIndicator {
     constructor(exitCode, done) {
         super();
-        this._done = done;
-        this._exitCode = exitCode;
+        this.done = done;
+        this.exitCode = exitCode;
         this.createMenu();
     }
 
     createMenu() {
         super.createMenu();
 
-        if (this._exitCode == utils.INSTALLER_NOT_INSTALLED) {
-            let notInstalledLabel = new PopupMenu.PopupMenuItem(_('Installation required.'), {reactive: false});
-            this.section.addMenuItem(notInstalledLabel);
+        if (this.exitCode === utils.INSTALLER_NOT_INSTALLED) {
+            let notInstalledLabel = new PopupMenu.PopupMenuItem(_("Installation required."), {reactive: false});
+            this.mainSection.addMenuItem(notInstalledLabel);
         } else {
-            let errorLabel = new PopupMenu.PopupMenuItem(_(
-                'Oh no! This should not have happened.\n'
-                    + 'An error occurred while checking the installation!'
-            ), {reactive: false});
-            let reportLabel = new PopupMenu.PopupMenuItem(_(
-                'Please consider reporting this to the developers\n'
-                    + 'of this extension by submitting an issue on Github.'), {reactive: true});
-            reportLabel.connect('activate', function() {
+            let errorLabel = new PopupMenu.PopupMenuItem(
+                _("Oh no! This should not have happened.\n" +
+                  "An error occurred while checking the installation!"),
+                {reactive: false},
+            );
+            let reportLabel = new PopupMenu.PopupMenuItem(
+                _("Please consider reporting this to the developers\n" +
+                  "of this extension by submitting an issue on Github."),
+                {reactive: true},
+            );
+            reportLabel.connect("activate", function () {
                 Gio.AppInfo.launch_default_for_uri("https://github.com/martin31821/cpupower/issues/new", null);
             });
-            this.section.addMenuItem(errorLabel);
-            this.section.addMenuItem(reportLabel);
+            this.mainSection.addMenuItem(errorLabel);
+            this.mainSection.addMenuItem(reportLabel);
         }
 
         let separator = new PopupMenu.PopupSeparatorMenuItem();
-        this.section.addMenuItem(separator);
+        this.mainSection.addMenuItem(separator);
 
-        this.attemptInstallationLabel = new PopupMenu.PopupMenuItem(_('Attempt installation'), {reactive: true});
-        this.attemptInstallationLabel.connect('activate', attempt_installation.bind(null, this._done));
-        this.section.addMenuItem(this.attemptInstallationLabel);
+        this.attemptInstallationLabel = new PopupMenu.PopupMenuItem(_("Attempt installation"), {reactive: true});
+        this.attemptInstallationLabel.connect("activate", attemptInstallation.bind(null, this.done));
+        this.mainSection.addMenuItem(this.attemptInstallationLabel);
     }
-}
+};
