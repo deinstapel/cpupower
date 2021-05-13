@@ -189,11 +189,6 @@ PB (@uno20001)</property>
                             <accessibility>
                               <relation type="label-for" target="ShowCurrentFrequencySwitch"/>
                             </accessibility>
-                            <child internal-child="accessible">
-                              <object class="AtkObject" id="ShowCurrentFrequencyLabel-atkobject">
-                                <property name="AtkObject::accessible-role" translatable="yes">label</property>
-                              </object>
-                            </child>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -210,11 +205,6 @@ PB (@uno20001)</property>
                             <accessibility>
                               <relation type="label-for" target="UseGHzInsteadOfMHzSwitch"/>
                             </accessibility>
-                            <child internal-child="accessible">
-                              <object class="AtkObject" id="UseGHzInsteadOfMHzLabel-atkobject">
-                                <property name="AtkObject::accessible-role" translatable="yes">label</property>
-                              </object>
-                            </child>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -277,11 +267,6 @@ PB (@uno20001)</property>
                             <accessibility>
                               <relation type="label-for" target="ShowFrequencyAsComboBox"/>
                             </accessibility>
-                            <child internal-child="accessible">
-                              <object class="AtkObject" id="ShowFrequencyAsLabel-atkobject">
-                                <property name="AtkObject::accessible-role" translatable="yes">label</property>
-                              </object>
-                            </child>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -322,11 +307,9 @@ PB (@uno20001)</property>
                             <property name="halign">start</property>
                             <property name="hexpand">True</property>
                             <property name="label" translatable="yes">Show arrow in top bar</property>
-                            <child internal-child="accessible">
-                              <object class="AtkObject" id="ShowArrowLabel-atkobject">
-                                <property name="AtkObject::accessible-role" translatable="yes">label</property>
-                              </object>
-                            </child>
+                            <accessibility>
+                              <relation type="label-for" target="ShowArrowSwitch"/>
+                            </accessibility>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -341,6 +324,9 @@ PB (@uno20001)</property>
                             <property name="halign">end</property>
                             <property name="valign">center</property>
                             <signal name="notify::active" handler="onShowArrowSwitchActiveNotify" swapped="no"/>
+                            <accessibility>
+                              <relation type="labelled-by" target="ShowArrowLabel"/>
+                            </accessibility>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="ShowArrowSwitch-atkobject">
                                 <property name="AtkObject::accessible-name" translatable="yes">Top bar arrow switch</property>
@@ -360,11 +346,9 @@ PB (@uno20001)</property>
                             <property name="halign">start</property>
                             <property name="hexpand">True</property>
                             <property name="label" translatable="yes">Show icon in top bar</property>
-                            <child internal-child="accessible">
-                              <object class="AtkObject" id="ShowIconLabel-atkobject">
-                                <property name="AtkObject::accessible-role" translatable="yes">label</property>
-                              </object>
-                            </child>
+                            <accessibility>
+                              <relation type="label-for" target="ShowIconSwitch"/>
+                            </accessibility>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -379,6 +363,9 @@ PB (@uno20001)</property>
                             <property name="halign">end</property>
                             <property name="valign">center</property>
                             <signal name="notify::active" handler="onShowIconSwitchActiveNotify" swapped="no"/>
+                            <accessibility>
+                              <relation type="labelled-by" target="ShowIconLabel"/>
+                            </accessibility>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="ShowIconSwitch-atkobject">
                                 <property name="AtkObject::accessible-name" translatable="yes">Top bar icon switch</property>
@@ -491,11 +478,9 @@ PB (@uno20001)</property>
                             <property name="halign">start</property>
                             <property name="hexpand">True</property>
                             <property name="label" translatable="yes">Frequency scaling driver</property>
-                            <child internal-child="accessible">
-                              <object class="AtkObject" id="FrequencyScalingDriverSelectionLabel-atkobject">
-                                <property name="AtkObject::accessible-role" translatable="yes">label</property>
-                              </object>
-                            </child>
+                            <accessibility>
+                              <relation type="label-for" target="FrequencyScalingDriverComboBox"/>
+                            </accessibility>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -517,6 +502,9 @@ PB (@uno20001)</property>
                                 <attribute name="text">0</attribute>
                               </attributes>
                             </child>
+                            <accessibility>
+                              <relation type="labelled-by" target="FrequencyScalingDriverSelectionLabel"/>
+                            </accessibility>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="FrequencyScalingDriverComboBox-atkobject">
                                 <property name="AtkObject::accessible-name" translatable="yes">Frequency scaling driver selection</property>
@@ -596,11 +584,9 @@ PB (@uno20001)</property>
                             <property name="halign">start</property>
                             <property name="hexpand">True</property>
                             <property name="label" translatable="yes">Default AC profile</property>
-                            <child internal-child="accessible">
-                              <object class="AtkObject" id="DefautlACSelectionLabel-atkobject">
-                                <property name="AtkObject::accessible-role" translatable="yes">label</property>
-                              </object>
-                            </child>
+                            <accessibility>
+                              <relation type="label-for" target="DefaultACComboBox"/>
+                            </accessibility>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -614,6 +600,9 @@ PB (@uno20001)</property>
                             <property name="halign">start</property>
                             <property name="hexpand">True</property>
                             <property name="label" translatable="yes">Default battery profile</property>
+                            <accessibility>
+                              <relation type="label-for" target="DefaultBatComboBox"/>
+                            </accessibility>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -627,8 +616,7 @@ PB (@uno20001)</property>
                             <property name="icon-name">ac-adapter-symbolic</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="DefaultACSelectionIcon-atkobject">
-                                <property name="AtkObject::accessible-name" translatable="yes">Charged battery</property>
-                                <property name="AtkObject::accessible-role" translatable="yes">icon</property>
+                                <property name="AtkObject::accessible-name" translatable="yes">Charging battery</property>
                               </object>
                             </child>
                           </object>
@@ -645,7 +633,6 @@ PB (@uno20001)</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="DefaultBatSelectionIcon-atkobject">
                                 <property name="AtkObject::accessible-name" translatable="yes">Discharging battery</property>
-                                <property name="AtkObject::accessible-role" translatable="yes">icon</property>
                               </object>
                             </child>
                           </object>
@@ -660,6 +647,9 @@ PB (@uno20001)</property>
                             <property name="can-focus">False</property>
                             <property name="tooltip-text" translatable="yes">Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets plugged in</property>
                             <signal name="notify::active" handler="onDefaultACComboBoxActiveNotify" swapped="no"/>
+                            <accessibility>
+                              <relation type="labelled-by" target="DefautlACSelectionLabel"/>
+                            </accessibility>
                           </object>
                           <packing>
                             <property name="left-attach">2</property>
@@ -672,6 +662,9 @@ PB (@uno20001)</property>
                             <property name="can-focus">False</property>
                             <property name="tooltip-text" translatable="yes">Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets unplugged</property>
                             <signal name="notify::active" handler="onDefaultBatComboBoxActiveNotify" swapped="no"/>
+                            <accessibility>
+                              <relation type="labelled-by" target="DefaultBatSelectionLabel"/>
+                            </accessibility>
                           </object>
                           <packing>
                             <property name="left-attach">2</property>
@@ -764,7 +757,7 @@ PB (@uno20001)</property>
                   <object class="GtkToolButton" id="ProfilesAddToolButton">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="tooltip-text" translatable="yes">Add selected profile</property>
+                    <property name="tooltip-text" translatable="yes">Add new profile</property>
                     <property name="icon-name">list-add-symbolic</property>
                     <signal name="clicked" handler="onProfilesAddToolButtonClicked" swapped="no"/>
                     <child internal-child="accessible">
@@ -910,11 +903,6 @@ PB (@uno20001)</property>
             <accessibility>
               <relation type="label-for" target="CpufreqctlPathLabel"/>
             </accessibility>
-            <child internal-child="accessible">
-              <object class="AtkObject" id="CpufreqctlLabel-atkobject">
-                <property name="AtkObject::accessible-role" translatable="yes">label</property>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="left-attach">0</property>
@@ -931,11 +919,6 @@ PB (@uno20001)</property>
             <accessibility>
               <relation type="label-for" target="PolicykitRulePathLabel"/>
             </accessibility>
-            <child internal-child="accessible">
-              <object class="AtkObject" id="PolicykitRuleLabel-atkobject">
-                <property name="AtkObject::accessible-role" translatable="yes">label</property>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="left-attach">0</property>
@@ -954,11 +937,6 @@ PB (@uno20001)</property>
             <attributes>
               <attribute name="style" value="italic"/>
             </attributes>
-            <child internal-child="accessible">
-              <object class="AtkObject" id="InstallationWarningLabel-atkobject">
-                <property name="AtkObject::accessible-role" translatable="yes">text</property>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="left-attach">0</property>
@@ -999,11 +977,6 @@ PB (@uno20001)</property>
             <accessibility>
               <relation type="labelled-by" target="CpufreqctlLabel"/>
             </accessibility>
-            <child internal-child="accessible">
-              <object class="AtkObject" id="CpufreqctlPathLabel-atkobject">
-                <property name="AtkObject::accessible-role" translatable="yes">text</property>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="left-attach">1</property>
@@ -1025,11 +998,6 @@ PB (@uno20001)</property>
             <accessibility>
               <relation type="labelled-by" target="PolicykitRuleLabel"/>
             </accessibility>
-            <child internal-child="accessible">
-              <object class="AtkObject" id="PolicykitRulePathLabel-atkobject">
-                <property name="AtkObject::accessible-role" translatable="yes">text</property>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="left-attach">1</property>
@@ -1088,7 +1056,7 @@ PB (@uno20001)</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes">Profile name</property>
+        <property name="label" translatable="yes">Profile Name</property>
         <accessibility>
           <relation type="label-for" target="ProfileNameEntry"/>
         </accessibility>
@@ -1103,14 +1071,14 @@ PB (@uno20001)</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="hexpand">True</property>
-        <property name="placeholder-text" translatable="yes">Profile name</property>
+        <property name="placeholder-text" translatable="yes">Profile Name</property>
         <signal name="changed" handler="onProfileNameEntryChanged" swapped="no"/>
         <accessibility>
           <relation type="labelled-by" target="ProfileNameLabel"/>
         </accessibility>
         <child internal-child="accessible">
           <object class="AtkObject" id="ProfileNameEntry-atkobject">
-            <property name="AtkObject::accessible-name" translatable="yes">Profile name</property>
+            <property name="AtkObject::accessible-name" translatable="yes">Profile Name</property>
           </object>
         </child>
       </object>
@@ -1124,7 +1092,7 @@ PB (@uno20001)</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes">Minimum frequency</property>
+        <property name="label" translatable="yes">Minimum Frequency</property>
         <accessibility>
           <relation type="label-for" target="ProfileMinimumFrequencyScale"/>
         </accessibility>
@@ -1163,7 +1131,7 @@ PB (@uno20001)</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes">Maximum frequency</property>
+        <property name="label" translatable="yes">Maximum Frequency</property>
         <accessibility>
           <relation type="label-for" target="ProfileMaximumFrequencyScale"/>
         </accessibility>
@@ -1178,7 +1146,7 @@ PB (@uno20001)</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes">Turbo boost</property>
+        <property name="label" translatable="yes">Turbo Boost</property>
         <accessibility>
           <relation type="label-for" target="ProfileTurboBoostSwitch"/>
         </accessibility>
@@ -1495,12 +1463,35 @@ PB (@uno20001)</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="ProfileRowTurboBoostLabel">
+              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="halign">end</property>
-                <property name="margin-left">32</property>
-                <property name="label" translatable="yes">Turbo boost:</property>
+                <child>
+                  <object class="GtkLabel" id="ProfileRowTurboBoostLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="margin-left">32</property>
+                    <property name="label" translatable="yes">Turbo Boost</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label">:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">True</property>

@@ -7,7 +7,7 @@
 		</key>
 		<key name="show-freq-in-taskbar" type="b">
 			<default>false</default>
-			<summary>Show current cpu frequency in taskbar</summary>
+			<summary>Show current cpu frequency in the top bar</summary>
 			<description>Show current cpu frequency in the top bar</description>
 		</key>
         <key name="taskbar-freq-unit-ghz" type="b">
@@ -17,13 +17,13 @@
 		</key>
 		<key name="show-icon-in-taskbar" type="b">
 			<default>true</default>
-			<summary>Show cpu chip icon in taskbar</summary>
-			<description>Show cpu chip icon in the top bar</description>
+			<summary>Show an icon in the top bar</summary>
+			<description>Show an icon in the top bar</description>
 		</key>
 		<key name="show-arrow-in-taskbar" type="b">
 			<default>true</default>
-			<summary>Show down arrow in taskbar</summary>
-			<description>Show down arrow in the top bar</description>
+			<summary>Show arrow in the top bar</summary>
+			<description>Show arrow in the top bar</description>
 		</key>
 		<key name="default-ac-profile" type="s">
 			<default>""</default>
@@ -45,7 +45,7 @@
       </choices>
       <summary>The backend used for the cpufreqctl tool</summary>
       <description>
-        This backend controls how the extensions will interact with the hardware and selects the scaling-driver used by the Linux kernel for setting and querying CPU frequencies and turbo boost settings. The 'fake' backend must only be used for development purposes and is not available in production.
+        The backend controls how the extensions will interact with the hardware and selects the scaling-driver used by the Linux kernel for setting and querying CPU frequencies and turbo boost settings. The 'fake' backend must only be used for development purposes and is not available in production.
       </description>
     </key>
     <key name="frequency-sampling-mode" type="s">

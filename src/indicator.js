@@ -204,21 +204,21 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         }
         this.profiles.reverse();
 
-        this.imMinTitle = new PopupMenu.PopupMenuItem(_("Minimum Frequency"), {reactive: false});
+        this.imMinTitle = new PopupMenu.PopupMenuItem(`${_("Minimum Frequency")}:`, {reactive: false});
         this.imMinLabel = new St.Label({text: this.getMinText()});
         this.imMinTitle.actor.add_child(this.imMinLabel);
 
-        this.imMaxTitle = new PopupMenu.PopupMenuItem(_("Maximum Frequency:"), {reactive: false});
+        this.imMaxTitle = new PopupMenu.PopupMenuItem(`${_("Maximum Frequency")}:`, {reactive: false});
         this.imMaxLabel = new St.Label({text: this.getMaxText()});
         this.imMaxTitle.actor.add_child(this.imMaxLabel);
 
-        this.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(_("Turbo Boost:"), this.isTurboBoostActive);
+        this.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(`${_("Turbo Boost")}:`, this.isTurboBoostActive);
         this.imTurboSwitch.connect("toggled", (item) => {
             this.isTurboBoostActive = item.state;
             this.updateTurbo();
         });
 
-        this.imAutoSwitch = new PopupMenu.PopupSwitchMenuItem(_("Auto Switch:"), this.isAutoSwitchActive);
+        this.imAutoSwitch = new PopupMenu.PopupSwitchMenuItem(`${_("Auto Switch")}:`, this.isAutoSwitchActive);
         this.imAutoSwitch.connect("toggled", (item) => {
             this.isAutoSwitchActive = item.state;
             this.updateAutoSwitch();
@@ -272,7 +272,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             this.imSliderMax.actor.add(this.maxSlider.actor, {expand: true});
         }
 
-        this.imCurrentTitle = new PopupMenu.PopupMenuItem(_("Current Frequency:"), {reactive: false});
+        this.imCurrentTitle = new PopupMenu.PopupMenuItem(`${_("Current Frequency")}:`, {reactive: false});
         this.imCurrentLabel = new St.Label({text: this.getCurFreq()});
         this.imCurrentTitle.actor.add_child(this.imCurrentLabel);
 
