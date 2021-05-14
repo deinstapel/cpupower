@@ -193,13 +193,20 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         });
 
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
-        this.minSlider = new Slider.Slider2(this.minVal / 100);
+        this.minSlider = new Slider.Slider2(this.minVal);
         this.minSlider.x_expand = true;
-        this.minSlider.limit_minimum = this.cpuMinLimit / 100;
-        this.minSlider.limit_maximum = this.cpuMaxLimit / 100;
+        this.minSlider.maximum_value = 100;
+        this.minSlider.overdrive_start = 100;
+        // set max first, otherwise min will get clamped
+        this.minSlider.limit_maximum = this.maxVal;
+        this.minSlider.limit_minimum = this.cpuMinLimit;
+        this.imSliderMin.connect("key-press-event", (_actor, event) => {
+            return this.minSlider.emit("key-press-event", event);
+        });
         this.minSlider.connect('notify::value', item => {
-            this.minVal = Math.floor(item.value * 100);
+            this.minVal = Math.floor(item.value);
             this.imMinLabel.set_text(this._getMinText());
+            this.maxSlider.limit_minimum = this.minVal;
             this._updateMin();
         });
 
@@ -210,13 +217,20 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         }
 
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
-        this.maxSlider = new Slider.Slider2(this.maxVal / 100);
+        this.maxSlider = new Slider.Slider2(this.maxVal);
         this.maxSlider.x_expand = true;
-        this.maxSlider.limit_minimum = this.cpuMinLimit / 100;
-        this.maxSlider.limit_maximum = this.cpuMaxLimit / 100;
+        this.maxSlider.maximum_value = 100;
+        this.maxSlider.overdrive_start = 100;
+        // set max first, otherwise min will get clamped
+        this.maxSlider.limit_maximum = this.cpuMaxLimit;
+        this.maxSlider.limit_minimum = this.minVal;
+        this.imSliderMax.connect("key-press-event", (_actor, event) => {
+            return this.maxSlider.emit("key-press-event", event);
+        });
         this.maxSlider.connect('notify::value', item => {
-            this.maxVal = Math.floor(item.value * 100);
+            this.maxVal = Math.floor(item.value);
             this.imMaxLabel.set_text(this._getMaxText());
+            this.minSlider.limit_maximum = this.maxVal;
             this._updateMax();
         });
 
@@ -318,10 +332,10 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
     _updateUi() {
         this.imMinLabel.set_text(this._getMinText());
-        this.minSlider.value = this.minVal / 100.0
+        this.minSlider.value = this.minVal;
 
         this.imMaxLabel.set_text(this._getMaxText());
-        this.maxSlider.value = this.maxVal / 100.0
+        this.maxSlider.value = this.maxVal;
 
         this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
         this.imAutoSwitch.setToggleState(this.isAutoSwitchActive);

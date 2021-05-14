@@ -17,8 +17,6 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const BarLevel2 = Me.imports.src.barLevel2;
 
-var SLIDER_SCROLL_STEP = 0.02; /* Slider scrolling step in % */
-
 var Slider2 = GObject.registerClass({
     GTypeName: 'Slider2',
     Signals: {
@@ -153,20 +151,20 @@ var Slider2 = GObject.registerClass({
 
     scroll(event) {
         let direction = event.get_scroll_direction();
-        let delta;
 
         if (event.is_pointer_emulated())
             return Clutter.EVENT_PROPAGATE;
 
+        let delta = this._getMinimumIncrement();
         if (direction == Clutter.ScrollDirection.DOWN) {
-            delta = -SLIDER_SCROLL_STEP;
+            delta *= -1;
         } else if (direction == Clutter.ScrollDirection.UP) {
-            delta = SLIDER_SCROLL_STEP;
+            delta *= 1;
         } else if (direction == Clutter.ScrollDirection.SMOOTH) {
             let [, dy] = event.get_scroll_delta();
             // Even though the slider is horizontal, use dy to match
             // the UP/DOWN above.
-            delta = -dy * SLIDER_SCROLL_STEP;
+            delta *= -dy;
         }
 
         this.value = Math.min(Math.max(this.limit_minimum, this._value + delta), this.limit_maximum);
@@ -195,8 +193,11 @@ var Slider2 = GObject.registerClass({
     vfunc_key_press_event(keyPressEvent) {
         let key = keyPressEvent.keyval;
         if (key == Clutter.KEY_Right || key == Clutter.KEY_Left) {
-            let delta = key == Clutter.KEY_Right ? 0.1 : -0.1;
-            this.value = Math.max(0, Math.min(this._value + delta, this._maxValue));
+            let delta = this._getMinimumIncrement();
+            if (key === Clutter.KEY_Left) {
+                delta *= -1;
+            }
+            this.value = this.value = Math.min(Math.max(this.limit_minimum, this._value + delta), this.limit_maximum);
             return Clutter.EVENT_STOP;
         }
         return super.vfunc_key_press_event(keyPressEvent);
@@ -223,6 +224,6 @@ var Slider2 = GObject.registerClass({
     }
 
     _getMinimumIncrement() {
-        return 0.1;
+        return 0.01 * this.maximum_value;
     }
 });

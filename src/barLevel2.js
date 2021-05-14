@@ -83,7 +83,7 @@ var BarLevel2 = GObject.registerClass({
     }
 
     get limit_minimum() {
-        return this._limitMin
+        return this._limitMin;
     }
 
     set limit_minimum(value) {
@@ -91,14 +91,14 @@ var BarLevel2 = GObject.registerClass({
 
         if (this._limitMin == value)
             return;
-        
+
         this._limitMin = value;
         this.notify('limit-minimum');
         this.queue_repaint();
     }
 
     get limit_maximum() {
-        return this._limitMax
+        return this._limitMax;
     }
 
     set limit_maximum(value) {
@@ -323,10 +323,10 @@ var BarLevel2 = GObject.registerClass({
             cr.lineTo(bx - limit_sep_width, barLevelBottom + limit_sep_height);
             cr.lineTo(bx - limit_sep_width, barLevelTop - limit_sep_height);
             cr.lineTo(bx, barLevelTop - limit_sep_height);
-            Clutter.cairo_set_source_color(cr, deadBarColor);
+            Clutter.cairo_set_source_color(cr, barLevelActiveColor);
             cr.fillPreserve();
-            Clutter.cairo_set_source_color(cr, deadBarBorderColor);
-            cr.setLineWidth(barLevelBorderWidth)
+            Clutter.cairo_set_source_color(cr, barLevelActiveBorderColor);
+            cr.setLineWidth(barLevelBorderWidth);
             cr.stroke();
         }
 
@@ -339,10 +339,10 @@ var BarLevel2 = GObject.registerClass({
             cr.lineTo(bx + limit_sep_width, barLevelBottom + limit_sep_height);
             cr.lineTo(bx + limit_sep_width, barLevelTop - limit_sep_height);
             cr.lineTo(bx, barLevelTop - limit_sep_height);
-            Clutter.cairo_set_source_color(cr, deadBarColor);
+            Clutter.cairo_set_source_color(cr, barLevelActiveColor);
             cr.fillPreserve();
-            Clutter.cairo_set_source_color(cr, deadBarBorderColor);
-            cr.setLineWidth(barLevelBorderWidth)
+            Clutter.cairo_set_source_color(cr, barLevelActiveBorderColor);
+            cr.setLineWidth(barLevelBorderWidth);
             cr.stroke();
         }
 
