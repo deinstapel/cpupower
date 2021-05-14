@@ -103,3 +103,13 @@ function attempt_update(done)
         done,
     );
 }
+
+function checkCpuLimit(arg) 
+{
+    let [res, out, err, exitcode] = GLib.spawn_command_line_sync(PKEXEC + ' ' + CONFIG.CPUFREQCTL + ' ' + arg + ' check');
+    if (exitcode !== 0) {
+        return 0;
+    }
+    const str = String.fromCharCode.apply(null, out);
+    return parseInt(str);
+}

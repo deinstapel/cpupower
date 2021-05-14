@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 
+<!-- Generated with glade 3.38.1 
 
 Copyright (C) 2015-2020
 
@@ -65,7 +65,7 @@ Fin Christensen (@fin-ger)
 Alex Pyrgiotis (@apyrgio)
 Tony Lambiris (@tonylambiris)
 Christopher Peredy (@mastercaution)</property>
-    <property name="translator_credits">Marek Pikuła (@MarekPikula)
+    <property name="translator-credits">Marek Pikuła (@MarekPikula)
 Jan Kasik (@honza-kasik)
 Alex Gluck (@AlexGluck)
 Jimmy Scionti (@amivaleo)
@@ -74,19 +74,16 @@ Laurent Tréguier (@LaurentTreguier)
 PB (@uno20001)</property>
     <property name="artists">Thanasis Georgiou (@sakisds)</property>
     <property name="logo">icons/cpu-symbolic.svg</property>
-    <property name="license_type">gpl-3-0</property>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
+    <property name="license-type">gpl-3-0</property>
     <child internal-child="vbox">
       <object class="GtkBox">
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
+            <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
             <child>
               <placeholder/>
             </child>
@@ -108,238 +105,240 @@ PB (@uno20001)</property>
   </object>
   <object class="GtkNotebook" id="MainWidget">
     <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="show_border">False</property>
+    <property name="can-focus">True</property>
+    <property name="show-border">False</property>
     <signal name="realize" handler="onMainWidgetRealize" swapped="no"/>
     <signal name="switch-page" handler="onMainWidgetSwitchPage" after="yes" swapped="no"/>
     <child>
+      <!-- n-columns=2 n-rows=7 -->
       <object class="GtkGrid" id="GeneralGrid">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">8</property>
-        <property name="row_spacing">8</property>
-        <property name="column_spacing">8</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">8</property>
+        <property name="row-spacing">8</property>
+        <property name="column-spacing">8</property>
         <child>
           <object class="GtkLabel" id="ShowCurrentFrequencyLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="hexpand">True</property>
             <property name="label" translatable="yes">Show current frequency</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="UseGHzInsteadOfMHzLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="hexpand">True</property>
             <property name="label" translatable="yes">Use GHz instead of MHz</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="ShowIconLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="hexpand">True</property>
             <property name="label" translatable="yes">Show icon in taskbar</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="ShowArrowLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="hexpand">True</property>
             <property name="label" translatable="yes">Show arrow in taskbar</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkSwitch" id="ShowCurrentFrequencySwitch">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can-focus">True</property>
             <signal name="notify::active" handler="onShowCurrentFrequencySwitchActiveNotify" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkSwitch" id="UseGHzInsteadOfMHzSwitch">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can-focus">True</property>
             <signal name="notify::active" handler="onUseGHzInsteadOfMHzSwitchActiveNotify" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkSwitch" id="ShowArrowSwitch">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can-focus">True</property>
             <signal name="notify::active" handler="onShowArrowSwitchActiveNotify" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">3</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkSwitch" id="ShowIconSwitch">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can-focus">True</property>
             <signal name="notify::active" handler="onShowIconSwitchActiveNotify" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="AboutButton">
             <property name="label" translatable="yes">About</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
             <property name="halign">center</property>
             <property name="valign">end</property>
             <property name="vexpand">True</property>
             <signal name="clicked" handler="onAboutButtonClicked" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">6</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">6</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkSeparator">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">4</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
+          <!-- n-columns=3 n-rows=3 -->
           <object class="GtkGrid" id="AutoSwitchConfigGrid">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="row_spacing">8</property>
-            <property name="column_spacing">8</property>
+            <property name="can-focus">False</property>
+            <property name="row-spacing">8</property>
+            <property name="column-spacing">8</property>
             <child>
               <object class="GtkLabel" id="DefautlACSelectionLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="hexpand">True</property>
                 <property name="label" translatable="yes">Default AC profile</property>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">1</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="DefaultBatSelectionLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="hexpand">True</property>
                 <property name="label" translatable="yes">Default battery profile</property>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">2</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">2</property>
               </packing>
             </child>
             <child>
               <object class="GtkComboBoxText" id="DefaultBatComboBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Set as default profile for battery operation</property>
+                <property name="can-focus">False</property>
+                <property name="tooltip-text" translatable="yes">Set as default profile for battery operation</property>
                 <signal name="notify::active" handler="onDefaultBatComboBoxActiveNotify" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">2</property>
+                <property name="left-attach">2</property>
+                <property name="top-attach">2</property>
               </packing>
             </child>
             <child>
               <object class="GtkComboBoxText" id="DefaultACComboBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Set as standard profile for plugged in operation</property>
+                <property name="can-focus">False</property>
+                <property name="tooltip-text" translatable="yes">Set as standard profile for plugged in operation</property>
                 <signal name="notify::active" handler="onDefaultACComboBoxActiveNotify" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">1</property>
+                <property name="left-attach">2</property>
+                <property name="top-attach">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="AutoSwitchConfigLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Auto Switch Configuration</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">0</property>
                 <property name="width">3</property>
               </packing>
             </child>
             <child>
               <object class="GtkImage" id="DefaultACSelectionIcon">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="icon_name">ac-adapter-symbolic</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">ac-adapter-symbolic</property>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
+                <property name="left-attach">1</property>
+                <property name="top-attach">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkImage" id="DefaultBatSelectionIcon">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="icon_name">battery-symbolic</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">battery-symbolic</property>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">2</property>
+                <property name="left-attach">1</property>
+                <property name="top-attach">2</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">5</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">5</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -348,37 +347,37 @@ PB (@uno20001)</property>
     <child type="tab">
       <object class="GtkLabel" id="GeneralTabLabel">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="hexpand">True</property>
         <property name="label" translatable="yes">General</property>
       </object>
       <packing>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
     <child>
       <object class="GtkBox" id="ProfilesBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkBox" id="ProfilesLeftBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkScrolledWindow" id="ProfilesLeftScrolledWindow">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">never</property>
-                <property name="min_content_width">200</property>
+                <property name="can-focus">True</property>
+                <property name="hscrollbar-policy">never</property>
+                <property name="min-content-width">200</property>
                 <child>
                   <object class="GtkViewport" id="ProfilesViewport">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <child>
                       <object class="GtkListBox" id="ProfilesListBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <signal name="row-selected" handler="onProfilesListBoxRowSelected" swapped="no"/>
                       </object>
                     </child>
@@ -394,15 +393,15 @@ PB (@uno20001)</property>
             <child>
               <object class="GtkToolbar" id="ProfilesToolbar">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="toolbar_style">icons</property>
+                <property name="can-focus">False</property>
+                <property name="toolbar-style">icons</property>
                 <property name="icon_size">1</property>
                 <child>
                   <object class="GtkToolButton" id="ProfilesAddToolButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Add selected profile</property>
-                    <property name="icon_name">list-add-symbolic</property>
+                    <property name="can-focus">False</property>
+                    <property name="tooltip-text" translatable="yes">Add selected profile</property>
+                    <property name="icon-name">list-add-symbolic</property>
                     <signal name="clicked" handler="onProfilesAddToolButtonClicked" swapped="no"/>
                   </object>
                   <packing>
@@ -413,9 +412,9 @@ PB (@uno20001)</property>
                 <child>
                   <object class="GtkToolButton" id="ProfilesRemoveToolButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Remove selected profile</property>
-                    <property name="icon_name">list-remove-symbolic</property>
+                    <property name="can-focus">False</property>
+                    <property name="tooltip-text" translatable="yes">Remove selected profile</property>
+                    <property name="icon-name">list-remove-symbolic</property>
                     <signal name="clicked" handler="onProfilesRemoveToolButtonClicked" swapped="no"/>
                   </object>
                   <packing>
@@ -426,9 +425,9 @@ PB (@uno20001)</property>
                 <child>
                   <object class="GtkToolButton" id="ProfilesMoveUpToolButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Move selected profile up</property>
-                    <property name="icon_name">go-up-symbolic</property>
+                    <property name="can-focus">False</property>
+                    <property name="tooltip-text" translatable="yes">Move selected profile up</property>
+                    <property name="icon-name">go-up-symbolic</property>
                     <signal name="clicked" handler="onProfilesMoveUpToolButtonClicked" swapped="no"/>
                   </object>
                   <packing>
@@ -439,9 +438,9 @@ PB (@uno20001)</property>
                 <child>
                   <object class="GtkToolButton" id="ProfilesMoveDownToolButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Move selected profile down</property>
-                    <property name="icon_name">go-down-symbolic</property>
+                    <property name="can-focus">False</property>
+                    <property name="tooltip-text" translatable="yes">Move selected profile down</property>
+                    <property name="icon-name">go-down-symbolic</property>
                     <signal name="clicked" handler="onProfilesMoveDownToolButtonClicked" swapped="no"/>
                   </object>
                   <packing>
@@ -466,7 +465,7 @@ PB (@uno20001)</property>
         <child>
           <object class="GtkSeparator" id="ProfilesSeparator">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -477,8 +476,8 @@ PB (@uno20001)</property>
         <child>
           <object class="GtkStack" id="ProfileStack">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="transition_type">slide-up-down</property>
+            <property name="can-focus">False</property>
+            <property name="transition-type">slide-up-down</property>
             <child>
               <placeholder/>
             </child>
@@ -497,53 +496,54 @@ PB (@uno20001)</property>
     <child type="tab">
       <object class="GtkLabel" id="ProfilesTabLabel">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="hexpand">True</property>
         <property name="label" translatable="yes">Profiles</property>
       </object>
       <packing>
         <property name="position">1</property>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
     <child>
+      <!-- n-columns=3 n-rows=5 -->
       <object class="GtkGrid" id="InstallationGrid">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">8</property>
-        <property name="row_spacing">8</property>
-        <property name="column_spacing">8</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">8</property>
+        <property name="row-spacing">8</property>
+        <property name="column-spacing">8</property>
         <child>
           <object class="GtkLabel" id="CpufreqctlLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="label" translatable="yes">Path to cpufreqctl:</property>
             <property name="xalign">1</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="PolicykitRuleLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="label" translatable="yes">Path to policykit rule:</property>
             <property name="xalign">1</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="InstallationWarningLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_top">20</property>
+            <property name="can-focus">False</property>
+            <property name="margin-top">20</property>
             <property name="hexpand">True</property>
             <property name="label" translatable="yes">CPU Power Manager is installed via your distributions package manager!</property>
             <property name="justify">center</property>
@@ -553,8 +553,8 @@ PB (@uno20001)</property>
             </attributes>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">3</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -562,8 +562,8 @@ PB (@uno20001)</property>
           <object class="GtkButton" id="UninstallButton">
             <property name="label" translatable="yes">Uninstall</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
             <property name="hexpand">True</property>
             <signal name="clicked" handler="onUninstallButtonClicked" swapped="no"/>
             <style>
@@ -571,15 +571,15 @@ PB (@uno20001)</property>
             </style>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">4</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="CpufreqctlPathLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="label">/usr/bin/cpufreqctl</property>
             <property name="selectable">True</property>
@@ -590,14 +590,14 @@ PB (@uno20001)</property>
             </attributes>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="PolicykitRulePathLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="label">/usr/share/polkit-1/actions/mko.cpupower.setcpufreq.policy</property>
             <property name="selectable">True</property>
@@ -608,21 +608,36 @@ PB (@uno20001)</property>
             </attributes>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="Spacer">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="vexpand">True</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
             <property name="width">2</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
       <packing>
@@ -632,157 +647,255 @@ PB (@uno20001)</property>
     <child type="tab">
       <object class="GtkLabel" id="InstallationTabLabel">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="hexpand">True</property>
         <property name="label" translatable="yes">Installation</property>
       </object>
       <packing>
         <property name="position">2</property>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
   </object>
   <object class="GtkAdjustment" id="MaximumFrequencyAdjustment">
     <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
   </object>
   <object class="GtkAdjustment" id="MinimumFrequencyAdjustment">
     <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
   </object>
+  <!-- n-columns=2 n-rows=6 -->
   <object class="GtkGrid" id="ProfileSettingsGrid">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="margin_left">4</property>
-    <property name="border_width">8</property>
-    <property name="row_spacing">8</property>
-    <property name="column_spacing">8</property>
+    <property name="can-focus">False</property>
+    <property name="margin-left">4</property>
+    <property name="border-width">8</property>
+    <property name="row-spacing">8</property>
+    <property name="column-spacing">8</property>
     <child>
       <object class="GtkLabel" id="ProfileNameLabel">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">end</property>
         <property name="label" translatable="yes">Profile name</property>
       </object>
       <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">0</property>
+        <property name="top-attach">0</property>
       </packing>
     </child>
     <child>
       <object class="GtkEntry" id="ProfileNameEntry">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="can-focus">True</property>
         <property name="hexpand">True</property>
-        <property name="placeholder_text" translatable="yes">Profile name</property>
+        <property name="placeholder-text" translatable="yes">Profile name</property>
         <signal name="changed" handler="onProfileNameEntryChanged" swapped="no"/>
       </object>
       <packing>
-        <property name="left_attach">1</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">1</property>
+        <property name="top-attach">0</property>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="ProfileMinimumFrequencyLabel">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">end</property>
         <property name="label" translatable="yes">Minimum frequency</property>
       </object>
       <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">0</property>
+        <property name="top-attach">1</property>
       </packing>
     </child>
     <child>
       <object class="GtkScale" id="ProfileMinimumFrequencyScale">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="can-focus">True</property>
         <property name="hexpand">True</property>
         <property name="adjustment">MinimumFrequencyAdjustment</property>
-        <property name="round_digits">1</property>
+        <property name="round-digits">1</property>
         <property name="digits">0</property>
-        <property name="value_pos">right</property>
+        <property name="value-pos">right</property>
         <signal name="value-changed" handler="onProfileMinimumFrequencyScaleValueChanged" swapped="no"/>
       </object>
       <packing>
-        <property name="left_attach">1</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">1</property>
+        <property name="top-attach">1</property>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="ProfileMaximumFrequencyLabel">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">end</property>
         <property name="label" translatable="yes">Maximum frequency</property>
       </object>
       <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">0</property>
+        <property name="top-attach">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="ProfileTurboBoostLabel">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="halign">end</property>
         <property name="label" translatable="yes">Turbo boost</property>
       </object>
       <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">3</property>
+        <property name="left-attach">0</property>
+        <property name="top-attach">3</property>
       </packing>
     </child>
     <child>
       <object class="GtkScale" id="ProfileMaximumFrequencyScale">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="can-focus">True</property>
         <property name="hexpand">True</property>
         <property name="adjustment">MaximumFrequencyAdjustment</property>
-        <property name="round_digits">1</property>
+        <property name="round-digits">1</property>
         <property name="digits">0</property>
-        <property name="value_pos">right</property>
+        <property name="value-pos">right</property>
         <signal name="value-changed" handler="onProfileMaximumFrequencyScaleValueChanged" swapped="no"/>
       </object>
       <packing>
-        <property name="left_attach">1</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">1</property>
+        <property name="top-attach">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkSwitch" id="ProfileTurboBoostSwitch">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="can-focus">True</property>
         <property name="halign">end</property>
         <property name="hexpand">True</property>
         <signal name="notify::active" handler="onProfileTurboBoostSwitchActiveNotify" swapped="no"/>
       </object>
       <packing>
-        <property name="left_attach">1</property>
-        <property name="top_attach">3</property>
+        <property name="left-attach">1</property>
+        <property name="top-attach">3</property>
       </packing>
     </child>
     <child>
-      <object class="GtkButton" id="ProfileDiscardButton">
-        <property name="label" translatable="yes">Discard</property>
+      <!-- n-columns=2 n-rows=3 -->
+      <object class="GtkGrid" id="ProfileInfoGrid">
         <property name="visible">True</property>
-        <property name="sensitive">False</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
-        <property name="valign">end</property>
-        <property name="margin_top">16</property>
-        <property name="vexpand">True</property>
-        <signal name="clicked" handler="onProfileDiscardButtonClicked" swapped="no"/>
-        <style>
-          <class name="destructive-action"/>
-        </style>
+        <property name="can-focus">False</property>
+        <property name="tooltip-text" translatable="yes">The intel_pstate-driver does not allow values 
+below the lower limit and above the upper limit</property>
+        <property name="row-spacing">4</property>
+        <property name="column-spacing">8</property>
+        <child>
+          <object class="GtkLabel" id="ProfileInfoMinLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="opacity">0.5</property>
+            <property name="halign">end</property>
+            <property name="label" translatable="yes">Lower limit:</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="ProfileLimitMinLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="opacity">0.5</property>
+            <property name="halign">start</property>
+            <property name="label">0%</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="ProfileInfoMaxLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="opacity">0.5</property>
+            <property name="halign">end</property>
+            <property name="label" translatable="yes">Upper limit:</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="ProfileLimitMaxLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="opacity">0.5</property>
+            <property name="halign">start</property>
+            <property name="label">100%</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-top">6</property>
+            <property name="hexpand">True</property>
+            <property name="spacing">4</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="opacity">0.7</property>
+                <property name="halign">end</property>
+                <property name="hexpand">True</property>
+                <property name="icon-name">dialog-information</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="ProfileInfoLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="opacity">0.5</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+                <property name="label" translatable="yes">You reached your CPUs limit(s):</property>
+                <property name="wrap">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
       </object>
       <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">4</property>
+        <property name="left-attach">0</property>
+        <property name="top-attach">4</property>
+        <property name="width">2</property>
       </packing>
     </child>
     <child>
@@ -790,10 +903,10 @@ PB (@uno20001)</property>
         <property name="label" translatable="yes">Save</property>
         <property name="visible">True</property>
         <property name="sensitive">False</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
+        <property name="can-focus">True</property>
+        <property name="receives-default">True</property>
         <property name="valign">end</property>
-        <property name="margin_top">16</property>
+        <property name="margin-top">16</property>
         <property name="vexpand">True</property>
         <signal name="clicked" handler="onProfileSaveButtonClicked" swapped="no"/>
         <style>
@@ -801,32 +914,52 @@ PB (@uno20001)</property>
         </style>
       </object>
       <packing>
-        <property name="left_attach">1</property>
-        <property name="top_attach">4</property>
+        <property name="left-attach">1</property>
+        <property name="top-attach">5</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="ProfileDiscardButton">
+        <property name="label" translatable="yes">Discard</property>
+        <property name="visible">True</property>
+        <property name="sensitive">False</property>
+        <property name="can-focus">True</property>
+        <property name="receives-default">True</property>
+        <property name="valign">end</property>
+        <property name="margin-top">16</property>
+        <property name="vexpand">True</property>
+        <signal name="clicked" handler="onProfileDiscardButtonClicked" swapped="no"/>
+        <style>
+          <class name="destructive-action"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left-attach">0</property>
+        <property name="top-attach">5</property>
       </packing>
     </child>
   </object>
   <object class="GtkListBoxRow" id="ProfileListBoxRow">
     <property name="visible">True</property>
-    <property name="can_focus">True</property>
+    <property name="can-focus">True</property>
     <child>
       <object class="GtkBox" id="ProfileRowBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">4</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">4</property>
         <property name="orientation">vertical</property>
         <property name="spacing">4</property>
         <child>
           <object class="GtkBox" id="ProfileRowHeaderBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="spacing">2</property>
             <child>
               <object class="GtkLabel" id="ProfileRowNameLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="margin_right">8</property>
+                <property name="margin-right">8</property>
                 <property name="label">High Performance</property>
               </object>
               <packing>
@@ -837,27 +970,27 @@ PB (@uno20001)</property>
             </child>
             <child>
               <object class="GtkImage" id="ProfileRowACIcon">
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="opacity">0.5</property>
-                <property name="icon_name">ac-adapter-symbolic</property>
+                <property name="icon-name">ac-adapter-symbolic</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkImage" id="ProfileRowBatIcon">
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="opacity">0.5</property>
-                <property name="icon_name">battery-symbolic</property>
+                <property name="icon-name">battery-symbolic</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -871,13 +1004,13 @@ PB (@uno20001)</property>
         <child>
           <object class="GtkBox" id="ProfileRowDetailBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="opacity">0.5</property>
             <property name="spacing">4</property>
             <child>
               <object class="GtkLabel" id="ProfileRowMinimumFrequencyLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label">22</property>
               </object>
               <packing>
@@ -889,7 +1022,7 @@ PB (@uno20001)</property>
             <child>
               <object class="GtkLabel" id="ProfileRowSeparatorLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label">/</property>
               </object>
               <packing>
@@ -901,7 +1034,7 @@ PB (@uno20001)</property>
             <child>
               <object class="GtkLabel" id="ProfileRowMaximumFrequencyLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label">100</property>
               </object>
               <packing>
@@ -913,9 +1046,9 @@ PB (@uno20001)</property>
             <child>
               <object class="GtkLabel" id="ProfileRowTurboBoostLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">end</property>
-                <property name="margin_left">32</property>
+                <property name="margin-left">32</property>
                 <property name="label" translatable="yes">Turbo boost:</property>
               </object>
               <packing>
@@ -927,7 +1060,7 @@ PB (@uno20001)</property>
             <child>
               <object class="GtkLabel" id="ProfileRowTurboBoostStatusLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label">Yes</property>
               </object>
               <packing>
@@ -947,28 +1080,28 @@ PB (@uno20001)</property>
     </child>
   </object>
   <object class="GtkMessageDialog" id="UninstallMessageDialog">
-    <property name="can_focus">False</property>
-    <property name="type_hint">dialog</property>
-    <property name="message_type">question</property>
+    <property name="can-focus">False</property>
+    <property name="type-hint">dialog</property>
+    <property name="message-type">question</property>
     <property name="text" translatable="yes">Uninstall CPU Power Manager Tools</property>
-    <property name="secondary_text" translatable="yes">Are you sure you want to uninstall the cpufreqctl tool and the policykit rule?</property>
+    <property name="secondary-text" translatable="yes">Are you sure you want to uninstall the cpufreqctl tool and the policykit rule?</property>
     <child internal-child="vbox">
       <object class="GtkBox">
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox">
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="homogeneous">True</property>
-            <property name="layout_style">expand</property>
+            <property name="layout-style">expand</property>
             <child>
               <object class="GtkButton" id="UninstallDialogCancel">
                 <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -981,8 +1114,8 @@ PB (@uno20001)</property>
               <object class="GtkButton" id="UninstallDialogUninstall">
                 <property name="label" translatable="yes">Uninstall</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="hexpand">True</property>
                 <style>
                   <class name="destructive-action"/>

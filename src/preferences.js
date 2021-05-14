@@ -42,6 +42,7 @@ const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
 const EXTENSIONDIR = Me.dir.get_path();
 const CONFIG = Me.imports.src.config;
 const attempt_uninstallation = Me.imports.src.utils.attempt_uninstallation;
+const checkCpuLimit = Me.imports.src.utils.checkCpuLimit;
 
 const GLADE_FILE = EXTENSIONDIR + "/data/cpupower-preferences.glade";
 const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.cpupower';
@@ -74,6 +75,9 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             "UninstallButton"
         );
         this.ProfilesMap = new Map();
+
+        this.cpuMinLimit = checkCpuLimit("min");
+        this.cpuMaxLimit = checkCpuLimit("max");
     }
 
     status() {
@@ -178,6 +182,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                     MinimumFrequencyScale: null,
                     MaximumFrequencyScale: null,
                     TurboBoostSwitch: null,
+                    CpuInfoGrid: null,
                     DiscardButton: null,
                     SaveButton: null
                 },
@@ -223,6 +228,25 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             profileContext.Settings.StackItem = profileSettingsBuilder.get_object(
                 "ProfileSettingsGrid"
             );
+            profileContext.Settings.CpuInfoGrid = profileSettingsBuilder.get_object(
+                "ProfileInfoGrid"
+            );
+
+            // set limit labels
+            let limitLabel = profileSettingsBuilder.get_object("ProfileLimitMinLabel");
+            limitLabel.set_text(this.cpuMinLimit + "%");
+
+            limitLabel = profileSettingsBuilder.get_object("ProfileLimitMaxLabel");
+            limitLabel.set_text(this.cpuMaxLimit + "%");
+
+            // modify adjustments
+            let tempAdjstement = profileSettingsBuilder.get_object("MinimumFrequencyAdjustment");
+            tempAdjstement.set_lower(this.cpuMinLimit);
+            tempAdjstement.set_upper(this.cpuMaxLimit);
+
+            tempAdjstement = profileSettingsBuilder.get_object("MaximumFrequencyAdjustment");
+            tempAdjstement.set_lower(this.cpuMinLimit);
+            tempAdjstement.set_upper(this.cpuMaxLimit);
 
             let profileListItemBuilder = new Gtk.Builder();
             profileListItemBuilder.set_translation_domain("gnome-shell-extension-cpupower");
@@ -531,6 +555,15 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         dialog.hide();
     }
 
+    showCpuLimitInfo(profileContext)
+    {
+        if (profileContext.Settings.MinimumFrequencyScale.get_value() == this.cpuMinLimit || 
+        profileContext.Settings.MaximumFrequencyScale.get_value() == this.cpuMaxLimit)
+            profileContext.Settings.CpuInfoGrid.set_visible(true);
+        else 
+            profileContext.Settings.CpuInfoGrid.set_visible(false);
+    }
+
     onProfilesListBoxRowSelected(box, row) {
         let profileContext = this.getSelectedProfileContext();
         if (!!profileContext) {
@@ -546,11 +579,15 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     onProfileMinimumFrequencyScaleValueChanged(profileContext, scale) {
         profileContext.Settings.DiscardButton.sensitive = true;
         profileContext.Settings.SaveButton.sensitive = true;
+
+        this.showCpuLimitInfo(profileContext);
     }
 
     onProfileMaximumFrequencyScaleValueChanged(profileContext, scale) {
         profileContext.Settings.DiscardButton.sensitive = true;
         profileContext.Settings.SaveButton.sensitive = true;
+
+        this.showCpuLimitInfo(profileContext);
     }
 
     onProfileTurboBoostSwitchActiveNotify(profileContext, switchButton) {
