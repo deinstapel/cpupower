@@ -239,7 +239,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             this.minVal = Math.floor(item.value);
             this.imMinLabel.set_text(this.getMinText());
             this.maxSlider.limit_minimum = this.minVal;
-            this._updateMin();
+            this.updateMin();
         });
 
         if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
@@ -263,7 +263,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             this.maxVal = Math.floor(item.value);
             this.imMaxLabel.set_text(this.getMaxText());
             this.minSlider.limit_maximum = this.maxVal;
-            this._updateMax();
+            this.updateMax();
         });
 
         if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {

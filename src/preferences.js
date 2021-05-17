@@ -231,14 +231,16 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                     NameEntry: null,
                     MinimumFrequencyScale: null,
                     MaximumFrequencyScale: null,
+                    MinimumFrequencyValueLabel: null,
+                    MaximumFrequencyValueLabel: null,
+                    MinimumFrequencyAdjustment: null,
+                    MaximumFrequencyAdjustment: null,
                     TurboBoostSwitch: null,
                     CpuInfoGrid: null,
                     DiscardButton: null,
                     SaveButton: null,
                     LimitMinLabel: null,
                     LimitMaxLabel: null,
-                    MinimumFrequencyAdjustment: null,
-                    MaximumFrequencyAdjustment: null,
                 },
                 ListItem: {
                     Row: null,
@@ -297,6 +299,12 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             profileContext.Settings.MaximumFrequencyAdjustment = profileSettingsBuilder.get_object(
                 "MaximumFrequencyAdjustment",
             );
+            profileContext.Settings.MinimumFrequencyValueLabel = profileSettingsBuilder.get_object(
+                "ProfileMinimumFrequencyValueLabel",
+            );
+            profileContext.Settings.MaximumFrequencyValueLabel = profileSettingsBuilder.get_object(
+                "ProfileMaximumFrequencyValueLabel",
+            );
 
             let profileListItemBuilder = new Gtk.Builder();
             profileListItemBuilder.set_translation_domain("gnome-shell-extension-cpupower");
@@ -350,12 +358,18 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
             // modify adjustments
             profileContext.Settings.MinimumFrequencyAdjustment.set_lower(this.cpuMinLimit);
-            profileContext.Settings.MinimumFrequencyAdjustment.set_upper(this.cpuMaxLimit);
-            profileContext.Settings.MaximumFrequencyAdjustment.set_lower(this.cpuMinLimit);
+            profileContext.Settings.MinimumFrequencyAdjustment.set_upper(profileContext.Profile.MaximumFrequency);
+            profileContext.Settings.MaximumFrequencyAdjustment.set_lower(profileContext.Profile.MinimumFrequency);
             profileContext.Settings.MaximumFrequencyAdjustment.set_upper(this.cpuMaxLimit);
 
             profileContext.Settings.MinimumFrequencyScale.set_value(profileContext.Profile.MinimumFrequency);
             profileContext.Settings.MaximumFrequencyScale.set_value(profileContext.Profile.MaximumFrequency);
+            profileContext.Settings.MinimumFrequencyValueLabel.set_text(
+                `${profileContext.Profile.MinimumFrequency}%`,
+            );
+            profileContext.Settings.MaximumFrequencyValueLabel.set_text(
+                `${profileContext.Profile.MaximumFrequency}%`,
+            );
         });
 
         profileContext.Settings.NameEntry.set_text(profileContext.Profile.Name);
@@ -704,16 +718,20 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         profileContext.Settings.SaveButton.sensitive = true;
     }
 
-    onProfileMinimumFrequencyScaleValueChanged(profileContext, _scale) {
+    onProfileMinimumFrequencyScaleValueChanged(profileContext, scale) {
         profileContext.Settings.DiscardButton.sensitive = true;
         profileContext.Settings.SaveButton.sensitive = true;
+        profileContext.Settings.MaximumFrequencyAdjustment.set_lower(scale.get_value());
+        profileContext.Settings.MinimumFrequencyValueLabel.set_text(`${scale.get_value()}%`);
 
         this.showCpuLimitInfo(profileContext);
     }
 
-    onProfileMaximumFrequencyScaleValueChanged(profileContext, _scale) {
+    onProfileMaximumFrequencyScaleValueChanged(profileContext, scale) {
         profileContext.Settings.DiscardButton.sensitive = true;
         profileContext.Settings.SaveButton.sensitive = true;
+        profileContext.Settings.MinimumFrequencyAdjustment.set_upper(scale.get_value());
+        profileContext.Settings.MaximumFrequencyValueLabel.set_text(`${scale.get_value()}%`);
 
         this.showCpuLimitInfo(profileContext);
     }

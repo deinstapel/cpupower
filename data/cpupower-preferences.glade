@@ -1093,36 +1093,9 @@ PB (@uno20001)</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
         <property name="label" translatable="yes">Minimum Frequency</property>
-        <accessibility>
-          <relation type="label-for" target="ProfileMinimumFrequencyScale"/>
-        </accessibility>
       </object>
       <packing>
         <property name="left-attach">0</property>
-        <property name="top-attach">1</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkScale" id="ProfileMinimumFrequencyScale">
-        <property name="visible">True</property>
-        <property name="can-focus">True</property>
-        <property name="hexpand">True</property>
-        <property name="adjustment">MinimumFrequencyAdjustment</property>
-        <property name="round-digits">1</property>
-        <property name="digits">0</property>
-        <property name="value-pos">right</property>
-        <signal name="value-changed" handler="onProfileMinimumFrequencyScaleValueChanged" swapped="no"/>
-        <accessibility>
-          <relation type="labelled-by" target="ProfileMinimumFrequencyLabel"/>
-        </accessibility>
-        <child internal-child="accessible">
-          <object class="AtkObject" id="ProfileMinimumFrequencyScale-atkobject">
-            <property name="AtkObject::accessible-name" translatable="yes">Minimum CPU frequency slider</property>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="left-attach">1</property>
         <property name="top-attach">1</property>
       </packing>
     </child>
@@ -1132,9 +1105,6 @@ PB (@uno20001)</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
         <property name="label" translatable="yes">Maximum Frequency</property>
-        <accessibility>
-          <relation type="label-for" target="ProfileMaximumFrequencyScale"/>
-        </accessibility>
       </object>
       <packing>
         <property name="left-attach">0</property>
@@ -1154,30 +1124,6 @@ PB (@uno20001)</property>
       <packing>
         <property name="left-attach">0</property>
         <property name="top-attach">3</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkScale" id="ProfileMaximumFrequencyScale">
-        <property name="visible">True</property>
-        <property name="can-focus">True</property>
-        <property name="hexpand">True</property>
-        <property name="adjustment">MaximumFrequencyAdjustment</property>
-        <property name="round-digits">1</property>
-        <property name="digits">0</property>
-        <property name="value-pos">right</property>
-        <signal name="value-changed" handler="onProfileMaximumFrequencyScaleValueChanged" swapped="no"/>
-        <accessibility>
-          <relation type="labelled-by" target="ProfileMaximumFrequencyLabel"/>
-        </accessibility>
-        <child internal-child="accessible">
-          <object class="AtkObject" id="ProfileMaximumFrequencyScale-atkobject">
-            <property name="AtkObject::accessible-name" translatable="yes">Maximum CPU frequency slider</property>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="left-attach">1</property>
-        <property name="top-attach">2</property>
       </packing>
     </child>
     <child>
@@ -1213,10 +1159,12 @@ PB (@uno20001)</property>
           <object class="GtkLabel" id="ProfileInfoMinLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="opacity">0.5</property>
             <property name="halign">end</property>
             <property name="label" translatable="yes">Lower limit:</property>
             <property name="wrap">True</property>
+            <style>
+              <class name="dim-label"/>
+            </style>
           </object>
           <packing>
             <property name="left-attach">0</property>
@@ -1227,10 +1175,12 @@ PB (@uno20001)</property>
           <object class="GtkLabel" id="ProfileLimitMinLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="opacity">0.5</property>
             <property name="halign">start</property>
             <property name="label">0%</property>
             <property name="wrap">True</property>
+            <style>
+              <class name="dim-label"/>
+            </style>
           </object>
           <packing>
             <property name="left-attach">1</property>
@@ -1241,10 +1191,12 @@ PB (@uno20001)</property>
           <object class="GtkLabel" id="ProfileInfoMaxLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="opacity">0.5</property>
             <property name="halign">end</property>
             <property name="label" translatable="yes">Upper limit:</property>
             <property name="wrap">True</property>
+            <style>
+              <class name="dim-label"/>
+            </style>
           </object>
           <packing>
             <property name="left-attach">0</property>
@@ -1255,10 +1207,12 @@ PB (@uno20001)</property>
           <object class="GtkLabel" id="ProfileLimitMaxLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="opacity">0.5</property>
             <property name="halign">start</property>
             <property name="label">100%</property>
             <property name="wrap">True</property>
+            <style>
+              <class name="dim-label"/>
+            </style>
           </object>
           <packing>
             <property name="left-attach">1</property>
@@ -1276,10 +1230,12 @@ PB (@uno20001)</property>
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="opacity">0.7</property>
                 <property name="halign">end</property>
                 <property name="hexpand">True</property>
-                <property name="icon-name">dialog-information</property>
+                <property name="icon-name">dialog-information-symbolic</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1291,11 +1247,13 @@ PB (@uno20001)</property>
               <object class="GtkLabel" id="ProfileInfoLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="opacity">0.5</property>
                 <property name="halign">start</property>
                 <property name="hexpand">True</property>
                 <property name="label" translatable="yes">You reached your CPU's limit(s):</property>
                 <property name="wrap">True</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1357,6 +1315,113 @@ PB (@uno20001)</property>
         <property name="top-attach">5</property>
       </packing>
     </child>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <child>
+          <object class="GtkScale" id="ProfileMinimumFrequencyScale">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="adjustment">MinimumFrequencyAdjustment</property>
+            <property name="round-digits">0</property>
+            <property name="digits">0</property>
+            <property name="draw-value">False</property>
+            <property name="value-pos">right</property>
+            <signal name="value-changed" handler="onProfileMinimumFrequencyScaleValueChanged" swapped="no"/>
+            <accessibility>
+              <relation type="labelled-by" target="ProfileMinimumFrequencyLabel"/>
+            </accessibility>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="ProfileMinimumFrequencyScale-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes">Minimum CPU frequency slider</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="ProfileMinimumFrequencyValueLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">0%</property>
+            <property name="width-chars">5</property>
+            <property name="single-line-mode">True</property>
+            <property name="xalign">0</property>
+            <style>
+              <class name="dim-label"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="left-attach">1</property>
+        <property name="top-attach">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <child>
+          <object class="GtkScale" id="ProfileMaximumFrequencyScale">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="adjustment">MaximumFrequencyAdjustment</property>
+            <property name="round-digits">0</property>
+            <property name="digits">0</property>
+            <property name="draw-value">False</property>
+            <property name="value-pos">right</property>
+            <signal name="value-changed" handler="onProfileMaximumFrequencyScaleValueChanged" swapped="no"/>
+            <accessibility>
+              <relation type="labelled-by" target="ProfileMaximumFrequencyLabel"/>
+            </accessibility>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="ProfileMaximumFrequencyScale-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes">Maximum CPU frequency slider</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="ProfileMaximumFrequencyValueLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">0%</property>
+            <property name="width-chars">5</property>
+            <property name="xalign">0</property>
+            <style>
+              <class name="dim-label"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="left-attach">1</property>
+        <property name="top-attach">2</property>
+      </packing>
+    </child>
   </object>
   <object class="GtkListBoxRow" id="ProfileListBoxRow">
     <property name="visible">True</property>
@@ -1390,8 +1455,10 @@ PB (@uno20001)</property>
             <child>
               <object class="GtkImage" id="ProfileRowACIcon">
                 <property name="can-focus">False</property>
-                <property name="opacity">0.5</property>
                 <property name="icon-name">ac-adapter-symbolic</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1403,8 +1470,10 @@ PB (@uno20001)</property>
             <child>
               <object class="GtkImage" id="ProfileRowBatIcon">
                 <property name="can-focus">False</property>
-                <property name="opacity">0.5</property>
                 <property name="icon-name">battery-symbolic</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1424,13 +1493,15 @@ PB (@uno20001)</property>
           <object class="GtkBox" id="ProfileRowDetailBox">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="opacity">0.5</property>
             <property name="spacing">4</property>
             <child>
               <object class="GtkLabel" id="ProfileRowMinimumFrequencyLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label">22</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1443,6 +1514,9 @@ PB (@uno20001)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label">/</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1455,6 +1529,9 @@ PB (@uno20001)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label">100</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1473,6 +1550,9 @@ PB (@uno20001)</property>
                     <property name="halign">end</property>
                     <property name="margin-left">32</property>
                     <property name="label" translatable="yes">Turbo Boost</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -1485,6 +1565,9 @@ PB (@uno20001)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="label">:</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -1504,6 +1587,9 @@ PB (@uno20001)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label">Yes</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
