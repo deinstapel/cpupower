@@ -42,11 +42,15 @@ const _ = Gettext.gettext;
 
 /* exported NotInstalledIndicator */
 var NotInstalledIndicator = class NotInstalledIndicator extends baseindicator.CPUFreqBaseIndicator {
-    constructor(exitCode, done) {
+    constructor(exitCode, done, onConstructed) {
         super();
         this.done = done;
         this.exitCode = exitCode;
         this.createMenu();
+
+        if (onConstructed) {
+            onConstructed(this);
+        }
     }
 
     createMenu() {

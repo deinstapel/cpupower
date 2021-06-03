@@ -44,11 +44,15 @@ const SECURITY_UPDATE = 2;
 
 /* exported UpdateIndicator */
 var UpdateIndicator = class UpdateIndicator extends baseindicator.CPUFreqBaseIndicator {
-    constructor(updateType, done) {
+    constructor(updateType, done, onConstructed) {
         super();
         this.updateType = updateType;
         this.done = done;
         this.createMenu();
+
+        if (onConstructed) {
+            onConstructed(this);
+        }
     }
 
     createMenu() {

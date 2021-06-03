@@ -43,9 +43,9 @@ function init(_meta) {
     Convenience.initTranslations("gnome-shell-extension-cpupower");
 }
 
-function enableIndicator() {
-    Main.panel.addToStatusArea("cpupower", indicatorInstance.mainButton);
-    indicatorInstance.enable();
+function enableIndicator(instance) {
+    Main.panel.addToStatusArea("cpupower", instance.mainButton);
+    instance.enable();
 }
 
 /* exported enable */
@@ -61,7 +61,7 @@ function enable() {
                             disable();
                             enable();
                         }
-                    });
+                    }, (inst) => enableIndicator(inst));
                     break;
                 case utils.INSTALLER_NEEDS_SECURITY_UPDATE:
                     indicatorInstance = new update.UpdateIndicator(update.SECURITY_UPDATE, function (success) {
@@ -70,7 +70,7 @@ function enable() {
                             disable();
                             enable();
                         }
-                    });
+                    }, (inst) => enableIndicator(inst));
                     break;
                 default:
                     indicatorInstance = new notinstalled.NotInstalledIndicator(exitCode, function (success) {
@@ -79,13 +79,12 @@ function enable() {
                             disable();
                             enable();
                         }
-                    });
+                    }, (inst) => enableIndicator(inst));
                     break;
                 }
             } else {
-                indicatorInstance = new indicator.CPUFreqIndicator();
+                indicatorInstance = new indicator.CPUFreqIndicator((inst) => enableIndicator(inst));
             }
-            enableIndicator();
         });
     } catch (e) {
         logError(e.message);

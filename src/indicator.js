@@ -54,7 +54,7 @@ const LASTSETTINGS = `${GLib.get_user_cache_dir()}/cpupower.last-settings`;
 
 /* exported CPUFreqIndicator */
 var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseIndicator {
-    constructor() {
+    constructor(onConstructed) {
         super();
         this.cpufreq = 800;
         this.cpucount = 0;
@@ -88,6 +88,10 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             this.cpuMaxLimit = result.max;
             this.createMenu();
             this.updateFreqMinMax(true);
+
+            if (onConstructed) {
+                onConstructed(this);
+            }
         });
     }
 
@@ -245,7 +249,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
             this.imSliderMin.add_child(this.minSlider);
         } else {
-            this.imSliderMin.actor.add(this.minSlider.actor, {expand: true});
+            this.imSliderMin.actor.add(this.minSlider, {expand: true});
         }
 
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
@@ -269,7 +273,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
             this.imSliderMax.add_child(this.maxSlider);
         } else {
-            this.imSliderMax.actor.add(this.maxSlider.actor, {expand: true});
+            this.imSliderMax.actor.add(this.maxSlider, {expand: true});
         }
 
         this.imCurrentTitle = new PopupMenu.PopupMenuItem(`${_("Current Frequency")}:`, {reactive: false});
@@ -399,18 +403,10 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         }
 
         this.imMinLabel.set_text(this.getMinText());
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-            this.minSlider.value = this.minVal;
-        } else {
-            this.minSlider.setValue(this.minVal);
-        }
+        this.minSlider.value = this.minVal;
 
         this.imMaxLabel.set_text(this.getMaxText());
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-            this.maxSlider.value = this.maxVal;
-        } else {
-            this.maxSlider.setValue(this.maxVal);
-        }
+        this.maxSlider.value = this.maxVal;
 
         this.imTurboSwitch.setToggleState(this.isTurboBoostActive);
         this.imAutoSwitch.setToggleState(this.isAutoSwitchActive);
