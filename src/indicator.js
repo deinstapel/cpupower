@@ -331,15 +331,15 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
     applyProfile(profile) {
         this.minVal = profile.MinimumFrequency;
-        this.updateMin();
-
-        this.maxVal = profile.MaximumFrequency;
-        this.updateMax();
-
-        this.isTurboBoostActive = profile.TurboBoost;
-        this.updateTurbo();
-
-        this.updateUi();
+        this.updateMin(() => {
+            this.maxVal = profile.MaximumFrequency;
+            this.updateMax(() => {
+                this.isTurboBoostActive = profile.TurboBoost;
+                this.updateTurbo(() => {
+                    this.updateUi();
+                });
+            });
+        });
     }
 
     disable() {
@@ -369,24 +369,36 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         GLib.file_set_contents(LASTSETTINGS, cmd);
     }
 
-    updateMax() {
+    updateMax(done) {
         let backend = this.settings.get_string("cpufreqctl-backend");
         Cpufreqctl.max.set(backend, Math.floor(this.maxVal).toString(), (_result) => {
             this.updateFile();
+
+            if (done) {
+                done();
+            }
         });
     }
 
-    updateMin() {
+    updateMin(done) {
         let backend = this.settings.get_string("cpufreqctl-backend");
         Cpufreqctl.min.set(backend, Math.floor(this.minVal).toString(), (_result) => {
             this.updateFile();
+
+            if (done) {
+                done();
+            }
         });
     }
 
-    updateTurbo() {
+    updateTurbo(done) {
         let backend = this.settings.get_string("cpufreqctl-backend");
         Cpufreqctl.turbo.set(backend, this.isTurboBoostActive ? "on" : "off", (_result) => {
             this.updateFile();
+
+            if (done) {
+                done();
+            }
         });
     }
 
@@ -394,7 +406,6 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         if (this.power_state) {
             this.powerActions(this.power_state);
         }
-        this.updateFile();
     }
 
     updateUi() {
