@@ -713,42 +713,48 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         }
     }
 
-    onProfileNameEntryChanged(profileContext, _entry) {
-        profileContext.Settings.DiscardButton.sensitive = true;
-        profileContext.Settings.SaveButton.sensitive = true;
+    onProfileNameEntryChanged(profileContext, entry) {
+        let changed = profileContext.Profile.Name !== entry.get_text();
+
+        if (changed) {
+            profileContext.Settings.DiscardButton.sensitive = true;
+            profileContext.Settings.SaveButton.sensitive = true;
+        }
     }
 
     onProfileMinimumFrequencyScaleValueChanged(profileContext, scale) {
-        profileContext.Settings.DiscardButton.sensitive = true;
-        profileContext.Settings.SaveButton.sensitive = true;
-        profileContext.Settings.MaximumFrequencyAdjustment.set_lower(scale.get_value());
-        profileContext.Settings.MinimumFrequencyValueLabel.set_text(`${scale.get_value()}%`);
+        let changed = profileContext.Profile.MinimumFrequency !== scale.get_value();
 
-        this.showCpuLimitInfo(profileContext);
+        if (changed) {
+            profileContext.Settings.DiscardButton.sensitive = true;
+            profileContext.Settings.SaveButton.sensitive = true;
+            profileContext.Settings.MaximumFrequencyAdjustment.set_lower(scale.get_value());
+            profileContext.Settings.MinimumFrequencyValueLabel.set_text(`${scale.get_value()}%`);
+
+            this.showCpuLimitInfo(profileContext);
+        }
     }
 
     onProfileMaximumFrequencyScaleValueChanged(profileContext, scale) {
-        profileContext.Settings.DiscardButton.sensitive = true;
-        profileContext.Settings.SaveButton.sensitive = true;
-        profileContext.Settings.MinimumFrequencyAdjustment.set_upper(scale.get_value());
-        profileContext.Settings.MaximumFrequencyValueLabel.set_text(`${scale.get_value()}%`);
+        let changed = profileContext.Profile.MaximumFrequency !== scale.get_value();
 
-        this.showCpuLimitInfo(profileContext);
+        if (changed) {
+            profileContext.Settings.DiscardButton.sensitive = true;
+            profileContext.Settings.SaveButton.sensitive = true;
+            profileContext.Settings.MinimumFrequencyAdjustment.set_upper(scale.get_value());
+            profileContext.Settings.MaximumFrequencyValueLabel.set_text(`${scale.get_value()}%`);
+
+            this.showCpuLimitInfo(profileContext);
+        }
     }
 
-    onProfileTurboBoostSwitchActiveNotify(profileContext, _switchButton) {
-        profileContext.Settings.DiscardButton.sensitive = true;
-        profileContext.Settings.SaveButton.sensitive = true;
-    }
+    onProfileTurboBoostSwitchActiveNotify(profileContext, switchButton) {
+        let changed = profileContext.Profile.TurboBoost !== switchButton.get_active();
 
-    onProfileDefaultBatChecktoggled(profileContext, _checkButton) {
-        profileContext.Settings.DiscardButton.sensitive = true;
-        profileContext.Settings.SaveButton.sensitive = true;
-    }
-
-    onProfileDefaultACChecktoggled(profileContext, _checkButton) {
-        profileContext.Settings.DiscardButton.sensitive = true;
-        profileContext.Settings.SaveButton.sensitive = true;
+        if (changed) {
+            profileContext.Settings.DiscardButton.sensitive = true;
+            profileContext.Settings.SaveButton.sensitive = true;
+        }
     }
 
     onProfileDiscardButtonClicked(profileContext, _button) {
