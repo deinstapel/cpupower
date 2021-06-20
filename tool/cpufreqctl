@@ -256,6 +256,11 @@ intel_pstate_max_set ()
 
 intel_pstate_info_frequencies ()
 {
+    # prevent race condition if two cpufreqctl instances run simultaneously
+    # by instancing lock on fd 7 (can be 3 to 9, I chose 7)
+    exec 7> /dev/null
+    flock 7
+
     prev=$(cat /sys/devices/system/cpu/intel_pstate/max_perf_pct)
     echo 100 > /sys/devices/system/cpu/intel_pstate/max_perf_pct
     max=$(cat /sys/devices/system/cpu/intel_pstate/max_perf_pct)
@@ -449,6 +454,11 @@ cpufreq_max_set ()
 
 cpufreq_info_frequencies ()
 {
+    # prevent race condition if two cpufreqctl instances run simultaneously
+    # by instancing lock on fd 7 (can be 3 to 9, I chose 7)
+    exec 7> /dev/null
+    flock 7
+
     prev=$(cpufreq_min_read)
     cpufreq_min_write 0
     min=$(cpufreq_min_read)
