@@ -393,6 +393,12 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
         profileContext.Settings.DiscardButton.sensitive = false;
         profileContext.Settings.SaveButton.sensitive = false;
+
+        this.ProfilesListBox.sensitive = true;
+        this.ProfilesAddToolButton.sensitive = true;
+        this.ProfilesRemoveToolButton.sensitive = true;
+        this.ProfilesMoveUpToolButton.sensitive = true;
+        this.ProfilesMoveDownToolButton.sensitive = true;
     }
 
     removeProfile(profile) {
@@ -719,6 +725,12 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         if (changed) {
             profileContext.Settings.DiscardButton.sensitive = true;
             profileContext.Settings.SaveButton.sensitive = true;
+
+            this.ProfilesListBox.sensitive = false;
+            this.ProfilesAddToolButton.sensitive = false;
+            this.ProfilesRemoveToolButton.sensitive = false;
+            this.ProfilesMoveUpToolButton.sensitive = false;
+            this.ProfilesMoveDownToolButton.sensitive = false;
         }
     }
 
@@ -732,6 +744,12 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             profileContext.Settings.MinimumFrequencyValueLabel.set_text(`${scale.get_value()}%`);
 
             this.showCpuLimitInfo(profileContext);
+
+            this.ProfilesListBox.sensitive = false;
+            this.ProfilesAddToolButton.sensitive = false;
+            this.ProfilesRemoveToolButton.sensitive = false;
+            this.ProfilesMoveUpToolButton.sensitive = false;
+            this.ProfilesMoveDownToolButton.sensitive = false;
         }
     }
 
@@ -745,6 +763,12 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             profileContext.Settings.MaximumFrequencyValueLabel.set_text(`${scale.get_value()}%`);
 
             this.showCpuLimitInfo(profileContext);
+
+            this.ProfilesListBox.sensitive = false;
+            this.ProfilesAddToolButton.sensitive = false;
+            this.ProfilesRemoveToolButton.sensitive = false;
+            this.ProfilesMoveUpToolButton.sensitive = false;
+            this.ProfilesMoveDownToolButton.sensitive = false;
         }
     }
 
@@ -754,6 +778,12 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         if (changed) {
             profileContext.Settings.DiscardButton.sensitive = true;
             profileContext.Settings.SaveButton.sensitive = true;
+
+            this.ProfilesListBox.sensitive = false;
+            this.ProfilesAddToolButton.sensitive = false;
+            this.ProfilesRemoveToolButton.sensitive = false;
+            this.ProfilesMoveUpToolButton.sensitive = false;
+            this.ProfilesMoveDownToolButton.sensitive = false;
         }
     }
 
