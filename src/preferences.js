@@ -39,6 +39,7 @@ const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
 const EXTENSIONDIR = Me.dir.get_path();
 const CONFIG = Me.imports.src.config;
 const attemptUninstallation = Me.imports.src.utils.attemptUninstallation;
+const getuid = Me.imports.src.utils.getuid;
 const Cpufreqctl = Me.imports.src.utils.Cpufreqctl;
 
 const GLADE_FILE = `${EXTENSIONDIR}/data/cpupower-preferences.glade`;
@@ -636,64 +637,92 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         let cancelButton = uninstallDialogBuilder.get_object("UninstallDialogCancel");
         let parentWindow = this.MainWidget.get_toplevel();
         dialog.set_transient_for(parentWindow);
+
         uninstallButton.connect("clicked", () => {
-            attemptUninstallation((success) => {
+            const uid = getuid();
+            log(`DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus`);
+
+            if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
+                let out = GLib.spawn_sync(
+                    null,
+                    [
+                        "gnome-extensions",
+                        "disable",
+                        "cpupower@mko-sl.de",
+                    ],
+                    /*
+                    [
+                        `DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus`,
+                    ],
+                    */
+                    null,
+                    GLib.SpawnFlags.SEARCH_PATH,
+                    null,
+                );
+                log(out);
+            } else {
+                GLib.spawn_sync(
+                    null,
+                    [
+                        "gnome-shell-extension-tool",
+                        "--disable-extension",
+                        "cpupower@mko-sl.de",
+                    ],
+                    /*
+                    [
+                        `DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus`,
+                    ],
+                    */
+                    null,
+                    GLib.SpawnFlags.SEARCH_PATH,
+                    null,
+                );
+            }
+
+            attemptUninstallation((_success) => {
                 dialog.close();
 
-                if (success) {
-                    if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-                        GLib.spawn_sync(
-                            null,
-                            [
-                                "gnome-extensions",
-                                "disable",
-                                "cpupower@mko-sl.de",
-                            ],
-                            null,
-                            GLib.SpawnFlags.SEARCH_PATH,
-                            null,
-                        );
-                        GLib.spawn_sync(
-                            null,
-                            [
-                                "gnome-extensions",
-                                "enable",
-                                "cpupower@mko-sl.de",
-                            ],
-                            null,
-                            GLib.SpawnFlags.SEARCH_PATH,
-                            null,
-                        );
-                    } else {
-                        GLib.spawn_sync(
-                            null,
-                            [
-                                "gnome-shell-extension-tool",
-                                "--disable-extension",
-                                "cpupower@mko-sl.de",
-                            ],
-                            null,
-                            GLib.SpawnFlags.SEARCH_PATH,
-                            null,
-                        );
-                        GLib.spawn_sync(
-                            null,
-                            [
-                                "gnome-shell-extension-tool",
-                                "--enable-extension",
-                                "cpupower@mko-sl.de",
-                            ],
-                            null,
-                            GLib.SpawnFlags.SEARCH_PATH,
-                            null,
-                        );
-                    }
-
-                    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 0, () => {
-                        parentWindow.close();
-                        return GLib.SOURCE_REMOVE;
-                    });
+                if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
+                    let out = GLib.spawn_sync(
+                        null,
+                        [
+                            "gnome-extensions",
+                            "enable",
+                            "cpupower@mko-sl.de",
+                        ],
+                        /*
+                        [
+                            `DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus`,
+                        ],
+                        */
+                        null,
+                        GLib.SpawnFlags.SEARCH_PATH,
+                        null,
+                    );
+                    log(out);
+                } else {
+                    GLib.spawn_sync(
+                        null,
+                        [
+                            "gnome-shell-extension-tool",
+                            "--enable-extension",
+                            "cpupower@mko-sl.de",
+                        ],
+                        /*
+                        [
+                            `DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus`,
+                        ],
+                        */
+                        null,
+                        GLib.SpawnFlags.SEARCH_PATH,
+                        null,
+                    );
                 }
+
+                GLib.timeout_add(GLib.PRIORITY_DEFAULT, 0, () => {
+                    parentWindow.close();
+                    return GLib.SOURCE_REMOVE;
+                });
             });
         });
         cancelButton.connect("clicked", () => {

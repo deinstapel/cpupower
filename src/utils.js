@@ -28,6 +28,7 @@
 
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
+const ByteArray = imports.byteArray;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -35,6 +36,12 @@ const EXTENSIONDIR = Me.dir.get_path();
 const INSTALLER = `${EXTENSIONDIR}/tool/installer.sh`;
 const PKEXEC = GLib.find_program_in_path("pkexec");
 const CONFIG = Me.imports.src.config;
+
+// FIXME: I don't know how to call linux's getuid directly...
+/* exported getuid */
+function getuid() {
+    return parseInt(ByteArray.toString(GLib.spawn_sync(null, ["id", "-u"], null, GLib.SpawnFlags.SEARCH_PATH, null)[1]));
+}
 
 function spawnProcessCheckExitCode(argv, callback) {
     let [ok, pid] = GLib.spawn_async(
@@ -144,7 +151,20 @@ function runCpufreqctl(pkexecNeeded, backend, params, cb) {
         Gio.SubprocessFlags.STDOUT_PIPE,
     );
     launcher.set_cwd(EXTENSIONDIR);
-    let proc = launcher.spawnv(args);
+    let proc;
+    try {
+        proc = launcher.spawnv(args);
+    } catch (e) {
+        if (cb) {
+            cb({
+                ok: false,
+                exitCode: null,
+                response: null,
+            });
+        }
+        return;
+    }
+
     let stdoutStream = new Gio.DataInputStream({
         base_stream: proc.get_stdout_pipe(),
         close_base_stream: true,
