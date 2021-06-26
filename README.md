@@ -36,7 +36,7 @@ You need to have a CPU which is supported by the **cpufreq** or **intel_pstate**
 
 - Gnome (since it's an extension)
 - Policykit (ships default with gnome)
-- For Intel Core CPU's `intel_pstate`` needs to be enabled in the Linux kernel (should be the default in almost all Distros)
+- For Intel Core CPU's `intel_pstate` needs to be enabled in the Linux kernel (should be the default in almost all Distros)
 - For AMD Ryzen CPU's no further requirements are needed
 - A POSIX compatible shell
 
