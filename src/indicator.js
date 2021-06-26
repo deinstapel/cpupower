@@ -72,6 +72,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                 this.isTurboBoostActive = lines[2].indexOf("true") > -1;
                 this.isAutoSwitchActive = lines[3].indexOf("true") > -1;
 
+                log(`Loaded old settings: { minVal: ${this.minVal}, maxVal: ${this.maxVal}, isTurboBoostActive: ${this.isTurboBoostActive}, isAutoSwitchActive: ${this.isAutoSwitchActive} }`);
+
                 this.updateMin();
                 this.updateMax();
                 this.updateTurbo();
@@ -113,7 +115,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             this.onPowerChanged.bind(this),
         );
         // select the right profile at login
-        this.powerActions(this.powerState);
+        this.powerActions(this.powerState, null);
 
         super.enable();
 
@@ -125,13 +127,15 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         let newState = this.power._proxy.State;
 
         if (newState !== this.powerState) {
-            this.powerActions(newState);
+            this.powerActions(newState, null);
         }
 
         this.powerState = newState;
     }
 
-    powerActions(powerState) {
+    powerActions(powerState, done) {
+        let doneScheduled = false;
+
         if (powerState === UPower.DeviceState.DISCHARGING) {
             log("Power state changed: discharging");
             // switch to battery profile if auto switching is enabled
@@ -139,7 +143,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                 let defaultBatProfileID = this.settings.get_string("default-battery-profile");
                 for (let i = 0; i < this.profiles.length && defaultBatProfileID !== ""; i++) {
                     if (this.profiles[i].Profile.UUID === defaultBatProfileID) {
-                        this.applyProfile(this.profiles[i].Profile);
+                        doneScheduled = true;
+                        this.applyProfile(this.profiles[i].Profile, done);
                         break;
                     }
                 }
@@ -156,11 +161,16 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                 let defaultACProfileID = this.settings.get_string("default-ac-profile");
                 for (var i = 0; i < this.profiles.length && defaultACProfileID !== ""; i++) {
                     if (this.profiles[i].Profile.UUID === defaultACProfileID) {
-                        this.applyProfile(this.profiles[i].Profile);
+                        doneScheduled = true;
+                        this.applyProfile(this.profiles[i].Profile, done);
                         break;
                     }
                 }
             }
+        }
+
+        if (!doneScheduled && done) {
+            done();
         }
     }
 
@@ -292,7 +302,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.mainSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         for (var i = 0; i < this.profiles.length; i++) {
-            this.profiles[i].connect("activate", (item) => this.applyProfile(item.Profile));
+            this.profiles[i].connect("activate", (item) => this.applyProfile(item.Profile, null));
             this.mainSection.addMenuItem(this.profiles[i]);
         }
 
@@ -329,7 +339,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         });
     }
 
-    applyProfile(profile) {
+    applyProfile(profile, done) {
         this.minVal = profile.MinimumFrequency;
         this.updateMin(() => {
             this.maxVal = profile.MaximumFrequency;
@@ -337,6 +347,10 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                 this.isTurboBoostActive = profile.TurboBoost;
                 this.updateTurbo(() => {
                     this.updateUi();
+
+                    if (done) {
+                        done();
+                    }
                 });
             });
         });
@@ -358,9 +372,6 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     updateFile() {
-        if (this.menu && !this.menu.isOpen) {
-            return;
-        }
         let cmd = `${Math.floor(this.minVal)}\n` +
             `${Math.floor(this.maxVal)}\n` +
             `${this.isTurboBoostActive ? "true" : "false"}\n` +
@@ -403,8 +414,10 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     updateAutoSwitch() {
-        if (this.power_state) {
-            this.powerActions(this.power_state);
+        if (this.powerState) {
+            this.powerActions(this.powerState, () => {
+                this.updateFile();
+            });
         }
     }
 
