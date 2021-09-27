@@ -13,7 +13,7 @@
   <a href="https://github.com/martin31821/cpupower/releases">
     <img alt="Lastest release" src="https://img.shields.io/github/v/release/martin31821/cpupower?label=latest%20release&sort=semver">
   </a>
-  <img alt="Gnome" src="https://img.shields.io/badge/gnome-3.36-blue?logo=gnome&logoColor=white">
+  <img alt="Gnome 40" src="https://img.shields.io/badge/gnome-40-blue?logo=gnome&logoColor=white">
   <a href="https://github.com/martin31821/cpupower/blob/master/LICENSE">
     <img alt="License" src="https://img.shields.io/github/license/martin31821/cpupower.svg">
   </a>
@@ -21,7 +21,7 @@
     <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" target="_blank" />
   </a>
   <br>
-  <i>Gnome-Shell Extension for intel-pstate driver</i>
+  <i>Gnome-Shell Extension for controlling the frequency setting of your CPU</i>
   <br><br>
   <a href="#prerequisites">Prerequisites</a> •
   <a href="#installation">Installation</a> •
@@ -32,13 +32,13 @@
 
 ## Prerequisites
 
-You need to have an **Intel Core i CPU** of at least the **second Generation (2xxx Model Number)** and the following
-software installed to use this extension:
+You need to have a CPU which is supported by the **cpufreq** or **intel_pstate** CPU frequency scaling driver of the Linux kernel. This applies for most modern CPU's. Furthermore, the following software needs to be installed to use this extension:
 
 - Gnome (since it's an extension)
 - Policykit (ships default with gnome)
-- intel_pstate needs to be enabled in the kernel (should be the default in almost all Distros)
-- bash
+- For Intel Core CPU's `intel_pstate` needs to be enabled in the Linux kernel (should be the default in almost all Distros)
+- For AMD Ryzen CPU's no further requirements are needed
+- A POSIX compatible shell
 
 ### Installing via Makefile
 

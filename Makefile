@@ -5,7 +5,7 @@ VERSION="9.0.4"
 MSGFMT = /usr/bin/msgfmt
 GLIB_COMPILE_SCHEMAS = /usr/bin/glib-compile-schemas
 EXTENSION_INSTALL_DIR = "$(PREFIX)/share/gnome-shell/extensions/cpupower@mko-sl.de"
-EXTENSION_FILES="$(shell find . -path './.git' -prune -o -path './target' -prune -o -print)"
+EXTENSION_FILES="$(shell find . -path './.git' -prune -o -path './target' -prune -o -path './node_modules' -prune -o -print)"
 
 build:
 	@echo Compiling schemas...

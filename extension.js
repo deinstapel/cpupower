@@ -27,85 +27,102 @@
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
+const EXTENSIONDIR = Me.dir.get_path();
 const Convenience = Me.imports.src.convenience;
 const Main = imports.ui.main;
+const ByteArray = imports.byteArray;
 
-const check_supported = Me.imports.src.utils.check_supported;
-const unsupported = Me.imports.src.unsupported;
-
-const check_installed = Me.imports.src.utils.check_installed;
+const utils = Me.imports.src.utils;
+const checkInstalled = Me.imports.src.utils.checkInstalled;
 const notinstalled = Me.imports.src.notinstalled;
 const update = Me.imports.src.update;
-
 const indicator = Me.imports.src.indicator;
 
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 
-let _indicator = null;
-var init = (meta) => {
-    Convenience.initTranslations('gnome-shell-extension-cpupower');
-};
+let indicatorInstance;
+/* exported init */
+function init(_meta) {
+    Convenience.initTranslations("gnome-shell-extension-cpupower");
+}
 
+function enableIndicator(instance) {
+    Main.panel.addToStatusArea("cpupower", instance.mainButton);
+    instance.enable();
+}
 
-const _enableIndicator = () => {
-    Main.panel.addToStatusArea('cpupower', _indicator._mainButton);
-    _indicator.enable();
-};
+let cpupowerProxy;
+let extensionReloadSignalHandler;
+/* exported enable */
+function enable() {
+    const interfaceXml = ByteArray.toString(GLib.file_get_contents(`${EXTENSIONDIR}/schemas/io.github.martin31821.cpupower.dbus.xml`)[1]);
+    const CpupowerProxy = Gio.DBusProxy.makeProxyWrapper(interfaceXml);
 
-var enable = () => {
+    cpupowerProxy = new CpupowerProxy(
+        Gio.DBus.session,
+        "io.github.martin31821.cpupower",
+        "/io/github/martin31821/cpupower",
+    );
+
+    extensionReloadSignalHandler = cpupowerProxy.connectSignal("ExtensionReloadRequired", () => {
+        log("Reloading cpupower");
+        disable();
+        enable();
+    });
+
     try {
-        check_supported(supported => {
-            if (!supported) {
-                _indicator = new unsupported.UnsupportedIndicator();
-                _enableIndicator();
-                return;
-            }
-
-            check_installed((installed, exitCode) => {
-                if (!installed) {
-                    switch (exitCode) {
-                    case 3:
-                        _indicator = new update.UpdateIndicator(update.UPDATE, function (success) {
-                            if (success) {
-                                // reenable the extension to allow immediate operation.
-                                disable();
-                                enable();
-                            }
-                        });
-                        break;
-                    case 4:
-                        _indicator = new update.UpdateIndicator(update.SECURITY_UPDATE, function (success) {
-                            if (success) {
-                                // reenable the extension to allow immediate operation.
-                                disable();
-                                enable();
-                            }
-                        });
-                        break;
-                    default:
-                        _indicator = new notinstalled.NotInstalledIndicator(function (success) {
-                            if (success)
-                            {
-                                // reenable the extension to allow immediate operation.
-                                disable();
-                                enable();
-                            }
-                        });
-                        break;
-                    }
-                } else {
-                    _indicator = new indicator.CPUFreqIndicator();
+        checkInstalled((installed, exitCode) => {
+            if (!installed) {
+                switch (exitCode) {
+                case utils.INSTALLER_NEEDS_UPDATE:
+                    indicatorInstance = new update.UpdateIndicator(update.UPDATE, function (success) {
+                        if (success) {
+                            // reenable the extension to allow immediate operation.
+                            disable();
+                            enable();
+                        }
+                    }, (inst) => enableIndicator(inst));
+                    break;
+                case utils.INSTALLER_NEEDS_SECURITY_UPDATE:
+                    indicatorInstance = new update.UpdateIndicator(update.SECURITY_UPDATE, function (success) {
+                        if (success) {
+                            // reenable the extension to allow immediate operation.
+                            disable();
+                            enable();
+                        }
+                    }, (inst) => enableIndicator(inst));
+                    break;
+                default:
+                    indicatorInstance = new notinstalled.NotInstalledIndicator(exitCode, function (success) {
+                        if (success) {
+                            // reenable the extension to allow immediate operation.
+                            disable();
+                            enable();
+                        }
+                    }, (inst) => enableIndicator(inst));
+                    break;
                 }
-                _enableIndicator();
-            });
+            } else {
+                indicatorInstance = new indicator.CPUFreqIndicator((inst) => enableIndicator(inst));
+            }
         });
     } catch (e) {
         logError(e.message);
     }
-};
+}
 
-var disable = () => {
-    if (_indicator != null) {
-        _indicator.disable();
-        _indicator.destroy();
+/* exported disable */
+function disable() {
+    if (indicatorInstance) {
+        indicatorInstance.disable();
+        indicatorInstance.destroy();
     }
-};
+
+    if (cpupowerProxy && extensionReloadSignalHandler) {
+        cpupowerProxy.disconnectSignal(extensionReloadSignalHandler);
+
+        cpupowerProxy = null;
+        extensionReloadSignalHandler = null;
+    }
+}

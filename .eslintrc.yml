@@ -1,0 +1,303 @@
+---
+# SPDX-License-Identifier: MIT OR LGPL-2.0-or-later
+env:
+  es6: true
+plugins:
+  - unicorn
+extends: 'eslint:recommended'
+rules:
+  array-bracket-newline: # just styling
+    - warn
+    - consistent
+  array-bracket-spacing: # just styling
+    - warn
+    - never
+  array-callback-return: # catch falsy code. return is always needed in array callbacks
+    - error
+  arrow-parens: # catch typos of => vs. >=
+    - error
+  arrow-spacing: # just styling
+    - warn
+  block-scoped-var: # causes nasty errors, especially in for loops with 'i' vars
+    - error
+  block-spacing: # just styling
+    - warn
+  brace-style: # just styling
+    - warn
+  comma-dangle: # just styling
+    - warn
+    - arrays: always-multiline
+      objects: always-multiline
+      functions: always-multiline
+  comma-spacing: # just styling
+    - warn
+    - before: false
+      after: true
+  comma-style: # just styling
+    - warn
+    - last
+  computed-property-spacing: # just styling
+    - warn
+  consistent-return: # this is an error on most other languages
+    - error
+  curly: # enforce braces around e.g. if blocks to minimize bugs
+    - error
+  dot-location: # just styling
+    - warn
+    - property
+  eol-last: # just styling
+    - warn
+  eqeqeq: # prefer === to ==, mitigates programming mistakes
+    - error
+  func-call-spacing: # just styling
+    - warn
+  func-name-matching: # mitigates typos
+    - error
+  func-style: # mitigate 'this' scoping mistakes
+    - error
+    - declaration
+  indent: # gnome-shell defaults, just styling
+    - warn
+    - 4
+    - ignoredNodes:
+      # Allow not indenting the body of GObject.registerClass, since in the
+      # future it's intended to be a decorator
+      - 'CallExpression[callee.object.name=GObject][callee.property.name=registerClass] > ClassExpression:first-child'
+      # Allow dedenting chained member expressions
+      MemberExpression: 'off'
+  key-spacing: # just styling
+    - warn
+    - beforeColon: false
+      afterColon: true
+  keyword-spacing: # just styling
+    - warn
+    - before: true
+      after: true
+  linebreak-style: # can cause issues on some systems, better do this right
+    - error
+    - unix
+  lines-between-class-members: # just styling
+    - warn
+  max-nested-callbacks: # just styling
+    - warn
+  max-statements-per-line: # just styling
+    - warn
+  new-parens: # just styling
+    - warn
+  no-array-constructor: # just styling
+    - warn
+  no-await-in-loop: # joining promises is preferred
+    - warn
+  no-caller: # no fiddling with arguments.caller/callee please
+    - error
+  no-constant-condition: # mostly typos
+    - error
+    - checkLoops: false
+  no-div-regex: # /= at beginning of regex is nasty as it is also an assignment
+    - error
+  no-empty: # mostly styling
+    - warn
+    - allowEmptyCatch: true
+  no-eq-null:
+    - warn
+  no-extra-bind: # cleanup the .bind(...) mess
+    - warn
+  no-extra-parens: # just styling
+    - warn
+    - all
+    - conditionalAssign: false
+      nestedBinaryExpressions: false
+      returnAssign: false
+  no-extra-boolean-cast:
+    - warn
+  no-func-assign:
+    - warn
+  no-implicit-coercion: # just use constructors instead
+    - error
+    - allow:
+      - '!!'
+  no-invalid-this: # this outside a class is probably a mistake
+    - error
+  no-iterator: # prototype.__iterator__ is not available in gjs
+    - error
+  no-label-var: # labels should not have the same name as a variable
+    - error
+  no-lonely-if: # just styling
+    - warn
+  no-loop-func: # anonymous functions create closures within loops which are hard to get right
+    - error
+  no-nested-ternary: # just styling, but please ... don't
+    - warn
+  no-new-object: # just styling
+    - warn
+  no-new-wrappers: # just styling
+    - warn
+  no-octal-escape: # just use unicode, octals are deprecated
+    - error
+  no-proto: # is deprecated
+    - error
+  no-restricted-properties: # gjs stuff
+    - error
+    - object: Lang
+      property: copyProperties
+      message: Use Object.assign()
+    - object: Lang
+      property: bind
+      message: Use arrow notation or Function.prototype.bind()
+    - object: Lang
+      property: Class
+      message: Use ES6 classes
+  no-restricted-syntax: # just styling
+    - warn
+    - selector: >-
+        MethodDefinition[key.name="_init"] >
+        FunctionExpression[params.length=1] >
+        BlockStatement[body.length=1]
+        CallExpression[arguments.length=1][callee.object.type="Super"][callee.property.name="_init"] >
+        Identifier:first-child
+      message: _init() that only calls super._init() is unnecessary
+    - selector: >-
+        MethodDefinition[key.name="_init"] >
+        FunctionExpression[params.length=0] >
+        BlockStatement[body.length=1]
+        CallExpression[arguments.length=0][callee.object.type="Super"][callee.property.name="_init"]
+      message: _init() that only calls super._init() is unnecessary
+    - selector: BinaryExpression[operator="instanceof"][right.name="Array"]
+      message: Use Array.isArray()
+  no-return-assign: # probably a typo or at least really bad style
+    - error
+  no-return-await: # just styling
+    - warn
+  no-self-compare: # will always be true
+    - error
+  no-shadow-restricted-names: # don't do this
+    - error
+  no-spaced-func: # just styling
+    - warn
+  no-tabs: # just styling
+    - warn
+  no-template-curly-in-string: # prevent wrong syntax for string interpolation
+    - error
+  no-throw-literal: # only throw new Error(...)
+    - error
+  no-trailing-spaces: # just styling
+    - warn
+  no-undefined: # just styling
+    - warn
+  no-undef-init: # this is bad
+    - error
+  no-unneeded-ternary: # just styling
+    - warn
+  no-unused-expressions: # just styling
+    - warn
+  no-unused-vars: # just styling
+    - warn
+    # Vars use a suffix _ instead of a prefix because of file-scope private vars
+    - varsIgnorePattern: ^_
+      argsIgnorePattern: ^_
+  no-useless-call: # just styling
+    - warn
+  no-useless-computed-key: # just styling
+    - warn
+  no-useless-concat: # just styling
+    - warn
+  no-useless-constructor: # just styling
+    - warn
+  no-useless-rename: # just styling
+    - warn
+  no-useless-return: # just styling
+    - warn
+  no-whitespace-before-property: # just styling
+    - warn
+  no-with: # don't use this shit
+    - error
+  object-curly-newline: # just styling
+    - warn
+    - consistent: true
+  object-curly-spacing: # just styling
+    - warn
+  object-shorthand: # just styling
+    - warn
+  operator-assignment: # just styling
+    - warn
+  operator-linebreak: # just styling
+    - warn
+  padded-blocks: # just styling
+    - warn
+    - never
+  prefer-numeric-literals: # this is hacky, but just styling
+    - warn
+  prefer-promise-reject-errors: # please use Error
+    - error
+  prefer-rest-params: # do not use arguments
+    - error
+  prefer-spread: # do not use apply if possible
+    - error
+  prefer-template: # interpolated strings are far more readable
+    - error
+  quotes: # I'm a C-guy... single quotes are for char
+    - warn
+    - double
+    - avoidEscape: true # but avoiding escapes is ok
+  require-await: # async fns should contains awaits
+    - warn
+  rest-spread-spacing: # just styling
+    - warn
+  semi: # this is an error in most other languages, won't hurt
+    - error
+    - always
+  semi-spacing: # just styling
+    - warn
+    - before: false
+      after: true
+  semi-style: # just styling
+    - warn
+  space-before-blocks: # just styling
+    - warn
+  space-before-function-paren: # just styling
+    - warn
+    - named: never
+      # for `function ()` and `async () =>`, preserve space around keywords
+      anonymous: always
+      asyncArrow: always
+  space-in-parens: # just styling
+    - warn
+  space-infix-ops: # just styling
+    - warn
+    - int32Hint: false
+  space-unary-ops: # just styling
+    - warn
+  spaced-comment: # just styling
+    - warn
+  switch-colon-spacing: # just styling
+    - warn
+  symbol-description: # make debugging easier
+    - warn
+  template-curly-spacing: # just styling
+    - warn
+  template-tag-spacing: # just styling
+    - warn
+  unicode-bom: # stupid editors, don't to this
+    - error
+  wrap-iife: # just styling
+    - warn
+    - inside
+  yield-star-spacing: # just styling
+    - warn
+  yoda: # just styling
+    - warn
+  unicorn/no-this-assignment:
+    - warn
+globals:
+  ARGV: readonly
+  Debugger: readonly
+  GIRepositoryGType: readonly
+  globalThis: readonly
+  imports: readonly
+  Intl: readonly
+  log: readonly
+  logError: readonly
+  print: readonly
+  printerr: readonly
+parserOptions:
+  ecmaVersion: 2020

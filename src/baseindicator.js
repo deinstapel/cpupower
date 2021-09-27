@@ -30,7 +30,6 @@
 const PanelMenu = imports.ui.panelMenu;
 const St = imports.gi.St;
 const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
 const PopupMenu = imports.ui.popupMenu;
 const Main = imports.ui.main;
 const Clutter = imports.gi.Clutter;
@@ -40,44 +39,48 @@ const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.src.convenience;
-const SETTINGS_ID = 'org.gnome.shell.extensions.cpupower';
+const SETTINGS_ID = "org.gnome.shell.extensions.cpupower";
 
+/* exported CPUFreqBaseIndicator */
 var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
-
     constructor() {
-        this._mainButton = new PanelMenu.Button(null, 'cpupower');
-        this.menu = this._mainButton.menu;
+        this.mainButton = new PanelMenu.Button(null, "cpupower");
+        this.menu = this.mainButton.menu;
 
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0,4)) > 3.32) {
-            this.actor = this._mainButton;
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
+            this.actor = this.mainButton;
         } else {
-            this.actor = this._mainButton.actor;
+            this.actor = this.mainButton.actor;
         }
 
         this.settings = Convenience.getSettings(SETTINGS_ID);
 
         Main.panel.menuManager.addMenu(this.menu);
-        this.hbox = new St.BoxLayout({style_class: 'panel-status-menu-box'});
-        let gicon = Gio.icon_new_for_string(Me.path + '/data/icons/cpu-symbolic.svg');
+        this.hbox = new St.BoxLayout({style_class: "panel-status-menu-box"});
+        let gicon = Gio.icon_new_for_string(`${Me.path}/data/icons/cpu-symbolic.svg`);
         this.icon = new St.Icon({
-            gicon: gicon,
-            style_class: 'system-status-icon'
+            gicon,
+            style_class: "system-status-icon",
         });
 
-        this.lbl = new St.Label({text: '', y_expand:true, y_align: Clutter.ActorAlign.CENTER});
+        this.lbl = new St.Label({text: "", y_expand: true, y_align: Clutter.ActorAlign.CENTER});
         this.arrow = PopupMenu.arrowIcon(St.Side.BOTTOM);
 
         this.createIndicator();
 
+        this.settings.connect("changed", this.onSettingsChanged.bind(this));
+    }
 
-        this.settings.connect('changed', () => {this.createIndicator(); this.createMenu()});
+    onSettingsChanged() {
+        this.createIndicator();
+        this.createMenu();
     }
 
     createIndicator() {
-        this.lblActive = (this.settings.get_boolean('show-freq-in-taskbar'));
-        this.lblUnit = (this.settings.get_boolean('taskbar-freq-unit-ghz'));
-        this.iconActive = (this.settings.get_boolean('show-icon-in-taskbar'));
-        this.arrowActive = (this.settings.get_boolean('show-arrow-in-taskbar'));
+        this.lblActive = this.settings.get_boolean("show-freq-in-taskbar");
+        this.lblUnit = this.settings.get_boolean("taskbar-freq-unit-ghz");
+        this.iconActive = this.settings.get_boolean("show-icon-in-taskbar");
+        this.arrowActive = this.settings.get_boolean("show-arrow-in-taskbar");
         this.hbox.remove_all_children();
         if (this.lblActive) {
             this.hbox.add_actor(this.lbl);
@@ -92,8 +95,8 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
 
     createMenu() {
         this.menu.removeAll(); // clear the menu in case we are recreating the menu
-        this.section = new PopupMenu.PopupMenuSection();
-        this.menu.addMenuItem(this.section);
+        this.mainSection = new PopupMenu.PopupMenuSection();
+        this.menu.addMenuItem(this.mainSection);
     }
 
     disable() {
@@ -103,7 +106,8 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
     enable() {
         this.actor.add_actor(this.hbox);
     }
+
     destroy() {
-        this._mainButton.destroy();
+        this.mainButton.destroy();
     }
-}
+};

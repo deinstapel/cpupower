@@ -23,17 +23,21 @@
  * along with gnome-shell extension cpupower.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
- */    
-// 32bit random number without 0
-const GenerateUUID = () => Math.floor(1 + Math.random() * 0xFFFFFFFE).toString();
+ */
 
+// 32bit random number without 0
+function GenerateUUID() {
+    return Math.floor(1 + Math.random() * 0xFFFFFFFE).toString();
+}
+
+/* exported CPUFreqProfile */
 var CPUFreqProfile = class CPUFreqProfile {
     constructor() {
         this.UUID = GenerateUUID();
         this.MinimumFrequency = 0;
         this.MaximumFrequency = 100;
         this.TurboBoost = true;
-        this.Name = 'Default';
+        this.Name = "Default";
     }
 
     save() {
@@ -46,16 +50,13 @@ var CPUFreqProfile = class CPUFreqProfile {
         this.TurboBoost = input[2];
         this.Name = input[3];
 
-        if (input.length < 5 || !input[4])
-        {
+        if (input.length < 5 || !input[4]) {
             this.UUID = GenerateUUID();
             // log("Generated UUID: " + this.UUID);
             return true;
-        }
-        else
-        {
+        } else {
             this.UUID = input[4];
             return false;
         }
     }
-}
+};
