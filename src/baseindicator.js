@@ -82,11 +82,11 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
         this.iconActive = this.settings.get_boolean("show-icon-in-taskbar");
         this.arrowActive = this.settings.get_boolean("show-arrow-in-taskbar");
         this.hbox.remove_all_children();
-        if (this.lblActive) {
-            this.hbox.add_actor(this.lbl);
-        }
         if (this.iconActive) {
             this.hbox.add_actor(this.icon);
+        }
+        if (this.lblActive) {
+            this.hbox.add_actor(this.lbl);
         }
         if (this.arrowActive) {
             this.hbox.add_actor(this.arrow);

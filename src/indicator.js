@@ -220,10 +220,12 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         this.imMinTitle = new PopupMenu.PopupMenuItem(`${_("Minimum Frequency")}:`, {reactive: false});
         this.imMinLabel = new St.Label({text: this.getMinText()});
+        this.imMinLabel.set_style("width: 3.5em; text-align: right");
         this.imMinTitle.actor.add_child(this.imMinLabel);
 
         this.imMaxTitle = new PopupMenu.PopupMenuItem(`${_("Maximum Frequency")}:`, {reactive: false});
         this.imMaxLabel = new St.Label({text: this.getMaxText()});
+        this.imMaxLabel.set_style("width: 3.5em; text-align: right");
         this.imMaxTitle.actor.add_child(this.imMaxLabel);
 
         this.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(`${_("Turbo Boost")}:`, this.isTurboBoostActive);
@@ -288,6 +290,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         this.imCurrentTitle = new PopupMenu.PopupMenuItem(`${_("Current Frequency")}:`, {reactive: false});
         this.imCurrentLabel = new St.Label({text: this.getCurFreq()});
+        this.imCurrentLabel.set_style("width: 4.5em; text-align: right");
         this.imCurrentTitle.actor.add_child(this.imCurrentLabel);
 
         this.mainSection.addMenuItem(this.imMinTitle);
