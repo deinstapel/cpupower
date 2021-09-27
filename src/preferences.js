@@ -147,7 +147,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         });
     }
 
-    updateSettings() {
+    updateSettings(done) {
         let value = this.settings.get_boolean("show-freq-in-taskbar");
         this.ShowCurrentFrequencySwitch.set_active(value);
 
@@ -232,12 +232,15 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                 }
                 this.status("Needed ID refresh, reloading");
                 this.saveProfiles(saved);
-                this.updateSettings();
+                this.updateSettings(done);
             } else {
                 for (let p in tmpProfiles) {
                     this.addOrUpdateProfile(tmpProfiles[p]);
                 }
-                this.selectFirstProfile();
+
+                if (done) {
+                    done();
+                }
             }
         });
     }
@@ -573,11 +576,12 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         mainWidget.parent.border_width = 0;
 
         this.settings = Convenience.getSettings(SETTINGS_SCHEMA);
-        this.settings.connect("changed", this.updateSettings.bind(this));
-        this.updateSettings();
-
-        this.loadBackendsComboBox();
-        this.refreshAutoSwitchComboBoxes();
+        this.settings.connect("changed", this.updateSettings.bind(this, null));
+        this.updateSettings(() => {
+            this.refreshAutoSwitchComboBoxes();
+            this.selectFirstProfile();
+            this.loadBackendsComboBox();
+        });
     }
 
     onShowCurrentFrequencySwitchActiveNotify(switchButton) {
