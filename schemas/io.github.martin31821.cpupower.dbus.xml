@@ -1,0 +1,5 @@
+<node>
+  <interface name="io.github.martin31821.cpupower">
+    <signal name="ExtensionReloadRequired"></signal>
+  </interface>
+</node>

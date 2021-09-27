@@ -27,10 +27,11 @@
  */
 
 const Gtk = imports.gi.Gtk;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Config = imports.misc.config;
 const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
 const _ = Gettext.gettext;
+const ByteArray = imports.byteArray;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -39,7 +40,6 @@ const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
 const EXTENSIONDIR = Me.dir.get_path();
 const CONFIG = Me.imports.src.config;
 const attemptUninstallation = Me.imports.src.utils.attemptUninstallation;
-const getuid = Me.imports.src.utils.getuid;
 const Cpufreqctl = Me.imports.src.utils.Cpufreqctl;
 
 const GLADE_FILE = `${EXTENSIONDIR}/data/cpupower-preferences.glade`;
@@ -48,6 +48,17 @@ const SETTINGS_SCHEMA = "org.gnome.shell.extensions.cpupower";
 /* exported CPUPowerPreferences */
 var CPUPowerPreferences = class CPUPowerPreferences {
     constructor() {
+        this.cpupowerService = null;
+        this.cpupowerConnection = null;
+        Gio.bus_own_name(
+            Gio.BusType.SESSION,
+            "io.github.martin31821.cpupower",
+            Gio.BusNameOwnerFlags.NONE,
+            this.onBusAcquired.bind(this),
+            this.onNameAcquired.bind(this),
+            this.onNameLost.bind(this),
+        );
+
         this.Builder = new Gtk.Builder();
         this.Builder.set_translation_domain("gnome-shell-extension-cpupower");
         this.Builder.add_objects_from_file(
@@ -81,6 +92,28 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             "UninstallButton",
         );
         this.ProfilesMap = new Map();
+    }
+
+    onBusAcquired(connection, _name) {
+        log("DBus bus acquired!");
+        const interfaceXml = ByteArray.toString(GLib.file_get_contents(`${EXTENSIONDIR}/schemas/io.github.martin31821.cpupower.dbus.xml`)[1]);
+        this.cpupowerService = Gio.DBusExportedObject.wrapJSObject(interfaceXml, {});
+        this.cpupowerService.export(connection, "/io/github/martin31821/cpupower");
+
+        // do not set connection in 'this' here, as we use it to check if name is
+        // acquired
+    }
+
+    onNameAcquired(connection, _name) {
+        log("DBus name acquired!");
+        this.cpupowerConnection = connection;
+
+        this.cpupowerService.emit_signal("ImAlive", null);
+    }
+
+    onNameLost(_connection, _name) {
+        log("DBus name lost!");
+        this.cpupowerConnection = null;
     }
 
     status(msg) {
@@ -150,36 +183,63 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         this.CpufreqctlPathLabel.set_text(CONFIG.CPUFREQCTL);
         this.PolicykitRulePathLabel.set_text(CONFIG.POLKIT);
 
-        // Backward compatibility:
-        // for the new Settings UI we introduced a profile-id, which is not present in the older versions.
-        // gesettings allows us to update the schema without conflicts.
+        this.checkFrequencies((result) => {
+            this.cpuMinLimit = result.min;
+            this.cpuMaxLimit = result.max;
 
-        // CPUFreqProfile checks if an ID is present at load time, if not or an empty one was given, it will generate one
-        // if any profile needed a new ID, we save all profiles and reload the UI.
+            // Backward compatibility:
+            // for the new Settings UI we introduced a profile-id, which is not present in the older versions.
+            // gsettings allows us to update the schema without conflicts.
 
-        let profiles = this.settings.get_value("profiles");
-        profiles = profiles.deep_unpack();
-        let tmpProfiles = [];
-        let needsUpdate = false;
-        for (let j in profiles) {
-            let profile = new CPUFreqProfile();
-            needsUpdate |= profile.load(profiles[j]);
-            tmpProfiles.push(profile);
-        }
+            // CPUFreqProfile checks if an ID is present at load time, if not or an empty one was given, it will generate one
+            // if any profile needed a new ID, we save all profiles and reload the UI.
 
-        if (needsUpdate) {
-            let saved = [];
-            for (let p in tmpProfiles) {
-                saved.push(tmpProfiles[p].save());
+            let profiles = this.settings.get_value("profiles");
+            profiles = profiles.deep_unpack();
+            let tmpProfiles = [];
+            let needsUpdate = false;
+            for (let j in profiles) {
+                let profile = new CPUFreqProfile();
+                needsUpdate |= profile.load(profiles[j]);
+
+                if (profile.MinimumFrequency < this.cpuMinLimit) {
+                    profile.MinimumFrequency = this.cpuMinLimit;
+                    needsUpdate = true;
+                }
+
+                if (profile.MaximumFrequency < this.cpuMinLimit) {
+                    profile.MaximumFrequency = this.cpuMinLimit;
+                    needsUpdate = true;
+                }
+
+                if (profile.MaximumFrequency > this.cpuMaxLimit) {
+                    profile.MaximumFrequency = this.cpuMaxLimit;
+                    needsUpdate = true;
+                }
+
+                if (profile.MinimumFrequency > this.cpuMaxLimit) {
+                    profile.MinimumFrequency = this.cpuMaxLimit;
+                    needsUpdate = true;
+                }
+
+                tmpProfiles.push(profile);
             }
-            this.status("Needed ID refresh, reloading");
-            this.saveProfiles(saved);
-            this.updateSettings();
-        } else {
-            for (let p in tmpProfiles) {
-                this.addOrUpdateProfile(tmpProfiles[p]);
+
+            if (needsUpdate) {
+                let saved = [];
+                for (let p in tmpProfiles) {
+                    saved.push(tmpProfiles[p].save());
+                }
+                this.status("Needed ID refresh, reloading");
+                this.saveProfiles(saved);
+                this.updateSettings();
+            } else {
+                for (let p in tmpProfiles) {
+                    this.addOrUpdateProfile(tmpProfiles[p]);
+                }
+                this.selectFirstProfile();
             }
-        }
+        });
     }
 
     // Dat is so magic, world is exploooooooding
@@ -349,29 +409,24 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             profileContext.Profile = profile;
         }
 
-        this.checkFrequencies((result) => {
-            this.cpuMinLimit = result.min;
-            this.cpuMaxLimit = result.max;
+        // set limit labels
+        profileContext.Settings.LimitMinLabel.set_text(`${this.cpuMinLimit}%`);
+        profileContext.Settings.LimitMaxLabel.set_text(`${this.cpuMaxLimit}%`);
 
-            // set limit labels
-            profileContext.Settings.LimitMinLabel.set_text(`${this.cpuMinLimit}%`);
-            profileContext.Settings.LimitMaxLabel.set_text(`${this.cpuMaxLimit}%`);
+        // modify adjustments
+        profileContext.Settings.MinimumFrequencyAdjustment.set_lower(this.cpuMinLimit);
+        profileContext.Settings.MinimumFrequencyAdjustment.set_upper(profileContext.Profile.MaximumFrequency);
+        profileContext.Settings.MaximumFrequencyAdjustment.set_lower(profileContext.Profile.MinimumFrequency);
+        profileContext.Settings.MaximumFrequencyAdjustment.set_upper(this.cpuMaxLimit);
 
-            // modify adjustments
-            profileContext.Settings.MinimumFrequencyAdjustment.set_lower(this.cpuMinLimit);
-            profileContext.Settings.MinimumFrequencyAdjustment.set_upper(profileContext.Profile.MaximumFrequency);
-            profileContext.Settings.MaximumFrequencyAdjustment.set_lower(profileContext.Profile.MinimumFrequency);
-            profileContext.Settings.MaximumFrequencyAdjustment.set_upper(this.cpuMaxLimit);
-
-            profileContext.Settings.MinimumFrequencyScale.set_value(profileContext.Profile.MinimumFrequency);
-            profileContext.Settings.MaximumFrequencyScale.set_value(profileContext.Profile.MaximumFrequency);
-            profileContext.Settings.MinimumFrequencyValueLabel.set_text(
-                `${profileContext.Profile.MinimumFrequency}%`,
-            );
-            profileContext.Settings.MaximumFrequencyValueLabel.set_text(
-                `${profileContext.Profile.MaximumFrequency}%`,
-            );
-        });
+        profileContext.Settings.MinimumFrequencyScale.set_value(profileContext.Profile.MinimumFrequency);
+        profileContext.Settings.MaximumFrequencyScale.set_value(profileContext.Profile.MaximumFrequency);
+        profileContext.Settings.MinimumFrequencyValueLabel.set_text(
+            `${profileContext.Profile.MinimumFrequency}%`,
+        );
+        profileContext.Settings.MaximumFrequencyValueLabel.set_text(
+            `${profileContext.Profile.MaximumFrequency}%`,
+        );
 
         profileContext.Settings.NameEntry.set_text(profileContext.Profile.Name);
         profileContext.Settings.TurboBoostSwitch.set_active(profileContext.Profile.TurboBoost);
@@ -523,8 +578,6 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
         this.loadBackendsComboBox();
         this.refreshAutoSwitchComboBoxes();
-
-        this.selectFirstProfile();
     }
 
     onShowCurrentFrequencySwitchActiveNotify(switchButton) {
@@ -639,84 +692,16 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         dialog.set_transient_for(parentWindow);
 
         uninstallButton.connect("clicked", () => {
-            const uid = getuid();
-            log(`DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus`);
-
-            if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-                let out = GLib.spawn_sync(
-                    null,
-                    [
-                        "gnome-extensions",
-                        "disable",
-                        "cpupower@mko-sl.de",
-                    ],
-                    /*
-                    [
-                        `DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus`,
-                    ],
-                    */
-                    null,
-                    GLib.SpawnFlags.SEARCH_PATH,
-                    null,
-                );
-                log(out);
-            } else {
-                GLib.spawn_sync(
-                    null,
-                    [
-                        "gnome-shell-extension-tool",
-                        "--disable-extension",
-                        "cpupower@mko-sl.de",
-                    ],
-                    /*
-                    [
-                        `DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus`,
-                    ],
-                    */
-                    null,
-                    GLib.SpawnFlags.SEARCH_PATH,
-                    null,
-                );
-            }
-
             attemptUninstallation((_success) => {
                 dialog.close();
 
-                if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-                    let out = GLib.spawn_sync(
-                        null,
-                        [
-                            "gnome-extensions",
-                            "enable",
-                            "cpupower@mko-sl.de",
-                        ],
-                        /*
-                        [
-                            `DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus`,
-                        ],
-                        */
-                        null,
-                        GLib.SpawnFlags.SEARCH_PATH,
-                        null,
-                    );
-                    log(out);
+                if (this.cpupowerConnection) {
+                    log("reloading extension");
+                    let result = this.cpupowerService.emit_signal("ExtensionReloadRequired", null);
+                    log(`emit signal result: ${result}`);
                 } else {
-                    GLib.spawn_sync(
-                        null,
-                        [
-                            "gnome-shell-extension-tool",
-                            "--enable-extension",
-                            "cpupower@mko-sl.de",
-                        ],
-                        /*
-                        [
-                            `DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus`,
-                        ],
-                        */
-                        null,
-                        GLib.SpawnFlags.SEARCH_PATH,
-                        null,
-                    );
+                    // hmm... extension seems not to be running, so who cares?
+                    log("Could not trigger extension reload as dbus connection is offline!");
                 }
 
                 GLib.timeout_add(GLib.PRIORITY_DEFAULT, 0, () => {
