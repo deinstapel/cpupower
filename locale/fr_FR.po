@@ -1,153 +1,285 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-01 10:39+0200\n"
-"PO-Revision-Date: 2020-04-11 10:56+0200\n"
-"Last-Translator: Laurent Tréguier <laurent@treguier.org>\n"
+"POT-Creation-Date: 2021-09-27 17:03+0200\n"
+"PO-Revision-Date: 2021-10-15 17:00+0200\n"
+"Last-Translator: T. Clément <dev.tclement0922@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
-"X-Poedit-Basepath: ../..\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.0\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
 
-#: data/cpupower-preferences.glade:61
-msgid "Gnome-Shell Extension for the intel-pstate driver."
-msgstr "Extension Gnome-Shell pour le pilote intel-pstate."
-
-#: data/cpupower-preferences.glade:125
-msgid "Show current frequency"
-msgstr "Afficher la fréquence actuelle"
-
-#: data/cpupower-preferences.glade:138
-msgid "Use GHz instead of MHz"
-msgstr "Utiliser GHz plutôt que MHz comme unité"
-
-#: data/cpupower-preferences.glade:151
-#| msgid "Show current cpu frequency in taskbar"
-msgid "Show icon in taskbar"
-msgstr ""
-
-#: data/cpupower-preferences.glade:164
-#| msgid "Show current cpu frequency in taskbar"
-msgid "Show arrow in taskbar"
-msgstr ""
-
-#: data/cpupower-preferences.glade:217
+#: data/cpupower-preferences.glade:57
 msgid "About"
 msgstr "À propos"
 
-#: data/cpupower-preferences.glade:255
+#: data/cpupower-preferences.glade:68
+msgid "Gnome-Shell Extension for controlling the frequency scaling driver of your CPU."
+msgstr "Extension Gnome-Shell pour controller le pilote de mise à l'échelle de la fréquence de votre processeur."
+
+#: data/cpupower-preferences.glade:156
+msgid "Top Bar"
+msgstr "Barre supérieure"
+
+#: data/cpupower-preferences.glade:188
+msgid "Show current frequency"
+msgstr "Afficher la fréquence actuelle"
+
+#: data/cpupower-preferences.glade:204
+msgid "Use GHz instead of MHz"
+msgstr "Utiliser GHz plutôt que MHz comme unité"
+
+#: data/cpupower-preferences.glade:218
+msgid "Show the current CPU frequency in the top bar"
+msgstr "Affiche la fréquence du processeur actuelle dans la barre supérieure"
+
+#: data/cpupower-preferences.glade:227
+msgid "Top bar frequency switch"
+msgstr "Commutateur pour la fréquence dans la barre supérieure"
+
+#: data/cpupower-preferences.glade:228
+msgid "Switch to show the current frequency in the top bar"
+msgstr "Commutateur pour afficher la fréquence actuelle dans la barre supérieure"
+
+#: data/cpupower-preferences.glade:241
+msgid "Show the current CPU frequency in GHz instead of MHz"
+msgstr "Afficher la fréquence actuelle du processeur en GHz plutôt qu'en MHz"
+
+#: data/cpupower-preferences.glade:250
+msgid "GHz switch"
+msgstr "Commutateur GHz"
+
+#: data/cpupower-preferences.glade:251
+msgid "Switch to use units of GHz instead of MHz in the top bar"
+msgstr "Commutateur pour utiliser les GHz plutôt que les MHz comme unité dans la barre supérieure"
+
+#: data/cpupower-preferences.glade:266
+msgid "Show frequency as"
+msgstr "Afficher la fréquence comme"
+
+#: data/cpupower-preferences.glade:280 data/cpupower-preferences.glade:294
+msgid "Set the method for retrieving the current frequency for your CPU"
+msgstr "Définit la méthode d'accès à la fréquence actuelle de votre CPU"
+
+#: data/cpupower-preferences.glade:282
+msgid "Avergage of all cores"
+msgstr "Moyenne de tous les cœurs"
+
+#: data/cpupower-preferences.glade:283
+msgid "Minimum of all cores"
+msgstr "Minimum de tous les cœurs"
+
+#: data/cpupower-preferences.glade:284
+msgid "Maximum of all cores"
+msgstr "Maximum de tous les cœurs"
+
+#: data/cpupower-preferences.glade:285
+msgid "Value of a random core"
+msgstr "Valeur d'un cœur aléatoire"
+
+#: data/cpupower-preferences.glade:293
+msgid "CPU frequency retrieval method"
+msgstr "Méthode d'accès à la fréquence du processeur"
+
+#: data/cpupower-preferences.glade:309
+msgid "Show arrow in top bar"
+msgstr "Afficher la flèche dans la barre supérieure"
+
+#: data/cpupower-preferences.glade:323
+msgid "Show an arrow in the top bar"
+msgstr "Afficher une flèche dans la barre supérieure"
+
+#: data/cpupower-preferences.glade:332
+msgid "Top bar arrow switch"
+msgstr "Commutateur pour la flèche dans la barre supérieure"
+
+#: data/cpupower-preferences.glade:333
+msgid "Switch to show an arrow in the top bar"
+msgstr "Commutateur pour afficher une flèche dans la barre supérieure"
+
+#: data/cpupower-preferences.glade:348
+msgid "Show icon in top bar"
+msgstr "Afficher l'icône dans la barre supérieure"
+
+#: data/cpupower-preferences.glade:362
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
+msgid "Show an icon in the top bar"
+msgstr "Afficher  une icône dans la barre supérieure"
+
+#: data/cpupower-preferences.glade:371
+msgid "Top bar icon switch"
+msgstr "Commutateur pour l'icône dans la barre supérieure"
+
+#: data/cpupower-preferences.glade:372
+msgid "Switch to show an icon in the top bar"
+msgstr "Commutateur pour afficher une icône dans la barre supérieure"
+
+#: data/cpupower-preferences.glade:448
+msgid "Backend"
+msgstr "Backend"
+
+#: data/cpupower-preferences.glade:480
+msgid "Frequency scaling driver"
+msgstr "Pilote de mise à l'échelle de la fréquence"
+
+#: data/cpupower-preferences.glade:494 data/cpupower-preferences.glade:511
+msgid "Set the scaling driver backend used to control and query the CPU frequency and turbo boost setting"
+msgstr "Définit le backend du pilote de mise à l'échelle de la fréquence utiliser pour contrôler et demander la fréquence du processeur et paramétrer le turbo boost"
+
+#: data/cpupower-preferences.glade:510
+msgid "Frequency scaling driver selection"
+msgstr "Selection du pilote de mise à l'échelle de la fréquence"
+
+#: data/cpupower-preferences.glade:543 src/indicator.js:237
+msgid "Auto Switch"
+msgstr "Changement automatique"
+
+#: data/cpupower-preferences.glade:586
 msgid "Default AC profile"
-msgstr ""
+msgstr "Profil par défaut sur secteur"
 
-#: data/cpupower-preferences.glade:268
-#| msgid "Name of the profile"
+#: data/cpupower-preferences.glade:602
 msgid "Default battery profile"
-msgstr ""
+msgstr "Profil par défaut sur batterie"
 
-#: data/cpupower-preferences.glade:279
-msgid "Set as default profile for battery operation"
-msgstr ""
+#: data/cpupower-preferences.glade:619
+msgid "Charging battery"
+msgstr "Chargement de la batterie"
 
-#: data/cpupower-preferences.glade:291
-msgid "Set as standard profile for plugged in operation"
-msgstr ""
+#: data/cpupower-preferences.glade:635
+msgid "Discharging battery"
+msgstr "Déchargement de la batterie"
 
-#: data/cpupower-preferences.glade:303
-msgid "Auto Switch Configuration"
-msgstr ""
+#: data/cpupower-preferences.glade:648
+msgid "Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets plugged in"
+msgstr "Définit le profile par défaut que l'extension utilisera automatiquement si le Changement automatique est activé et que l'appareil est branché sur secteur"
 
-#: data/cpupower-preferences.glade:350
+#: data/cpupower-preferences.glade:663
+msgid "Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets unplugged"
+msgstr "Définit le profile par défaut que l'extension utilisera automatiquement si le Changement automatique est activé et que l'appareil est débranché"
+
+#: data/cpupower-preferences.glade:706
 msgid "General"
 msgstr "Général"
 
-#: data/cpupower-preferences.glade:401
-msgid "Add selected profile"
-msgstr "Ajouter le profil sélectionné"
+#: data/cpupower-preferences.glade:760 data/cpupower-preferences.glade:765
+msgid "Add new profile"
+msgstr "Ajouter un nouveau profil"
 
-#: data/cpupower-preferences.glade:414
+#: data/cpupower-preferences.glade:778 data/cpupower-preferences.glade:783
 msgid "Remove selected profile"
 msgstr "Supprimer le profil sélectionné"
 
-#: data/cpupower-preferences.glade:427
+#: data/cpupower-preferences.glade:796 data/cpupower-preferences.glade:801
 msgid "Move selected profile up"
-msgstr "Faire monter le profil sélectionné"
+msgstr "Déplacer le profil sélectionné vers le haut"
 
-#: data/cpupower-preferences.glade:440
+#: data/cpupower-preferences.glade:814 data/cpupower-preferences.glade:819
 msgid "Move selected profile down"
-msgstr "Faire descendre le profil sélectionné"
+msgstr "Déplacer le profil sélectionné vers le bas"
 
-#: data/cpupower-preferences.glade:499
+#: data/cpupower-preferences.glade:881
 msgid "Profiles"
 msgstr "Profils"
 
-#: data/cpupower-preferences.glade:518
+#: data/cpupower-preferences.glade:901
 msgid "Path to cpufreqctl:"
-msgstr ""
+msgstr "Emplacement de cpufreqctl :"
 
-#: data/cpupower-preferences.glade:531
+#: data/cpupower-preferences.glade:917
 msgid "Path to policykit rule:"
-msgstr ""
+msgstr "Emplacement de la règle policykit :"
 
-#: data/cpupower-preferences.glade:545
+#: data/cpupower-preferences.glade:934
 msgid "CPU Power Manager is installed via your distributions package manager!"
-msgstr ""
+msgstr "CPU Power Manager est installé via le gestionnaire de paquets de votre distribution !"
 
-#: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:979
+#: data/cpupower-preferences.glade:949 data/cpupower-preferences.glade:1643
 msgid "Uninstall"
-msgstr ""
+msgstr "Désinstaller"
 
-#: data/cpupower-preferences.glade:634
-#| msgid "Installation required."
+#: data/cpupower-preferences.glade:1029
 msgid "Installation"
-msgstr ""
+msgstr "Installation"
 
-#: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
-msgid "Profile name"
+#: data/cpupower-preferences.glade:1059 data/cpupower-preferences.glade:1074
+#: data/cpupower-preferences.glade:1081
+msgid "Profile Name"
 msgstr "Nom du profil"
 
-#: data/cpupower-preferences.glade:689
-msgid "Minimum frequency"
-msgstr "Fréquence Minimale"
+#: data/cpupower-preferences.glade:1095 src/indicator.js:221
+msgid "Minimum Frequency"
+msgstr "Fréquence minimum"
 
-#: data/cpupower-preferences.glade:717
-msgid "Maximum frequency"
-msgstr "Fréquence Maximale"
+#: data/cpupower-preferences.glade:1107 src/indicator.js:226
+msgid "Maximum Frequency"
+msgstr "Fréquence maximum"
 
-#: data/cpupower-preferences.glade:729
-msgid "Turbo boost"
-msgstr "Turbo Boost"
+#: data/cpupower-preferences.glade:1119 data/cpupower-preferences.glade:1552
+#: src/indicator.js:231
+msgid "Turbo Boost"
+msgstr "Turbo boost"
 
-#: data/cpupower-preferences.glade:767
+#: data/cpupower-preferences.glade:1141
+msgid "Turbo boost switch"
+msgstr "Commutateur du Turbo boost"
+
+#: data/cpupower-preferences.glade:1155
+msgid "Frequency limits below the lower limit and above the upper limit are not allowed!"
+msgstr "Les limites des fréquences en dessous de la fréquence la plus basse et au dessus de la fréquence la plus haute ne sont pas autorisées !"
+
+#: data/cpupower-preferences.glade:1163
+msgid "Lower limit:"
+msgstr "Fréquence la plus basse :"
+
+#: data/cpupower-preferences.glade:1195
+msgid "Upper limit:"
+msgstr "Fréquence la plus haute :"
+
+#: data/cpupower-preferences.glade:1252
+msgid "You reached your CPU's limit(s):"
+msgstr "Vous avez atteint la/les limite(s) de votre processeur :"
+
+#: data/cpupower-preferences.glade:1280
 msgid "Discard"
 msgstr "Annuler"
 
-#: data/cpupower-preferences.glade:787
+#: data/cpupower-preferences.glade:1300
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: data/cpupower-preferences.glade:916
-msgid "Turbo boost:"
-msgstr "Turbo Boost :"
+#: data/cpupower-preferences.glade:1338
+msgid "Minimum CPU frequency slider"
+msgstr "Curseur de la fréquence minimale du processeur"
 
-#: data/cpupower-preferences.glade:950
+#: data/cpupower-preferences.glade:1352 data/cpupower-preferences.glade:1406
+msgid "0%"
+msgstr "0%"
+
+#: data/cpupower-preferences.glade:1392
+msgid "Maximum CPU frequency slider"
+msgstr "Curseur de la fréquence maximale du processeur"
+
+#: data/cpupower-preferences.glade:1614
 msgid "Uninstall CPU Power Manager Tools"
-msgstr ""
+msgstr "Désinstaller les outils CPU Power Manager"
 
-#: data/cpupower-preferences.glade:951
-msgid ""
-"Are you sure you want to uninstall the cpufreqctl tool and the policykit "
-"rule?"
-msgstr ""
+#: data/cpupower-preferences.glade:1615
+msgid "Are you sure you want to uninstall the cpufreqctl tool and the policykit rule?"
+msgstr "Êtes-vous sûr de vouloir désinsaller l'outil cpufreqctl et la règle policykit ?"
 
-#: data/cpupower-preferences.glade:965
+#: data/cpupower-preferences.glade:1629
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
@@ -155,122 +287,141 @@ msgstr "Profils sérialisés"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
 msgid "Your CPUpower profiles"
-msgstr "Vos profils CPUpower"
+msgstr "Vos profils d'alimentation du processeur"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
-msgid "Show current cpu frequency in taskbar"
-msgstr "Afficher la fréquence du CPU dans la barre des tâches"
-
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
 msgid "Show current cpu frequency in the top bar"
-msgstr "Afficher la fréquence du CPU dans la barre supérieure"
+msgstr "Affiche la fréquence actuelle du processeur dans la barre supérieure"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
 msgid "Frequency in taskbar is shown in GHz or MHz"
-msgstr "Fréquence de la barre des tâches affichée en GHz ou en MHz"
+msgstr "La fréquence dans la barre des tâches est affichée en GHz ou en MHz"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
 msgid "Control which unit is used for the frequency"
-msgstr "Contrôler quelle unité est utilisée pour la fréquence"
-
-#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
-#| msgid "Show current cpu frequency in taskbar"
-msgid "Show cpu chip icon in taskbar"
-msgstr ""
-
-#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
-#| msgid "Show current cpu frequency in the top bar"
-msgid "Show cpu chip icon in the top bar"
-msgstr ""
+msgstr "Controlle quelle unitée est utilisée pour la frequence"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
-#| msgid "Show current cpu frequency in taskbar"
-msgid "Show down arrow in taskbar"
-msgstr ""
-
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
-#| msgid "Show current cpu frequency in the top bar"
-msgid "Show down arrow in the top bar"
-msgstr ""
+msgid "Show arrow in the top bar"
+msgstr "Affiche la flèche dans la barre supérieure"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
 msgid "Default AC profile ID"
-msgstr ""
+msgstr "ID du profil par défaut sur secteur"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
 msgid "The profile to switch to when plugged in"
-msgstr ""
+msgstr "Le profil utilisé lorsque sur secteur"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
 msgid "Default battery profile ID"
-msgstr ""
+msgstr "ID du profil par défaut sur batterie"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
 msgid "The profile to switch to when unplugged"
+msgstr "Le profil utilisé lorsque sur baterrie"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:46
+msgid "The backend used for the cpufreqctl tool"
+msgstr "Le backend utilisé pour l'outil cpufreqctl"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:47
+msgid "The backend controls how the extensions will interact with the hardware and selects the scaling-driver used by the Linux kernel for setting and querying CPU frequencies and turbo boost settings. The 'fake' backend must only be used for development purposes and is not available in production."
+msgstr "Le backend controlle comment l'extension intéragit avec le matériel et sélectionne le pilote de mise à l'échelle utilisé par le noyau Linux pour paramétrer and demander les fréquences du processeur et paramétrer le turbo boost. Le 'faux' backend doit seulement être utilisé pour des fins de développement et n'est pas disponible en production."
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:59
+msgid "The frequency sampling mode"
+msgstr "Le mode d'échantillonnage de fréquence"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:60
+msgid "The CPU frequencies displayed by the extension are sampled using one of those methods"
+msgstr "Les fréquences du processeur affichées par l'extension sont échantillonnées à l'aide de l'une de ces méthodes"
+
+#: src/indicator.js:185 src/notinstalled.js:69
+msgid ""
+"Please consider reporting this to the developers\n"
+"of this extension by submitting an issue on Github."
 msgstr ""
+"Veuillez envisager de signaler cela aux développeurs\n"
+"de cette extension en soumettant un problème sur Github."
 
-#: src/indicator.js:172
-msgid "Minimum Frequency:"
-msgstr "Fréquence Minimum :"
-
-#: src/indicator.js:176
-msgid "Maximum Frequency:"
-msgstr "Fréquence Maximum :"
-
-#: src/indicator.js:180
-msgid "Turbo Boost:"
-msgstr "Turbo Boost :"
-
-#: src/indicator.js:186
-msgid "Auto Switch:"
-msgstr ""
-
-#: src/indicator.js:210
-msgid "Current Frequency:"
-msgstr "Fréquence actuelle :"
-
-#: src/indicator.js:235
+#: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
 msgid "Preferences"
 msgstr "Préférences"
 
-#: src/notinstalled.js:52
+#: src/indicator.js:291
+msgid "Current Frequency"
+msgstr "Fréquence actuelle"
+
+#: src/indicator.js:327 src/indicator.js:334
+msgid "Oh no! Something went wrong."
+msgstr "Oh non ! Quelque chose s'est mal passé."
+
+#: src/indicator.js:328
+msgid "The currently selected frequency scaling driver is not supported on your CPU!"
+msgstr "Le pilote de mise à l'échelle de la fréquence sélectionné n'est pas supporté par votre processeur !"
+
+#: src/indicator.js:335
+msgid "An internal error occurred:"
+msgstr "Une erreur interne s'est produite :"
+
+#: src/notinstalled.js:60
 msgid "Installation required."
-msgstr "Installation nécessaire."
+msgstr "Installation requise."
 
-#: src/notinstalled.js:58
+#: src/notinstalled.js:64
+msgid ""
+"Oh no! This should not have happened.\n"
+"An error occurred while checking the installation!"
+msgstr ""
+"Oh non ! Ça n'aurait pas dû arriver.\n"
+"Une erreur est survenue en verifiant l'installation !"
+
+#: src/notinstalled.js:83
 msgid "Attempt installation"
-msgstr "Tenter l'installation"
+msgstr "Tentative d'installation"
 
-#: src/preferences.js:277
+#: src/preferences.js:274
+msgid "CPU Power Manager"
+msgstr "CPU Power Manager"
+
+#: src/preferences.js:436
 msgid "Yes"
 msgstr "Oui"
 
-#: src/preferences.js:277
+#: src/preferences.js:436
 msgid "No"
 msgstr "Non"
 
-#: src/preferences.js:349 src/preferences.js:350
+#: src/preferences.js:518 src/preferences.js:519
 msgid "None"
-msgstr ""
+msgstr "Rien"
 
-#: src/unsupported.js:47
-msgid "Your computer does not support intel_pstate."
-msgstr "Votre ordinateur n'utilise pas intel_pstate."
+#: src/preferences.js:546
+msgid "unavailable"
+msgstr "indisponible"
 
-#: src/update.js:43
+#: src/preferences.js:551
+msgid "Automatic"
+msgstr "Automatique"
+
+#: src/update.js:61
 msgid "Your CPU Power Manager installation needs updating!"
-msgstr ""
+msgstr "Votre installation CPU Power Manager doit se mettre à jour !"
 
-#: src/update.js:44
+#: src/update.js:62
 msgid ""
 "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
 msgstr ""
+"Attention : Des problèmes de sécurité ont étés trouvés avec\n"
+"votre installation ! Merci de mettre à jour immédiatement !"
 
-#: src/update.js:72
-#| msgid "Attempt installation"
+#: src/update.js:75
 msgid "Attempt tool update"
-msgstr ""
+msgstr "Tentative de mise à jour de l'outil"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"
