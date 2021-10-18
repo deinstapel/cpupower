@@ -3,21 +3,21 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-01 10:39+0200\n"
-"PO-Revision-Date: 2020-04-11 10:55+0200\n"
-"Last-Translator: Jan Kašík <honza.kasik@seznam.cz>\n"
+"PO-Revision-Date: 2021-10-18 10:34+0200\n"
+"Last-Translator: Honza Kosák <darneus@gmail.com>\n"
 "Language-Team: \n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: data/cpupower-preferences.glade:61
 msgid "Gnome-Shell Extension for the intel-pstate driver."
-msgstr ""
+msgstr "Gnome-Shell Rozšíření pro ovladač intel-pstate."
 
 #: data/cpupower-preferences.glade:125
 msgid "Show current frequency"
@@ -25,125 +25,129 @@ msgstr "Zobrazit aktuální frekvenci"
 
 #: data/cpupower-preferences.glade:138
 msgid "Use GHz instead of MHz"
-msgstr ""
+msgstr "Použít GHz namísto Mhz"
 
 #: data/cpupower-preferences.glade:151
 msgid "Show icon in taskbar"
-msgstr ""
+msgstr "Zobrazit ikonu na hlavním panelu"
 
 #: data/cpupower-preferences.glade:164
 msgid "Show arrow in taskbar"
-msgstr ""
+msgstr "Zobrazit šipku na hlavním panelu"
 
 #: data/cpupower-preferences.glade:217
 msgid "About"
-msgstr ""
+msgstr "O projektu"
 
 #: data/cpupower-preferences.glade:255
 msgid "Default AC profile"
-msgstr ""
+msgstr "Výchozí profil napájení ze sítě"
 
 #: data/cpupower-preferences.glade:268
 msgid "Default battery profile"
-msgstr ""
+msgstr "Výchozí profil napájení z baterie"
 
 #: data/cpupower-preferences.glade:279
 msgid "Set as default profile for battery operation"
-msgstr ""
+msgstr "Nastavení jako výchozí profil pro napájení z baterie"
 
 #: data/cpupower-preferences.glade:291
 msgid "Set as standard profile for plugged in operation"
-msgstr ""
+msgstr "Nastavit jako výchozí profil pro napájení ze síte"
 
 #: data/cpupower-preferences.glade:303
 msgid "Auto Switch Configuration"
-msgstr ""
+msgstr "Automatický režim"
 
 #: data/cpupower-preferences.glade:350
 msgid "General"
-msgstr ""
+msgstr "Obecné"
 
 #: data/cpupower-preferences.glade:401
 msgid "Add selected profile"
-msgstr ""
+msgstr "Přidat vybraný profil"
 
 #: data/cpupower-preferences.glade:414
 msgid "Remove selected profile"
-msgstr ""
+msgstr "Odstranit vybraný profil"
 
 #: data/cpupower-preferences.glade:427
 msgid "Move selected profile up"
-msgstr ""
+msgstr "Posunout vybraný profil nahoru"
 
 #: data/cpupower-preferences.glade:440
 msgid "Move selected profile down"
-msgstr ""
+msgstr "Posunout vybraný profil dolů"
 
 #: data/cpupower-preferences.glade:499
 msgid "Profiles"
-msgstr ""
+msgstr "Profily"
 
 #: data/cpupower-preferences.glade:518
 msgid "Path to cpufreqctl:"
-msgstr ""
+msgstr "Cesta k cpufreqctl:"
 
 #: data/cpupower-preferences.glade:531
 msgid "Path to policykit rule:"
-msgstr ""
+msgstr "Cesta k policykit pravidlům:"
 
 #: data/cpupower-preferences.glade:545
 msgid "CPU Power Manager is installed via your distributions package manager!"
 msgstr ""
+"CPU Power Manager se instaluje prostřednictvím správce balíčků vaší "
+"distribuce!"
 
 #: data/cpupower-preferences.glade:560 data/cpupower-preferences.glade:979
 msgid "Uninstall"
-msgstr ""
+msgstr "Odinstalovat"
 
 #: data/cpupower-preferences.glade:634
 msgid "Installation"
-msgstr ""
+msgstr "Instalace"
 
 #: data/cpupower-preferences.glade:664 data/cpupower-preferences.glade:676
 msgid "Profile name"
-msgstr ""
+msgstr "Název profilu"
 
 #: data/cpupower-preferences.glade:689
 msgid "Minimum frequency"
-msgstr ""
+msgstr "Minimální frekvence"
 
 #: data/cpupower-preferences.glade:717
 msgid "Maximum frequency"
-msgstr ""
+msgstr "Maximální frekvence"
 
 #: data/cpupower-preferences.glade:729
 msgid "Turbo boost"
-msgstr ""
+msgstr "Turbo boost"
 
 #: data/cpupower-preferences.glade:767
 msgid "Discard"
-msgstr ""
+msgstr "Zahodit"
 
 #: data/cpupower-preferences.glade:787
 msgid "Save"
-msgstr ""
+msgstr "Uložit"
 
 #: data/cpupower-preferences.glade:916
 msgid "Turbo boost:"
-msgstr ""
+msgstr "Turbo boost:"
 
 #: data/cpupower-preferences.glade:950
 msgid "Uninstall CPU Power Manager Tools"
-msgstr ""
+msgstr "Odinstalovat nástroje CPU Power Manageru"
 
 #: data/cpupower-preferences.glade:951
 msgid ""
 "Are you sure you want to uninstall the cpufreqctl tool and the policykit "
 "rule?"
 msgstr ""
+"Jste si jistí, že chcete odinstalovat nástroj cpufreqctl a policykit "
+"pravidla?"
 
 #: data/cpupower-preferences.glade:965
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušit"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
@@ -171,35 +175,35 @@ msgstr "Nastavte jednotku používanou pro zobrazení frekvence"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
 msgid "Show cpu chip icon in taskbar"
-msgstr ""
+msgstr "Zobrazit ikonu čipu na hlavním panelu"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
 msgid "Show cpu chip icon in the top bar"
-msgstr ""
+msgstr "Zobrazit ikonu čipu procesoru na horním panelu"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
 msgid "Show down arrow in taskbar"
-msgstr ""
+msgstr "Zobrazit šipku dolů na hlavním panelu"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
 msgid "Show down arrow in the top bar"
-msgstr ""
+msgstr "Zobrazit šípku dolů na horním panelu"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
 msgid "Default AC profile ID"
-msgstr ""
+msgstr "ID výchozího profilu při napájení ze šítě"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
 msgid "The profile to switch to when plugged in"
-msgstr ""
+msgstr "Profil na který se přepne po zapojení do el. sítě"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
 msgid "Default battery profile ID"
-msgstr ""
+msgstr "ID výchozího profilu napájení z baterie"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
 msgid "The profile to switch to when unplugged"
-msgstr ""
+msgstr "Profil na který se přepne po odpojení z el. sítě"
 
 #: src/indicator.js:172
 msgid "Minimum Frequency:"
@@ -215,7 +219,7 @@ msgstr "Turbo Boost:"
 
 #: src/indicator.js:186
 msgid "Auto Switch:"
-msgstr ""
+msgstr "Automatické přepínání:"
 
 #: src/indicator.js:210
 msgid "Current Frequency:"
@@ -235,15 +239,15 @@ msgstr "Zkusit provést instalaci"
 
 #: src/preferences.js:277
 msgid "Yes"
-msgstr ""
+msgstr "Ano"
 
 #: src/preferences.js:277
 msgid "No"
-msgstr ""
+msgstr "Ne"
 
 #: src/preferences.js:349 src/preferences.js:350
 msgid "None"
-msgstr ""
+msgstr "---"
 
 #: src/unsupported.js:47
 msgid "Your computer does not support intel_pstate."
@@ -251,17 +255,19 @@ msgstr "Váš počítač nepodporuje intel_pstate."
 
 #: src/update.js:43
 msgid "Your CPU Power Manager installation needs updating!"
-msgstr ""
+msgstr "Váš CPU Power Manager potřebuje aktualizovat!"
 
 #: src/update.js:44
 msgid ""
 "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
 msgstr ""
+"Varování: Ve vaší instalaci byly nalezeny bezpečnostní problémy!\n"
+"Okamžitě proveďte aktualizaci!"
 
 #: src/update.js:72
 msgid "Attempt tool update"
-msgstr ""
+msgstr "Zkusit aktualizovat nástroj"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"
