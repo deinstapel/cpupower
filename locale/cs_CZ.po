@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2021-10-18 11:19+0200\n"
+"PO-Revision-Date: 2021-10-19 11:15+0200\n"
 "Last-Translator: Honza Kosák <darneus@gmail.com>\n"
 "Language-Team: \n"
 "Language: cs_CZ\n"
@@ -20,16 +20,16 @@ msgid "About"
 msgstr "O projektu"
 
 #: data/cpupower-preferences.glade:68
-#, fuzzy
-#| msgid "Gnome-Shell Extension for the intel-pstate driver."
 msgid ""
 "Gnome-Shell Extension for controlling the frequency scaling driver of your "
 "CPU."
-msgstr "Gnome-Shell Rozšíření pro ovladač intel-pstate."
+msgstr ""
+"Gnome-Shell Extension pro řízení ovladače škálování frekvence vašeho "
+"procesoru."
 
 #: data/cpupower-preferences.glade:156
 msgid "Top Bar"
-msgstr ""
+msgstr "Horní panel"
 
 #: data/cpupower-preferences.glade:188
 msgid "Show current frequency"
@@ -40,134 +40,114 @@ msgid "Use GHz instead of MHz"
 msgstr "Použít GHz namísto Mhz"
 
 #: data/cpupower-preferences.glade:218
-#, fuzzy
-#| msgid "Show current cpu frequency in the top bar"
 msgid "Show the current CPU frequency in the top bar"
-msgstr "Zobrazit aktuální frekvenci procesoru v horním panelu"
+msgstr "Zobrazit aktuální frekvenci procesoru na horním panelu"
 
 #: data/cpupower-preferences.glade:227
 msgid "Top bar frequency switch"
-msgstr ""
+msgstr "Přepínač frekvence v horním panelu"
 
 #: data/cpupower-preferences.glade:228
-#, fuzzy
-#| msgid "Show current cpu frequency in the top bar"
 msgid "Switch to show the current frequency in the top bar"
-msgstr "Zobrazit aktuální frekvenci procesoru v horním panelu"
+msgstr "Zobrazit aktuální frekvenci procesoru na horním panelu"
 
 #: data/cpupower-preferences.glade:241
-#, fuzzy
-#| msgid "Show current cpu frequency in the top bar"
 msgid "Show the current CPU frequency in GHz instead of MHz"
-msgstr "Zobrazit aktuální frekvenci procesoru v horním panelu"
+msgstr "Zobrazit aktuální frekvenci v Ghz namísto Mhz"
 
 #: data/cpupower-preferences.glade:250
 msgid "GHz switch"
-msgstr ""
+msgstr "Ghz přepínač"
 
 #: data/cpupower-preferences.glade:251
 msgid "Switch to use units of GHz instead of MHz in the top bar"
-msgstr ""
+msgstr "V horním panelu použít jednotku Ghz namísto Mhz"
 
 #: data/cpupower-preferences.glade:266
-#, fuzzy
-#| msgid "Show current frequency"
 msgid "Show frequency as"
-msgstr "Zobrazit aktuální frekvenci"
+msgstr "Zobrazit frekvenci jako"
 
 #: data/cpupower-preferences.glade:280 data/cpupower-preferences.glade:294
 msgid "Set the method for retrieving the current frequency for your CPU"
-msgstr ""
+msgstr "Nastavte metodu získávání aktuální frekvence vašeho CPU"
 
 #: data/cpupower-preferences.glade:282
 msgid "Avergage of all cores"
-msgstr ""
+msgstr "Průměr hodnot"
 
 #: data/cpupower-preferences.glade:283
 msgid "Minimum of all cores"
-msgstr ""
+msgstr "Minimální hodnota"
 
 #: data/cpupower-preferences.glade:284
 msgid "Maximum of all cores"
-msgstr ""
+msgstr "Maximální hodnota"
 
 #: data/cpupower-preferences.glade:285
 msgid "Value of a random core"
-msgstr ""
+msgstr "Hodnota náhodného jádra"
 
 #: data/cpupower-preferences.glade:293
 msgid "CPU frequency retrieval method"
-msgstr ""
+msgstr "Metoda získávání frekvence CPU"
 
 #: data/cpupower-preferences.glade:309
-#, fuzzy
-#| msgid "Show arrow in taskbar"
 msgid "Show arrow in top bar"
-msgstr "Zobrazit šipku na hlavním panelu"
+msgstr "Zobrazit šipku na horním panelu"
 
 #: data/cpupower-preferences.glade:323
-#, fuzzy
-#| msgid "Show down arrow in the top bar"
 msgid "Show an arrow in the top bar"
-msgstr "Zobrazit šípku dolů na horním panelu"
+msgstr "Zobrazit šipku na horním panelu"
 
 #: data/cpupower-preferences.glade:332
 msgid "Top bar arrow switch"
-msgstr ""
+msgstr "Přepínač v horním panelu"
 
 #: data/cpupower-preferences.glade:333
-#, fuzzy
-#| msgid "Show down arrow in the top bar"
 msgid "Switch to show an arrow in the top bar"
-msgstr "Zobrazit šípku dolů na horním panelu"
+msgstr "Zapněte pro zobrazení šípky na horním panelu"
 
 #: data/cpupower-preferences.glade:348
-#, fuzzy
-#| msgid "Show icon in taskbar"
 msgid "Show icon in top bar"
 msgstr "Zobrazit ikonu na hlavním panelu"
 
 #: data/cpupower-preferences.glade:362
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
-#, fuzzy
-#| msgid "Show cpu chip icon in the top bar"
 msgid "Show an icon in the top bar"
-msgstr "Zobrazit ikonu čipu procesoru na horním panelu"
+msgstr "Zobrazit ikonu na hlavním panelu"
 
 #: data/cpupower-preferences.glade:371
 msgid "Top bar icon switch"
-msgstr ""
+msgstr "Ikona přepínače na hlavním panelu"
 
 #: data/cpupower-preferences.glade:372
-#, fuzzy
-#| msgid "Show down arrow in the top bar"
 msgid "Switch to show an icon in the top bar"
-msgstr "Zobrazit šípku dolů na horním panelu"
+msgstr "Zapněte pro zobrazení ikony na hlavním panelu"
 
 #: data/cpupower-preferences.glade:448
 msgid "Backend"
-msgstr ""
+msgstr "Backend"
 
 #: data/cpupower-preferences.glade:480
 msgid "Frequency scaling driver"
-msgstr ""
+msgstr "Ovladač pro škálování frekvence"
 
 #: data/cpupower-preferences.glade:494 data/cpupower-preferences.glade:511
 msgid ""
 "Set the scaling driver backend used to control and query the CPU frequency "
 "and turbo boost setting"
 msgstr ""
+"Nastavte ovladač pro škálování frekvence, aby jste mohli získávat a měnit "
+"frekvenci CPU"
 
 #: data/cpupower-preferences.glade:510
 msgid "Frequency scaling driver selection"
-msgstr ""
+msgstr "Výběr ovladače pro škálování frekvence"
 
 #: data/cpupower-preferences.glade:543 src/indicator.js:237
-#, fuzzy
-#| msgid "Auto Switch:"
 msgid "Auto Switch"
-msgstr "Automatické přepínání:"
+msgstr "Automatické přepínání"
 
 #: data/cpupower-preferences.glade:586
 msgid "Default AC profile"
@@ -179,33 +159,35 @@ msgstr "Výchozí profil napájení z baterie"
 
 #: data/cpupower-preferences.glade:619
 msgid "Charging battery"
-msgstr ""
+msgstr "Baterie se nabíjí"
 
 #: data/cpupower-preferences.glade:635
 msgid "Discharging battery"
-msgstr ""
+msgstr "Baterie se vybíjí"
 
 #: data/cpupower-preferences.glade:648
 msgid ""
 "Set the default profile to which the extension will automatically switch to "
 "if Auto-Switch is enabled and the AC adapter gets plugged in"
 msgstr ""
+"Nastavení výchozího profilu, na který se automaticky přepne, pokud je "
+"povoleno automatické přepínání a je připojen síťový adaptér"
 
 #: data/cpupower-preferences.glade:663
 msgid ""
 "Set the default profile to which the extension will automatically switch to "
 "if Auto-Switch is enabled and the AC adapter gets unplugged"
 msgstr ""
+"Nastavení výchozího profilu, na který se automaticky přepne, pokud je "
+"povoleno automatické přepínání a je odpojen síťový adaptér"
 
 #: data/cpupower-preferences.glade:706
 msgid "General"
 msgstr "Obecné"
 
 #: data/cpupower-preferences.glade:760 data/cpupower-preferences.glade:765
-#, fuzzy
-#| msgid "Add selected profile"
 msgid "Add new profile"
-msgstr "Přidat vybraný profil"
+msgstr "Přidat nový profil"
 
 #: data/cpupower-preferences.glade:778 data/cpupower-preferences.glade:783
 msgid "Remove selected profile"
@@ -247,8 +229,6 @@ msgstr "Instalace"
 
 #: data/cpupower-preferences.glade:1059 data/cpupower-preferences.glade:1074
 #: data/cpupower-preferences.glade:1081
-#, fuzzy
-#| msgid "Profile name"
 msgid "Profile Name"
 msgstr "Název profilu"
 
@@ -266,28 +246,27 @@ msgid "Turbo Boost"
 msgstr "Turbo Boost"
 
 #: data/cpupower-preferences.glade:1141
-#, fuzzy
-#| msgid "Turbo boost"
 msgid "Turbo boost switch"
-msgstr "Turbo boost"
+msgstr "Turbo boost přepínač"
 
 #: data/cpupower-preferences.glade:1155
 msgid ""
 "Frequency limits below the lower limit and above the upper limit are not "
 "allowed!"
 msgstr ""
+"Frekvenční limity pod dolní hranicí a nad horní hranicí nejsou povoleny!"
 
 #: data/cpupower-preferences.glade:1163
 msgid "Lower limit:"
-msgstr ""
+msgstr "Dolní hranice:"
 
 #: data/cpupower-preferences.glade:1195
 msgid "Upper limit:"
-msgstr ""
+msgstr "Horní hranice:"
 
 #: data/cpupower-preferences.glade:1252
 msgid "You reached your CPU's limit(s):"
-msgstr ""
+msgstr "Dosáhli jste limitů vašeho CPU:"
 
 #: data/cpupower-preferences.glade:1280
 msgid "Discard"
@@ -298,20 +277,16 @@ msgid "Save"
 msgstr "Uložit"
 
 #: data/cpupower-preferences.glade:1338
-#, fuzzy
-#| msgid "Minimum frequency"
 msgid "Minimum CPU frequency slider"
-msgstr "Minimální frekvence"
+msgstr "Posuvník minimální frekvence"
 
 #: data/cpupower-preferences.glade:1352 data/cpupower-preferences.glade:1406
 msgid "0%"
-msgstr ""
+msgstr "0%"
 
 #: data/cpupower-preferences.glade:1392
-#, fuzzy
-#| msgid "Maximum frequency"
 msgid "Maximum CPU frequency slider"
-msgstr "Maximální frekvence"
+msgstr "Posuvník maximální frekvence"
 
 #: data/cpupower-preferences.glade:1614
 msgid "Uninstall CPU Power Manager Tools"
@@ -352,10 +327,8 @@ msgstr "Nastavte jednotku používanou pro zobrazení frekvence"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
-#, fuzzy
-#| msgid "Show down arrow in the top bar"
 msgid "Show arrow in the top bar"
-msgstr "Zobrazit šípku dolů na horním panelu"
+msgstr "Zobrazit šipku na horním panelu"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
 msgid "Default AC profile ID"
@@ -375,7 +348,7 @@ msgstr "Profil na který se přepne po odpojení z el. sítě"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:46
 msgid "The backend used for the cpufreqctl tool"
-msgstr ""
+msgstr "Backed použitý pro cpufreqctl"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:47
 msgid ""
@@ -384,45 +357,51 @@ msgid ""
 "CPU frequencies and turbo boost settings. The 'fake' backend must only be "
 "used for development purposes and is not available in production."
 msgstr ""
+"Backend řídí způsob interakce rozšíření s hardwarem a vybírá ovladač "
+"škálování, který linuxové jádro používá pro nastavení a dotazování frekvencí "
+"procesoru a nastavení turbo boostu. Falešný backend se smí používat pouze "
+"pro vývojové účely a není k dispozici v produkčním prostředí."
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:59
 msgid "The frequency sampling mode"
-msgstr ""
+msgstr "Režim vzorkování frekvence"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:60
 msgid ""
 "The CPU frequencies displayed by the extension are sampled using one of "
 "those methods"
-msgstr ""
+msgstr "Zobrazovaná frekvence procesoru je vzorkována jednou z těchto metod"
 
 #: src/indicator.js:185 src/notinstalled.js:69
 msgid ""
 "Please consider reporting this to the developers\n"
 "of this extension by submitting an issue on Github."
 msgstr ""
+"Zvažte prosím nahlášení této skutečnosti vývojářům\n"
+"tohoto rozšíření vytvořením issue na Githubu."
 
 #: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
 msgid "Preferences"
 msgstr "Nastavení"
 
 #: src/indicator.js:291
-#, fuzzy
-#| msgid "Current Frequency:"
 msgid "Current Frequency"
-msgstr "Aktuální frekvence:"
+msgstr "Aktuální frekvence"
 
 #: src/indicator.js:327 src/indicator.js:334
 msgid "Oh no! Something went wrong."
-msgstr ""
+msgstr "Ale ne! Něco se pokazilo."
 
 #: src/indicator.js:328
 msgid ""
 "The currently selected frequency scaling driver is not supported on your CPU!"
 msgstr ""
+"Aktuálně zvolený ovladač pro škálování frekvence není na vašem procesoru "
+"podporován!"
 
 #: src/indicator.js:335
 msgid "An internal error occurred:"
-msgstr ""
+msgstr "Došlo k interní chybě:"
 
 #: src/notinstalled.js:60
 msgid "Installation required."
@@ -433,16 +412,16 @@ msgid ""
 "Oh no! This should not have happened.\n"
 "An error occurred while checking the installation!"
 msgstr ""
+"Ale ne! Tohle se nemělo stát.\n"
+"Při kontrole instalace došlo k chybě!"
 
 #: src/notinstalled.js:83
 msgid "Attempt installation"
 msgstr "Zkusit provést instalaci"
 
 #: src/preferences.js:274
-#, fuzzy
-#| msgid "Uninstall CPU Power Manager Tools"
 msgid "CPU Power Manager"
-msgstr "Odinstalovat nástroje CPU Power Manageru"
+msgstr "CPU Power Manager"
 
 #: src/preferences.js:436
 msgid "Yes"
@@ -454,15 +433,15 @@ msgstr "Ne"
 
 #: src/preferences.js:518 src/preferences.js:519
 msgid "None"
-msgstr "---"
+msgstr "Nevím"
 
 #: src/preferences.js:546
 msgid "unavailable"
-msgstr ""
+msgstr "nedostupný"
 
 #: src/preferences.js:551
 msgid "Automatic"
-msgstr ""
+msgstr "Automaticky"
 
 #: src/update.js:61
 msgid "Your CPU Power Manager installation needs updating!"
@@ -478,7 +457,7 @@ msgstr ""
 
 #: src/update.js:75
 msgid "Attempt tool update"
-msgstr "Zkusit aktualizovat nástroj"
+msgstr "Zkusit aktualizovat"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"
