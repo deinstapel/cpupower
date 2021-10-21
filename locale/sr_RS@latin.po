@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2021-10-21 15:08\n"
+"PO-Revision-Date: 2021-10-21 15:39\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Serbian (Latin)\n"
 "Language: sr_CS\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:57
 msgid "About"
-msgstr ""
+msgstr "O proširenju"
 
 #: data/cpupower-preferences.glade:68
 msgid "Gnome-Shell Extension for controlling the frequency scaling driver of your CPU."
@@ -35,11 +35,11 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:188
 msgid "Show current frequency"
-msgstr ""
+msgstr "Prikaži trenutnu frekvenciju"
 
 #: data/cpupower-preferences.glade:204
 msgid "Use GHz instead of MHz"
-msgstr ""
+msgstr "Koristi GHz umesto MHz"
 
 #: data/cpupower-preferences.glade:218
 msgid "Show the current CPU frequency in the top bar"
@@ -173,7 +173,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:706
 msgid "General"
-msgstr ""
+msgstr "Opšte"
 
 #: data/cpupower-preferences.glade:760 data/cpupower-preferences.glade:765
 msgid "Add new profile"
@@ -181,19 +181,19 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:778 data/cpupower-preferences.glade:783
 msgid "Remove selected profile"
-msgstr ""
+msgstr "Ukloni izabrani profil"
 
 #: data/cpupower-preferences.glade:796 data/cpupower-preferences.glade:801
 msgid "Move selected profile up"
-msgstr ""
+msgstr "Pomeri izabrani profil na gore"
 
 #: data/cpupower-preferences.glade:814 data/cpupower-preferences.glade:819
 msgid "Move selected profile down"
-msgstr ""
+msgstr "Pomeri izabrani profil na dole"
 
 #: data/cpupower-preferences.glade:881
 msgid "Profiles"
-msgstr ""
+msgstr "Profili"
 
 #: data/cpupower-preferences.glade:901
 msgid "Path to cpufreqctl:"
@@ -255,11 +255,11 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:1280
 msgid "Discard"
-msgstr ""
+msgstr "Odbaci"
 
 #: data/cpupower-preferences.glade:1300
 msgid "Save"
-msgstr ""
+msgstr "Snimi"
 
 #: data/cpupower-preferences.glade:1338
 msgid "Minimum CPU frequency slider"
@@ -287,24 +287,24 @@ msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
-msgstr ""
+msgstr "Serijalizovani profili"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
 msgid "Your CPUpower profiles"
-msgstr ""
+msgstr "Vaši profili za CPUpower"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
 msgid "Show current cpu frequency in the top bar"
-msgstr ""
+msgstr "Prikazuj trenutnu frekvenciju na gornjoj traci"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
 msgid "Frequency in taskbar is shown in GHz or MHz"
-msgstr ""
+msgstr "Frekvencija na traci zadataka se prikazuje u GHz ili MHz"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
 msgid "Control which unit is used for the frequency"
-msgstr ""
+msgstr "Postavlja jedinicu koja se koristi za frekvenciju"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
@@ -350,7 +350,7 @@ msgstr ""
 
 #: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
 msgid "Preferences"
-msgstr ""
+msgstr "Podešavanje"
 
 #: src/indicator.js:291
 msgid "Current Frequency"
@@ -370,7 +370,7 @@ msgstr ""
 
 #: src/notinstalled.js:60
 msgid "Installation required."
-msgstr ""
+msgstr "Neophodna je instalacija"
 
 #: src/notinstalled.js:64
 msgid "Oh no! This should not have happened.\n"
@@ -379,7 +379,7 @@ msgstr ""
 
 #: src/notinstalled.js:83
 msgid "Attempt installation"
-msgstr ""
+msgstr "Pokušaj instalaciju"
 
 #: src/preferences.js:274
 msgid "CPU Power Manager"
@@ -387,11 +387,11 @@ msgstr ""
 
 #: src/preferences.js:436
 msgid "Yes"
-msgstr ""
+msgstr "Da"
 
 #: src/preferences.js:436
 msgid "No"
-msgstr ""
+msgstr "Ne"
 
 #: src/preferences.js:518 src/preferences.js:519
 msgid "None"
