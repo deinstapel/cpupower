@@ -1,33 +1,33 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-29 15:34+0200\n"
-"PO-Revision-Date: 2021-09-29 15:56+0200\n"
+"POT-Creation-Date: 2021-09-27 17:03+0200\n"
+"PO-Revision-Date: 2021-10-21 14:48\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
-"Language-Team: Marcin Panniak <martinplr@gmail.com>, Marek Pikuła "
-"<marek@pikula.co>\n"
+"Language-Team: Polish\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0\n"
 "X-Poedit-Basepath: ..\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Crowdin-Project: cpupower\n"
+"X-Crowdin-Project-ID: 481593\n"
+"X-Crowdin-Language: pl\n"
+"X-Crowdin-File: /master/locale/template.pot\n"
+"X-Crowdin-File-ID: 11\n"
 
 #: data/cpupower-preferences.glade:57
 msgid "About"
 msgstr "O wtyczce"
 
 #: data/cpupower-preferences.glade:68
-msgid ""
-"Gnome-Shell Extension for controlling the frequency scaling driver of your "
-"CPU."
-msgstr ""
-"Rozszerzenie GNOME Shell kontrolujące skalowanie częstotliwości Twojego "
-"procesora."
+msgid "Gnome-Shell Extension for controlling the frequency scaling driver of your CPU."
+msgstr "Rozszerzenie GNOME Shell kontrolujące skalowanie częstotliwości Twojego procesora."
 
 #: data/cpupower-preferences.glade:156
 msgid "Top Bar"
@@ -71,8 +71,7 @@ msgstr "Pokazuj częstotliwość jako"
 
 #: data/cpupower-preferences.glade:280 data/cpupower-preferences.glade:294
 msgid "Set the method for retrieving the current frequency for your CPU"
-msgstr ""
-"Ustaw sposób na odczytanie aktualnej częstotliwości dla Twojego procesora"
+msgstr "Ustaw sposób na odczytanie aktualnej częstotliwości dla Twojego procesora"
 
 #: data/cpupower-preferences.glade:282
 msgid "Average of all cores"
@@ -130,19 +129,15 @@ msgstr "Przełącz, żeby pokazać ikonę na górnym pasku"
 
 #: data/cpupower-preferences.glade:448
 msgid "Backend"
-msgstr "Backend"
+msgstr ""
 
 #: data/cpupower-preferences.glade:480
 msgid "Frequency scaling driver"
 msgstr "Sterownik skalowania częstotliwości"
 
 #: data/cpupower-preferences.glade:494 data/cpupower-preferences.glade:511
-msgid ""
-"Set the scaling driver backend used to control and query the CPU frequency "
-"and turbo boost setting"
-msgstr ""
-"Ustaw sterownik skalowania częstotliwości do kontroli i odpytywania o "
-"częstotliwość procesora i ustawienia Turbo Boost"
+msgid "Set the scaling driver backend used to control and query the CPU frequency and turbo boost setting"
+msgstr "Ustaw sterownik skalowania częstotliwości do kontroli i odpytywania o częstotliwość procesora i ustawienia Turbo Boost"
 
 #: data/cpupower-preferences.glade:510
 msgid "Frequency scaling driver selection"
@@ -169,20 +164,12 @@ msgid "Discharging battery"
 msgstr "Rozładowywana bateria"
 
 #: data/cpupower-preferences.glade:648
-msgid ""
-"Set the default profile to which the extension will automatically switch to "
-"if Auto-Switch is enabled and the AC adapter gets plugged in"
-msgstr ""
-"Ustaw domyślny profil, który zostanie wybrany jeżeli automatyczne "
-"przełączanie jest włączone i zasilacz zostanie podłączony"
+msgid "Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets plugged in"
+msgstr "Ustaw domyślny profil, który zostanie wybrany jeżeli automatyczne przełączanie jest włączone i zasilacz zostanie podłączony"
 
 #: data/cpupower-preferences.glade:663
-msgid ""
-"Set the default profile to which the extension will automatically switch to "
-"if Auto-Switch is enabled and the AC adapter gets unplugged"
-msgstr ""
-"Ustaw domyślny profil, który zostanie wybrany jeżeli automatyczne "
-"przełączanie jest włączone i zasilacz zostanie odłączony"
+msgid "Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets unplugged"
+msgstr "Ustaw domyślny profil, który zostanie wybrany jeżeli automatyczne przełączanie jest włączone i zasilacz zostanie odłączony"
 
 #: data/cpupower-preferences.glade:706
 msgid "General"
@@ -244,16 +231,14 @@ msgstr "Maksymalna częstotliwość"
 #: data/cpupower-preferences.glade:1119 data/cpupower-preferences.glade:1552
 #: src/indicator.js:231
 msgid "Turbo Boost"
-msgstr "Turbo Boost"
+msgstr ""
 
 #: data/cpupower-preferences.glade:1141
 msgid "Turbo boost switch"
 msgstr "Przełącznik Turbo Boost"
 
 #: data/cpupower-preferences.glade:1155
-msgid ""
-"Frequency limits below the lower limit and above the upper limit are not "
-"allowed!"
+msgid "Frequency limits below the lower limit and above the upper limit are not allowed!"
 msgstr "Częstotliwości poniżej dolnej i powyżej górnej granicy są zabronione!"
 
 #: data/cpupower-preferences.glade:1163
@@ -282,7 +267,7 @@ msgstr "Suwak minimalnej częstotliwości"
 
 #: data/cpupower-preferences.glade:1352 data/cpupower-preferences.glade:1406
 msgid "0%"
-msgstr "0%"
+msgstr ""
 
 #: data/cpupower-preferences.glade:1392
 msgid "Maximum CPU frequency slider"
@@ -293,11 +278,8 @@ msgid "Uninstall CPU Power Manager Tools"
 msgstr "Odinstaluj narzędzia CPU Power Manager"
 
 #: data/cpupower-preferences.glade:1615
-msgid ""
-"Are you sure you want to uninstall the cpufreqctl tool and the policykit "
-"rule?"
-msgstr ""
-"Czy na pewno chcesz odinstalować narzędzie cpufreqctl i regułę policykit?"
+msgid "Are you sure you want to uninstall the cpufreqctl tool and the policykit rule?"
+msgstr "Czy na pewno chcesz odinstalować narzędzie cpufreqctl i regułę policykit?"
 
 #: data/cpupower-preferences.glade:1629
 msgid "Cancel"
@@ -350,40 +332,25 @@ msgid "The backend used for the cpufreqctl tool"
 msgstr "Backend używany przez narzędzie cpufreqctl"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:47
-msgid ""
-"The backend controls how the extensions will interact with the hardware and "
-"selects the scaling-driver used by the Linux kernel for setting and querying "
-"CPU frequencies and turbo boost settings. The 'fake' backend must only be "
-"used for development purposes and is not available in production."
-msgstr ""
-"Backend kontroluje jak rozszerzenie będzie wchodzić w interakcję z "
-"procesorem i wybiera sterownik używany przez jądro Linuxa do ustawiania i "
-"odczytywania częstotliwości procesora i ustawień Turbo Boost. \"Udawany\" "
-"backend powinien być użytwany tylko na potrzeby programisty i nie jest "
-"dostępny produkcyjnie."
+msgid "The backend controls how the extensions will interact with the hardware and selects the scaling-driver used by the Linux kernel for setting and querying CPU frequencies and turbo boost settings. The 'fake' backend must only be used for development purposes and is not available in production."
+msgstr "Backend kontroluje jak rozszerzenie będzie wchodzić w interakcję z procesorem i wybiera sterownik używany przez jądro Linuxa do ustawiania i odczytywania częstotliwości procesora i ustawień Turbo Boost. \"Udawany\" backend powinien być użytwany tylko na potrzeby programisty i nie jest dostępny produkcyjnie."
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:59
 msgid "The frequency sampling mode"
 msgstr "Tryb próbkowania częstotliwości"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:60
-msgid ""
-"The CPU frequencies displayed by the extension are sampled using one of "
-"those methods"
-msgstr ""
-"Częstotliwości pokazywane przez to rozszerzenie są próbkowane używając "
-"jednej z tych metod"
+msgid "The CPU frequencies displayed by the extension are sampled using one of those methods"
+msgstr "Częstotliwości pokazywane przez to rozszerzenie są próbkowane używając jednej z tych metod"
 
 #: src/indicator.js:185 src/notinstalled.js:69
-msgid ""
-"Please consider reporting this to the developers\n"
+msgid "Please consider reporting this to the developers\n"
 "of this extension by submitting an issue on Github."
-msgstr ""
-"Proszę rozważyć zaraportowanie tego programistom\n"
+msgstr "Proszę rozważyć zaraportowanie tego programistom\n"
 "tego rozszerzenia przez utworzenie zgłoszenia na\n"
 "platformie GitHub."
 
-#: src/indicator.js:196 src/indicator.js:315 src/preferences.js:278
+#: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
 msgid "Preferences"
 msgstr "Preferencje"
 
@@ -396,11 +363,8 @@ msgid "Oh no! Something went wrong."
 msgstr "O nie! Coś poszło nie tak."
 
 #: src/indicator.js:328
-msgid ""
-"The currently selected frequency scaling driver is not supported on your CPU!"
-msgstr ""
-"Aktualnie wybrany sterownik skalowania nie jest wspierany przez Twój "
-"procesor!"
+msgid "The currently selected frequency scaling driver is not supported on your CPU!"
+msgstr "Aktualnie wybrany sterownik skalowania nie jest wspierany przez Twój procesor!"
 
 #: src/indicator.js:335
 msgid "An internal error occurred:"
@@ -411,38 +375,36 @@ msgid "Installation required."
 msgstr "Wymagana instalacja."
 
 #: src/notinstalled.js:64
-msgid ""
-"Oh no! This should not have happened.\n"
+msgid "Oh no! This should not have happened.\n"
 "An error occurred while checking the installation!"
-msgstr ""
-"O nie! To nie powinno się stać.\n"
+msgstr "O nie! To nie powinno się stać.\n"
 "Wystąpił błąd przy sprawdzaniu instalacji!"
 
 #: src/notinstalled.js:83
 msgid "Attempt installation"
 msgstr "Spróbuj zainstalować"
 
-#: src/preferences.js:277
+#: src/preferences.js:274
 msgid "CPU Power Manager"
-msgstr "CPU Power Manager"
+msgstr ""
 
-#: src/preferences.js:439
+#: src/preferences.js:436
 msgid "Yes"
 msgstr "Tak"
 
-#: src/preferences.js:439
+#: src/preferences.js:436
 msgid "No"
 msgstr "Nie"
 
-#: src/preferences.js:521 src/preferences.js:522
+#: src/preferences.js:518 src/preferences.js:519
 msgid "None"
 msgstr "Żaden"
 
-#: src/preferences.js:549
+#: src/preferences.js:546
 msgid "unavailable"
 msgstr "niedostępny"
 
-#: src/preferences.js:554
+#: src/preferences.js:551
 msgid "Automatic"
 msgstr "Automatyczny"
 
@@ -451,11 +413,9 @@ msgid "Your CPU Power Manager installation needs updating!"
 msgstr "CPU Power Manager wymaga aktualizacji!"
 
 #: src/update.js:62
-msgid ""
-"Warning: Security issues were found with your installation!\n"
+msgid "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
-msgstr ""
-"Uwaga: znaleziono problemy z bezpieczeństwem podczas instalacji!\n"
+msgstr "Uwaga: znaleziono problemy z bezpieczeństwem podczas instalacji!\n"
 "Zaktualizuj natychmiast!"
 
 #: src/update.js:75
@@ -465,26 +425,3 @@ msgstr "Aktualizuj"
 #~ msgid "CPU"
 #~ msgstr "CPU"
 
-#~ msgid "Set as default profile for battery operation"
-#~ msgstr "Ustaw jako domyślny profil dla zasilania bateryjnego"
-
-#~ msgid "Set as standard profile for plugged in operation"
-#~ msgstr "Ustaw jako domyślny profil dla zasilania"
-
-#~ msgid "Auto Switch Configuration"
-#~ msgstr "Konfiguracja automatycznego przełączania"
-
-#~ msgid "Turbo boost:"
-#~ msgstr "Turbo boost:"
-
-#~ msgid "Show current cpu frequency in taskbar"
-#~ msgstr "Pokaż bieżącą częstotliwość procesora na pasku zadań"
-
-#~ msgid "Show cpu chip icon in taskbar"
-#~ msgstr "Pokaż ikonę procesora na pasku zadań"
-
-#~ msgid "Show down arrow in taskbar"
-#~ msgstr "Pokaż strzałkę w dół na pasku zadań"
-
-#~ msgid "Your computer does not support intel_pstate."
-#~ msgstr "Twój komputer nie obsługuje sterownika intel-pstate."
