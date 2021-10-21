@@ -17,6 +17,9 @@
   <a href="https://github.com/deinstapel/cpupower/blob/master/LICENSE">
     <img alt="License" src="https://img.shields.io/github/license/deinstapel/cpupower.svg">
   </a>
+  <a title="Crowdin" target="_blank" href="https://crowdin.com/project/cpupower">
+    <img src="https://badges.crowdin.net/cpupower/localized.svg">
+  </a>
   <a href="http://makeapullrequest.com">
     <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" target="_blank" />
   </a>
@@ -141,19 +144,27 @@ $ sudo make uninstall uninstall-tool
 
 ## Translating
 
-In order to translate this extension you first need to install [`Poedit`](https://poedit.net/). You may use your distributions package manager to install it.
+`cpupower` now uses [crowdin](https://crowdin.com/project/cpupower) for translation. You are free to choose from manually translating this extension with tools like [`Poedit`](https://poedit.net/) or using the online service of crowdin.
+
+### Translating with crowdin
+
+First visit the [project page](https://crowdin.com/project/cpupower) of `cpupower` on crowdin and select the language you would like to translate to. Now, click on `Translate All` and you're good to go.
+
+### Manual translation method
+
+In order to translate this extension with [`Poedit`](https://poedit.net/) you first need to install it. You may use your distributions package manager for installation.
 
 When finished, [fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) this project and clone like described in the linked guide.
 
-### Creating a new translation
+#### Creating a new translation
 
 Open Poedit and select `File` / `New From POT/PO File...` and select `cpupower/locale/template.pot`. Select the language you want to translate to. Now start translating.
 
-### Edit or update an existing translation
+#### Edit or update an existing translation
 
 Open Poedit and select `Open`. Navigate to the `cpupower/locale` folder and select the language file (`.po`) you want to edit/update. Now select `Catalog` / `Update from POT File...` and select `cpupower/locale/template.pot`. Now, you can start updating the translation.
 
-### Saving your work
+#### Saving your work
 
 When finished save the file into the `locale` folder and [push](https://help.github.com/en/github/managing-files-in-a-repository/adding-a-file-to-a-repository-using-the-command-line) your changes to your fork. Now, you can create a [pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to make your translation available in the main cpupower installation.
 
