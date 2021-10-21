@@ -1,21 +1,25 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2021-10-15 17:00+0200\n"
-"Last-Translator: T. Clément <dev.tclement0922@gmail.com>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2021-10-21 14:48\n"
+"Last-Translator: Marek Pikuła <marek@pikula.co>\n"
+"Language-Team: French\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0\n"
 "X-Poedit-Basepath: ..\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Crowdin-Project: cpupower\n"
+"X-Crowdin-Project-ID: 481593\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: /master/locale/template.pot\n"
+"X-Crowdin-File-ID: 11\n"
 
 #: data/cpupower-preferences.glade:57
 msgid "About"
@@ -125,7 +129,7 @@ msgstr "Commutateur pour afficher une icône dans la barre supérieure"
 
 #: data/cpupower-preferences.glade:448
 msgid "Backend"
-msgstr "Backend"
+msgstr ""
 
 #: data/cpupower-preferences.glade:480
 msgid "Frequency scaling driver"
@@ -209,7 +213,7 @@ msgstr "Désinstaller"
 
 #: data/cpupower-preferences.glade:1029
 msgid "Installation"
-msgstr "Installation"
+msgstr ""
 
 #: data/cpupower-preferences.glade:1059 data/cpupower-preferences.glade:1074
 #: data/cpupower-preferences.glade:1081
@@ -263,7 +267,7 @@ msgstr "Curseur de la fréquence minimale du processeur"
 
 #: data/cpupower-preferences.glade:1352 data/cpupower-preferences.glade:1406
 msgid "0%"
-msgstr "0%"
+msgstr ""
 
 #: data/cpupower-preferences.glade:1392
 msgid "Maximum CPU frequency slider"
@@ -340,11 +344,9 @@ msgid "The CPU frequencies displayed by the extension are sampled using one of t
 msgstr "Les fréquences du processeur affichées par l'extension sont échantillonnées à l'aide de l'une de ces méthodes"
 
 #: src/indicator.js:185 src/notinstalled.js:69
-msgid ""
-"Please consider reporting this to the developers\n"
+msgid "Please consider reporting this to the developers\n"
 "of this extension by submitting an issue on Github."
-msgstr ""
-"Veuillez envisager de signaler cela aux développeurs\n"
+msgstr "Veuillez envisager de signaler cela aux développeurs\n"
 "de cette extension en soumettant un problème sur Github."
 
 #: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
@@ -372,11 +374,9 @@ msgid "Installation required."
 msgstr "Installation requise."
 
 #: src/notinstalled.js:64
-msgid ""
-"Oh no! This should not have happened.\n"
+msgid "Oh no! This should not have happened.\n"
 "An error occurred while checking the installation!"
-msgstr ""
-"Oh non ! Ça n'aurait pas dû arriver.\n"
+msgstr "Oh non ! Ça n'aurait pas dû arriver.\n"
 "Une erreur est survenue en verifiant l'installation !"
 
 #: src/notinstalled.js:83
@@ -385,7 +385,7 @@ msgstr "Tentative d'installation"
 
 #: src/preferences.js:274
 msgid "CPU Power Manager"
-msgstr "CPU Power Manager"
+msgstr ""
 
 #: src/preferences.js:436
 msgid "Yes"
@@ -412,11 +412,9 @@ msgid "Your CPU Power Manager installation needs updating!"
 msgstr "Votre installation CPU Power Manager doit se mettre à jour !"
 
 #: src/update.js:62
-msgid ""
-"Warning: Security issues were found with your installation!\n"
+msgid "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
-msgstr ""
-"Attention : Des problèmes de sécurité ont étés trouvés avec\n"
+msgstr "Attention : Des problèmes de sécurité ont étés trouvés avec\n"
 "votre installation ! Merci de mettre à jour immédiatement !"
 
 #: src/update.js:75
@@ -425,3 +423,4 @@ msgstr "Tentative de mise à jour de l'outil"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"
+
