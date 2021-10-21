@@ -1,0 +1,423 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: cpupower\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-27 17:03+0200\n"
+"PO-Revision-Date: 2021-10-21 14:48\n"
+"Last-Translator: Marek Pikuła <marek@pikula.co>\n"
+"Language-Team: Greek\n"
+"Language: el_GR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Crowdin-Project: cpupower\n"
+"X-Crowdin-Project-ID: 481593\n"
+"X-Crowdin-Language: el\n"
+"X-Crowdin-File: /master/locale/template.pot\n"
+"X-Crowdin-File-ID: 11\n"
+
+#: data/cpupower-preferences.glade:57
+msgid "About"
+msgstr ""
+
+#: data/cpupower-preferences.glade:68
+msgid "Gnome-Shell Extension for controlling the frequency scaling driver of your CPU."
+msgstr ""
+
+#: data/cpupower-preferences.glade:156
+msgid "Top Bar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:188
+msgid "Show current frequency"
+msgstr ""
+
+#: data/cpupower-preferences.glade:204
+msgid "Use GHz instead of MHz"
+msgstr ""
+
+#: data/cpupower-preferences.glade:218
+msgid "Show the current CPU frequency in the top bar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:227
+msgid "Top bar frequency switch"
+msgstr ""
+
+#: data/cpupower-preferences.glade:228
+msgid "Switch to show the current frequency in the top bar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:241
+msgid "Show the current CPU frequency in GHz instead of MHz"
+msgstr ""
+
+#: data/cpupower-preferences.glade:250
+msgid "GHz switch"
+msgstr ""
+
+#: data/cpupower-preferences.glade:251
+msgid "Switch to use units of GHz instead of MHz in the top bar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:266
+msgid "Show frequency as"
+msgstr ""
+
+#: data/cpupower-preferences.glade:280 data/cpupower-preferences.glade:294
+msgid "Set the method for retrieving the current frequency for your CPU"
+msgstr ""
+
+#: data/cpupower-preferences.glade:282
+msgid "Avergage of all cores"
+msgstr ""
+
+#: data/cpupower-preferences.glade:283
+msgid "Minimum of all cores"
+msgstr ""
+
+#: data/cpupower-preferences.glade:284
+msgid "Maximum of all cores"
+msgstr ""
+
+#: data/cpupower-preferences.glade:285
+msgid "Value of a random core"
+msgstr ""
+
+#: data/cpupower-preferences.glade:293
+msgid "CPU frequency retrieval method"
+msgstr ""
+
+#: data/cpupower-preferences.glade:309
+msgid "Show arrow in top bar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:323
+msgid "Show an arrow in the top bar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:332
+msgid "Top bar arrow switch"
+msgstr ""
+
+#: data/cpupower-preferences.glade:333
+msgid "Switch to show an arrow in the top bar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:348
+msgid "Show icon in top bar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:362
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
+msgid "Show an icon in the top bar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:371
+msgid "Top bar icon switch"
+msgstr ""
+
+#: data/cpupower-preferences.glade:372
+msgid "Switch to show an icon in the top bar"
+msgstr ""
+
+#: data/cpupower-preferences.glade:448
+msgid "Backend"
+msgstr ""
+
+#: data/cpupower-preferences.glade:480
+msgid "Frequency scaling driver"
+msgstr ""
+
+#: data/cpupower-preferences.glade:494 data/cpupower-preferences.glade:511
+msgid "Set the scaling driver backend used to control and query the CPU frequency and turbo boost setting"
+msgstr ""
+
+#: data/cpupower-preferences.glade:510
+msgid "Frequency scaling driver selection"
+msgstr ""
+
+#: data/cpupower-preferences.glade:543 src/indicator.js:237
+msgid "Auto Switch"
+msgstr ""
+
+#: data/cpupower-preferences.glade:586
+msgid "Default AC profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:602
+msgid "Default battery profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:619
+msgid "Charging battery"
+msgstr ""
+
+#: data/cpupower-preferences.glade:635
+msgid "Discharging battery"
+msgstr ""
+
+#: data/cpupower-preferences.glade:648
+msgid "Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets plugged in"
+msgstr ""
+
+#: data/cpupower-preferences.glade:663
+msgid "Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets unplugged"
+msgstr ""
+
+#: data/cpupower-preferences.glade:706
+msgid "General"
+msgstr ""
+
+#: data/cpupower-preferences.glade:760 data/cpupower-preferences.glade:765
+msgid "Add new profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:778 data/cpupower-preferences.glade:783
+msgid "Remove selected profile"
+msgstr ""
+
+#: data/cpupower-preferences.glade:796 data/cpupower-preferences.glade:801
+msgid "Move selected profile up"
+msgstr ""
+
+#: data/cpupower-preferences.glade:814 data/cpupower-preferences.glade:819
+msgid "Move selected profile down"
+msgstr ""
+
+#: data/cpupower-preferences.glade:881
+msgid "Profiles"
+msgstr ""
+
+#: data/cpupower-preferences.glade:901
+msgid "Path to cpufreqctl:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:917
+msgid "Path to policykit rule:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:934
+msgid "CPU Power Manager is installed via your distributions package manager!"
+msgstr ""
+
+#: data/cpupower-preferences.glade:949 data/cpupower-preferences.glade:1643
+msgid "Uninstall"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1029
+msgid "Installation"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1059 data/cpupower-preferences.glade:1074
+#: data/cpupower-preferences.glade:1081
+msgid "Profile Name"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1095 src/indicator.js:221
+msgid "Minimum Frequency"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1107 src/indicator.js:226
+msgid "Maximum Frequency"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1119 data/cpupower-preferences.glade:1552
+#: src/indicator.js:231
+msgid "Turbo Boost"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1141
+msgid "Turbo boost switch"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1155
+msgid "Frequency limits below the lower limit and above the upper limit are not allowed!"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1163
+msgid "Lower limit:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1195
+msgid "Upper limit:"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1252
+msgid "You reached your CPU's limit(s):"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1280
+msgid "Discard"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1300
+msgid "Save"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1338
+msgid "Minimum CPU frequency slider"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1352 data/cpupower-preferences.glade:1406
+msgid "0%"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1392
+msgid "Maximum CPU frequency slider"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1614
+msgid "Uninstall CPU Power Manager Tools"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1615
+msgid "Are you sure you want to uninstall the cpufreqctl tool and the policykit rule?"
+msgstr ""
+
+#: data/cpupower-preferences.glade:1629
+msgid "Cancel"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
+msgid "Serialized Profiles"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
+msgid "Your CPUpower profiles"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
+msgid "Show current cpu frequency in the top bar"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
+msgid "Frequency in taskbar is shown in GHz or MHz"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
+msgid "Control which unit is used for the frequency"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
+msgid "Show arrow in the top bar"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
+msgid "Default AC profile ID"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
+msgid "The profile to switch to when plugged in"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
+msgid "Default battery profile ID"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
+msgid "The profile to switch to when unplugged"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:46
+msgid "The backend used for the cpufreqctl tool"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:47
+msgid "The backend controls how the extensions will interact with the hardware and selects the scaling-driver used by the Linux kernel for setting and querying CPU frequencies and turbo boost settings. The 'fake' backend must only be used for development purposes and is not available in production."
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:59
+msgid "The frequency sampling mode"
+msgstr ""
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:60
+msgid "The CPU frequencies displayed by the extension are sampled using one of those methods"
+msgstr ""
+
+#: src/indicator.js:185 src/notinstalled.js:69
+msgid "Please consider reporting this to the developers\n"
+"of this extension by submitting an issue on Github."
+msgstr ""
+
+#: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
+msgid "Preferences"
+msgstr ""
+
+#: src/indicator.js:291
+msgid "Current Frequency"
+msgstr ""
+
+#: src/indicator.js:327 src/indicator.js:334
+msgid "Oh no! Something went wrong."
+msgstr ""
+
+#: src/indicator.js:328
+msgid "The currently selected frequency scaling driver is not supported on your CPU!"
+msgstr ""
+
+#: src/indicator.js:335
+msgid "An internal error occurred:"
+msgstr ""
+
+#: src/notinstalled.js:60
+msgid "Installation required."
+msgstr ""
+
+#: src/notinstalled.js:64
+msgid "Oh no! This should not have happened.\n"
+"An error occurred while checking the installation!"
+msgstr ""
+
+#: src/notinstalled.js:83
+msgid "Attempt installation"
+msgstr ""
+
+#: src/preferences.js:274
+msgid "CPU Power Manager"
+msgstr ""
+
+#: src/preferences.js:436
+msgid "Yes"
+msgstr ""
+
+#: src/preferences.js:436
+msgid "No"
+msgstr ""
+
+#: src/preferences.js:518 src/preferences.js:519
+msgid "None"
+msgstr ""
+
+#: src/preferences.js:546
+msgid "unavailable"
+msgstr ""
+
+#: src/preferences.js:551
+msgid "Automatic"
+msgstr ""
+
+#: src/update.js:61
+msgid "Your CPU Power Manager installation needs updating!"
+msgstr ""
+
+#: src/update.js:62
+msgid "Warning: Security issues were found with your installation!\n"
+"Please update immediately!"
+msgstr ""
+
+#: src/update.js:75
+msgid "Attempt tool update"
+msgstr ""
+
+#~ msgid "CPU"
+#~ msgstr "CPU"
+
