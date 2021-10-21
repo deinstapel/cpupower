@@ -33,10 +33,13 @@ do
     case "$ans" in
         major|majo|maj|ma)
             major=$(echo "$major" + 1 | bc)
+            minor=0
+            patch=0
             break
             ;;
         minor|mino|min|mi)
             minor=$(echo "$minor" + 1 | bc)
+            patch=0
             break
             ;;
         patch|patc|pat|pa|p)
