@@ -1,31 +1,33 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2021-10-19 11:15+0200\n"
-"Last-Translator: Honza Kosák <darneus@gmail.com>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2021-10-21 14:48\n"
+"Last-Translator: Marek Pikuła <marek@pikula.co>\n"
+"Language-Team: Czech\n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0\n"
 "X-Poedit-Basepath: ..\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Crowdin-Project: cpupower\n"
+"X-Crowdin-Project-ID: 481593\n"
+"X-Crowdin-Language: cs\n"
+"X-Crowdin-File: /master/locale/template.pot\n"
+"X-Crowdin-File-ID: 11\n"
 
 #: data/cpupower-preferences.glade:57
 msgid "About"
 msgstr "O projektu"
 
 #: data/cpupower-preferences.glade:68
-msgid ""
-"Gnome-Shell Extension for controlling the frequency scaling driver of your "
-"CPU."
-msgstr ""
-"Gnome-Shell Extension pro řízení ovladače škálování frekvence vašeho "
-"procesoru."
+msgid "Gnome-Shell Extension for controlling the frequency scaling driver of your CPU."
+msgstr "Gnome-Shell Extension pro řízení ovladače škálování frekvence vašeho procesoru."
 
 #: data/cpupower-preferences.glade:156
 msgid "Top Bar"
@@ -127,19 +129,15 @@ msgstr "Zapněte pro zobrazení ikony na hlavním panelu"
 
 #: data/cpupower-preferences.glade:448
 msgid "Backend"
-msgstr "Backend"
+msgstr ""
 
 #: data/cpupower-preferences.glade:480
 msgid "Frequency scaling driver"
 msgstr "Ovladač pro škálování frekvence"
 
 #: data/cpupower-preferences.glade:494 data/cpupower-preferences.glade:511
-msgid ""
-"Set the scaling driver backend used to control and query the CPU frequency "
-"and turbo boost setting"
-msgstr ""
-"Nastavte ovladač pro škálování frekvence, aby jste mohli získávat a měnit "
-"frekvenci CPU"
+msgid "Set the scaling driver backend used to control and query the CPU frequency and turbo boost setting"
+msgstr "Nastavte ovladač pro škálování frekvence, aby jste mohli získávat a měnit frekvenci CPU"
 
 #: data/cpupower-preferences.glade:510
 msgid "Frequency scaling driver selection"
@@ -166,20 +164,12 @@ msgid "Discharging battery"
 msgstr "Baterie se vybíjí"
 
 #: data/cpupower-preferences.glade:648
-msgid ""
-"Set the default profile to which the extension will automatically switch to "
-"if Auto-Switch is enabled and the AC adapter gets plugged in"
-msgstr ""
-"Nastavení výchozího profilu, na který se automaticky přepne, pokud je "
-"povoleno automatické přepínání a je připojen síťový adaptér"
+msgid "Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets plugged in"
+msgstr "Nastavení výchozího profilu, na který se automaticky přepne, pokud je povoleno automatické přepínání a je připojen síťový adaptér"
 
 #: data/cpupower-preferences.glade:663
-msgid ""
-"Set the default profile to which the extension will automatically switch to "
-"if Auto-Switch is enabled and the AC adapter gets unplugged"
-msgstr ""
-"Nastavení výchozího profilu, na který se automaticky přepne, pokud je "
-"povoleno automatické přepínání a je odpojen síťový adaptér"
+msgid "Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets unplugged"
+msgstr "Nastavení výchozího profilu, na který se automaticky přepne, pokud je povoleno automatické přepínání a je odpojen síťový adaptér"
 
 #: data/cpupower-preferences.glade:706
 msgid "General"
@@ -215,9 +205,7 @@ msgstr "Cesta k policykit pravidlům:"
 
 #: data/cpupower-preferences.glade:934
 msgid "CPU Power Manager is installed via your distributions package manager!"
-msgstr ""
-"CPU Power Manager se instaluje prostřednictvím správce balíčků vaší "
-"distribuce!"
+msgstr "CPU Power Manager se instaluje prostřednictvím správce balíčků vaší distribuce!"
 
 #: data/cpupower-preferences.glade:949 data/cpupower-preferences.glade:1643
 msgid "Uninstall"
@@ -243,18 +231,15 @@ msgstr "Maximální frekvence"
 #: data/cpupower-preferences.glade:1119 data/cpupower-preferences.glade:1552
 #: src/indicator.js:231
 msgid "Turbo Boost"
-msgstr "Turbo Boost"
+msgstr ""
 
 #: data/cpupower-preferences.glade:1141
 msgid "Turbo boost switch"
 msgstr "Turbo boost přepínač"
 
 #: data/cpupower-preferences.glade:1155
-msgid ""
-"Frequency limits below the lower limit and above the upper limit are not "
-"allowed!"
-msgstr ""
-"Frekvenční limity pod dolní hranicí a nad horní hranicí nejsou povoleny!"
+msgid "Frequency limits below the lower limit and above the upper limit are not allowed!"
+msgstr "Frekvenční limity pod dolní hranicí a nad horní hranicí nejsou povoleny!"
 
 #: data/cpupower-preferences.glade:1163
 msgid "Lower limit:"
@@ -282,7 +267,7 @@ msgstr "Posuvník minimální frekvence"
 
 #: data/cpupower-preferences.glade:1352 data/cpupower-preferences.glade:1406
 msgid "0%"
-msgstr "0%"
+msgstr ""
 
 #: data/cpupower-preferences.glade:1392
 msgid "Maximum CPU frequency slider"
@@ -293,12 +278,8 @@ msgid "Uninstall CPU Power Manager Tools"
 msgstr "Odinstalovat nástroje CPU Power Manageru"
 
 #: data/cpupower-preferences.glade:1615
-msgid ""
-"Are you sure you want to uninstall the cpufreqctl tool and the policykit "
-"rule?"
-msgstr ""
-"Jste si jistí, že chcete odinstalovat nástroj cpufreqctl a policykit "
-"pravidla?"
+msgid "Are you sure you want to uninstall the cpufreqctl tool and the policykit rule?"
+msgstr "Jste si jistí, že chcete odinstalovat nástroj cpufreqctl a policykit pravidla?"
 
 #: data/cpupower-preferences.glade:1629
 msgid "Cancel"
@@ -351,33 +332,21 @@ msgid "The backend used for the cpufreqctl tool"
 msgstr "Backed použitý pro cpufreqctl"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:47
-msgid ""
-"The backend controls how the extensions will interact with the hardware and "
-"selects the scaling-driver used by the Linux kernel for setting and querying "
-"CPU frequencies and turbo boost settings. The 'fake' backend must only be "
-"used for development purposes and is not available in production."
-msgstr ""
-"Backend řídí způsob interakce rozšíření s hardwarem a vybírá ovladač "
-"škálování, který linuxové jádro používá pro nastavení a dotazování frekvencí "
-"procesoru a nastavení turbo boostu. Falešný backend se smí používat pouze "
-"pro vývojové účely a není k dispozici v produkčním prostředí."
+msgid "The backend controls how the extensions will interact with the hardware and selects the scaling-driver used by the Linux kernel for setting and querying CPU frequencies and turbo boost settings. The 'fake' backend must only be used for development purposes and is not available in production."
+msgstr "Backend řídí způsob interakce rozšíření s hardwarem a vybírá ovladač škálování, který linuxové jádro používá pro nastavení a dotazování frekvencí procesoru a nastavení turbo boostu. Falešný backend se smí používat pouze pro vývojové účely a není k dispozici v produkčním prostředí."
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:59
 msgid "The frequency sampling mode"
 msgstr "Režim vzorkování frekvence"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:60
-msgid ""
-"The CPU frequencies displayed by the extension are sampled using one of "
-"those methods"
+msgid "The CPU frequencies displayed by the extension are sampled using one of those methods"
 msgstr "Zobrazovaná frekvence procesoru je vzorkována jednou z těchto metod"
 
 #: src/indicator.js:185 src/notinstalled.js:69
-msgid ""
-"Please consider reporting this to the developers\n"
+msgid "Please consider reporting this to the developers\n"
 "of this extension by submitting an issue on Github."
-msgstr ""
-"Zvažte prosím nahlášení této skutečnosti vývojářům\n"
+msgstr "Zvažte prosím nahlášení této skutečnosti vývojářům\n"
 "tohoto rozšíření vytvořením issue na Githubu."
 
 #: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
@@ -393,11 +362,8 @@ msgid "Oh no! Something went wrong."
 msgstr "Ale ne! Něco se pokazilo."
 
 #: src/indicator.js:328
-msgid ""
-"The currently selected frequency scaling driver is not supported on your CPU!"
-msgstr ""
-"Aktuálně zvolený ovladač pro škálování frekvence není na vašem procesoru "
-"podporován!"
+msgid "The currently selected frequency scaling driver is not supported on your CPU!"
+msgstr "Aktuálně zvolený ovladač pro škálování frekvence není na vašem procesoru podporován!"
 
 #: src/indicator.js:335
 msgid "An internal error occurred:"
@@ -408,11 +374,9 @@ msgid "Installation required."
 msgstr "Je vyžadována instalace."
 
 #: src/notinstalled.js:64
-msgid ""
-"Oh no! This should not have happened.\n"
+msgid "Oh no! This should not have happened.\n"
 "An error occurred while checking the installation!"
-msgstr ""
-"Ale ne! Tohle se nemělo stát.\n"
+msgstr "Ale ne! Tohle se nemělo stát.\n"
 "Při kontrole instalace došlo k chybě!"
 
 #: src/notinstalled.js:83
@@ -421,7 +385,7 @@ msgstr "Zkusit provést instalaci"
 
 #: src/preferences.js:274
 msgid "CPU Power Manager"
-msgstr "CPU Power Manager"
+msgstr ""
 
 #: src/preferences.js:436
 msgid "Yes"
@@ -448,11 +412,9 @@ msgid "Your CPU Power Manager installation needs updating!"
 msgstr "Váš CPU Power Manager potřebuje aktualizovat!"
 
 #: src/update.js:62
-msgid ""
-"Warning: Security issues were found with your installation!\n"
+msgid "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
-msgstr ""
-"Varování: Ve vaší instalaci byly nalezeny bezpečnostní problémy!\n"
+msgstr "Varování: Ve vaší instalaci byly nalezeny bezpečnostní problémy!\n"
 "Okamžitě proveďte aktualizaci!"
 
 #: src/update.js:75
@@ -462,41 +424,3 @@ msgstr "Zkusit aktualizovat"
 #~ msgid "CPU"
 #~ msgstr "CPU"
 
-#~ msgid "Set as default profile for battery operation"
-#~ msgstr "Nastavení jako výchozí profil pro napájení z baterie"
-
-#~ msgid "Set as standard profile for plugged in operation"
-#~ msgstr "Nastavit jako výchozí profil pro napájení ze síte"
-
-#~ msgid "Auto Switch Configuration"
-#~ msgstr "Automatický režim"
-
-#~ msgid "Turbo boost:"
-#~ msgstr "Turbo boost:"
-
-#~ msgid "Show current cpu frequency in taskbar"
-#~ msgstr "Zobrazit aktuální frekvenci procesoru v liště"
-
-#~ msgid "Show cpu chip icon in taskbar"
-#~ msgstr "Zobrazit ikonu čipu na hlavním panelu"
-
-#~ msgid "Show down arrow in taskbar"
-#~ msgstr "Zobrazit šipku dolů na hlavním panelu"
-
-#~ msgid "Minimum Frequency:"
-#~ msgstr "Minimální frekvence:"
-
-#~ msgid "Maximum Frequency:"
-#~ msgstr "Maximální frekvence:"
-
-#~ msgid "Turbo Boost:"
-#~ msgstr "Turbo Boost:"
-
-#~ msgid "Your computer does not support intel_pstate."
-#~ msgstr "Váš počítač nepodporuje intel_pstate."
-
-#~ msgid "Use GHz instead of MHz as unit"
-#~ msgstr "Pužívat GHz jako výchozí jednotku"
-
-#~ msgid "Remove profile %s ?"
-#~ msgstr "Odstranit profil %s ?"
