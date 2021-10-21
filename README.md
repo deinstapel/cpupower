@@ -4,18 +4,18 @@
     <img alt="Get it on GNOME Extensions" width="228" src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true"/>
   </a>
   <br>
-  <a href="https://github.com/martin31821/cpupower/actions?query=workflow%3A%22latest%20build%22">
-    <img src="https://github.com/martin31821/cpupower/workflows/latest%20build/badge.svg" alt="latest build">
+  <a href="https://github.com/deinstapel/cpupower/actions?query=workflow%3A%22latest%20build%22">
+    <img src="https://github.com/deinstapel/cpupower/workflows/latest%20build/badge.svg" alt="latest build">
   </a>
-  <a href="https://github.com/martin31821/cpupower/actions?query=workflow%3A%22release%20build%22">
-    <img src="https://github.com/martin31821/cpupower/workflows/release%20build/badge.svg" alt="release build">
+  <a href="https://github.com/deinstapel/cpupower/actions?query=workflow%3A%22release%20build%22">
+    <img src="https://github.com/deinstapel/cpupower/workflows/release%20build/badge.svg" alt="release build">
   </a>
-  <a href="https://github.com/martin31821/cpupower/releases">
-    <img alt="Lastest release" src="https://img.shields.io/github/v/release/martin31821/cpupower?label=latest%20release&sort=semver">
+  <a href="https://github.com/deinstapel/cpupower/releases">
+    <img alt="Lastest release" src="https://img.shields.io/github/v/release/deinstapel/cpupower?label=latest%20release&sort=semver">
   </a>
   <img alt="Gnome 40" src="https://img.shields.io/badge/gnome-40-blue?logo=gnome&logoColor=white">
-  <a href="https://github.com/martin31821/cpupower/blob/master/LICENSE">
-    <img alt="License" src="https://img.shields.io/github/license/martin31821/cpupower.svg">
+  <a href="https://github.com/deinstapel/cpupower/blob/master/LICENSE">
+    <img alt="License" src="https://img.shields.io/github/license/deinstapel/cpupower.svg">
   </a>
   <a href="http://makeapullrequest.com">
     <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" target="_blank" />
@@ -66,7 +66,7 @@ Impersonate the (admin) user, clone the git repository, and run the following co
 ```shell
 $ sudo -u username bash
 $ cd /tmp
-$ git clone https://github.com/martin31821/cpupower.git
+$ git clone https://github.com/deinstapel/cpupower.git
 $ cd cpupower
 $ make install PREFIX=/home/username/.local
 ```
@@ -95,7 +95,7 @@ Impersonate the (non-admin) user, clone the git repository, and run the followin
 ```shell
 $ sudo -u username bash
 $ cd /tmp
-$ git clone https://github.com/martin31821/cpupower.git
+$ git clone https://github.com/deinstapel/cpupower.git
 $ cd cpupower
 $ make install PREFIX=/home/username/.local
 ```

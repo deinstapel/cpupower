@@ -5,7 +5,7 @@
 	],
 	"uuid": "cpupower@mko-sl.de",
 	"name": "CPU Power Manager",
-	"url": "https://github.com/martin31821/cpupower",
+	"url": "https://github.com/deinstapel/cpupower",
 	"description": "Manage your CPU's frequency scaling driver",
 	"schema": "org.gnome.shell.extensions.cpupower"
 }

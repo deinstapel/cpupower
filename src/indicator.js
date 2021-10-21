@@ -187,7 +187,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                 {reactive: true},
             );
             reportLabel.connect("activate", function () {
-                Gio.AppInfo.launch_default_for_uri("https://github.com/martin31821/cpupower/issues/new", null);
+                Gio.AppInfo.launch_default_for_uri("https://github.com/deinstapel/cpupower/issues/new", null);
             });
             this.mainSection.addMenuItem(reportLabel);
         }

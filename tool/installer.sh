@@ -94,9 +94,9 @@ RULE_OUT="${RULE_DIR}/10-mko.cpupower.setcpufreq.rules"
 CFC_IN="${DIR}/cpufreqctl"
 
 # if TOOL_SUFFIX is provided, install to .../local/bin
-# see https://github.com/martin31821/cpupower/issues/102
+# see https://github.com/deinstapel/cpupower/issues/102
 # the TOOL_SUFFIX enables per-user installations on a multi-user system
-# see https://github.com/martin31821/cpupower/issues/84
+# see https://github.com/deinstapel/cpupower/issues/84
 if [ -z "${TOOL_SUFFIX}" ]
 then
     CFC_DIR="${PREFIX}/bin"
@@ -117,7 +117,7 @@ if [ "${ACTION}" = "check" ]
 then
     # pre v9 policy rules have security issues
     # cpufreqctl should always be located in /usr/local/bin or /usr/bin as of
-    # https://github.com/martin31821/cpupower/issues/102
+    # https://github.com/deinstapel/cpupower/issues/102
     # therefore check for occurence of prefix
     if [ -f "${V8_LEGACY_OUT}" ] && ! grep -sq "${PREFIX}" "${V8_LEGACY_OUT}" || \
                [ -f "${V7_LEGACY_OUT}" ]
@@ -159,7 +159,7 @@ if [ "${ACTION}" = "install" ]
 then
     if [ "$(id -u)" -ne 0 ]; then
         echo "The install action must be run as root for security reasons!"
-        echo "Please have a look at https://github.com/martin31821/cpupower/issues/102"
+        echo "Please have a look at https://github.com/deinstapel/cpupower/issues/102"
         echo "for further details."
         exit "${EXIT_MUST_BE_ROOT}"
     fi
