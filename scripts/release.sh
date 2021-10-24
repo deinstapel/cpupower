@@ -74,6 +74,8 @@ grep --exclude="${BASH_SOURCE[0]}" -l -Z -r -e 'VERSION=' -e 'name="version"' | 
      sed -i -e "s;VERSION=\".*\";VERSION=\"$semver\";g" \
 		        -e "s;<property name=\"version\">.*</property>;<property name=\"version\">$semver</property>;g"
 
+sed -i -e "s;PRODUCTION=no;PRODUCTION=yes;g" ./tool/cpufreqctl
+
 make package
 
 git add -A

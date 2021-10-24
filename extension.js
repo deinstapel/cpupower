@@ -30,6 +30,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 const EXTENSIONDIR = Me.dir.get_path();
 const Convenience = Me.imports.src.convenience;
 const Main = imports.ui.main;
+const Config = imports.misc.config;
 const ByteArray = imports.byteArray;
 
 const utils = Me.imports.src.utils;
@@ -56,7 +57,13 @@ let cpupowerProxy;
 let extensionReloadSignalHandler;
 /* exported enable */
 function enable() {
-    const interfaceXml = ByteArray.toString(GLib.file_get_contents(`${EXTENSIONDIR}/schemas/io.github.martin31821.cpupower.dbus.xml`)[1]);
+    const interfaceBinary = GLib.file_get_contents(`${EXTENSIONDIR}/schemas/io.github.martin31821.cpupower.dbus.xml`)[1];
+    let interfaceXml;
+    if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.28) {
+        interfaceXml = ByteArray.toString(interfaceBinary);
+    } else {
+        interfaceXml = interfaceBinary.toString();
+    }
     const CpupowerProxy = Gio.DBusProxy.makeProxyWrapper(interfaceXml);
 
     cpupowerProxy = new CpupowerProxy(

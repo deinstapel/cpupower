@@ -30,6 +30,7 @@ const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
+const Config = imports.misc.config;
 const _ = Gettext.gettext;
 const ByteArray = imports.byteArray;
 
@@ -96,7 +97,13 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
     onBusAcquired(connection, _name) {
         log("DBus bus acquired!");
-        const interfaceXml = ByteArray.toString(GLib.file_get_contents(`${EXTENSIONDIR}/schemas/io.github.martin31821.cpupower.dbus.xml`)[1]);
+        const interfaceBinary = GLib.file_get_contents(`${EXTENSIONDIR}/schemas/io.github.martin31821.cpupower.dbus.xml`)[1];
+        let interfaceXml;
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.28) {
+            interfaceXml = ByteArray.toString(interfaceBinary);
+        } else {
+            interfaceXml = interfaceBinary.toString();
+        }
         this.cpupowerService = Gio.DBusExportedObject.wrapJSObject(interfaceXml, {});
         this.cpupowerService.export(connection, "/io/github/martin31821/cpupower");
 
@@ -107,8 +114,6 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     onNameAcquired(connection, _name) {
         log("DBus name acquired!");
         this.cpupowerConnection = connection;
-
-        this.cpupowerService.emit_signal("ImAlive", null);
     }
 
     onNameLost(_connection, _name) {
