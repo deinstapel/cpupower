@@ -23,7 +23,7 @@
 
 set -o errexit -o nounset
 
-VERSION="10.0.0"
+VERSION="9.0.4"
 PRODUCTION=yes
 
 log ()
