@@ -23,7 +23,7 @@
 
 set -e
 
-VERSION="9.0.4"
+VERSION="10.0.0"
 
 EXIT_SUCCESS=0
 EXIT_INVALID_ARG=1
@@ -143,7 +143,7 @@ then
     fi
 
     # check if cpufreqctl version matches extension version
-    CURRENT_VERSION="9.0.4"
+    CURRENT_VERSION="10.0.0"
     if [ "${VERSION}" != "${CURRENT_VERSION}" ]
     then
         echo "Your cpupower installation needs updating!"
