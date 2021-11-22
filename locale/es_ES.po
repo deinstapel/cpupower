@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2021-10-21 14:49\n"
+"PO-Revision-Date: 2021-11-22 17:43\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -23,27 +23,27 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:57
 msgid "About"
-msgstr ""
+msgstr "Acerca de"
 
 #: data/cpupower-preferences.glade:68
 msgid "Gnome-Shell Extension for controlling the frequency scaling driver of your CPU."
-msgstr ""
+msgstr "Extensión de Gnome-Shell para manejar la controladora de frecuencia de la CPU."
 
 #: data/cpupower-preferences.glade:156
 msgid "Top Bar"
-msgstr ""
+msgstr "Barra superior"
 
 #: data/cpupower-preferences.glade:188
 msgid "Show current frequency"
-msgstr ""
+msgstr "Mostrar la frecuencia actual"
 
 #: data/cpupower-preferences.glade:204
 msgid "Use GHz instead of MHz"
-msgstr ""
+msgstr "Usar GHz en lugar de MHz"
 
 #: data/cpupower-preferences.glade:218
 msgid "Show the current CPU frequency in the top bar"
-msgstr ""
+msgstr "Mostrar la frecuencia actual de la CPU en la barra superior"
 
 #: data/cpupower-preferences.glade:227
 msgid "Top bar frequency switch"
