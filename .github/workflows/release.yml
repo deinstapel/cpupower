@@ -82,8 +82,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-        asset_path: gnome-shell-extension-cpupower-${{ steps.package.outputs.version }}-1_all.deb
-        asset_name: gnome-shell-extension-cpupower-${{ steps.package.outputs.version }}-1_all.deb
+        asset_path: gnome-shell-extension-cpupower_${{ steps.package.outputs.version }}-1_all.deb
+        asset_name: gnome-shell-extension-cpupower_${{ steps.package.outputs.version }}-1_all.deb
         asset_content_type: application/vnd.debian.binary-package
     - name: Upload GNOME Extension Release Asset RPM
       id: upload-release-asset-rpm
