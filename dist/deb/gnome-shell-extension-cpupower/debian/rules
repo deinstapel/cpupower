@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+DESTDIR=$(CURDIR)/debian/gnome-shell-extension-cpupower
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	dh_auto_build -- package
+
+override_dh_auto_install:
+	$(MAKE) install install-tool PREFIX=$(DESTDIR)/usr
+	find $(DESTDIR) -type f | xargs sed -i "s;$(DESTDIR);;g"
+
+# my fedora does not have this command :(
+override_dh_strip_nondeterminism:
+

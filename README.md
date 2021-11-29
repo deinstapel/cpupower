@@ -1,9 +1,9 @@
 <h1 align="center">CPU Power Manager for Gnome Shell</h1>
 <p align="center">
-  <a href="https://extensions.gnome.org/extension/945/cpu-power-manager/">
+  <!--<a href="https://extensions.gnome.org/extension/945/cpu-power-manager/">
     <img alt="Get it on GNOME Extensions" width="228" src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true"/>
   </a>
-  <br>
+  <br>-->
   <a href="https://github.com/deinstapel/cpupower/actions?query=workflow%3A%22latest%20build%22">
     <img src="https://github.com/deinstapel/cpupower/workflows/latest%20build/badge.svg" alt="latest build">
   </a>
@@ -52,12 +52,15 @@ In order to use the Makefile you need the following packages:
 
 ## Installation
 
+<!--
 The easiest way to install this extension is by using the
 [Gnome extensions website](https://extensions.gnome.org/extension/945/cpu-power-manager/).
 
 Click on the CPU icon in the top bar of your Gnome shell and follow the installation instructions.
 You need to enter your root password to install a policy kit rule. This rule is used to set the clock
-frequency of your CPU with your user.
+frequency of your CPU with your user.-->
+
+Currently, the newest version of this extension is not available on the Gnome extensions website due to unmet publication restrictions by the GNOME extensions administrators. We are currently working on alternative distribution methods, stay tuned.
 
 ### Installing for another (admin) user
 

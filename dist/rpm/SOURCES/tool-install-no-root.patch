@@ -1,0 +1,17 @@
+--- a/tool/installer.sh
++++ b/tool/installer.sh
+@@ -157,13 +157,6 @@ fi
+ 
+ if [ "${ACTION}" = "install" ]
+ then
+-    if [ "$(id -u)" -ne 0 ]; then
+-        echo "The install action must be run as root for security reasons!"
+-        echo "Please have a look at https://github.com/deinstapel/cpupower/issues/102"
+-        echo "for further details."
+-        exit "${EXIT_MUST_BE_ROOT}"
+-    fi
+-
+     printf "Installing cpufreqctl tool... "
+     mkdir -p "${CFC_DIR}"
+     install "${CFC_IN}" "${CFC_OUT}" || (echo "Failed" && exit "${EXIT_FAILED}")
+

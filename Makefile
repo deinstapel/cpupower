@@ -11,6 +11,7 @@ EXTENSION_FILES="$(shell find . \
 	-path './node_modules' -prune -o \
 	-path ./.github -prune -o \
 	-path './scripts' -prune -o \
+  -path './dist' -prune -o \
 	-path './schemas/org.gnome.shell.extensions.cpupower.gschema.xml' -prune -o \
 	-name 'package-lock.json' -prune -o \
 	-name 'Makefile' -prune -o \
@@ -21,6 +22,23 @@ EXTENSION_FILES="$(shell find . \
 	-name '*.po' -prune -o \
 	-name '*.pot' -prune -o \
 	-type f -print)"
+DIST_FILES="$(shell find . \
+	-path './.git' -prune -o \
+	-path './target' -prune -o \
+	-path './node_modules' -prune -o \
+	-path ./.github -prune -o \
+  -path './dist/rpm/BUILD' -prune -o \
+  -path './dist/rpm/BUILDROOT' -prune -o \
+  -path './dist/rpm/RPMS' -prune -o \
+  -path './dist/rpm/SRPMS' -prune -o \
+	-path './dist/deb/gnome-shell-extension-cpupower-*' -prune -o \
+  -path './dist/deb/gnome-shell-extension-cpupower_*' -prune -o \
+	-name 'package-lock.json' -prune -o \
+	-name '.gitignore' -prune -o \
+	-name '*~' -prune -o \
+	-name '*.yml' -prune -o \
+	-name '*.pot' -prune -o \
+	-type f -print)"
 
 build:
 	@echo Compiling schemas...
@@ -29,12 +47,18 @@ build:
 	@MSGFMT="$(MSGFMT)" ./scripts/update-translations.sh
 
 clean:
-	@rm -r target
+	@rm -rf target
+	@find dist -mindepth 1 -maxdepth 1 -type d -exec $(MAKE) -C {} VERSION=$(VERSION) clean \;
 
 package: build
 	@mkdir -p target
 	@rm -f target/cpupower-${VERSION}.zip
 	@zip target/cpupower-${VERSION}.zip "$(EXTENSION_FILES)"
+	@tar czf target/gnome-shell-extension-cpupower-${VERSION}.tar.gz "$(DIST_FILES)"
+	@find dist -mindepth 1 -maxdepth 1 -type d -exec $(MAKE) -C {} VERSION=$(VERSION) update-tarball \;
+
+dist: package
+	@find dist -mindepth 1 -maxdepth 1 -type d -exec $(MAKE) -C {} VERSION=$(VERSION) build \;
 
 install: package
 	@mkdir -p "$(EXTENSION_INSTALL_DIR)"

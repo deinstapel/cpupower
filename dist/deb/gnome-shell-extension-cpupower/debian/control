@@ -1,0 +1,15 @@
+Source: gnome-shell-extension-cpupower
+Section: gnome
+Priority: optional
+Maintainer: Fin Christensen <fin_ger@posteo.me>
+Build-Depends: debhelper-compat (= 13), make, gettext
+Standards-Version: 4.6.0
+Homepage: https://github.com/deinstapel/cpupower
+Rules-Requires-Root: no
+
+Package: gnome-shell-extension-cpupower
+Architecture: all
+Depends: ${misc:Depends}, gnome-shell, policykit-1, gjs
+Description: Gnome-Shell Extension for controlling the frequency setting of your CPU
+ Manage the frequency scaling driver of your CPU (Intel Core and AMD Ryzen processors supported)
+
