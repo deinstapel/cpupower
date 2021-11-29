@@ -70,7 +70,7 @@ esac
 
 echo "Updating version to $semver..." >&2
 
-find . -type f -not -path .git -exec sh -c '                                                                                                         130 ↵
+find . -type f -not -path .git -exec sh -c '
      for f do
        git check-ignore -q "$f" || printf "%s\n" "$f"
      done
