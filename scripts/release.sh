@@ -70,7 +70,11 @@ esac
 
 echo "Updating version to $semver..." >&2
 
-grep --exclude="${BASH_SOURCE[0]}" -l -Z -r -e 'VERSION=' -e 'name="version"' | xargs -0 -l \
+find . -type f -not -path .git -exec sh -c '                                                                                                         130 ↵
+     for f do
+       git check-ignore -q "$f" || printf "%s\n" "$f"
+     done
+     ' find-sh {} + | xargs grep -e 'VERSION=' -e 'name="version"' -l -Z | xargs -0 -l \
      sed -i -e "s;VERSION=\".*\";VERSION=\"$semver\";g" \
 		        -e "s;<property name=\"version\">.*</property>;<property name=\"version\">$semver</property>;g"
 

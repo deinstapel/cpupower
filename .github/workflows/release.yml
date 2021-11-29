@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Install gettext
+    - name: Install dependencies
       run: sudo apt-get install -y make gettext libglib2.0-bin zip devscripts debhelper rpm
     - name: Release GNOME extension artifacts
       id: package
@@ -44,7 +44,7 @@ jobs:
         make dist
         cp target/cpupower-$VERSION.zip $GITHUB_WORKSPACE/cpupower-$VERSION.zip
         cp target/gnome-shell-extension-cpupower-$VERSION.tar.gz $GITHUB_WORKSPACE/gnome-shell-extension-cpupower-$VERSION.tar.gz
-        cp target/gnome-shell-extension-cpupower-$VERSION-1_all.deb $GITHUB_WORKSPACE/gnome-shell-extension-cpupower-$VERSION-1_all.deb
+        cp target/gnome-shell-extension-cpupower_$VERSION-1_all.deb $GITHUB_WORKSPACE/gnome-shell-extension-cpupower_$VERSION-1_all.deb
         cp target/gnome-shell-extension-cpupower-$VERSION-1.noarch.rpm $GITHUB_WORKSPACE/gnome-shell-extension-cpupower-$VERSION-1.noarch.rpm
     - name: Load Release URL File from release job
       uses: actions/download-artifact@v1
