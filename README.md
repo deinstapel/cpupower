@@ -60,7 +60,7 @@ Click on the CPU icon in the top bar of your Gnome shell and follow the installa
 You need to enter your root password to install a policy kit rule. This rule is used to set the clock
 frequency of your CPU with your user.-->
 
-Currently, the newest version of this extension is not available on the Gnome extensions website due to unmet publication restrictions by the GNOME extensions administrators. We are currently working on alternative distribution methods, stay tuned.
+Currently, the newest version of this extension is not available on the Gnome extensions website due to unmet publication restrictions by the GNOME extensions administrators. We are currently working on alternative distribution methods, stay tuned. For now, you can install the extension with the provided [`rpm`](https://github.com/deinstapel/cpupower/releases/download/v10.0.0/gnome-shell-extension-cpupower-10.0.0-1.noarch.rpm) and [`deb`](https://github.com/deinstapel/cpupower/releases/download/v10.0.0/gnome-shell-extension-cpupower_10.0.0-1_all.deb) packages for all `rpm` and `debian` based distributions.
 
 ### Installing for another (admin) user
 
