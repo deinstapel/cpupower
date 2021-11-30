@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2021-10-21 14:48\n"
+"PO-Revision-Date: 2021-11-30 14:40\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -75,15 +75,15 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:282
 msgid "Avergage of all cores"
-msgstr ""
+msgstr "Средняя для всех ядер"
 
 #: data/cpupower-preferences.glade:283
 msgid "Minimum of all cores"
-msgstr ""
+msgstr "Минимум для всех ядер"
 
 #: data/cpupower-preferences.glade:284
 msgid "Maximum of all cores"
-msgstr ""
+msgstr "Максимум для всех ядер"
 
 #: data/cpupower-preferences.glade:285
 msgid "Value of a random core"
@@ -145,15 +145,15 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:543 src/indicator.js:237
 msgid "Auto Switch"
-msgstr ""
+msgstr "Автопереключение"
 
 #: data/cpupower-preferences.glade:586
 msgid "Default AC profile"
-msgstr ""
+msgstr "Профиль по умолчанию при работе от сети"
 
 #: data/cpupower-preferences.glade:602
 msgid "Default battery profile"
-msgstr ""
+msgstr "Профиль по умолчанию при работе от батареи"
 
 #: data/cpupower-preferences.glade:619
 msgid "Charging battery"
@@ -177,7 +177,7 @@ msgstr "Основные"
 
 #: data/cpupower-preferences.glade:760 data/cpupower-preferences.glade:765
 msgid "Add new profile"
-msgstr ""
+msgstr "Добавить новый профиль"
 
 #: data/cpupower-preferences.glade:778 data/cpupower-preferences.glade:783
 msgid "Remove selected profile"
@@ -197,7 +197,7 @@ msgstr "Профили"
 
 #: data/cpupower-preferences.glade:901
 msgid "Path to cpufreqctl:"
-msgstr ""
+msgstr "Путь до cpufreqctl:"
 
 #: data/cpupower-preferences.glade:917
 msgid "Path to policykit rule:"
@@ -205,7 +205,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:934
 msgid "CPU Power Manager is installed via your distributions package manager!"
-msgstr ""
+msgstr "CPU Power Manager устанавлен через ваш менеджер пакетов!"
 
 #: data/cpupower-preferences.glade:949 data/cpupower-preferences.glade:1643
 msgid "Uninstall"
@@ -218,20 +218,20 @@ msgstr ""
 #: data/cpupower-preferences.glade:1059 data/cpupower-preferences.glade:1074
 #: data/cpupower-preferences.glade:1081
 msgid "Profile Name"
-msgstr ""
+msgstr "Название профиля"
 
 #: data/cpupower-preferences.glade:1095 src/indicator.js:221
 msgid "Minimum Frequency"
-msgstr ""
+msgstr "Минимальная частота"
 
 #: data/cpupower-preferences.glade:1107 src/indicator.js:226
 msgid "Maximum Frequency"
-msgstr ""
+msgstr "Максимальная частота"
 
 #: data/cpupower-preferences.glade:1119 data/cpupower-preferences.glade:1552
 #: src/indicator.js:231
 msgid "Turbo Boost"
-msgstr ""
+msgstr "Turbo Boost"
 
 #: data/cpupower-preferences.glade:1141
 msgid "Turbo boost switch"
@@ -243,11 +243,11 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:1163
 msgid "Lower limit:"
-msgstr ""
+msgstr "Нижний предел:"
 
 #: data/cpupower-preferences.glade:1195
 msgid "Upper limit:"
-msgstr ""
+msgstr "Верхний предел:"
 
 #: data/cpupower-preferences.glade:1252
 msgid "You reached your CPU's limit(s):"
@@ -354,7 +354,7 @@ msgstr "Настройки"
 
 #: src/indicator.js:291
 msgid "Current Frequency"
-msgstr ""
+msgstr "Текущая частота"
 
 #: src/indicator.js:327 src/indicator.js:334
 msgid "Oh no! Something went wrong."
