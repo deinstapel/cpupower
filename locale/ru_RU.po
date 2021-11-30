@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2021-11-30 14:40\n"
+"PO-Revision-Date: 2021-11-30 16:01\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -283,7 +283,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:1629
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
