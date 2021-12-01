@@ -9,7 +9,13 @@ URL:            https://github.com/deinstapel/cpupower
 Source0:        %{name}-%{version}.tar.gz
 Patch0:         tool-install-no-root.patch
 
-BuildRequires:  make gettext
+BuildRequires:  make gettext glib2 zip unzip
+%if %{defined suse_version}
+BuildRequires:  glib2-tools
+%endif
+%if %{defined mdkversion} || %{defined mgaversion}
+BuildRequires:  glib2.0-common
+%endif
 Requires:       gnome-shell polkit gjs
 
 %description
