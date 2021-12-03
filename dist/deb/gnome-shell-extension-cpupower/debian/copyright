@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: gnome-shell-extension-cpupower
-Upstream-Contact: Fin Christensen <fin_ger@posteo.me>
+Upstream-Contact: Fin Christensen <fin-ger@posteo.me>
 Source: https://github.com/deinstapel/cpupower
 
 Files: *

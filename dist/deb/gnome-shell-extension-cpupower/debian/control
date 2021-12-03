@@ -1,7 +1,7 @@
 Source: gnome-shell-extension-cpupower
 Section: gnome
 Priority: optional
-Maintainer: Fin Christensen <fin_ger@posteo.me>
+Maintainer: Fin Christensen <fin-ger@posteo.me>
 Build-Depends: debhelper-compat (= 13), make, gettext
 Standards-Version: 4.6.0
 Homepage: https://github.com/deinstapel/cpupower

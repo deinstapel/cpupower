@@ -1,5 +1,5 @@
-gnome-shell-extension-cpupower (10.0.0-1) UNRELEASED; urgency=medium
+gnome-shell-extension-cpupower (10.0.0-1) buster; urgency=medium
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release
 
- -- Fin Christensen <fin_ger@posteo.me>  Mon, 29 Nov 2021 13:30:58 +0100
+ -- Fin Christensen <fin-ger@posteo.me>  Mon, 29 Nov 2021 13:30:58 +0100
