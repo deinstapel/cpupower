@@ -10,5 +10,11 @@ build:
 	@(cd gnome-shell-extension-cpupower-$(VERSION) && debuild -d)
 	@cp gnome-shell-extension-cpupower_$(VERSION)-*.deb $(CURDIR)/../../target/
 
+upload:
+	@cp -arT gnome-shell-extension-cpupower gnome-shell-extension-cpupower-$(VERSION)
+	@tar xzf gnome-shell-extension-cpupower_$(VERSION).orig.tar.gz -C gnome-shell-extension-cpupower-$(VERSION)
+	@(cd gnome-shell-extension-cpupower-$(VERSION) && debuild -S -d)
+	@dput ppa:fin1ger/cpupower gnome-shell-extension-cpupower_$(VERSION)-1_source.changes
+
 update-tarball:
 	@ln -sf $(CURDIR)/../../target/gnome-shell-extension-cpupower-$(VERSION).tar.gz gnome-shell-extension-cpupower_$(VERSION).orig.tar.gz

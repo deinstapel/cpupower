@@ -60,6 +60,9 @@ package: build
 dist: package
 	@find dist -mindepth 1 -maxdepth 1 -type d -exec $(MAKE) -C {} VERSION=$(VERSION) build \;
 
+dist-upload: package
+	@find dist -mindepth 1 -maxdepth 1 -type d -exec $(MAKE) -C {} VERSION=$(VERSION) upload \;
+
 install: package
 	@mkdir -p "$(EXTENSION_INSTALL_DIR)"
 	@unzip -o target/cpupower-${VERSION}.zip -d "$(EXTENSION_INSTALL_DIR)"
