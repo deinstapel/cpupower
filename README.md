@@ -65,7 +65,7 @@ Installing this extension can either be done via distribution packages provided 
 > So for the line `# dnf update` you would then e.g. run `sudo dnf update` in you terminal if your system uses `sudo`. Your system is most likely using `sudo` and if not you would know it.
 
 <details>
-<summary>`click to expand` Any newer Ubuntu release or Ubuntu based distribution. **If unsure do this!**</summary>
+<summary><code>click to expand</code> Any newer Ubuntu release or Ubuntu based distribution. <b>If unsure do this!</b></summary>
 
 To install the extension on any newer Ubuntu based system (e.g. PopOS) run the below commands.
 
