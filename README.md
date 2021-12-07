@@ -1,6 +1,6 @@
 <h1 align="center">CPU Power Manager for Gnome Shell</h1>
 <p align="center">
-  <img alt="Screenshot" width="200" src="./img/header.png"/>
+  <img alt="Screenshot" width="331" src="./img/header.png"/>
   <!--<a href="https://extensions.gnome.org/extension/945/cpu-power-manager/">
     <img alt="Get it on GNOME Extensions" width="228" src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true"/>
   </a>-->
@@ -56,7 +56,7 @@ In order to use the Makefile you need the following packages:
 
 ## Installation
 
-Installing this extension can either be done via distribution packages provided by use (recommended) or via the Gnome extensions website (often outdated). Have a look at the options below to find the correct installation method for your system.
+Installing this extension can either be done via distribution packages provided by us (recommended) or via the Gnome extensions website (often outdated). Have a look at the options below to find the correct installation method for your system.
 
 > Info: The `$` at the beginning of a line means that this line should be run as the user who is using the extension (most likely you). If you don't know what that means, just open up a terminal and use it as is. Commands are run as your user by default.
 > So for the line `$ echo Hello world` you would type `echo Hello world` into your terminal and hit enter.
@@ -65,7 +65,7 @@ Installing this extension can either be done via distribution packages provided 
 > So for the line `# dnf update` you would then e.g. run `sudo dnf update` in you terminal if your system uses `sudo`. Your system is most likely using `sudo` and if not you would know it.
 
 <details>
-<summary>Any newer Ubuntu release or Ubuntu based distribution (if unsure use this)</summary>
+<summary>`click to expand` Any newer Ubuntu release or Ubuntu based distribution. **If unsure do this!**</summary>
 
 To install the extension on any newer Ubuntu based system (e.g. PopOS) run the below commands.
 
@@ -90,7 +90,7 @@ The extension should now be enabled and ready to use!
 </details>
 
 <details>
-<summary>Ubuntu 18.04 (Bionic Beaver)</summary>
+<summary>`click to expand` Ubuntu 18.04 (Bionic Beaver)</summary>
 
 To install this extension on Ubuntu Bionic Beaver please run the following commands:
 
@@ -111,7 +111,7 @@ The extension should now be enabled and ready to use!
 </details>
 
 <details>
-<summary>Debian or debian based distributions</summary>
+<summary>`click to expand` Debian or debian based distributions</summary>
 
 To install the extension on any newer Debian based system run the below commands.
 
@@ -139,7 +139,7 @@ The extension should now be enabled and ready to use!
 </details>
 
 <details>
-<summary>Fedora / CentOS / Mageia / OpenMandriva</summary>
+<summary>`click to expand` Fedora / CentOS / Mageia / OpenMandriva</summary>
 
 To install this extension on most RPM based Linux distributions run the below commands.
 
@@ -165,7 +165,7 @@ The extension should now be enabled and ready to use!
 </details>
 
 <details>
-<summary>OpenSUSE</summary>
+<summary>`click to expand` OpenSUSE</summary>
 
 Download the appropriate `.repo` file for your OpenSUSE release (most likely the latest version) and save it to `/etc/zypp/repos.d/`. Now run the following commands:
 
@@ -184,7 +184,7 @@ The extension should now be enabled and ready to use!
 </details>
 
 <details>
-<summary>Install via the Gnome extension website (probably outdated)</summary>
+<summary>`click to expand` Install via the Gnome extension website (probably outdated)</summary>
 
 Open the [`cpupower` Gnome extensions website](https://extensions.gnome.org/extension/945/cpu-power-manager/) in your default webbrowser. Click on the blue slider to install the extension.
 
@@ -195,7 +195,7 @@ You are now ready to use this extension!
 </details>
 
 <details>
-<summary>Your distribution is not listed?</summary>
+<summary>`click to expand` Your distribution is not listed?</summary>
 
 Fear not! We have other options for installing this extension. Although, you will not receive automatic updates which might be dangerous if we encounter security issues in the extension and you miss the fix for that issue. If you regularly check for updates yourself you can of course still use this extension without any risk.
 
