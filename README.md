@@ -67,7 +67,7 @@ Installing this extension can either be done via distribution packages provided 
 ---
 
 <details>
-<summary><code>click to expand</code> <h3>Any newer Ubuntu release or Ubuntu based distribution. <b>If unsure do this!</b></h3></summary>
+<summary><code>click to expand</code> <h3>Any newer Ubuntu or Ubuntu based distribution. <i>If unsure do this!</i></h3></summary>
 
 To install the extension on any newer Ubuntu based system (e.g. PopOS) run the below commands.
 
@@ -94,7 +94,7 @@ The extension should now be enabled and ready to use!
 ---
 
 <details>
-<summary><code>click to expand</code> Ubuntu 18.04 (Bionic Beaver)</summary>
+<summary><code>click to expand</code> <h3>Ubuntu 18.04 (Bionic Beaver)</h3></summary>
 
 To install this extension on Ubuntu Bionic Beaver please run the following commands:
 
