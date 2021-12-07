@@ -43,7 +43,7 @@ jobs:
         make dist
         cp target/cpupower-$VERSION.zip $GITHUB_WORKSPACE/cpupower-$VERSION.zip
         cp target/gnome-shell-extension-cpupower-$VERSION.tar.gz $GITHUB_WORKSPACE/gnome-shell-extension-cpupower-$VERSION.tar.gz
-        cp target/gnome-shell-extension-cpupower_$VERSION-1_all.deb $GITHUB_WORKSPACE/gnome-shell-extension-cpupower_$VERSION-1_all.deb
+        cp target/gnome-shell-extension-cpupower_$VERSION.deb $GITHUB_WORKSPACE/gnome-shell-extension-cpupower_$VERSION.deb
         cp target/gnome-shell-extension-cpupower-$VERSION-1.noarch.rpm $GITHUB_WORKSPACE/gnome-shell-extension-cpupower-$VERSION-1.noarch.rpm
     - name: Load Release URL File from release job
       uses: actions/download-artifact@v1
@@ -81,8 +81,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-        asset_path: gnome-shell-extension-cpupower_${{ steps.package.outputs.version }}-1_all.deb
-        asset_name: gnome-shell-extension-cpupower_${{ steps.package.outputs.version }}-1_all.deb
+        asset_path: gnome-shell-extension-cpupower_${{ steps.package.outputs.version }}.deb
+        asset_name: gnome-shell-extension-cpupower_${{ steps.package.outputs.version }}.deb
         asset_content_type: application/vnd.debian.binary-package
     - name: Upload GNOME Extension Release Asset RPM
       id: upload-release-asset-rpm

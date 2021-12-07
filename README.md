@@ -1,9 +1,10 @@
 <h1 align="center">CPU Power Manager for Gnome Shell</h1>
 <p align="center">
+  <img alt="Screenshot" width="200" src="./img/header.png"/>
   <!--<a href="https://extensions.gnome.org/extension/945/cpu-power-manager/">
     <img alt="Get it on GNOME Extensions" width="228" src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true"/>
-  </a>
-  <br>-->
+  </a>-->
+  <br>
   <a href="https://github.com/deinstapel/cpupower/actions?query=workflow%3A%22latest%20build%22">
     <img src="https://github.com/deinstapel/cpupower/workflows/latest%20build/badge.svg" alt="latest build">
   </a>
@@ -49,18 +50,178 @@ In order to use the Makefile you need the following packages:
 
  - make
  - gettext
+ - glib2 tools
+ - zip and unzip
+ - tar
 
 ## Installation
 
-<!--
-The easiest way to install this extension is by using the
-[Gnome extensions website](https://extensions.gnome.org/extension/945/cpu-power-manager/).
+Installing this extension can either be done via distribution packages provided by use (recommended) or via the Gnome extensions website (often outdated). Have a look at the options below to find the correct installation method for your system.
 
-Click on the CPU icon in the top bar of your Gnome shell and follow the installation instructions.
-You need to enter your root password to install a policy kit rule. This rule is used to set the clock
-frequency of your CPU with your user.-->
+> Info: The `$` at the beginning of a line means that this line should be run as the user who is using the extension (most likely you). If you don't know what that means, just open up a terminal and use it as is. Commands are run as your user by default.
+> So for the line `$ echo Hello world` you would type `echo Hello world` into your terminal and hit enter.
 
-Currently, the newest version of this extension is not available on the Gnome extensions website due to unmet publication restrictions by the GNOME extensions administrators. We are currently working on alternative distribution methods, stay tuned. For now, you can install the extension with the provided [`rpm`](https://github.com/deinstapel/cpupower/releases/download/v10.0.0/gnome-shell-extension-cpupower-10.0.0-1.noarch.rpm) and [`deb`](https://github.com/deinstapel/cpupower/releases/download/v10.0.0/gnome-shell-extension-cpupower_10.0.0-1_all.deb) packages for all `rpm` and `debian` based distributions.
+> Info: The `#` at the beginning of a line means that this line must be run with `root` privileges.
+> So for the line `# dnf update` you would then e.g. run `sudo dnf update` in you terminal if your system uses `sudo`. Your system is most likely using `sudo` and if not you would know it.
+
+<details>
+<summary>Any newer Ubuntu release or Ubuntu based distribution (if unsure use this)</summary>
+
+To install the extension on any newer Ubuntu based system (e.g. PopOS) run the below commands.
+
+> WARNING: This will **not*** work for ElementaryOS, Linux Mint, and any other Ubuntu which is not using the GNOME desktop environment. Running the below commands will likely break your system otherwise!
+
+> Info: It is safe to install this extension if only a single package is installed by the below `apt-get install` command. If more packages are to be installed, please stop doing so and if unsure [create an issue](https://github.com/deinstapel/cpupower/issues/new/choose) asking for help!
+
+```
+$ sudo add-apt-repository ppa:fin1ger/cpupower
+$ sudo apt-get update
+$ sudo apt-get install gnome-shell-extension-cpupower
+```
+
+Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
+
+```
+$ gnome-extensions enable cpupower@mko-sl.de
+```
+
+The extension should now be enabled and ready to use!
+
+</details>
+
+<details>
+<summary>Ubuntu 18.04 (Bionic Beaver)</summary>
+
+To install this extension on Ubuntu Bionic Beaver please run the following commands:
+
+```
+$ sudo add-apt-repository ppa:fin1ger/cpupower
+$ sudo apt-get update
+$ sudo apt-get install gnome-shell-extension-cpupower
+```
+
+Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
+
+```
+$ gnome-shell-extension-tool -e cpupower@mko-sl.de
+```
+
+The extension should now be enabled and ready to use!
+
+</details>
+
+<details>
+<summary>Debian or debian based distributions</summary>
+
+To install the extension on any newer Debian based system run the below commands.
+
+> WARNING: This will **not*** work when using any desktop environment other than GNOME. Running the below commands while using other desktop environments will likely break your system!
+
+> Info: It is safe to install this extension if only a single package is installed by the below `apt-get install` command. If more packages are to be installed, please stop doing so and if unsure [create an issue](https://github.com/deinstapel/cpupower/issues/new/choose) asking for help!
+
+```
+# apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D76A018A2B4E77F5
+# add-apt-repository 'deb http://ppa.launchpad.net/fin1ger/cpupower/ubuntu hirsute main'
+# apt-get update
+# apt-get install gnome-shell-extension-cpupower
+```
+
+> Note: Debian is not using `sudo` by default. If you do not have `sudo`, get a `root` shell by typing `su` in a terminal and entering your superuser password.
+
+Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
+
+```
+$ gnome-extensions enable cpupower@mko-sl.de
+```
+
+The extension should now be enabled and ready to use!
+
+</details>
+
+<details>
+<summary>Fedora / CentOS / Mageia / OpenMandriva</summary>
+
+To install this extension on most RPM based Linux distributions run the below commands.
+
+> WARNING: This will **not*** work when using any desktop environment other than GNOME. Running the below commands while using other desktop environments will likely break your system!
+
+> Info: It is safe to install this extension if only a single package is installed by the below `dnf install` command. If more packages are to be installed, please stop doing so and if unsure [create an issue](https://github.com/deinstapel/cpupower/issues/new/choose) asking for help!
+```
+
+# dnf copr enable fin_ger/cpupower
+# dnf install gnome-shell-extension-cpupower
+```
+
+> You need to have the package `dnf-plugins-core` installed. If the above commands are failing try installing them with `dnf install dnf-plugins-core` and rerun the above commands.
+
+Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
+
+```
+$ gnome-extensions enable cpupower@mko-sl.de
+```
+
+The extension should now be enabled and ready to use!
+
+</details>
+
+<details>
+<summary>OpenSUSE</summary>
+
+Download the appropriate `.repo` file for your OpenSUSE release (most likely the latest version) and save it to `/etc/zypp/repos.d/`. Now run the following commands:
+
+```
+# zypper install gnome-shell-extension-cpupower
+```
+
+Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
+
+```
+$ gnome-extensions enable cpupower@mko-sl.de
+```
+
+The extension should now be enabled and ready to use!
+
+</details>
+
+<details>
+<summary>Install via the Gnome extension website (probably outdated)</summary>
+
+Open the [`cpupower` Gnome extensions website](https://extensions.gnome.org/extension/945/cpu-power-manager/) in your default webbrowser. Click on the blue slider to install the extension.
+
+After installation, click on the CPU icon in the top bar of your Gnome shell and follow the instructions. You need to enter your root password to install a policy kit rule. This rule is used to set the clock frequency of your CPU.
+
+You are now ready to use this extension!
+
+</details>
+
+<details>
+<summary>Your distribution is not listed?</summary>
+
+Fear not! We have other options for installing this extension. Although, you will not receive automatic updates which might be dangerous if we encounter security issues in the extension and you miss the fix for that issue. If you regularly check for updates yourself you can of course still use this extension without any risk.
+
+If your distribution is capable of installing `DEB` or `RPM` packages, have a look at the [releases page](https://github.com/deinstapel/cpupower/releases) of this repository for downloadable pre-built packages.
+
+Another option is to install the extension zip file manually. To do so, download the latest `zip` from the [release page](https://github.com/deinstapel/cpupower/releases). Now run the following commands:
+
+```
+$ gnome-extensions install /path/to/cpupower.zip
+```
+
+Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
+
+```
+$ gnome-extensions enable cpupower@mko-sl.de
+```
+
+After enabling, click on the CPU icon in the top bar of your Gnome shell and follow the instructions. You need to enter your root password to install a policy kit rule. This rule is used to set the clock frequency of your CPU.
+
+You are now ready to use this extension!
+
+</details>
+
+---
+
+You are a developer or sysadmin and are looking for ways to install this extension directly from the git repository? Read on! The section below will explain in detail how to do so.
 
 ### Installing for another (admin) user
 

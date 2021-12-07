@@ -8,8 +8,5 @@ build:
 	@rpmbuild --define "_topdir $(CURDIR)" --nodeps -bb SPECS/gnome-shell-extension-cpupower.spec
 	@cp RPMS/*/gnome-shell-extension-cpupower-$(VERSION)-*.rpm $(CURDIR)/../../target/
 
-upload:
-	@echo RPM cannot be uploaded, it is automatically fetched on release by the build infrastructure
-
 update-tarball:
 	@ln -sf $(CURDIR)/../../target/gnome-shell-extension-cpupower-$(VERSION).tar.gz SOURCES/
