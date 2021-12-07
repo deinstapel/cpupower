@@ -89,6 +89,8 @@ The extension should now be enabled and ready to use!
 
 </details>
 
+---
+
 <details>
 <summary><code>click to expand</code> Ubuntu 18.04 (Bionic Beaver)</summary>
 
@@ -110,12 +112,14 @@ The extension should now be enabled and ready to use!
 
 </details>
 
+---
+
 <details>
 <summary><code>click to expand</code> Debian or debian based distributions</summary>
 
 To install the extension on any newer Debian based system run the below commands.
 
-> WARNING: This will **not*** work when using any desktop environment other than GNOME. Running the below commands while using other desktop environments will likely break your system!
+> WARNING: This will **not** work when using any desktop environment other than GNOME. Running the below commands while using other desktop environments will likely break your system!
 
 > Info: It is safe to install this extension if only a single package is installed by the below `apt-get install` command. If more packages are to be installed, please stop doing so and if unsure [create an issue](https://github.com/deinstapel/cpupower/issues/new/choose) asking for help!
 
@@ -138,16 +142,18 @@ The extension should now be enabled and ready to use!
 
 </details>
 
+---
+
 <details>
 <summary><code>click to expand</code> Fedora / CentOS / Mageia / OpenMandriva</summary>
 
 To install this extension on most RPM based Linux distributions run the below commands.
 
-> WARNING: This will **not*** work when using any desktop environment other than GNOME. Running the below commands while using other desktop environments will likely break your system!
+> WARNING: This will **not** work when using any desktop environment other than GNOME. Running the below commands while using other desktop environments will likely break your system!
 
 > Info: It is safe to install this extension if only a single package is installed by the below `dnf install` command. If more packages are to be installed, please stop doing so and if unsure [create an issue](https://github.com/deinstapel/cpupower/issues/new/choose) asking for help!
-```
 
+```
 # dnf copr enable fin_ger/cpupower
 # dnf install gnome-shell-extension-cpupower
 ```
@@ -163,6 +169,8 @@ $ gnome-extensions enable cpupower@mko-sl.de
 The extension should now be enabled and ready to use!
 
 </details>
+
+---
 
 <details>
 <summary><code>click to expand</code> OpenSUSE</summary>
@@ -183,6 +191,8 @@ The extension should now be enabled and ready to use!
 
 </details>
 
+---
+
 <details>
 <summary><code>click to expand</code> Install via the Gnome extension website (probably outdated)</summary>
 
@@ -193,6 +203,8 @@ After installation, click on the CPU icon in the top bar of your Gnome shell and
 You are now ready to use this extension!
 
 </details>
+
+---
 
 <details>
 <summary><code>click to expand</code> Your distribution is not listed?</summary>
