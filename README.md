@@ -67,7 +67,7 @@ Installing this extension can either be done via distribution packages provided 
 ---
 
 <details>
-<summary><code>click to expand</code> Any newer Ubuntu release or Ubuntu based distribution. <b>If unsure do this!</b></summary>
+<summary><code>click to expand</code> <h3>Any newer Ubuntu release or Ubuntu based distribution. <b>If unsure do this!</b></h3></summary>
 
 To install the extension on any newer Ubuntu based system (e.g. PopOS) run the below commands.
 
