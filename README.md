@@ -64,6 +64,8 @@ Installing this extension can either be done via distribution packages provided 
 > Info: The `#` at the beginning of a line means that this line must be run with `root` privileges.
 > So for the line `# dnf update` you would then e.g. run `sudo dnf update` in you terminal if your system uses `sudo`. Your system is most likely using `sudo` and if not you would know it.
 
+---
+
 <details>
 <summary><code>click to expand</code> Any newer Ubuntu release or Ubuntu based distribution. <b>If unsure do this!</b></summary>
 
