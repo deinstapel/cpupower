@@ -71,7 +71,7 @@ Installing this extension can either be done via distribution packages provided 
 
 To install the extension on any newer Ubuntu based system (e.g. PopOS) run the below commands.
 
-> WARNING: This will **not*** work for ElementaryOS, Linux Mint, and any other Ubuntu which is not using the GNOME desktop environment. Running the below commands will likely break your system otherwise!
+> WARNING: This will **not** work for ElementaryOS, Linux Mint, and any other Ubuntu which is not using the GNOME desktop environment. Running the below commands will likely break your system otherwise!
 
 > Info: It is safe to install this extension if only a single package is installed by the below `apt-get install` command. If more packages are to be installed, please stop doing so and if unsure [create an issue](https://github.com/deinstapel/cpupower/issues/new/choose) asking for help!
 
