@@ -67,7 +67,7 @@ Installing this extension can either be done via distribution packages provided 
 ---
 
 <details>
-<summary><code>click to expand</code> <h3>Any newer Ubuntu or Ubuntu based distribution. <i>If unsure do this!</i></h3></summary>
+<summary><code>click to expand</code> <h3>Any newer Ubuntu release or Ubuntu based distribution. <i>If unsure do this!</i></h3></summary>
 
 To install the extension on any newer Ubuntu based system (e.g. PopOS) run the below commands.
 
@@ -117,7 +117,7 @@ The extension should now be enabled and ready to use!
 ---
 
 <details>
-<summary><code>click to expand</code> Debian or debian based distributions</summary>
+<summary><code>click to expand</code> <h3>Debian or debian based distributions</h3></summary>
 
 To install the extension on any newer Debian based system run the below commands.
 
@@ -147,7 +147,7 @@ The extension should now be enabled and ready to use!
 ---
 
 <details>
-<summary><code>click to expand</code> Fedora / CentOS / Mageia / OpenMandriva</summary>
+<summary><code>click to expand</code> <h3>Fedora / CentOS / Mageia / OpenMandriva</h3></summary>
 
 To install this extension on most RPM based Linux distributions run the below commands.
 
@@ -175,7 +175,7 @@ The extension should now be enabled and ready to use!
 ---
 
 <details>
-<summary><code>click to expand</code> OpenSUSE</summary>
+<summary><code>click to expand</code> <h3>OpenSUSE</h3></summary>
 
 Download the appropriate `.repo` file for your OpenSUSE release (most likely the latest version) and save it to `/etc/zypp/repos.d/`. Now run the following commands:
 
@@ -196,7 +196,7 @@ The extension should now be enabled and ready to use!
 ---
 
 <details>
-<summary><code>click to expand</code> Install via the Gnome extension website (probably outdated)</summary>
+<summary><code>click to expand</code> <h3>Install via the Gnome extension website (probably outdated)</h3></summary>
 
 Open the [`cpupower` Gnome extensions website](https://extensions.gnome.org/extension/945/cpu-power-manager/) in your default webbrowser. Click on the blue slider to install the extension.
 
@@ -209,7 +209,7 @@ You are now ready to use this extension!
 ---
 
 <details>
-<summary><code>click to expand</code> Your distribution is not listed?</summary>
+<summary><code>click to expand</code> <h3>Your distribution is not listed?</h3></summary>
 
 Fear not! We have other options for installing this extension. Although, you will not receive automatic updates which might be dangerous if we encounter security issues in the extension and you miss the fix for that issue. If you regularly check for updates yourself you can of course still use this extension without any risk.
 
