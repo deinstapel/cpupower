@@ -90,7 +90,7 @@ The extension should now be enabled and ready to use!
 </details>
 
 <details>
-<summary>`click to expand` Ubuntu 18.04 (Bionic Beaver)</summary>
+<summary><code>click to expand</code> Ubuntu 18.04 (Bionic Beaver)</summary>
 
 To install this extension on Ubuntu Bionic Beaver please run the following commands:
 
@@ -111,7 +111,7 @@ The extension should now be enabled and ready to use!
 </details>
 
 <details>
-<summary>`click to expand` Debian or debian based distributions</summary>
+<summary><code>click to expand</code> Debian or debian based distributions</summary>
 
 To install the extension on any newer Debian based system run the below commands.
 
@@ -139,7 +139,7 @@ The extension should now be enabled and ready to use!
 </details>
 
 <details>
-<summary>`click to expand` Fedora / CentOS / Mageia / OpenMandriva</summary>
+<summary><code>click to expand</code> Fedora / CentOS / Mageia / OpenMandriva</summary>
 
 To install this extension on most RPM based Linux distributions run the below commands.
 
@@ -165,7 +165,7 @@ The extension should now be enabled and ready to use!
 </details>
 
 <details>
-<summary>`click to expand` OpenSUSE</summary>
+<summary><code>click to expand</code> OpenSUSE</summary>
 
 Download the appropriate `.repo` file for your OpenSUSE release (most likely the latest version) and save it to `/etc/zypp/repos.d/`. Now run the following commands:
 
@@ -184,7 +184,7 @@ The extension should now be enabled and ready to use!
 </details>
 
 <details>
-<summary>`click to expand` Install via the Gnome extension website (probably outdated)</summary>
+<summary><code>click to expand</code> Install via the Gnome extension website (probably outdated)</summary>
 
 Open the [`cpupower` Gnome extensions website](https://extensions.gnome.org/extension/945/cpu-power-manager/) in your default webbrowser. Click on the blue slider to install the extension.
 
@@ -195,7 +195,7 @@ You are now ready to use this extension!
 </details>
 
 <details>
-<summary>`click to expand` Your distribution is not listed?</summary>
+<summary><code>click to expand</code> Your distribution is not listed?</summary>
 
 Fear not! We have other options for installing this extension. Although, you will not receive automatic updates which might be dangerous if we encounter security issues in the extension and you miss the fix for that issue. If you regularly check for updates yourself you can of course still use this extension without any risk.
 
