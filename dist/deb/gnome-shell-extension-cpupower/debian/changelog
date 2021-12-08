@@ -1,3 +1,9 @@
+gnome-shell-extension-cpupower (10.0.1-1~focal1) focal; urgency=medium
+
+  * Update version
+
+ -- Fin Christensen <fin-ger@posteo.me>  Wed, 08 Dec 2021 18:24:16 +0100
+
 gnome-shell-extension-cpupower (10.0.0-3~jammy1) jammy; urgency=medium
 
   * Create jammy release for debian compatibility
