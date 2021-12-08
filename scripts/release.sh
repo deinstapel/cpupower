@@ -80,6 +80,18 @@ find . -type f -not -path .git -exec sh -c '
 
 sed -i -e "s;PRODUCTION=no;PRODUCTION=yes;g" ./tool/cpufreqctl
 
+sed -i -e "s;Version:        .*;Version:        $semver;g" ./dist/rpm/SPECS/gnome-shell-extension-cpupower.spec
+
+cat - ./dist/deb/gnome-shell-extension-cpupower/debian/changelog << EOF > /tmp/cpupower-changelog
+gnome-shell-extension-cpupower ($semver-1) UNRELEASED; urgency=medium
+
+  * Update version to $semver
+
+ -- Fin Christensen <fin-ger@posteo.me>  $(date -R)
+
+EOF
+mv /tmp/cpupower-changelog ./dist/deb/gnome-shell-extension-cpupower/debian/changelog
+
 make package
 
 git add -A
