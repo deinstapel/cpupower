@@ -7,6 +7,7 @@ GLIB_COMPILE_SCHEMAS = /usr/bin/glib-compile-schemas
 EXTENSION_INSTALL_DIR = "$(PREFIX)/share/gnome-shell/extensions/cpupower@mko-sl.de"
 EXTENSION_FILES="$(shell find . \
 	-path './.git' -prune -o \
+  -path './img' -prune -o \
 	-path './target' -prune -o \
 	-path './node_modules' -prune -o \
 	-path ./.github -prune -o \
@@ -24,6 +25,7 @@ EXTENSION_FILES="$(shell find . \
 	-type f -print)"
 DIST_FILES="$(shell find . \
 	-path './.git' -prune -o \
+  -path './img' -prune -o \
 	-path './target' -prune -o \
 	-path './node_modules' -prune -o \
 	-path ./.github -prune -o \
