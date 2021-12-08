@@ -143,7 +143,7 @@ then
     fi
 
     # check if cpufreqctl version matches extension version
-    CURRENT_VERSION="10.0.0"
+    CURRENT_VERSION="$(${CFC_OUT} --version 2>&1 | grep -oP 'version.*?\K\d+\.\d+\.\d+')"
     if [ "${VERSION}" != "${CURRENT_VERSION}" ]
     then
         echo "Your cpupower installation needs updating!"
