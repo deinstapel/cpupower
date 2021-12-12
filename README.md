@@ -79,7 +79,7 @@ $ gnome-extensions enable cpupower@mko-sl.de
 
 The extension should now be enabled and ready to use!
 
-> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, **3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
 
 </details>
 
@@ -104,7 +104,7 @@ $ gnome-shell-extension-tool -e cpupower@mko-sl.de
 
 The extension should now be enabled and ready to use!
 
-> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, **3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
 
 </details>
 
@@ -136,7 +136,7 @@ $ gnome-extensions enable cpupower@mko-sl.de
 
 The extension should now be enabled and ready to use!
 
-> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, **3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
 
 </details>
 
@@ -166,7 +166,7 @@ $ gnome-extensions enable cpupower@mko-sl.de
 
 The extension should now be enabled and ready to use!
 
-> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, **3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
 
 </details>
 
@@ -189,7 +189,7 @@ $ gnome-extensions enable cpupower@mko-sl.de
 
 The extension should now be enabled and ready to use!
 
-> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, **3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
 
 </details>
 
@@ -204,7 +204,7 @@ After installation, click on the CPU icon in the top bar of your Gnome shell and
 
 You are now ready to use this extension!
 
-> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, **3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
 
 </details>
 
@@ -233,7 +233,7 @@ After enabling, click on the CPU icon in the top bar of your Gnome shell and fol
 
 You are now ready to use this extension!
 
-> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, **3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
 
 </details>
 
