@@ -44,16 +44,6 @@ You need to have a CPU which is supported by the **cpufreq** or **intel_pstate**
 - For AMD Ryzen CPU's no further requirements are needed
 - A POSIX compatible shell
 
-### Installing via Makefile
-
-In order to use the Makefile you need the following packages:
-
- - make
- - gettext
- - glib2 tools
- - zip and unzip
- - tar
-
 ## Installation
 
 Installing this extension can either be done via distribution packages provided by us (recommended) or via the Gnome extensions website (often outdated). Have a look at the options below to find the correct installation method for your system.
@@ -61,7 +51,7 @@ Installing this extension can either be done via distribution packages provided 
 > Info: The `$` at the beginning of a line means that this line should be run as the user who is using the extension (most likely you). If you don't know what that means, just open up a terminal and use it as is. Commands are run as your user by default.
 > So for the line `$ echo Hello world` you would type `echo Hello world` into your terminal and hit enter.
 
-> Info: The `#` at the beginning of a line means that this line must be run with `root` privileges.
+> Info: The `#` at the beginning of a line means that this line must be run with `root` privileges (the name of the administrator account on Linux systems).
 > So for the line `# dnf update` you would then e.g. run `sudo dnf update` in you terminal if your system uses `sudo`. Your system is most likely using `sudo` and if not you would know it.
 
 ---
@@ -89,6 +79,8 @@ $ gnome-extensions enable cpupower@mko-sl.de
 
 The extension should now be enabled and ready to use!
 
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
+
 </details>
 
 ---
@@ -111,6 +103,8 @@ $ gnome-shell-extension-tool -e cpupower@mko-sl.de
 ```
 
 The extension should now be enabled and ready to use!
+
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
 
 </details>
 
@@ -142,6 +136,8 @@ $ gnome-extensions enable cpupower@mko-sl.de
 
 The extension should now be enabled and ready to use!
 
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
+
 </details>
 
 ---
@@ -170,6 +166,8 @@ $ gnome-extensions enable cpupower@mko-sl.de
 
 The extension should now be enabled and ready to use!
 
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
+
 </details>
 
 ---
@@ -191,6 +189,8 @@ $ gnome-extensions enable cpupower@mko-sl.de
 
 The extension should now be enabled and ready to use!
 
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
+
 </details>
 
 ---
@@ -203,6 +203,8 @@ Open the [`cpupower` Gnome extensions website](https://extensions.gnome.org/exte
 After installation, click on the CPU icon in the top bar of your Gnome shell and follow the instructions. You need to enter your root password to install a policy kit rule. This rule is used to set the clock frequency of your CPU.
 
 You are now ready to use this extension!
+
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
 
 </details>
 
@@ -231,11 +233,23 @@ After enabling, click on the CPU icon in the top bar of your Gnome shell and fol
 
 You are now ready to use this extension!
 
+> Note: This extension currently only supports Gnome **3.28**, **3.36**, ***3.38**, and **40**. Gnome 41 is **not** officially supported! However, you **might** get the extension running by disabling Gnome's version check with `gsettings set org.gnome.shell disable-extension-version-validation true`. But please note that this not only affects this extension but **all** installed Gnome shell extensions and might severely affect system stability!
+
 </details>
 
 ---
 
 You are a developer or sysadmin and are looking for ways to install this extension directly from the git repository? Read on! The section below will explain in detail how to do so.
+
+### Additional for prerequisites for Installation via Makefile
+
+In order to use the Makefile you need the following packages:
+
+ - make
+ - gettext
+ - glib2 tools
+ - zip and unzip
+ - tar
 
 ### Installing for another (admin) user
 
