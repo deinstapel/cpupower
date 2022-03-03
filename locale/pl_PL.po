@@ -75,7 +75,7 @@ msgstr ""
 "Ustaw sposób na odczytanie aktualnej częstotliwości dla Twojego procesora"
 
 #: data/cpupower-preferences.glade:282
-msgid "Avergage of all cores"
+msgid "Average of all cores"
 msgstr "Średnia dla wszystkich rdzeni"
 
 #: data/cpupower-preferences.glade:283

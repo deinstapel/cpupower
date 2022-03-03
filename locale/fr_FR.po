@@ -70,7 +70,7 @@ msgid "Set the method for retrieving the current frequency for your CPU"
 msgstr "Définit la méthode d'accès à la fréquence actuelle de votre CPU"
 
 #: data/cpupower-preferences.glade:282
-msgid "Avergage of all cores"
+msgid "Average of all cores"
 msgstr "Moyenne de tous les cœurs"
 
 #: data/cpupower-preferences.glade:283
