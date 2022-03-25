@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-03-25 03:45\n"
+"PO-Revision-Date: 2022-03-25 04:52\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Vietnamese\n"
 "Language: vi_VN\n"
@@ -166,11 +166,11 @@ msgstr "Khi đang xả pin"
 
 #: data/cpupower-preferences.glade:648
 msgid "Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets plugged in"
-msgstr ""
+msgstr "Chọn mẫu cấu hình mà tiện ích sẽ tự động chuyển sang nếu Auto-Switch được bật và máy tính được cắm sạc"
 
 #: data/cpupower-preferences.glade:663
 msgid "Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets unplugged"
-msgstr ""
+msgstr "Chọn mẫu cấu hình mà tiện ích sẽ tự động chuyển sang nếu Auto-Switch được bật và máy tính không được cắm sạc"
 
 #: data/cpupower-preferences.glade:706
 msgid "General"
@@ -178,35 +178,35 @@ msgstr "Tổng quan"
 
 #: data/cpupower-preferences.glade:760 data/cpupower-preferences.glade:765
 msgid "Add new profile"
-msgstr "Thêm mẫu mới"
+msgstr "Thêm mẫu cấu hình mới"
 
 #: data/cpupower-preferences.glade:778 data/cpupower-preferences.glade:783
 msgid "Remove selected profile"
-msgstr "Xóa mẫu được chọn"
+msgstr "Xóa mẫu cấu hình được chọn"
 
 #: data/cpupower-preferences.glade:796 data/cpupower-preferences.glade:801
 msgid "Move selected profile up"
-msgstr "Đưa mẫu được chọn lên trên"
+msgstr "Đưa mẫu cấu hình được chọn lên trên"
 
 #: data/cpupower-preferences.glade:814 data/cpupower-preferences.glade:819
 msgid "Move selected profile down"
-msgstr ""
+msgstr "Đưa mẫu cấu hình được chọn xuống dưới"
 
 #: data/cpupower-preferences.glade:881
 msgid "Profiles"
-msgstr "Mẫu"
+msgstr "Mẫu cấu hình"
 
 #: data/cpupower-preferences.glade:901
 msgid "Path to cpufreqctl:"
-msgstr ""
+msgstr "Đường dẫn tới cpufreqctl:"
 
 #: data/cpupower-preferences.glade:917
 msgid "Path to policykit rule:"
-msgstr ""
+msgstr "Đường dẫn tới policykit rule:"
 
 #: data/cpupower-preferences.glade:934
 msgid "CPU Power Manager is installed via your distributions package manager!"
-msgstr ""
+msgstr "CPU Power Manager được cài đặt thông qua trình quản lý các gói phân phối!"
 
 #: data/cpupower-preferences.glade:949 data/cpupower-preferences.glade:1643
 msgid "Uninstall"
@@ -223,201 +223,202 @@ msgstr "Tên mẫu"
 
 #: data/cpupower-preferences.glade:1095 src/indicator.js:221
 msgid "Minimum Frequency"
-msgstr ""
+msgstr "Xung nhịp tối thiểu"
 
 #: data/cpupower-preferences.glade:1107 src/indicator.js:226
 msgid "Maximum Frequency"
-msgstr ""
+msgstr "Xung nhịp tối đa"
 
 #: data/cpupower-preferences.glade:1119 data/cpupower-preferences.glade:1552
 #: src/indicator.js:231
 msgid "Turbo Boost"
-msgstr ""
+msgstr "Turbo Boost"
 
 #: data/cpupower-preferences.glade:1141
 msgid "Turbo boost switch"
-msgstr ""
+msgstr "Bât tắt Turbo Boost"
 
 #: data/cpupower-preferences.glade:1155
 msgid "Frequency limits below the lower limit and above the upper limit are not allowed!"
-msgstr ""
+msgstr "CPU không được phép hoạt động ở mức xung dưới mức giới hạn thấp và trên mức giới hạn cao!"
 
 #: data/cpupower-preferences.glade:1163
 msgid "Lower limit:"
-msgstr ""
+msgstr "Giới hạn thấp:"
 
 #: data/cpupower-preferences.glade:1195
 msgid "Upper limit:"
-msgstr ""
+msgstr "Giới hạn cao:"
 
 #: data/cpupower-preferences.glade:1252
 msgid "You reached your CPU's limit(s):"
-msgstr ""
+msgstr "CPU chỉ được hoạt động trong khoảng xung:"
 
 #: data/cpupower-preferences.glade:1280
 msgid "Discard"
-msgstr ""
+msgstr "Bỏ qua"
 
 #: data/cpupower-preferences.glade:1300
 msgid "Save"
-msgstr ""
+msgstr "Lưu"
 
 #: data/cpupower-preferences.glade:1338
 msgid "Minimum CPU frequency slider"
-msgstr ""
+msgstr "Tần số CPU tối thiểu"
 
 #: data/cpupower-preferences.glade:1352 data/cpupower-preferences.glade:1406
 msgid "0%"
-msgstr ""
+msgstr "0%"
 
 #: data/cpupower-preferences.glade:1392
 msgid "Maximum CPU frequency slider"
-msgstr ""
+msgstr "Tần số CPU tối đa"
 
 #: data/cpupower-preferences.glade:1614
 msgid "Uninstall CPU Power Manager Tools"
-msgstr ""
+msgstr "Gỡ cài đặt CPU Power Manager Tools"
 
 #: data/cpupower-preferences.glade:1615
 msgid "Are you sure you want to uninstall the cpufreqctl tool and the policykit rule?"
-msgstr ""
+msgstr "Bạn có chắc chắc muốn gỡ cài đặt 'cpufreqctl tool' và 'policykit rule' không?"
 
 #: data/cpupower-preferences.glade:1629
 msgid "Cancel"
-msgstr ""
+msgstr "Hủy bỏ"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
-msgstr ""
+msgstr "Sắp xếp các mẫu cấu hình"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
 msgid "Your CPUpower profiles"
-msgstr ""
+msgstr "Mẫu cấu hình CPUpower của bạn"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
 msgid "Show current cpu frequency in the top bar"
-msgstr ""
+msgstr "Hiện mức xung nhịp hiện tại lên thanh công cụ"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
 msgid "Frequency in taskbar is shown in GHz or MHz"
-msgstr ""
+msgstr "Xung nhịp trên thanh tác vụ được hiển thị bằng GHz hoặc MHz"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
 msgid "Control which unit is used for the frequency"
-msgstr ""
+msgstr "Lựa chọn đơn vị xung nhịp muốn hiển thị"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
 msgid "Show arrow in the top bar"
-msgstr ""
+msgstr "Hiển thị mũi tên lên thanh tác vụ"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
 msgid "Default AC profile ID"
-msgstr ""
+msgstr "ID của mẫu cấu hình mặc định khi máy đang cắm sạc"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
 msgid "The profile to switch to when plugged in"
-msgstr ""
+msgstr "Mẫu cấu hình khi máy được cắm sạc"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
 msgid "Default battery profile ID"
-msgstr ""
+msgstr "ID của mẫu cấu hình mặc định khi máy đang không cắm sạc"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
 msgid "The profile to switch to when unplugged"
-msgstr ""
+msgstr "Mẫu cấu hình khi máy không được cắm sạc"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:46
 msgid "The backend used for the cpufreqctl tool"
-msgstr ""
+msgstr "Tác vụ backend dùng cho 'cpufreqctl tool'"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:47
 msgid "The backend controls how the extensions will interact with the hardware and selects the scaling-driver used by the Linux kernel for setting and querying CPU frequencies and turbo boost settings. The 'fake' backend must only be used for development purposes and is not available in production."
-msgstr ""
+msgstr "Phần backend kiểm soát cách các tiện ích mở rộng tương tác với phần cứng và chọn trình điều khiển được sử dụng bởi nhân Linux để thiết lập và truy vấn tần số CPU cũng như cài đặt Turbo Boost. Phần backend 'giả' chỉ được sử dụng cho mục đích phát triển và không có sẵn trong phần mềm."
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:59
 msgid "The frequency sampling mode"
-msgstr ""
+msgstr "Chế độ lấy mẫu xung nhịp"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:60
 msgid "The CPU frequencies displayed by the extension are sampled using one of those methods"
-msgstr ""
+msgstr "Xung nhịp CPU được hiển thị bởi tiện ích mở rộng được lấy mẫu bằng một trong các phương pháp trong đây"
 
 #: src/indicator.js:185 src/notinstalled.js:69
 msgid "Please consider reporting this to the developers\n"
 "of this extension by submitting an issue on Github."
-msgstr ""
+msgstr "Xin vui lòng báo cáo các sự cố cho các nhà phát triển bằng cách tạo một issue trên trang Giuhub của tiện ích này."
 
 #: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
 msgid "Preferences"
-msgstr ""
+msgstr "Cài đặt"
 
 #: src/indicator.js:291
 msgid "Current Frequency"
-msgstr ""
+msgstr "Xung nhịp hiện tại"
 
 #: src/indicator.js:327 src/indicator.js:334
 msgid "Oh no! Something went wrong."
-msgstr ""
+msgstr "Đã có lỗi xảy ra."
 
 #: src/indicator.js:328
 msgid "The currently selected frequency scaling driver is not supported on your CPU!"
-msgstr ""
+msgstr "Trình điều khiển xung nhịp được chọn không được hỗ trợ trên CPU của bạn!"
 
 #: src/indicator.js:335
 msgid "An internal error occurred:"
-msgstr ""
+msgstr "Đã có lỗi xảy ra."
 
 #: src/notinstalled.js:60
 msgid "Installation required."
-msgstr ""
+msgstr "Yêu cầu cài đặt."
 
 #: src/notinstalled.js:64
 msgid "Oh no! This should not have happened.\n"
 "An error occurred while checking the installation!"
-msgstr ""
+msgstr "Đã có lỗi không mong muốn xảy ra trong quá trình cài đặt."
 
 #: src/notinstalled.js:83
 msgid "Attempt installation"
-msgstr ""
+msgstr "Lần cài đặt"
 
 #: src/preferences.js:274
 msgid "CPU Power Manager"
-msgstr ""
+msgstr "CPU Power Manager"
 
 #: src/preferences.js:436
 msgid "Yes"
-msgstr ""
+msgstr "Có"
 
 #: src/preferences.js:436
 msgid "No"
-msgstr ""
+msgstr "Không"
 
 #: src/preferences.js:518 src/preferences.js:519
 msgid "None"
-msgstr ""
+msgstr "Không có"
 
 #: src/preferences.js:546
 msgid "unavailable"
-msgstr ""
+msgstr "không khả dụng"
 
 #: src/preferences.js:551
 msgid "Automatic"
-msgstr ""
+msgstr "Tự động"
 
 #: src/update.js:61
 msgid "Your CPU Power Manager installation needs updating!"
-msgstr ""
+msgstr "Tiện ích cần được cài đặt bản cập nhật!"
 
 #: src/update.js:62
 msgid "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
-msgstr ""
+msgstr "Cảnh báo: xuất hiện lỗ hổng trong bản cài đặt này!\n"
+"Vui lòng cập nhật tiện ích ngay!"
 
 #: src/update.js:75
 msgid "Attempt tool update"
-msgstr ""
+msgstr "Lần cài đặt bản cập nhật"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"
