@@ -71,7 +71,8 @@ $ sudo apt-get update
 $ sudo apt-get install gnome-shell-extension-cpupower
 ```
 
-Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
+Now you need to restart Gnome, you can either log out and back in again or press Alt+F2 to open Gnome command console, type `r` and then press Enter.
+After restarting Gnome, enable the extension with:
 
 ```
 $ gnome-extensions enable cpupower@mko-sl.de
@@ -96,7 +97,8 @@ $ sudo apt-get update
 $ sudo apt-get install gnome-shell-extension-cpupower
 ```
 
-Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
+Now you need to restart Gnome, you can either log out and back in again or press Alt+F2 to open Gnome command console, type `r` and then press Enter.
+After restarting Gnome, enable the extension with:
 
 ```
 $ gnome-shell-extension-tool -e cpupower@mko-sl.de
@@ -128,7 +130,8 @@ To install the extension on any newer Debian based system run the below commands
 
 > Note: Debian is not using `sudo` by default. If you do not have `sudo`, get a `root` shell by typing `su` in a terminal and entering your superuser password.
 
-Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
+Now you need to restart Gnome, you can either log out and back in again or press Alt+F2 to open Gnome command console, type `r` and then press Enter.
+After restarting Gnome, enable the extension with:
 
 ```
 $ gnome-extensions enable cpupower@mko-sl.de
@@ -158,7 +161,8 @@ To install this extension on most RPM based Linux distributions run the below co
 
 > You need to have the package `dnf-plugins-core` installed. If the above commands are failing try installing them with `dnf install dnf-plugins-core` and rerun the above commands.
 
-Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
+Now you need to restart Gnome, you can either log out and back in again or press Alt+F2 to open Gnome command console, type `r` and then press Enter.
+After restarting Gnome, enable the extension with:
 
 ```
 $ gnome-extensions enable cpupower@mko-sl.de
@@ -181,7 +185,8 @@ Download the appropriate `.repo` file for your OpenSUSE release (most likely the
 # zypper install gnome-shell-extension-cpupower
 ```
 
-Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
+Now you need to restart Gnome, you can either log out and back in again or press Alt+F2 to open Gnome command console, type `r` and then press Enter.
+After restarting Gnome, enable the extension with:
 
 ```
 $ gnome-extensions enable cpupower@mko-sl.de
@@ -223,7 +228,8 @@ Another option is to install the extension zip file manually. To do so, download
 $ gnome-extensions install /path/to/cpupower.zip
 ```
 
-Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
+Now you need to restart Gnome, you can either log out and back in again or press Alt+F2 to open Gnome command console, type `r` and then press Enter.
+After restarting Gnome, enable the extension with:
 
 ```
 $ gnome-extensions enable cpupower@mko-sl.de
@@ -266,7 +272,7 @@ $ cd cpupower
 $ make install PREFIX=/home/username/.local
 ```
 
-Restart the gnome-shell (log out and back in) to make the extension available.
+To make the extension available, restart the gnome-shell; by either log out and back in or press Alt+F2 to open Gnome command console, type `r` and then press Enter.
 
 The user can enable the extension in his settings and install the polkit rule and `cpufreqctl` tool by using the included installation guide.
 
@@ -305,7 +311,7 @@ $ sudo make install-tool TOOL_SUFFIX=username
 
 > Note: Using another PREFIX than `/usr` in this setup might include security risks and may not work.
 
-Restart the gnome-shell (log out and back in) to make the extension available.
+To make the extension available, restart the gnome-shell; by either log out and back in or press Alt+F2 to open Gnome command console, type `r` and then press Enter.
 
 The extension will work out-of-the-box for this user only!
 
