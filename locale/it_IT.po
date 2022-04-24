@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2021-10-21 14:48\n"
+"PO-Revision-Date: 2022-04-24 13:09\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -75,7 +75,7 @@ msgstr "Impostare il metodo per recuperare la frequenza corrente della CPU"
 
 #: data/cpupower-preferences.glade:282
 msgid "Average of all cores"
-msgstr "Media di tutti i core"
+msgstr ""
 
 #: data/cpupower-preferences.glade:283
 msgid "Minimum of all cores"
