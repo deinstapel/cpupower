@@ -279,7 +279,7 @@ PB (@uno20001)</property>
                             <property name="can-focus">False</property>
                             <property name="tooltip-text" translatable="yes">Set the method for retrieving the current frequency for your CPU</property>
                             <items>
-                              <item id="average" translatable="yes">Avergage of all cores</item>
+                              <item id="average" translatable="yes">Average of all cores</item>
                               <item id="minimum" translatable="yes">Minimum of all cores</item>
                               <item id="maximum" translatable="yes">Maximum of all cores</item>
                               <item id="random" translatable="yes">Value of a random core</item>
