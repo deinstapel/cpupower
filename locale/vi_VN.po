@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-03-25 04:52\n"
+"PO-Revision-Date: 2022-04-24 13:09\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Vietnamese\n"
 "Language: vi_VN\n"
@@ -74,8 +74,8 @@ msgid "Set the method for retrieving the current frequency for your CPU"
 msgstr "Phương pháp lấy xung nhịp CPU"
 
 #: data/cpupower-preferences.glade:282
-msgid "Avergage of all cores"
-msgstr "Mức trung bình toàn bộ các nhân"
+msgid "Average of all cores"
+msgstr ""
 
 #: data/cpupower-preferences.glade:283
 msgid "Minimum of all cores"
