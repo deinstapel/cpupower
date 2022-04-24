@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2021-10-21 14:48\n"
+"PO-Revision-Date: 2022-04-24 13:09\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -74,7 +74,7 @@ msgid "Set the method for retrieving the current frequency for your CPU"
 msgstr ""
 
 #: data/cpupower-preferences.glade:282
-msgid "Avergage of all cores"
+msgid "Average of all cores"
 msgstr ""
 
 #: data/cpupower-preferences.glade:283
