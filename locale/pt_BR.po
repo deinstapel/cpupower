@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-04-24 13:09\n"
+"PO-Revision-Date: 2022-04-24 22:39\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt_BR\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:57
 msgid "About"
-msgstr ""
+msgstr "Sobre"
 
 #: data/cpupower-preferences.glade:68
 msgid "Gnome-Shell Extension for controlling the frequency scaling driver of your CPU."
@@ -31,11 +31,11 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:156
 msgid "Top Bar"
-msgstr ""
+msgstr "Barra superior"
 
 #: data/cpupower-preferences.glade:188
 msgid "Show current frequency"
-msgstr ""
+msgstr "Mostrar a frequência atual"
 
 #: data/cpupower-preferences.glade:204
 msgid "Use GHz instead of MHz"
@@ -213,16 +213,16 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:1029
 msgid "Installation"
-msgstr ""
+msgstr "Instalação"
 
 #: data/cpupower-preferences.glade:1059 data/cpupower-preferences.glade:1074
 #: data/cpupower-preferences.glade:1081
 msgid "Profile Name"
-msgstr ""
+msgstr "Nome de Perfil"
 
 #: data/cpupower-preferences.glade:1095 src/indicator.js:221
 msgid "Minimum Frequency"
-msgstr ""
+msgstr "Frequência mínima"
 
 #: data/cpupower-preferences.glade:1107 src/indicator.js:226
 msgid "Maximum Frequency"
@@ -255,11 +255,11 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:1280
 msgid "Discard"
-msgstr ""
+msgstr "Descartar"
 
 #: data/cpupower-preferences.glade:1300
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: data/cpupower-preferences.glade:1338
 msgid "Minimum CPU frequency slider"
@@ -267,7 +267,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:1352 data/cpupower-preferences.glade:1406
 msgid "0%"
-msgstr ""
+msgstr "0%"
 
 #: data/cpupower-preferences.glade:1392
 msgid "Maximum CPU frequency slider"
@@ -283,7 +283,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:1629
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
@@ -350,7 +350,7 @@ msgstr ""
 
 #: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
 msgid "Preferences"
-msgstr ""
+msgstr "Preferências"
 
 #: src/indicator.js:291
 msgid "Current Frequency"
@@ -387,11 +387,11 @@ msgstr ""
 
 #: src/preferences.js:436
 msgid "Yes"
-msgstr ""
+msgstr "Sim"
 
 #: src/preferences.js:436
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 #: src/preferences.js:518 src/preferences.js:519
 msgid "None"
@@ -399,11 +399,11 @@ msgstr ""
 
 #: src/preferences.js:546
 msgid "unavailable"
-msgstr ""
+msgstr "indisponível"
 
 #: src/preferences.js:551
 msgid "Automatic"
-msgstr ""
+msgstr "Automático"
 
 #: src/update.js:61
 msgid "Your CPU Power Manager installation needs updating!"
