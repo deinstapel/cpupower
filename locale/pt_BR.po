@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-04-24 22:39\n"
+"PO-Revision-Date: 2022-04-24 23:36\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt_BR\n"
@@ -173,11 +173,11 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:706
 msgid "General"
-msgstr ""
+msgstr "Geral"
 
 #: data/cpupower-preferences.glade:760 data/cpupower-preferences.glade:765
 msgid "Add new profile"
-msgstr ""
+msgstr "Adicionar um novo perfil"
 
 #: data/cpupower-preferences.glade:778 data/cpupower-preferences.glade:783
 msgid "Remove selected profile"
@@ -193,7 +193,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:881
 msgid "Profiles"
-msgstr ""
+msgstr "Perfis"
 
 #: data/cpupower-preferences.glade:901
 msgid "Path to cpufreqctl:"
@@ -209,7 +209,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:949 data/cpupower-preferences.glade:1643
 msgid "Uninstall"
-msgstr ""
+msgstr "Desinstalar"
 
 #: data/cpupower-preferences.glade:1029
 msgid "Installation"
@@ -243,15 +243,15 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:1163
 msgid "Lower limit:"
-msgstr ""
+msgstr "Limite inferior:"
 
 #: data/cpupower-preferences.glade:1195
 msgid "Upper limit:"
-msgstr ""
+msgstr "Limite superior:"
 
 #: data/cpupower-preferences.glade:1252
 msgid "You reached your CPU's limit(s):"
-msgstr ""
+msgstr "Você atingiu o limite do(s) CPU(s):"
 
 #: data/cpupower-preferences.glade:1280
 msgid "Discard"
@@ -279,7 +279,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:1615
 msgid "Are you sure you want to uninstall the cpufreqctl tool and the policykit rule?"
-msgstr ""
+msgstr "Você tem certeza que deseja desinstalar a ferramenta cpufreqctl e regra do policykit?"
 
 #: data/cpupower-preferences.glade:1629
 msgid "Cancel"
@@ -309,7 +309,7 @@ msgstr ""
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
 msgid "Show arrow in the top bar"
-msgstr ""
+msgstr "Mostrar seta na barra superior"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
 msgid "Default AC profile ID"
@@ -346,7 +346,8 @@ msgstr ""
 #: src/indicator.js:185 src/notinstalled.js:69
 msgid "Please consider reporting this to the developers\n"
 "of this extension by submitting an issue on Github."
-msgstr ""
+msgstr "Por favor, considere relatar isso aos desenvolvedores\n"
+"desta extensão enviando o problema no Github."
 
 #: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
 msgid "Preferences"
@@ -354,36 +355,37 @@ msgstr "Preferências"
 
 #: src/indicator.js:291
 msgid "Current Frequency"
-msgstr ""
+msgstr "Frequência atual"
 
 #: src/indicator.js:327 src/indicator.js:334
 msgid "Oh no! Something went wrong."
-msgstr ""
+msgstr "Ah não! Algo deu errado."
 
 #: src/indicator.js:328
 msgid "The currently selected frequency scaling driver is not supported on your CPU!"
-msgstr ""
+msgstr "O driver de escala de frequência selecionado não é suportado na sua CPU!"
 
 #: src/indicator.js:335
 msgid "An internal error occurred:"
-msgstr ""
+msgstr "Ocorreu um erro interno:"
 
 #: src/notinstalled.js:60
 msgid "Installation required."
-msgstr ""
+msgstr "Instalação necessária."
 
 #: src/notinstalled.js:64
 msgid "Oh no! This should not have happened.\n"
 "An error occurred while checking the installation!"
-msgstr ""
+msgstr "Ah não! Isto não deveria ter acontecido.\n"
+"Ocorreu um erro ao verificar a instalação!"
 
 #: src/notinstalled.js:83
 msgid "Attempt installation"
-msgstr ""
+msgstr "Tentar instalação"
 
 #: src/preferences.js:274
 msgid "CPU Power Manager"
-msgstr ""
+msgstr "Gerenciador de energia da CPU"
 
 #: src/preferences.js:436
 msgid "Yes"
@@ -395,7 +397,7 @@ msgstr "Não"
 
 #: src/preferences.js:518 src/preferences.js:519
 msgid "None"
-msgstr ""
+msgstr "Nada"
 
 #: src/preferences.js:546
 msgid "unavailable"
@@ -407,16 +409,17 @@ msgstr "Automático"
 
 #: src/update.js:61
 msgid "Your CPU Power Manager installation needs updating!"
-msgstr ""
+msgstr "Seu Gerenciador de Energia da CPU precisa ser atualizado!"
 
 #: src/update.js:62
 msgid "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
-msgstr ""
+msgstr "Aviso: Foram encontrados problemas de segurança com a sua instalação!\n"
+"Por favor, atualize imediatamente!"
 
 #: src/update.js:75
 msgid "Attempt tool update"
-msgstr ""
+msgstr "Tentar atualização da ferramenta"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"
