@@ -1,3 +1,21 @@
+gnome-shell-extension-cpupower (10.1.0-1~jammy1) jammy; urgency=medium
+
+  * Create jammy release
+
+ -- Fin Christensen <fin-ger@posteo.me>  Sun, 22 May 2022 20:49:28 +0200
+
+gnome-shell-extension-cpupower (10.1.0-1~focal1) focal; urgency=medium
+
+  * Create focal release
+
+ -- Fin Christensen <fin-ger@posteo.me>  Sun, 22 May 2022 20:48:31 +0200
+
+gnome-shell-extension-cpupower (10.1.0-1~bionic1) bionic; urgency=medium
+
+  * Create bionic release
+
+ -- Fin Christensen <fin-ger@posteo.me>  Sun, 22 May 2022 20:46:36 +0200
+
 gnome-shell-extension-cpupower (10.1.0-1) UNRELEASED; urgency=medium
 
   * Update version to 10.1.0
