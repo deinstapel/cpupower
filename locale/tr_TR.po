@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-04-24 13:09\n"
+"PO-Revision-Date: 2022-05-22 18:04\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
@@ -291,7 +291,7 @@ msgstr "Seri hale getirilmiş Profiller"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
 msgid "Your CPUpower profiles"
-msgstr " CPUgüç profilleriniz"
+msgstr "CPUpower profilleriniz"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
@@ -370,7 +370,7 @@ msgstr ""
 
 #: src/notinstalled.js:60
 msgid "Installation required."
-msgstr "Yükleme gerekli.."
+msgstr "Yükleme gerekli."
 
 #: src/notinstalled.js:64
 msgid "Oh no! This should not have happened.\n"
