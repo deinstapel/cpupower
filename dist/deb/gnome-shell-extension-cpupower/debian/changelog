@@ -1,3 +1,9 @@
+gnome-shell-extension-cpupower (10.1.0-1) UNRELEASED; urgency=medium
+
+  * Update version to 10.1.0
+
+ -- Fin Christensen <fin-ger@posteo.me>  Sun, 22 May 2022 20:32:28 +0200
+
 gnome-shell-extension-cpupower (10.0.1-1~jammy1) jammy; urgency=medium
 
   * Create jammy release

@@ -64,7 +64,7 @@ along with gnome-shell extension cpupower.  If not, see
     <property name="can-focus">False</property>
     <property name="type-hint">dialog</property>
     <property name="program-name">CPU Power Manager</property>
-    <property name="version">10.0.1</property>
+    <property name="version">10.1.0</property>
     <property name="comments" translatable="yes">Gnome-Shell Extension for controlling the frequency scaling driver of your CPU.</property>
     <property name="website">https://github.com/deinstapel/cpupower</property>
     <property name="authors">Martin Koppehel (@martin31821)
