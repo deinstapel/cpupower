@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-04-24 13:09\n"
+"PO-Revision-Date: 2022-05-22 18:04\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -117,7 +117,7 @@ msgstr "Afficher l'icône dans la barre supérieure"
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
 msgid "Show an icon in the top bar"
-msgstr "Afficher  une icône dans la barre supérieure"
+msgstr "Afficher une icône dans la barre supérieure"
 
 #: data/cpupower-preferences.glade:371
 msgid "Top bar icon switch"
@@ -279,7 +279,7 @@ msgstr "Désinstaller les outils CPU Power Manager"
 
 #: data/cpupower-preferences.glade:1615
 msgid "Are you sure you want to uninstall the cpufreqctl tool and the policykit rule?"
-msgstr "Êtes-vous sûr de vouloir désinsaller l'outil cpufreqctl et la règle policykit ?"
+msgstr "Êtes-vous sûr de vouloir désinstaller l'outil cpufreqctl et la règle policykit ?"
 
 #: data/cpupower-preferences.glade:1629
 msgid "Cancel"
@@ -304,7 +304,7 @@ msgstr "La fréquence dans la barre des tâches est affichée en GHz ou en MHz"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
 msgid "Control which unit is used for the frequency"
-msgstr "Controlle quelle unitée est utilisée pour la frequence"
+msgstr "Controlle quelle unité est utilisée pour la fréquence"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
@@ -325,7 +325,7 @@ msgstr "ID du profil par défaut sur batterie"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
 msgid "The profile to switch to when unplugged"
-msgstr "Le profil utilisé lorsque sur baterrie"
+msgstr "Le profil utilisé lorsque sur batterie"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:46
 msgid "The backend used for the cpufreqctl tool"
@@ -333,7 +333,7 @@ msgstr "Le backend utilisé pour l'outil cpufreqctl"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:47
 msgid "The backend controls how the extensions will interact with the hardware and selects the scaling-driver used by the Linux kernel for setting and querying CPU frequencies and turbo boost settings. The 'fake' backend must only be used for development purposes and is not available in production."
-msgstr "Le backend controlle comment l'extension intéragit avec le matériel et sélectionne le pilote de mise à l'échelle utilisé par le noyau Linux pour paramétrer and demander les fréquences du processeur et paramétrer le turbo boost. Le 'faux' backend doit seulement être utilisé pour des fins de développement et n'est pas disponible en production."
+msgstr "Le backend controlle comment l'extension interagir avec le matériel et sélectionne le pilote de mise à l'échelle utilisé par le noyau Linux pour paramétrer and demander les fréquences du processeur et paramétrer le turbo boost. Le 'faux' backend doit seulement être utilisé pour des fins de développement et n'est pas disponible en production."
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:59
 msgid "The frequency sampling mode"
@@ -376,8 +376,8 @@ msgstr "Installation requise."
 #: src/notinstalled.js:64
 msgid "Oh no! This should not have happened.\n"
 "An error occurred while checking the installation!"
-msgstr "Oh non ! Ça n'aurait pas dû arriver.\n"
-"Une erreur est survenue en verifiant l'installation !"
+msgstr "Oh non ! Ça n'aurait pas dû arriver.\n"
+"Une erreur est survenue en vérifiant l'installation !"
 
 #: src/notinstalled.js:83
 msgid "Attempt installation"
