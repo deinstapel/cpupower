@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2021-09-27 17:04+0200\n"
+"PO-Revision-Date: 2022-04-24 13:09\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
-"Language-Team: \n"
+"Language-Team: English\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,15 +14,19 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Crowdin-Project: cpupower\n"
+"X-Crowdin-Project-ID: 481593\n"
+"X-Crowdin-Language: en\n"
+"X-Crowdin-File: /master/locale/template.pot\n"
+"X-Crowdin-File-ID: 11\n"
 
 #: data/cpupower-preferences.glade:57
 msgid "About"
 msgstr ""
 
 #: data/cpupower-preferences.glade:68
-msgid ""
-"Gnome-Shell Extension for controlling the frequency scaling driver of your "
-"CPU."
+msgid "Gnome-Shell Extension for controlling the frequency scaling driver of your CPU."
 msgstr ""
 
 #: data/cpupower-preferences.glade:156
@@ -132,9 +136,7 @@ msgid "Frequency scaling driver"
 msgstr ""
 
 #: data/cpupower-preferences.glade:494 data/cpupower-preferences.glade:511
-msgid ""
-"Set the scaling driver backend used to control and query the CPU frequency "
-"and turbo boost setting"
+msgid "Set the scaling driver backend used to control and query the CPU frequency and turbo boost setting"
 msgstr ""
 
 #: data/cpupower-preferences.glade:510
@@ -162,15 +164,11 @@ msgid "Discharging battery"
 msgstr ""
 
 #: data/cpupower-preferences.glade:648
-msgid ""
-"Set the default profile to which the extension will automatically switch to "
-"if Auto-Switch is enabled and the AC adapter gets plugged in"
+msgid "Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets plugged in"
 msgstr ""
 
 #: data/cpupower-preferences.glade:663
-msgid ""
-"Set the default profile to which the extension will automatically switch to "
-"if Auto-Switch is enabled and the AC adapter gets unplugged"
+msgid "Set the default profile to which the extension will automatically switch to if Auto-Switch is enabled and the AC adapter gets unplugged"
 msgstr ""
 
 #: data/cpupower-preferences.glade:706
@@ -240,9 +238,7 @@ msgid "Turbo boost switch"
 msgstr ""
 
 #: data/cpupower-preferences.glade:1155
-msgid ""
-"Frequency limits below the lower limit and above the upper limit are not "
-"allowed!"
+msgid "Frequency limits below the lower limit and above the upper limit are not allowed!"
 msgstr ""
 
 #: data/cpupower-preferences.glade:1163
@@ -282,9 +278,7 @@ msgid "Uninstall CPU Power Manager Tools"
 msgstr ""
 
 #: data/cpupower-preferences.glade:1615
-msgid ""
-"Are you sure you want to uninstall the cpufreqctl tool and the policykit "
-"rule?"
+msgid "Are you sure you want to uninstall the cpufreqctl tool and the policykit rule?"
 msgstr ""
 
 #: data/cpupower-preferences.glade:1629
@@ -338,11 +332,7 @@ msgid "The backend used for the cpufreqctl tool"
 msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:47
-msgid ""
-"The backend controls how the extensions will interact with the hardware and "
-"selects the scaling-driver used by the Linux kernel for setting and querying "
-"CPU frequencies and turbo boost settings. The 'fake' backend must only be "
-"used for development purposes and is not available in production."
+msgid "The backend controls how the extensions will interact with the hardware and selects the scaling-driver used by the Linux kernel for setting and querying CPU frequencies and turbo boost settings. The 'fake' backend must only be used for development purposes and is not available in production."
 msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:59
@@ -350,14 +340,11 @@ msgid "The frequency sampling mode"
 msgstr ""
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:60
-msgid ""
-"The CPU frequencies displayed by the extension are sampled using one of "
-"those methods"
+msgid "The CPU frequencies displayed by the extension are sampled using one of those methods"
 msgstr ""
 
 #: src/indicator.js:185 src/notinstalled.js:69
-msgid ""
-"Please consider reporting this to the developers\n"
+msgid "Please consider reporting this to the developers\n"
 "of this extension by submitting an issue on Github."
 msgstr ""
 
@@ -374,8 +361,7 @@ msgid "Oh no! Something went wrong."
 msgstr ""
 
 #: src/indicator.js:328
-msgid ""
-"The currently selected frequency scaling driver is not supported on your CPU!"
+msgid "The currently selected frequency scaling driver is not supported on your CPU!"
 msgstr ""
 
 #: src/indicator.js:335
@@ -387,8 +373,7 @@ msgid "Installation required."
 msgstr ""
 
 #: src/notinstalled.js:64
-msgid ""
-"Oh no! This should not have happened.\n"
+msgid "Oh no! This should not have happened.\n"
 "An error occurred while checking the installation!"
 msgstr ""
 
@@ -425,8 +410,7 @@ msgid "Your CPU Power Manager installation needs updating!"
 msgstr ""
 
 #: src/update.js:62
-msgid ""
-"Warning: Security issues were found with your installation!\n"
+msgid "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
 msgstr ""
 
@@ -436,3 +420,4 @@ msgstr ""
 
 #~ msgid "CPU"
 #~ msgstr "CPU"
+
