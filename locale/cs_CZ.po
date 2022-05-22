@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-04-24 13:09\n"
+"PO-Revision-Date: 2022-05-22 17:32\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -59,11 +59,11 @@ msgstr "Zobrazit aktuální frekvenci v Ghz namísto Mhz"
 
 #: data/cpupower-preferences.glade:250
 msgid "GHz switch"
-msgstr "Ghz přepínač"
+msgstr "GHz přepínač"
 
 #: data/cpupower-preferences.glade:251
 msgid "Switch to use units of GHz instead of MHz in the top bar"
-msgstr "V horním panelu použít jednotku Ghz namísto Mhz"
+msgstr "V horním panelu použít jednotku GHz namísto MHz"
 
 #: data/cpupower-preferences.glade:266
 msgid "Show frequency as"
