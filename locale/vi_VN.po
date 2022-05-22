@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-04-24 13:09\n"
+"PO-Revision-Date: 2022-05-22 18:04\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Vietnamese\n"
 "Language: vi_VN\n"
@@ -347,7 +347,7 @@ msgstr "Xung nhịp CPU được hiển thị bởi tiện ích mở rộng đư
 #: src/indicator.js:185 src/notinstalled.js:69
 msgid "Please consider reporting this to the developers\n"
 "of this extension by submitting an issue on Github."
-msgstr "Xin vui lòng báo cáo các sự cố cho các nhà phát triển bằng cách tạo một issue trên trang Giuhub của tiện ích này."
+msgstr "Xin vui lòng báo cáo các sự cố cho các nhà phát triển bằng cách tạo một issue trên trang Github của tiện ích này."
 
 #: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
 msgid "Preferences"
@@ -367,7 +367,7 @@ msgstr "Trình điều khiển xung nhịp được chọn không được hỗ 
 
 #: src/indicator.js:335
 msgid "An internal error occurred:"
-msgstr "Đã có lỗi xảy ra."
+msgstr "Đã có lỗi xảy ra:"
 
 #: src/notinstalled.js:60
 msgid "Installation required."
