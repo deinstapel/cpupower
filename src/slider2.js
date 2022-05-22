@@ -11,6 +11,8 @@
 const {Atk, Clutter, GObject} = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
+const Config = imports.misc.config;
+
 const Me = ExtensionUtils.getCurrentExtension();
 const BarLevel2 = Me.imports.src.barLevel2;
 
@@ -83,7 +85,9 @@ var Slider2 = GObject.registerClass({
         let device = event.get_device();
         let sequence = event.get_event_sequence();
 
-        if (sequence) {
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) >= 42) {
+            this._grab = global.stage.grab(this);
+        } else if (sequence) {
             device.sequence_grab(sequence, this);
         } else {
             device.grab(this);
@@ -109,7 +113,12 @@ var Slider2 = GObject.registerClass({
                 this._releaseId = 0;
             }
 
-            if (this._grabbedSequence) {
+            if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) >= 42) {
+                if (this._grab) {
+                    this._grab.dismiss();
+                    this._grab = null;
+                }
+            } else if (this._grabbedSequence) {
                 this._grabbedDevice.sequence_ungrab(this._grabbedSequence);
             } else {
                 this._grabbedDevice.ungrab();
@@ -141,7 +150,18 @@ var Slider2 = GObject.registerClass({
             event.type() === Clutter.EventType.TOUCH_BEGIN) {
             this.startDragging(event);
             return Clutter.EVENT_STOP;
-        } else if (device.sequence_get_grabbed_actor(sequence) === this) {
+        } else if (
+            (
+                parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) >= 42 && (
+                    this._grabbedSequence &&
+                        sequence.get_slot() === this._grabbedSequence.get_slot()
+                )
+            ) || (
+                parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) < 42 && (
+                    device.sequence_get_grabbed_actor(sequence) === this
+                )
+            )
+        ) {
             if (event.type() === Clutter.EventType.TOUCH_UPDATE) {
                 return this._motionEvent(this, event);
             } else if (event.type() === Clutter.EventType.TOUCH_END) {
