@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-04-24 23:36\n"
+"PO-Revision-Date: 2022-05-22 18:04\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt_BR\n"
@@ -251,7 +251,7 @@ msgstr "Limite superior:"
 
 #: data/cpupower-preferences.glade:1252
 msgid "You reached your CPU's limit(s):"
-msgstr "Você atingiu o limite do(s) CPU(s):"
+msgstr "Você atingiu o limite do(s) CPU:"
 
 #: data/cpupower-preferences.glade:1280
 msgid "Discard"
