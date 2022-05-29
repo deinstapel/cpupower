@@ -1,5 +1,5 @@
 Name:           gnome-shell-extension-cpupower
-Version:        10.1.1
+Version:        10.1.2
 Release:        1%{?dist}
 Summary:        Gnome-Shell Extension for controlling the frequency setting of your CPU
 BuildArch:      noarch

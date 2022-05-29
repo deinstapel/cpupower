@@ -1,3 +1,9 @@
+gnome-shell-extension-cpupower (10.1.2-1) UNRELEASED; urgency=medium
+
+  * Update version to 10.1.2
+
+ -- Fin Christensen <fin-ger@posteo.me>  Sun, 29 May 2022 20:50:32 +0200
+
 gnome-shell-extension-cpupower (10.1.1-1) UNRELEASED; urgency=medium
 
   * Update version to 10.1.1
