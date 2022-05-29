@@ -52,7 +52,7 @@ Installing this extension can either be done via distribution packages provided 
 > So for the line `$ echo Hello world` you would type `echo Hello world` into your terminal and hit enter.
 
 > Info: The `#` at the beginning of a line means that this line must be run with `root` privileges (the name of the administrator account on Linux systems).
-> So for the line `# dnf update` you would then e.g. run `sudo dnf update` in you terminal if your system uses `sudo`. Your system is most likely using `sudo` and if not you would know it.
+> So for the line `# dnf update` you would then e.g. run `sudo dnf update` in your terminal if your system uses `sudo`. Your system is most likely using `sudo` and if not you would know it.
 
 ---
 
