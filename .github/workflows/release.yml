@@ -38,7 +38,7 @@ jobs:
     - name: Release GNOME extension artifacts
       id: package
       run: |
-        VERSION="10.1.0"
+        VERSION="10.1.1"
         echo "::set-output name=version::$VERSION"
         make dist
         cp target/cpupower-$VERSION.zip $GITHUB_WORKSPACE/cpupower-$VERSION.zip
