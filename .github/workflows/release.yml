@@ -34,7 +34,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Install dependencies
-      run: sudo apt-get install -y make gettext libglib2.0-bin zip devscripts debhelper rpm
+      run: sudo apt-get update && sudo apt-get install -y make gettext libglib2.0-bin zip devscripts debhelper rpm
     - name: Release GNOME extension artifacts
       id: package
       run: |
