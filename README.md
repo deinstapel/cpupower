@@ -169,7 +169,7 @@ The extension should now be enabled and ready to use!
 <details>
 <summary><code>click to expand</code> <h3>OpenSUSE</h3></summary>
 
-Download the appropriate `.repo` file for your OpenSUSE release (most likely the latest version) and save it to `/etc/zypp/repos.d/`. Now run the following commands:
+Download the [appropriate `.repo` file for your OpenSUSE release](https://copr.fedorainfracloud.org/coprs/fin-ger/cpupower/) (most likely the latest version) and save it to `/etc/zypp/repos.d/`. Now run the following commands:
 
 ```
 # zypper install gnome-shell-extension-cpupower
