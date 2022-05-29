@@ -152,11 +152,13 @@ To install this extension on most RPM based Linux distributions run the below co
 > Info: It is safe to install this extension if only a single package is installed by the below `dnf install` command. If more packages are to be installed, please stop doing so and if unsure [create an issue](https://github.com/deinstapel/cpupower/issues/new/choose) asking for help!
 
 ```
-# dnf copr enable fin_ger/cpupower
+# dnf copr enable fin-ger/cpupower
 # dnf install gnome-shell-extension-cpupower
 ```
 
 > You need to have the package `dnf-plugins-core` installed. If the above commands are failing try installing them with `dnf install dnf-plugins-core` and rerun the above commands.
+
+> Caution: Due to a name change required by the Fedora admins of my Fedora account, the name of the copr also changed. `fin_ger/cpupower` has changed to `fin-ger/cpupower`.
 
 Now log out and back in again. Yes, this is really necessary thanks to Gnome. After logging back in, enable the extension with:
 
