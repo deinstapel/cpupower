@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-08-20 13:25\n"
+"PO-Revision-Date: 2022-08-20 15:01\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt_BR\n"
@@ -129,15 +129,15 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:448
 msgid "Backend"
-msgstr ""
+msgstr "Backend"
 
 #: data/cpupower-preferences.glade:480
 msgid "Frequency scaling driver"
-msgstr ""
+msgstr "Driver de escala de frequência"
 
 #: data/cpupower-preferences.glade:494 data/cpupower-preferences.glade:511
 msgid "Set the scaling driver backend used to control and query the CPU frequency and turbo boost setting"
-msgstr ""
+msgstr "Definir o backend do controlador de escalonamento usado para controlar e consultar a frequência da CPU e otimização turbo"
 
 #: data/cpupower-preferences.glade:510
 msgid "Frequency scaling driver selection"
