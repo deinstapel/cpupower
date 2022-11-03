@@ -276,6 +276,7 @@ intel_pstate_info_frequencies ()
 
 intel_pstate_info_current ()
 {
+    sleep 0.01
     for scaling_cur_freq in /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq
     do
         cat "${scaling_cur_freq}" &
