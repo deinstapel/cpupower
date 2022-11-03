@@ -108,7 +108,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     enable() {
-        this.power = Main.panel.statusArea["aggregateMenu"]._power;
+        this.power = imports.ui.main.panel.statusArea.quickSettings._system._systemItem._powerToggle;
         this.powerState = this.power._proxy.State;
         this.powerConnectSignalId = this.power._proxy.connect(
             "g-properties-changed",
