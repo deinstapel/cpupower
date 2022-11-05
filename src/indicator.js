@@ -108,7 +108,12 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     enable() {
-        this.power = imports.ui.main.panel.statusArea.quickSettings._system._systemItem._powerToggle;
+        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) >= 43) {
+            this.power = imports.ui.main.panel.statusArea.quickSettings._system._systemItem._powerToggle;
+        } else {
+            this.power = Main.panel.statusArea["aggregateMenu"]._power;
+        }
+
         this.powerState = this.power._proxy.State;
         this.powerConnectSignalId = this.power._proxy.connect(
             "g-properties-changed",
