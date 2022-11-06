@@ -95,25 +95,32 @@ not_supported ()
 }
 
 # echo min/max/avg/rnd of a space-separated list of numbers
+# $1 number of element
+# $2 space-separated list of numbers
 compute_min_max_avg_rnd ()
 {
-    measures=($1)
-    nb_measures=${#measures[@]}
+    nb_measures=$1
+    measures=$2
     max=0
-    min=${measures[0]}
+    min=10000000
     tot=0
-    for i in "${measures[@]}"; do
-        tot=$(($tot + $i))
+    idx=0
+    rnd_id=$(shuf -i 0-$((nb_measures-1)) -n 1)
+    for i in $measures; do
+        tot=$((tot + i))
         if [ "$i" -gt "$max" ]; then
             max=$i
         fi
         if [ "$i" -lt "$min" ]; then
             min=$i
         fi
+        if [ "$idx" -eq "$rnd_id" ]; then
+            rnd=$i
+        fi
+        idx=$((idx+1))
     done
-    avg=$(($tot/$nb_measures))
-    rnd_id=$(($RANDOM % $nb_measures))
-    rnd=${measures[$rnd_id]}
+    avg=$((tot/nb_measures))
+
     echo --min "${min}" --max "${max}" --avg "${avg}" --rnd "${rnd}"
 }
 
@@ -200,7 +207,8 @@ fake_info_current ()
 {
     fake_init
     measures=$(shuf -i 800000-3600000 -n 12)
-    report_info_current $(compute_min_max_avg_rnd "$measures")
+    num_cores=12
+    report_info_current $(compute_min_max_avg_rnd "$num_cores" "$measures")
 }
 
 intel_pstate_supported ()
@@ -285,7 +293,8 @@ intel_pstate_info_frequencies ()
 intel_pstate_info_current ()
 {
     measures=$(cat /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq)
-    report_info_current $(compute_min_max_avg_rnd "$measures")
+    num_cores=$(getconf _NPROCESSORS_ONLN)
+    report_info_current $(compute_min_max_avg_rnd "$num_cores" "$measures")
 }
 
 cpufreq_supported ()
@@ -463,7 +472,8 @@ cpufreq_info_frequencies ()
 cpufreq_info_current ()
 {
     measures=$(cat /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq)
-    report_info_current $(compute_min_max_avg_rnd "$measures")
+    num_cores=$(getconf _NPROCESSORS_ONLN)
+    report_info_current $(compute_min_max_avg_rnd "$num_cores" "$measures")
 }
 
 backend_select()
