@@ -22,6 +22,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 set -o errexit -o nounset
+renice -n 19 0 >/dev/null
 
 VERSION="10.1.2"
 PRODUCTION=yes
@@ -91,6 +92,29 @@ not_supported ()
 {
     log "error: the backend '$1' is not supported on your system!"
     EXIT_CODE=9
+}
+
+# echo min/max/avg/rnd of a space-separated list of numbers
+compute_min_max_avg_rnd ()
+{
+    measures=($1)
+    nb_measures=${#measures[@]}
+    max=0
+    min=${measures[0]}
+    tot=0
+    for i in "${measures[@]}"; do
+        tot=$(($tot + $i))
+        if [ "$i" -gt "$max" ]; then
+            max=$i
+        fi
+        if [ "$i" -lt "$min" ]; then
+            min=$i
+        fi
+    done
+    avg=$(($tot/$nb_measures))
+    rnd_id=$(($RANDOM % $nb_measures))
+    rnd=${measures[$rnd_id]}
+    echo --min "${min}" --max "${max}" --avg "${avg}" --rnd "${rnd}"
 }
 
 fake_init ()
@@ -175,24 +199,8 @@ fake_info_frequencies ()
 fake_info_current ()
 {
     fake_init
-
-    shuf -i 800000-3600000 -n 12 | sort -n | awk '
-        BEGIN {
-            srand()
-        }
-        NR == 1 {
-            printf "%d ", $1
-        }
-        {
-            sum += $1
-            r[NR] = $1
-        }
-        END {
-            printf "%d %.0f %d\n", $1, sum / NR, r[int(rand() * NR) + 1]
-        }' | while read -r min max avg rnd
-    do
-        report_info_current --min "${min}" --max "${max}" --avg "${avg}" --rnd "${rnd}"
-    done
+    measures=$(shuf -i 800000-3600000 -n 12)
+    report_info_current $(compute_min_max_avg_rnd "$measures")
 }
 
 intel_pstate_supported ()
@@ -276,27 +284,8 @@ intel_pstate_info_frequencies ()
 
 intel_pstate_info_current ()
 {
-    sleep 0.01
-    for scaling_cur_freq in /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq
-    do
-        cat "${scaling_cur_freq}" &
-    done | sort -n | awk '
-        BEGIN {
-            srand()
-        }
-        NR == 1 {
-            printf "%d ", $1
-        }
-        {
-            sum += $1
-            r[NR] = $1
-        }
-        END {
-            printf "%d %.0f %d\n", $1, sum / NR, r[int(rand() * NR) + 1]
-        }' | while read -r min max avg rnd
-    do
-        report_info_current --min "${min}" --max "${max}" --avg "${avg}" --rnd "${rnd}"
-    done
+    measures=$(cat /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq)
+    report_info_current $(compute_min_max_avg_rnd "$measures")
 }
 
 cpufreq_supported ()
@@ -473,26 +462,8 @@ cpufreq_info_frequencies ()
 
 cpufreq_info_current ()
 {
-    for scaling_cur_freq in /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq
-    do
-        cat "${scaling_cur_freq}" &
-    done | sort -n | awk '
-        BEGIN {
-            srand()
-        }
-        NR == 1 {
-            printf "%d ", $1
-        }
-        {
-            sum += $1
-            r[NR] = $1
-        }
-        END {
-            printf "%d %.0f %d\n", $1, sum / NR, r[int(rand() * NR) + 1]
-        }' | while read -r min max avg rnd
-    do
-        report_info_current --min "${min}" --max "${max}" --avg "${avg}" --rnd "${rnd}"
-    done
+    measures=$(cat /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq)
+    report_info_current $(compute_min_max_avg_rnd "$measures")
 }
 
 backend_select()
