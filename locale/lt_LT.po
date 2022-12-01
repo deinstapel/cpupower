@@ -1,0 +1,465 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell-extension-cpupower\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-27 17:03+0200\n"
+"PO-Revision-Date: 2022-12-01 08:51+0200\n"
+"Language-Team: Andrius Kokiančiks\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && (n%100<11 || n%100>19) ? 0 : "
+"n%10>=2 && n%10<=9 && (n%100<11 || n%100>19) ? 1 : 2);\n"
+"Last-Translator: Andrius Kokiančiks <andrius.kokianciks@gmail.com>\n"
+"Language: lt_LT\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+
+#: data/cpupower-preferences.glade:57
+msgid "About"
+msgstr "Apie"
+
+#: data/cpupower-preferences.glade:68
+msgid ""
+"Gnome-Shell Extension for controlling the frequency scaling driver of your "
+"CPU."
+msgstr ""
+"Gnome-Shell Plėtinys skirtas kontroliuoti CPU dažnio keitimo tvarkyklę."
+
+#: data/cpupower-preferences.glade:156
+msgid "Top Bar"
+msgstr "Viršutinė juosta"
+
+#: data/cpupower-preferences.glade:188
+msgid "Show current frequency"
+msgstr "Rodyti dabartinį dažnį"
+
+#: data/cpupower-preferences.glade:204
+msgid "Use GHz instead of MHz"
+msgstr "Vietoje MHz naudoti GHz"
+
+#: data/cpupower-preferences.glade:218
+msgid "Show the current CPU frequency in the top bar"
+msgstr "Rodyti dabartinį CPU dažnį viršutinėje juostoje"
+
+#: data/cpupower-preferences.glade:227
+msgid "Top bar frequency switch"
+msgstr "Viršutinės juostos dažnio jungiklis"
+
+#: data/cpupower-preferences.glade:228
+msgid "Switch to show the current frequency in the top bar"
+msgstr "Perjunkite, kad viršutinėje juostoje rodyti dabartinį dažnį"
+
+#: data/cpupower-preferences.glade:241
+msgid "Show the current CPU frequency in GHz instead of MHz"
+msgstr "Viršutinėje juostoje rodyti dabartinį CPU dažnį GHz vietoje MHz"
+
+#: data/cpupower-preferences.glade:250
+msgid "GHz switch"
+msgstr "GHz jungiklis"
+
+#: data/cpupower-preferences.glade:251
+msgid "Switch to use units of GHz instead of MHz in the top bar"
+msgstr ""
+"Perjunkite, kad viršutinėje juostoje naudoti GHz matavimo vienetus vietoje "
+"MHz"
+
+#: data/cpupower-preferences.glade:266
+msgid "Show frequency as"
+msgstr "Rodyti dažnį kaip"
+
+#: data/cpupower-preferences.glade:280 data/cpupower-preferences.glade:294
+msgid "Set the method for retrieving the current frequency for your CPU"
+msgstr "Nustatyti dabartinio CPU dažnio gavimo būdą"
+
+#: data/cpupower-preferences.glade:282
+msgid "Average of all cores"
+msgstr "Vidutinį visų branduolių dažnį"
+
+#: data/cpupower-preferences.glade:283
+msgid "Minimum of all cores"
+msgstr "Minimalų visų branduolių dažnį"
+
+#: data/cpupower-preferences.glade:284
+msgid "Maximum of all cores"
+msgstr "Maksimalių visų branduolių dažnį"
+
+#: data/cpupower-preferences.glade:285
+msgid "Value of a random core"
+msgstr "Atsitiktinio branduolio reikšmę"
+
+#: data/cpupower-preferences.glade:293
+msgid "CPU frequency retrieval method"
+msgstr "CPU dažnio gavimo būdas"
+
+#: data/cpupower-preferences.glade:309
+msgid "Show arrow in top bar"
+msgstr "Viršutinėje juostoje rodyti rodyklę"
+
+#: data/cpupower-preferences.glade:323
+msgid "Show an arrow in the top bar"
+msgstr "Rodyti rodyklę viršutinėje juostoje"
+
+#: data/cpupower-preferences.glade:332
+msgid "Top bar arrow switch"
+msgstr "Viršutinės juostos rodyklės jungiklis"
+
+#: data/cpupower-preferences.glade:333
+msgid "Switch to show an arrow in the top bar"
+msgstr "Perjunkite, kad viršutinėje juostoje rodyti rodyklę"
+
+#: data/cpupower-preferences.glade:348
+msgid "Show icon in top bar"
+msgstr "Rodyti viršutinės juostos piktogramą"
+
+#: data/cpupower-preferences.glade:362
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
+msgid "Show an icon in the top bar"
+msgstr "Rodyti viršutinės juostos piktogramą"
+
+#: data/cpupower-preferences.glade:371
+msgid "Top bar icon switch"
+msgstr "Viršutinės juostos piktogramos jungiklis"
+
+#: data/cpupower-preferences.glade:372
+msgid "Switch to show an icon in the top bar"
+msgstr "Perjunkite, kad viršutinėje juostoje rodyti piktogramą"
+
+#: data/cpupower-preferences.glade:448
+msgid "Backend"
+msgstr "Posistemė"
+
+#: data/cpupower-preferences.glade:480
+msgid "Frequency scaling driver"
+msgstr "Dažnio keitimo tvarkyklė"
+
+#: data/cpupower-preferences.glade:494 data/cpupower-preferences.glade:511
+msgid ""
+"Set the scaling driver backend used to control and query the CPU frequency "
+"and turbo boost setting"
+msgstr ""
+"Nustatyti dažnio tvarkyklės posistemę, naudojamą reguliuoti ir kontroliuoti "
+"CPU dažnį ir Turbo spartinimą"
+
+#: data/cpupower-preferences.glade:510
+msgid "Frequency scaling driver selection"
+msgstr "Dažnio keitiklio tvarkyklės pasirinkimas"
+
+#: data/cpupower-preferences.glade:543 src/indicator.js:237
+msgid "Auto Switch"
+msgstr "Automatinis perjungimas"
+
+#: data/cpupower-preferences.glade:586
+msgid "Default AC profile"
+msgstr "Numatytasis AC profilis"
+
+#: data/cpupower-preferences.glade:602
+msgid "Default battery profile"
+msgstr "Numatytasis akumuliatoriaus profilis"
+
+#: data/cpupower-preferences.glade:619
+msgid "Charging battery"
+msgstr "Baterija įkraunama"
+
+#: data/cpupower-preferences.glade:635
+msgid "Discharging battery"
+msgstr "Baterija naudojama"
+
+#: data/cpupower-preferences.glade:648
+msgid ""
+"Set the default profile to which the extension will automatically switch to "
+"if Auto-Switch is enabled and the AC adapter gets plugged in"
+msgstr ""
+"Nustatyti numatytąjį profilį į kurį plėtinys automatiškai persijungs jei "
+"įjungtas automatinis perjungimas bei prijungtas AC kintamosios srovės "
+"adapteris"
+
+#: data/cpupower-preferences.glade:663
+msgid ""
+"Set the default profile to which the extension will automatically switch to "
+"if Auto-Switch is enabled and the AC adapter gets unplugged"
+msgstr ""
+"Nustatyti numatytąjį profilį į kurį plėtinys automatiškai persijungs jei "
+"įjungtas automatinis perjungimas ir AC kintamosios srovės adapteris yra "
+"atjungtas"
+
+#: data/cpupower-preferences.glade:706
+msgid "General"
+msgstr "Pagrindiniai"
+
+#: data/cpupower-preferences.glade:760 data/cpupower-preferences.glade:765
+msgid "Add new profile"
+msgstr "Pridėti profilį"
+
+#: data/cpupower-preferences.glade:778 data/cpupower-preferences.glade:783
+msgid "Remove selected profile"
+msgstr "Panaikinti pasirinką profilį"
+
+#: data/cpupower-preferences.glade:796 data/cpupower-preferences.glade:801
+msgid "Move selected profile up"
+msgstr "Perkelti profilį aukštyn"
+
+#: data/cpupower-preferences.glade:814 data/cpupower-preferences.glade:819
+msgid "Move selected profile down"
+msgstr "Perkelti profilį žemyn"
+
+#: data/cpupower-preferences.glade:881
+msgid "Profiles"
+msgstr "Profiliai"
+
+#: data/cpupower-preferences.glade:901
+msgid "Path to cpufreqctl:"
+msgstr "Kelias iki 'cpufreqctl':"
+
+#: data/cpupower-preferences.glade:917
+msgid "Path to policykit rule:"
+msgstr "Kelias iki 'policykit' taisyklės:"
+
+#: data/cpupower-preferences.glade:934
+msgid "CPU Power Manager is installed via your distributions package manager!"
+msgstr ""
+"CPU Dažnio Tvarkytuvas yra įdiegtas per jūsų distribucijos paketų tvarkyklę!"
+
+#: data/cpupower-preferences.glade:949 data/cpupower-preferences.glade:1643
+msgid "Uninstall"
+msgstr "Išdiegti"
+
+#: data/cpupower-preferences.glade:1029
+msgid "Installation"
+msgstr "Įdiegti"
+
+#: data/cpupower-preferences.glade:1059 data/cpupower-preferences.glade:1074
+#: data/cpupower-preferences.glade:1081
+msgid "Profile Name"
+msgstr "Profilio pavadinimas"
+
+#: data/cpupower-preferences.glade:1095 src/indicator.js:221
+msgid "Minimum Frequency"
+msgstr "Minimalus dažnis"
+
+#: data/cpupower-preferences.glade:1107 src/indicator.js:226
+msgid "Maximum Frequency"
+msgstr "Maksimalus dažnis"
+
+#: data/cpupower-preferences.glade:1119 data/cpupower-preferences.glade:1552
+#: src/indicator.js:231
+msgid "Turbo Boost"
+msgstr "Turbo Spartinimas"
+
+#: data/cpupower-preferences.glade:1141
+msgid "Turbo boost switch"
+msgstr "Turbo spartinimo jungiklis"
+
+#: data/cpupower-preferences.glade:1155
+msgid ""
+"Frequency limits below the lower limit and above the upper limit are not "
+"allowed!"
+msgstr ""
+"Dažnio riba žemiau apatinės ribos ir aukščiau viršutinės ribos yra negalima!"
+
+#: data/cpupower-preferences.glade:1163
+msgid "Lower limit:"
+msgstr "Apatinė riba:"
+
+#: data/cpupower-preferences.glade:1195
+msgid "Upper limit:"
+msgstr "Viršutinė riba:"
+
+#: data/cpupower-preferences.glade:1252
+msgid "You reached your CPU's limit(s):"
+msgstr "Jūs pasiekėte savo CPU dažnio ribą(-as):"
+
+#: data/cpupower-preferences.glade:1280
+msgid "Discard"
+msgstr "Atmesti"
+
+#: data/cpupower-preferences.glade:1300
+msgid "Save"
+msgstr "Išsaugoti"
+
+#: data/cpupower-preferences.glade:1338
+msgid "Minimum CPU frequency slider"
+msgstr "Minimalaus CPU dažnio slankiklis"
+
+#: data/cpupower-preferences.glade:1352 data/cpupower-preferences.glade:1406
+msgid "0%"
+msgstr "0%"
+
+#: data/cpupower-preferences.glade:1392
+msgid "Maximum CPU frequency slider"
+msgstr "Maksimalaus CPU dažnio slankiklis"
+
+#: data/cpupower-preferences.glade:1614
+msgid "Uninstall CPU Power Manager Tools"
+msgstr "Išdiegti CPU Dažnio Tvarkytuvą"
+
+#: data/cpupower-preferences.glade:1615
+msgid ""
+"Are you sure you want to uninstall the cpufreqctl tool and the policykit "
+"rule?"
+msgstr ""
+"Ar jūs tikrai norite išdiegti 'cpufreqctl' įrankį ir 'policykit' taisyklę?"
+
+#: data/cpupower-preferences.glade:1629
+msgid "Cancel"
+msgstr "Atšaukti"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
+msgid "Serialized Profiles"
+msgstr "Serijiniai Profiliai"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
+msgid "Your CPUpower profiles"
+msgstr "Jūsų CPU profiliai"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
+msgid "Show current cpu frequency in the top bar"
+msgstr "Rodyti dabartinį CPU dažnį viršutinėje juostoje"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
+msgid "Frequency in taskbar is shown in GHz or MHz"
+msgstr "Užduočių juostoje rodyti dabartinį CPU dažnį GHz vietoje MHz"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:16
+msgid "Control which unit is used for the frequency"
+msgstr "Nustatyti kurie matavimo vienetai bus naudojami dažniui"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
+msgid "Show arrow in the top bar"
+msgstr "Rodyti rodyklę viršutinėje juostoje"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
+msgid "Default AC profile ID"
+msgstr "Numatytasis AC profilio ID"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:31
+msgid "The profile to switch to when plugged in"
+msgstr "Profilis į kurį perjungti kai kraunama"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:35
+msgid "Default battery profile ID"
+msgstr "Numatytasis akumuliatoriaus profilio ID"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:36
+msgid "The profile to switch to when unplugged"
+msgstr "Profilis į kurį perjungti kai naudojamas akumuliatorius"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:46
+msgid "The backend used for the cpufreqctl tool"
+msgstr "'cpufreqctl' įrankio naudojama posistemė"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:47
+msgid ""
+"The backend controls how the extensions will interact with the hardware and "
+"selects the scaling-driver used by the Linux kernel for setting and querying "
+"CPU frequencies and turbo boost settings. The 'fake' backend must only be "
+"used for development purposes and is not available in production."
+msgstr ""
+"Posistemė tvarko kaip plėtinys sąveikaus su aparatine įranga ir parenka "
+"dažnio keitimo tvarkyklę kurią naudoja Linux branduolys, CPU dažnio, Turbo "
+"spartinimo nustatymui ir tikrinimui. 'Netikra' posistemė turėtu būti "
+"naudojama tik programos kūrimo procesui ir yra negalima galutiniams "
+"naudotojams."
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:59
+msgid "The frequency sampling mode"
+msgstr "Dažnio mėginių ėmimo režimas"
+
+#: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:60
+msgid ""
+"The CPU frequencies displayed by the extension are sampled using one of "
+"those methods"
+msgstr "Plėtinio rodomi CPU dažniai yra skaičiuojami vienu iš šių būdų"
+
+#: src/indicator.js:185 src/notinstalled.js:69
+msgid ""
+"Please consider reporting this to the developers\n"
+"of this extension by submitting an issue on Github."
+msgstr ""
+"Apsvarstykite galimybę pranešti apie tai šio plėtinio\n"
+"kūrėjams, sukurdami pranešimą Github."
+
+#: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
+msgid "Preferences"
+msgstr "Nustatymai"
+
+#: src/indicator.js:291
+msgid "Current Frequency"
+msgstr "Dabartinis dažnis"
+
+#: src/indicator.js:327 src/indicator.js:334
+msgid "Oh no! Something went wrong."
+msgstr "O ne! Kažkas nutiko netaip."
+
+#: src/indicator.js:328
+msgid ""
+"The currently selected frequency scaling driver is not supported on your CPU!"
+msgstr "Jūsų CPU nepalaiko pasirinktos dažnio keitimo tvarkyklės!"
+
+#: src/indicator.js:335
+msgid "An internal error occurred:"
+msgstr "Įvyko vidinė klaida:"
+
+#: src/notinstalled.js:60
+msgid "Installation required."
+msgstr "Reikalingas įdiegimas."
+
+#: src/notinstalled.js:64
+msgid ""
+"Oh no! This should not have happened.\n"
+"An error occurred while checking the installation!"
+msgstr ""
+"O ne! Šitai neturėjo nutikti.\n"
+"Tikrinant įdiegimą įvyko klaida!"
+
+#: src/notinstalled.js:83
+msgid "Attempt installation"
+msgstr "Bandyti įdiegti"
+
+#: src/preferences.js:274
+msgid "CPU Power Manager"
+msgstr "CPU Dažnio Tvarkytuvas"
+
+#: src/preferences.js:436
+msgid "Yes"
+msgstr "Taip"
+
+#: src/preferences.js:436
+msgid "No"
+msgstr "Ne"
+
+#: src/preferences.js:518 src/preferences.js:519
+msgid "None"
+msgstr "Nėra"
+
+#: src/preferences.js:546
+msgid "unavailable"
+msgstr "neprienama"
+
+#: src/preferences.js:551
+msgid "Automatic"
+msgstr "Automatinis"
+
+#: src/update.js:61
+msgid "Your CPU Power Manager installation needs updating!"
+msgstr "Jūsų CPU Dažnio tvarkytuvui reikia atnaujinimo!"
+
+#: src/update.js:62
+msgid ""
+"Warning: Security issues were found with your installation!\n"
+"Please update immediately!"
+msgstr ""
+"Perspėjimas: Buvo rasta saugumo problemų su jūsų idiegimu!\n"
+"Prašome nedelsiant atnaujinti!"
+
+#: src/update.js:75
+msgid "Attempt tool update"
+msgstr "Bandyti įrankio atnaujinimą"
+
+msgid "CPU"
+msgstr "CPU"
