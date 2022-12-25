@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-04-24 13:09\n"
+"PO-Revision-Date: 2022-12-25 07:18\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -31,7 +31,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:156
 msgid "Top Bar"
-msgstr ""
+msgstr "Верхняя панель"
 
 #: data/cpupower-preferences.glade:188
 msgid "Show current frequency"
@@ -43,7 +43,7 @@ msgstr "Использовать Ггц вместо  Мгц"
 
 #: data/cpupower-preferences.glade:218
 msgid "Show the current CPU frequency in the top bar"
-msgstr ""
+msgstr "Показывать текущую частоту процессора на верхней панели"
 
 #: data/cpupower-preferences.glade:227
 msgid "Top bar frequency switch"
@@ -67,7 +67,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:266
 msgid "Show frequency as"
-msgstr ""
+msgstr "Показывать частоту как"
 
 #: data/cpupower-preferences.glade:280 data/cpupower-preferences.glade:294
 msgid "Set the method for retrieving the current frequency for your CPU"
@@ -75,7 +75,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:282
 msgid "Average of all cores"
-msgstr ""
+msgstr "Среднюю для всех ядер"
 
 #: data/cpupower-preferences.glade:283
 msgid "Minimum of all cores"
@@ -87,7 +87,7 @@ msgstr "Максимум для всех ядер"
 
 #: data/cpupower-preferences.glade:285
 msgid "Value of a random core"
-msgstr ""
+msgstr "Значение для случайного ядра"
 
 #: data/cpupower-preferences.glade:293
 msgid "CPU frequency retrieval method"
@@ -111,13 +111,13 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:348
 msgid "Show icon in top bar"
-msgstr ""
+msgstr "Показывать значок на верхней панели"
 
 #: data/cpupower-preferences.glade:362
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
 msgid "Show an icon in the top bar"
-msgstr ""
+msgstr "Показывать значок на верхней панели"
 
 #: data/cpupower-preferences.glade:371
 msgid "Top bar icon switch"
@@ -350,7 +350,7 @@ msgstr ""
 
 #: src/indicator.js:196 src/indicator.js:315 src/preferences.js:275
 msgid "Preferences"
-msgstr "Настройки"
+msgstr "Параметры"
 
 #: src/indicator.js:291
 msgid "Current Frequency"
@@ -358,7 +358,7 @@ msgstr "Текущая частота"
 
 #: src/indicator.js:327 src/indicator.js:334
 msgid "Oh no! Something went wrong."
-msgstr ""
+msgstr "Ой! Что-то пошло не так."
 
 #: src/indicator.js:328
 msgid "The currently selected frequency scaling driver is not supported on your CPU!"
@@ -375,11 +375,12 @@ msgstr "Требуется установка."
 #: src/notinstalled.js:64
 msgid "Oh no! This should not have happened.\n"
 "An error occurred while checking the installation!"
-msgstr ""
+msgstr "Ой! Этого не должно было случиться.\n"
+"Произошла ошибка при проверке установки!"
 
 #: src/notinstalled.js:83
 msgid "Attempt installation"
-msgstr ""
+msgstr "Попытаться установить"
 
 #: src/preferences.js:274
 msgid "CPU Power Manager"
