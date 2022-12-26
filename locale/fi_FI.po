@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-04-24 13:09\n"
+"PO-Revision-Date: 2022-09-18 12:18\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Finnish\n"
 "Language: fi_FI\n"
@@ -23,31 +23,31 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:57
 msgid "About"
-msgstr ""
+msgstr "Tietoja"
 
 #: data/cpupower-preferences.glade:68
 msgid "Gnome-Shell Extension for controlling the frequency scaling driver of your CPU."
-msgstr ""
+msgstr "Gnome-Shell lisäosa prosessorin kellotaajuuden skaalauksen ohjaamiseen."
 
 #: data/cpupower-preferences.glade:156
 msgid "Top Bar"
-msgstr ""
+msgstr "Yläpalkki"
 
 #: data/cpupower-preferences.glade:188
 msgid "Show current frequency"
-msgstr ""
+msgstr "Näytä prosessorin nykyinen taajuus"
 
 #: data/cpupower-preferences.glade:204
 msgid "Use GHz instead of MHz"
-msgstr ""
+msgstr "Käytä GHz:n sijasta MHz"
 
 #: data/cpupower-preferences.glade:218
 msgid "Show the current CPU frequency in the top bar"
-msgstr ""
+msgstr "Näytä prosessorin nykyinen taajuus yläpalkissa"
 
 #: data/cpupower-preferences.glade:227
 msgid "Top bar frequency switch"
-msgstr ""
+msgstr "Yläpalkin taajuuskytkin"
 
 #: data/cpupower-preferences.glade:228
 msgid "Switch to show the current frequency in the top bar"
@@ -59,15 +59,15 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:250
 msgid "GHz switch"
-msgstr ""
+msgstr "GHz vipu"
 
 #: data/cpupower-preferences.glade:251
 msgid "Switch to use units of GHz instead of MHz in the top bar"
-msgstr ""
+msgstr "Vaihda yläpalkkiin MHz:n sijaan GHz"
 
 #: data/cpupower-preferences.glade:266
 msgid "Show frequency as"
-msgstr ""
+msgstr "Näytä taajuus muodossa"
 
 #: data/cpupower-preferences.glade:280 data/cpupower-preferences.glade:294
 msgid "Set the method for retrieving the current frequency for your CPU"
@@ -75,19 +75,19 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:282
 msgid "Average of all cores"
-msgstr ""
+msgstr "Kaikkien ytimien keskiarvo"
 
 #: data/cpupower-preferences.glade:283
 msgid "Minimum of all cores"
-msgstr ""
+msgstr "Kaikkien ydinten minimi"
 
 #: data/cpupower-preferences.glade:284
 msgid "Maximum of all cores"
-msgstr ""
+msgstr "Kaikkien ydinten maksimi"
 
 #: data/cpupower-preferences.glade:285
 msgid "Value of a random core"
-msgstr ""
+msgstr "Satunnaisen ytimen arvo"
 
 #: data/cpupower-preferences.glade:293
 msgid "CPU frequency retrieval method"
@@ -99,7 +99,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:323
 msgid "Show an arrow in the top bar"
-msgstr ""
+msgstr "Näytä nuoli yläpalkissa"
 
 #: data/cpupower-preferences.glade:332
 msgid "Top bar arrow switch"
@@ -117,7 +117,7 @@ msgstr ""
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:20
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:21
 msgid "Show an icon in the top bar"
-msgstr ""
+msgstr "Näytä kuvake yläpalkissa"
 
 #: data/cpupower-preferences.glade:371
 msgid "Top bar icon switch"
@@ -145,7 +145,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:543 src/indicator.js:237
 msgid "Auto Switch"
-msgstr ""
+msgstr "Automaattinen vaihto"
 
 #: data/cpupower-preferences.glade:586
 msgid "Default AC profile"
@@ -177,27 +177,27 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:760 data/cpupower-preferences.glade:765
 msgid "Add new profile"
-msgstr ""
+msgstr "Lisää uusi profiili"
 
 #: data/cpupower-preferences.glade:778 data/cpupower-preferences.glade:783
 msgid "Remove selected profile"
-msgstr ""
+msgstr "Poista valittu profiili"
 
 #: data/cpupower-preferences.glade:796 data/cpupower-preferences.glade:801
 msgid "Move selected profile up"
-msgstr ""
+msgstr "Siirrä valittua profiilia ylemmäs"
 
 #: data/cpupower-preferences.glade:814 data/cpupower-preferences.glade:819
 msgid "Move selected profile down"
-msgstr ""
+msgstr "Siirrä valittua profiilia alemmas"
 
 #: data/cpupower-preferences.glade:881
 msgid "Profiles"
-msgstr ""
+msgstr "Profiilit"
 
 #: data/cpupower-preferences.glade:901
 msgid "Path to cpufreqctl:"
-msgstr ""
+msgstr "cpufreqctl:n sijainti:"
 
 #: data/cpupower-preferences.glade:917
 msgid "Path to policykit rule:"
@@ -209,24 +209,24 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:949 data/cpupower-preferences.glade:1643
 msgid "Uninstall"
-msgstr ""
+msgstr "Poista"
 
 #: data/cpupower-preferences.glade:1029
 msgid "Installation"
-msgstr ""
+msgstr "Asennus"
 
 #: data/cpupower-preferences.glade:1059 data/cpupower-preferences.glade:1074
 #: data/cpupower-preferences.glade:1081
 msgid "Profile Name"
-msgstr ""
+msgstr "Profiilin nimi"
 
 #: data/cpupower-preferences.glade:1095 src/indicator.js:221
 msgid "Minimum Frequency"
-msgstr ""
+msgstr "Minimitaajuus"
 
 #: data/cpupower-preferences.glade:1107 src/indicator.js:226
 msgid "Maximum Frequency"
-msgstr ""
+msgstr "Maksimitaajuus"
 
 #: data/cpupower-preferences.glade:1119 data/cpupower-preferences.glade:1552
 #: src/indicator.js:231
@@ -255,11 +255,11 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:1280
 msgid "Discard"
-msgstr ""
+msgstr "Peruuta"
 
 #: data/cpupower-preferences.glade:1300
 msgid "Save"
-msgstr ""
+msgstr "Tallenna"
 
 #: data/cpupower-preferences.glade:1338
 msgid "Minimum CPU frequency slider"
@@ -283,7 +283,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:1629
 msgid "Cancel"
-msgstr ""
+msgstr "Peruuta"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:5
 msgid "Serialized Profiles"
@@ -309,7 +309,7 @@ msgstr ""
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:25
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:26
 msgid "Show arrow in the top bar"
-msgstr ""
+msgstr "Näytä nuoli yläpalkissa"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:30
 msgid "Default AC profile ID"
@@ -358,7 +358,7 @@ msgstr ""
 
 #: src/indicator.js:327 src/indicator.js:334
 msgid "Oh no! Something went wrong."
-msgstr ""
+msgstr "Voi ei! Jotain meni pieleen."
 
 #: src/indicator.js:328
 msgid "The currently selected frequency scaling driver is not supported on your CPU!"
@@ -387,11 +387,11 @@ msgstr ""
 
 #: src/preferences.js:436
 msgid "Yes"
-msgstr ""
+msgstr "Kyllä"
 
 #: src/preferences.js:436
 msgid "No"
-msgstr ""
+msgstr "Ei"
 
 #: src/preferences.js:518 src/preferences.js:519
 msgid "None"
