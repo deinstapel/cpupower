@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-12-25 09:48\n"
+"PO-Revision-Date: 2022-12-26 07:48\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -35,7 +35,7 @@ msgstr "Верхняя панель"
 
 #: data/cpupower-preferences.glade:188
 msgid "Show current frequency"
-msgstr "Показать текущую частоту"
+msgstr "Показывать текущую частоту"
 
 #: data/cpupower-preferences.glade:204
 msgid "Use GHz instead of MHz"
@@ -51,7 +51,7 @@ msgstr "Переключатель отображения частоты на в
 
 #: data/cpupower-preferences.glade:228
 msgid "Switch to show the current frequency in the top bar"
-msgstr "Переключить, чтобы показать текущую частоту на верхней панели"
+msgstr "Переключить для показа текущей частоты на верхней панели"
 
 #: data/cpupower-preferences.glade:241
 msgid "Show the current CPU frequency in GHz instead of MHz"
@@ -63,7 +63,7 @@ msgstr "Переключатель ГГц"
 
 #: data/cpupower-preferences.glade:251
 msgid "Switch to use units of GHz instead of MHz in the top bar"
-msgstr "Переключить использование в верхней панели частоты в ГГц, а не МГц"
+msgstr "Переключить использование на верхней панели частоты в ГГц, а не МГц"
 
 #: data/cpupower-preferences.glade:266
 msgid "Show frequency as"
@@ -107,7 +107,7 @@ msgstr "Переключатель стрелки на верхней панел
 
 #: data/cpupower-preferences.glade:333
 msgid "Switch to show an arrow in the top bar"
-msgstr "Переключить, чтобы показать стрелку на верхней панели"
+msgstr "Переключить для показа стрелки на верхней панели"
 
 #: data/cpupower-preferences.glade:348
 msgid "Show icon in top bar"
@@ -121,11 +121,11 @@ msgstr "Показывать значок на верхней панели"
 
 #: data/cpupower-preferences.glade:371
 msgid "Top bar icon switch"
-msgstr "Переключать значка на верхней панели"
+msgstr "Переключатель значка на верхней панели"
 
 #: data/cpupower-preferences.glade:372
 msgid "Switch to show an icon in the top bar"
-msgstr "Переключить, чтобы показать значок на верхней панели"
+msgstr "Переключить для показа значка на верхней панели"
 
 #: data/cpupower-preferences.glade:448
 msgid "Backend"
@@ -173,7 +173,7 @@ msgstr "Установить профиль по умолчанию, на кот
 
 #: data/cpupower-preferences.glade:706
 msgid "General"
-msgstr "Основные"
+msgstr "Основное"
 
 #: data/cpupower-preferences.glade:760 data/cpupower-preferences.glade:765
 msgid "Add new profile"
@@ -181,15 +181,15 @@ msgstr "Добавить новый профиль"
 
 #: data/cpupower-preferences.glade:778 data/cpupower-preferences.glade:783
 msgid "Remove selected profile"
-msgstr "Удалить выделенный профиль"
+msgstr "Удалить выбранный профиль"
 
 #: data/cpupower-preferences.glade:796 data/cpupower-preferences.glade:801
 msgid "Move selected profile up"
-msgstr "Переместить выделенный профиль вверх"
+msgstr "Переместить выбранный профиль вверх"
 
 #: data/cpupower-preferences.glade:814 data/cpupower-preferences.glade:819
 msgid "Move selected profile down"
-msgstr "Переместить выделенный профиль вниз"
+msgstr "Переместить выбранный профиль вниз"
 
 #: data/cpupower-preferences.glade:881
 msgid "Profiles"
@@ -197,7 +197,7 @@ msgstr "Профили"
 
 #: data/cpupower-preferences.glade:901
 msgid "Path to cpufreqctl:"
-msgstr "Путь до cpufreqctl:"
+msgstr "Путь к cpufreqctl:"
 
 #: data/cpupower-preferences.glade:917
 msgid "Path to policykit rule:"
@@ -205,11 +205,11 @@ msgstr "Путь к правилам policykit:"
 
 #: data/cpupower-preferences.glade:934
 msgid "CPU Power Manager is installed via your distributions package manager!"
-msgstr "CPU Power Manager устанавлен через ваш менеджер пакетов!"
+msgstr "CPU Power Manager установлен через менеджер пакетов вашего дистрибутива!"
 
 #: data/cpupower-preferences.glade:949 data/cpupower-preferences.glade:1643
 msgid "Uninstall"
-msgstr "Деинсталляция"
+msgstr "Деинсталлировать"
 
 #: data/cpupower-preferences.glade:1029
 msgid "Installation"
@@ -291,12 +291,12 @@ msgstr "Сериализованные профили"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:6
 msgid "Your CPUpower profiles"
-msgstr "Dfib gрофили CPUpower"
+msgstr "Ваши профили CPUpower"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:10
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:11
 msgid "Show current cpu frequency in the top bar"
-msgstr "Показывать текущую частоту процессора в заголовке"
+msgstr "Показывать текущую частоту процессора на верхней панели"
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:15
 msgid "Frequency in taskbar is shown in GHz or MHz"
@@ -333,7 +333,7 @@ msgstr "Движок, используемый для инструмента cpu
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:47
 msgid "The backend controls how the extensions will interact with the hardware and selects the scaling-driver used by the Linux kernel for setting and querying CPU frequencies and turbo boost settings. The 'fake' backend must only be used for development purposes and is not available in production."
-msgstr "Движок контролирует как расширения будут взаимодействовать с оборудованием и выбирает драйвер, используемый ядром Linux для установки и запроса частот процессора и настроек turbo boost. «Поддельный» движок должен использоваться только в целях разработки и не быть недоступным в производстве."
+msgstr "Движок контролирует то, как расширения будут взаимодействовать с оборудованием и выбирает драйвер, используемый ядром Linux для установки и запроса частот процессора и настроек turbo boost. «Поддельный» движок должен использоваться только в целях разработки и не быть недоступным в производстве."
 
 #: schemas/org.gnome.shell.extensions.cpupower.gschema.xml:59
 msgid "The frequency sampling mode"
@@ -381,7 +381,7 @@ msgstr "Ой! Этого не должно было случиться.\n"
 
 #: src/notinstalled.js:83
 msgid "Attempt installation"
-msgstr "Попытаться установить"
+msgstr "Попробовать установить"
 
 #: src/preferences.js:274
 msgid "CPU Power Manager"
@@ -397,7 +397,7 @@ msgstr "Нет"
 
 #: src/preferences.js:518 src/preferences.js:519
 msgid "None"
-msgstr "Ничего"
+msgstr "Никакой"
 
 #: src/preferences.js:546
 msgid "unavailable"
@@ -415,11 +415,11 @@ msgstr "Установленный CPU Power Manager требует обновл
 msgid "Warning: Security issues were found with your installation!\n"
 "Please update immediately!"
 msgstr "Предупреждение: В вашей сборке обнаружены проблемы с безопасностью!\n"
-"Пожалуйста, обновитесь немедленно!"
+"Пожалуйста, обновитесь как можно быстрее!"
 
 #: src/update.js:75
 msgid "Attempt tool update"
-msgstr "Попытаться обновить инструмент"
+msgstr "Попробовать обновить инструмент"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"
