@@ -1,11 +1,12 @@
 {
 	"localedir": "/usr/local/share/locale",
 	"shell-version": [
-		  "3.28", "3.30", "3.36", "3.38", "40", "41", "42"
+		  "45"
 	],
 	"uuid": "cpupower@mko-sl.de",
 	"name": "CPU Power Manager",
 	"url": "https://github.com/deinstapel/cpupower",
 	"description": "Manage your CPU's frequency scaling driver",
-	"schema": "org.gnome.shell.extensions.cpupower"
+	"settings-schema": "org.gnome.shell.extensions.cpupower",
+	"gettext-domain": "cpupower"
 }
