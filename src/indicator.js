@@ -44,12 +44,6 @@ import Gettext from 'gettext';
 const _ = Gettext.domain('gnome-shell-extension-cpupower');
 
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const EXTENSIONDIR = Me.dir.get_path();
-
-
-
 import { utils, Cpufreqctl  } from "./utils.js"
 import { CPUFreqProfile } from "./profile.js"
 import { CPUFreqProfileButton } from "./profilebutton.js"
@@ -125,8 +119,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         super.enable();
 
-        this.timeout = Mainloop.timeout_add_seconds(1, () => this.updateFreq());
-        this.timeoutMinMax = Mainloop.timeout_add_seconds(1, () => this.updateFreqMinMax(false));
+        this.timeout = GLib.timeout_add_seconds(1, () => this.updateFreq());
+        this.timeoutMinMax = GLib.timeout_add_seconds(1, () => this.updateFreqMinMax(false));
     }
 
     onPowerChanged() {
@@ -568,13 +562,9 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     onPreferencesActivate(_item) {
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) >= 40) {
-            Util.trySpawnCommandLine(`${EXTENSIONDIR}/src/prefs40/main.js`);
-        } else if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-            Util.trySpawnCommandLine("gnome-extensions prefs cpupower@mko-sl.de");
-        } else {
-            Util.trySpawnCommandLine("gnome-shell-extension-prefs cpupower@mko-sl.de");
-        }
+
+        Util.trySpawnCommandLine(GLib.uri_resolve_relative(import.meta.url, './src/prefs40/main.js', GLib.UriFlags.NONE));
+
         return 0;
     }
 };

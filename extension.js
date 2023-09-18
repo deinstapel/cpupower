@@ -25,10 +25,10 @@
  *
  */
 
-import * as Extension from 'resource:///org/gnome/shell/extensions/extension.js';
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-const ByteArray = imports.byteArray;
+//const ByteArray = imports.byteArray;
 
 import { utils } from "./src/utils.js"
 import { checkInstalled } from "./src/checkInstalled.js"
