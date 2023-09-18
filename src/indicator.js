@@ -25,30 +25,36 @@
  *
  */
 
-const St = imports.gi.St;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
-const Util = imports.misc.util;
-const Mainloop = imports.mainloop;
-const Shell = imports.gi.Shell;
-const UPower = imports.gi.UPowerGlib;
-const Config = imports.misc.config;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import UPower from 'gi://UPowerGlib';
+import Gio from 'gi://Gio';
 
-const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
-const _ = Gettext.gettext;
+const Mainloop = imports.mainloop;
+
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as Util from 'resource:///org/gnome/shell/misc/util.js';
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
+
+import Gettext from 'gettext';
+const _ = Gettext.domain('gnome-shell-extension-cpupower');
+
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const EXTENSIONDIR = Me.dir.get_path();
-const utils = Me.imports.src.utils;
-const Cpufreqctl = Me.imports.src.utils.Cpufreqctl;
 
-const Slider = Me.imports.src.slider2;
-const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
-const baseindicator = Me.imports.src.baseindicator;
-const CPUFreqProfileButton = Me.imports.src.profilebutton.CPUFreqProfileButton;
+
+
+import { utils, Cpufreqctl  } from "./utils.js"
+import { CPUFreqProfile } from "./profile.js"
+import { CPUFreqProfileButton } from "./profilebutton.js"
+import { Slider } from "./slider2.js"
+import { baseindicator } from "./baseindicator.js"
 
 const LASTSETTINGS = `${GLib.get_user_cache_dir()}/cpupower.last-settings`;
 
