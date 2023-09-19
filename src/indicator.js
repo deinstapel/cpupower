@@ -32,14 +32,10 @@ import St from 'gi://St';
 import UPower from 'gi://UPowerGlib';
 import Gio from 'gi://Gio';
 
-const Mainloop = imports.mainloop;
-
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as Util from 'resource:///org/gnome/shell/misc/util.js';
 import * as Config from 'resource:///org/gnome/shell/misc/config.js';
-import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
-
 import Gettext from 'gettext';
 const _ = Gettext.domain('gnome-shell-extension-cpupower');
 

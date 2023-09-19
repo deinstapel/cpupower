@@ -52,10 +52,15 @@ function enableIndicator(instance) {
 
 let cpupowerProxy;
 let extensionReloadSignalHandler;
+
 /* exported enable */
 
 export default class CpuPowerExtension extends Extension {
 
+    export const settings = this.getSettings();
+    constructor(metadata) {
+        super(metadata);
+    }
     enable() {
         const EXTENSIONDIR = this.path;
         const interfaceBinary = GLib.file_get_contents(`${EXTENSIONDIR}/schemas/io.github.martin31821.cpupower.dbus.xml`)[1];
