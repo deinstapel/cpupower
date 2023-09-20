@@ -1,4 +1,6 @@
-const Gio = imports.gi.Gio;
+import Gio from 'gi://Gio';
+
+
 
 /* exported extensionUtils */
 var extensionUtils = {

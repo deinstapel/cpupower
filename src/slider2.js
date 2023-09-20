@@ -8,14 +8,16 @@
  * See <https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/3.38.1/COPYING> for details.
  */
 
-const {Atk, Clutter, GObject} = imports.gi;
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Config = imports.misc.config;
+import Clutter from 'gi://Clutter';
+import Atk from 'gi://Atk';
+import St from 'gi://St';
+import GObject from 'gi://GObject';
 
-const Me = ExtensionUtils.getCurrentExtension();
-const BarLevel2 = Me.imports.src.barLevel2;
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
+
+import { barLevel2 } from "./src/barLevel2.js"
 /* exported Slider2 */
 var Slider2 = GObject.registerClass({
     GTypeName: "Slider2",

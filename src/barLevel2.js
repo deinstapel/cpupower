@@ -8,8 +8,12 @@
  * See <https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/3.38.1/COPYING> for details.
  */
 
-const {Atk, Clutter, GObject, St} = imports.gi;
-const Config = imports.misc.config;
+import Clutter from 'gi://Clutter';
+import Atk from 'gi://Atk';
+import St from 'gi://St';
+import GObject from 'gi://GObject';
+
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
 /* exported BarLevel2 */
 var BarLevel2 = GObject.registerClass({
