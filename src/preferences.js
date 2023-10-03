@@ -26,23 +26,35 @@
  *
  */
 
-const Gtk = imports.gi.Gtk;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
-const Config = imports.misc.config;
-const _ = Gettext.gettext;
-const ByteArray = imports.byteArray;
+import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
+import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
+import * as Main from "resource:///org/gnome/shell/ui/main.js";
+import * as Util from "resource:///org/gnome/shell/misc/util.js";
+import {
+    Extension,
+    gettext as _,
+} from "resource:///org/gnome/shell/extensions/extension.js";
+import Gtk from "gi://Gtk";
+import Gio from "gi://Gio";
+import GLib from "gi://GLib";
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.src.convenience;
-const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
-const EXTENSIONDIR = Me.dir.get_path();
-const CONFIG = Me.imports.src.config;
-const attemptUninstallation = Me.imports.src.utils.attemptUninstallation;
-const Cpufreqctl = Me.imports.src.utils.Cpufreqctl;
+// const Gtk = imports.gi.Gtk;
+// const Gio = imports.gi.Gio;
+// const GLib = imports.gi.GLib;
+// const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
+// const Config = imports.misc.config;
+// const _ = Gettext.gettext;
+// const ByteArray = imports.byteArray;
 
+// const ExtensionUtils = imports.misc.extensionUtils;
+// const Me = ExtensionUtils.getCurrentExtension();
+import Convenience from "convenience";
+import CPUFreqProfile from "profile.CPUFreqProfile";
+import * as CONFIG from "config";
+import attemptUninstallation from "utils.attemptUninstallation";
+import Cpufreqctl from "utils.Cpufreqctl";
+
+const EXTENSIONDIR = dir.get_path();
 const GLADE_FILE = `${EXTENSIONDIR}/data/cpupower-preferences.glade`;
 const SETTINGS_SCHEMA = "org.gnome.shell.extensions.cpupower";
 
@@ -57,18 +69,21 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             Gio.BusNameOwnerFlags.NONE,
             this.onBusAcquired.bind(this),
             this.onNameAcquired.bind(this),
-            this.onNameLost.bind(this),
+            this.onNameLost.bind(this)
         );
 
         this.Builder = new Gtk.Builder();
         this.Builder.set_translation_domain("gnome-shell-extension-cpupower");
-        this.Builder.add_objects_from_file(
-            GLADE_FILE,
-            ["MainWidget", "AboutButton", "FrequencyScalingDriverListStore"],
+        this.Builder.add_objects_from_file(GLADE_FILE, [
+            "MainWidget",
+            "AboutButton",
+            "FrequencyScalingDriverListStore",
+        ]);
+        this.Builder.connect_signals_full(
+            (builder, object, signal, handler) => {
+                object.connect(signal, this[handler].bind(this));
+            }
         );
-        this.Builder.connect_signals_full((builder, object, signal, handler) => {
-            object.connect(signal, this[handler].bind(this));
-        });
         this.loadWidgets(
             "MainWidget",
             "AboutButton",
@@ -90,22 +105,30 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             "CpufreqctlPathLabel",
             "PolicykitRulePathLabel",
             "InstallationWarningLabel",
-            "UninstallButton",
+            "UninstallButton"
         );
         this.ProfilesMap = new Map();
     }
 
     onBusAcquired(connection, _name) {
         log("DBus bus acquired!");
-        const interfaceBinary = GLib.file_get_contents(`${EXTENSIONDIR}/schemas/io.github.martin31821.cpupower.dbus.xml`)[1];
+        const interfaceBinary = GLib.file_get_contents(
+            `${EXTENSIONDIR}/schemas/io.github.martin31821.cpupower.dbus.xml`
+        )[1];
         let interfaceXml;
         if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.28) {
             interfaceXml = ByteArray.toString(interfaceBinary);
         } else {
             interfaceXml = interfaceBinary.toString();
         }
-        this.cpupowerService = Gio.DBusExportedObject.wrapJSObject(interfaceXml, {});
-        this.cpupowerService.export(connection, "/io/github/martin31821/cpupower");
+        this.cpupowerService = Gio.DBusExportedObject.wrapJSObject(
+            interfaceXml,
+            {}
+        );
+        this.cpupowerService.export(
+            connection,
+            "/io/github/martin31821/cpupower"
+        );
 
         // do not set connection in 'this' here, as we use it to check if name is
         // acquired
@@ -126,30 +149,39 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     }
 
     checkFrequencies(cb) {
-        Cpufreqctl.info.frequencies(this.settings.get_string("cpufreqctl-backend"), (result) => {
-            if (!result.ok || result.exitCode !== 0) {
-                let exitReason = Cpufreqctl.exitCodeToString(result.exitCode);
-                log(`Failed to query supported frequency ranges from cpufreqctl, reason ${exitReason}! ` +
-                    "Assuming full range...");
-                log(result.response);
-                cb({
-                    min: 0,
-                    max: 100,
-                });
-            } else if (result.response.mode === "continuous") {
-                cb({
-                    min: result.response.min,
-                    max: result.response.max,
-                });
-            } else {
-                log(`Cpufreqctl signaled unsupported frequency mode ${result.response.mode}! ` +
-                    "Assuming full range...");
-                cb({
-                    min: 0,
-                    max: 100,
-                });
+        Cpufreqctl.info.frequencies(
+            this.settings.get_string("cpufreqctl-backend"),
+            (result) => {
+                if (!result.ok || result.exitCode !== 0) {
+                    let exitReason = Cpufreqctl.exitCodeToString(
+                        result.exitCode
+                    );
+                    log(
+                        `Failed to query supported frequency ranges from cpufreqctl, reason ${exitReason}! ` +
+                            "Assuming full range..."
+                    );
+                    log(result.response);
+                    cb({
+                        min: 0,
+                        max: 100,
+                    });
+                } else if (result.response.mode === "continuous") {
+                    cb({
+                        min: result.response.min,
+                        max: result.response.max,
+                    });
+                } else {
+                    log(
+                        `Cpufreqctl signaled unsupported frequency mode ${result.response.mode}! ` +
+                            "Assuming full range..."
+                    );
+                    cb({
+                        min: 0,
+                        max: 100,
+                    });
+                }
             }
-        });
+        );
     }
 
     updateSettings(done) {
@@ -260,7 +292,11 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     syncOrdering() {
         for (let profileContext of this.ProfilesMap.values()) {
             let index = profileContext.ListItem.Row.get_index();
-            this.ProfileStack.child_set_property(profileContext.Settings.StackItem, "position", index);
+            this.ProfileStack.child_set_property(
+                profileContext.Settings.StackItem,
+                "position",
+                index
+            );
         }
     }
 
@@ -323,93 +359,102 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             };
 
             let profileSettingsBuilder = new Gtk.Builder();
-            profileSettingsBuilder.set_translation_domain("gnome-shell-extension-cpupower");
-            profileSettingsBuilder.add_objects_from_file(
-                GLADE_FILE,
-                [
-                    "ProfileSettingsGrid",
-                    "MaximumFrequencyAdjustment",
-                    "MinimumFrequencyAdjustment",
-                ],
+            profileSettingsBuilder.set_translation_domain(
+                "gnome-shell-extension-cpupower"
             );
-            profileContext.Settings.NameEntry = profileSettingsBuilder.get_object(
-                "ProfileNameEntry",
-            );
-            profileContext.Settings.MinimumFrequencyScale = profileSettingsBuilder.get_object(
-                "ProfileMinimumFrequencyScale",
-            );
-            profileContext.Settings.MaximumFrequencyScale = profileSettingsBuilder.get_object(
-                "ProfileMaximumFrequencyScale",
-            );
-            profileContext.Settings.TurboBoostSwitch = profileSettingsBuilder.get_object(
-                "ProfileTurboBoostSwitch",
-            );
-            profileContext.Settings.DiscardButton = profileSettingsBuilder.get_object(
-                "ProfileDiscardButton",
-            );
-            profileContext.Settings.SaveButton = profileSettingsBuilder.get_object(
-                "ProfileSaveButton",
-            );
-            profileContext.Settings.StackItem = profileSettingsBuilder.get_object(
+            profileSettingsBuilder.add_objects_from_file(GLADE_FILE, [
                 "ProfileSettingsGrid",
-            );
-            profileContext.Settings.CpuInfoGrid = profileSettingsBuilder.get_object(
-                "ProfileInfoGrid",
-            );
-            profileContext.Settings.LimitMinLabel = profileSettingsBuilder.get_object(
-                "ProfileLimitMinLabel",
-            );
-            profileContext.Settings.LimitMaxLabel = profileSettingsBuilder.get_object(
-                "ProfileLimitMaxLabel",
-            );
-            profileContext.Settings.MinimumFrequencyAdjustment = profileSettingsBuilder.get_object(
-                "MinimumFrequencyAdjustment",
-            );
-            profileContext.Settings.MaximumFrequencyAdjustment = profileSettingsBuilder.get_object(
                 "MaximumFrequencyAdjustment",
-            );
-            profileContext.Settings.MinimumFrequencyValueLabel = profileSettingsBuilder.get_object(
-                "ProfileMinimumFrequencyValueLabel",
-            );
-            profileContext.Settings.MaximumFrequencyValueLabel = profileSettingsBuilder.get_object(
-                "ProfileMaximumFrequencyValueLabel",
-            );
+                "MinimumFrequencyAdjustment",
+            ]);
+            profileContext.Settings.NameEntry =
+                profileSettingsBuilder.get_object("ProfileNameEntry");
+            profileContext.Settings.MinimumFrequencyScale =
+                profileSettingsBuilder.get_object(
+                    "ProfileMinimumFrequencyScale"
+                );
+            profileContext.Settings.MaximumFrequencyScale =
+                profileSettingsBuilder.get_object(
+                    "ProfileMaximumFrequencyScale"
+                );
+            profileContext.Settings.TurboBoostSwitch =
+                profileSettingsBuilder.get_object("ProfileTurboBoostSwitch");
+            profileContext.Settings.DiscardButton =
+                profileSettingsBuilder.get_object("ProfileDiscardButton");
+            profileContext.Settings.SaveButton =
+                profileSettingsBuilder.get_object("ProfileSaveButton");
+            profileContext.Settings.StackItem =
+                profileSettingsBuilder.get_object("ProfileSettingsGrid");
+            profileContext.Settings.CpuInfoGrid =
+                profileSettingsBuilder.get_object("ProfileInfoGrid");
+            profileContext.Settings.LimitMinLabel =
+                profileSettingsBuilder.get_object("ProfileLimitMinLabel");
+            profileContext.Settings.LimitMaxLabel =
+                profileSettingsBuilder.get_object("ProfileLimitMaxLabel");
+            profileContext.Settings.MinimumFrequencyAdjustment =
+                profileSettingsBuilder.get_object("MinimumFrequencyAdjustment");
+            profileContext.Settings.MaximumFrequencyAdjustment =
+                profileSettingsBuilder.get_object("MaximumFrequencyAdjustment");
+            profileContext.Settings.MinimumFrequencyValueLabel =
+                profileSettingsBuilder.get_object(
+                    "ProfileMinimumFrequencyValueLabel"
+                );
+            profileContext.Settings.MaximumFrequencyValueLabel =
+                profileSettingsBuilder.get_object(
+                    "ProfileMaximumFrequencyValueLabel"
+                );
 
             let profileListItemBuilder = new Gtk.Builder();
-            profileListItemBuilder.set_translation_domain("gnome-shell-extension-cpupower");
-            profileListItemBuilder.add_objects_from_file(GLADE_FILE, ["ProfileListBoxRow"]);
-            profileContext.ListItem.NameLabel = profileListItemBuilder.get_object(
-                "ProfileRowNameLabel",
+            profileListItemBuilder.set_translation_domain(
+                "gnome-shell-extension-cpupower"
             );
-            profileContext.ListItem.MinimumFrequencyLabel = profileListItemBuilder.get_object(
-                "ProfileRowMinimumFrequencyLabel",
-            );
-            profileContext.ListItem.MaximumFrequencyLabel = profileListItemBuilder.get_object(
-                "ProfileRowMaximumFrequencyLabel",
-            );
-            profileContext.ListItem.TurboBoostStatusLabel = profileListItemBuilder.get_object(
-                "ProfileRowTurboBoostStatusLabel",
-            );
-            profileContext.ListItem.AutoSwitchACIcon = profileListItemBuilder.get_object(
-                "ProfileRowACIcon",
-            );
-            profileContext.ListItem.AutoSwitchBatIcon = profileListItemBuilder.get_object(
-                "ProfileRowBatIcon",
-            );
-            profileContext.ListItem.Row = profileListItemBuilder.get_object(
+            profileListItemBuilder.add_objects_from_file(GLADE_FILE, [
                 "ProfileListBoxRow",
+            ]);
+            profileContext.ListItem.NameLabel =
+                profileListItemBuilder.get_object("ProfileRowNameLabel");
+            profileContext.ListItem.MinimumFrequencyLabel =
+                profileListItemBuilder.get_object(
+                    "ProfileRowMinimumFrequencyLabel"
+                );
+            profileContext.ListItem.MaximumFrequencyLabel =
+                profileListItemBuilder.get_object(
+                    "ProfileRowMaximumFrequencyLabel"
+                );
+            profileContext.ListItem.TurboBoostStatusLabel =
+                profileListItemBuilder.get_object(
+                    "ProfileRowTurboBoostStatusLabel"
+                );
+            profileContext.ListItem.AutoSwitchACIcon =
+                profileListItemBuilder.get_object("ProfileRowACIcon");
+            profileContext.ListItem.AutoSwitchBatIcon =
+                profileListItemBuilder.get_object("ProfileRowBatIcon");
+            profileContext.ListItem.Row =
+                profileListItemBuilder.get_object("ProfileListBoxRow");
+
+            profileSettingsBuilder.connect_signals_full(
+                (builder, object, signal, handler) => {
+                    object.connect(
+                        signal,
+                        this[handler].bind(this, profileContext)
+                    );
+                }
             );
 
-            profileSettingsBuilder.connect_signals_full((builder, object, signal, handler) => {
-                object.connect(signal, this[handler].bind(this, profileContext));
-            });
-
-            profileListItemBuilder.connect_signals_full((builder, object, signal, handler) => {
-                object.connect(signal, this[handler].bind(this, profileContext));
-            });
+            profileListItemBuilder.connect_signals_full(
+                (builder, object, signal, handler) => {
+                    object.connect(
+                        signal,
+                        this[handler].bind(this, profileContext)
+                    );
+                }
+            );
 
             this.ProfilesListBox.prepend(profileContext.ListItem.Row);
-            this.ProfileStack.add_named(profileContext.Settings.StackItem, profileContext.Profile.UUID.toString(16));
+            this.ProfileStack.add_named(
+                profileContext.Settings.StackItem,
+                profileContext.Profile.UUID.toString(16)
+            );
             this.ProfilesMap.set(profileContext.Profile.UUID, profileContext);
             this.syncOrdering();
         } else {
@@ -422,34 +467,60 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         profileContext.Settings.LimitMaxLabel.set_text(`${this.cpuMaxLimit}%`);
 
         // modify adjustments
-        profileContext.Settings.MinimumFrequencyAdjustment.set_lower(this.cpuMinLimit);
-        profileContext.Settings.MinimumFrequencyAdjustment.set_upper(profileContext.Profile.MaximumFrequency);
-        profileContext.Settings.MaximumFrequencyAdjustment.set_lower(profileContext.Profile.MinimumFrequency);
-        profileContext.Settings.MaximumFrequencyAdjustment.set_upper(this.cpuMaxLimit);
+        profileContext.Settings.MinimumFrequencyAdjustment.set_lower(
+            this.cpuMinLimit
+        );
+        profileContext.Settings.MinimumFrequencyAdjustment.set_upper(
+            profileContext.Profile.MaximumFrequency
+        );
+        profileContext.Settings.MaximumFrequencyAdjustment.set_lower(
+            profileContext.Profile.MinimumFrequency
+        );
+        profileContext.Settings.MaximumFrequencyAdjustment.set_upper(
+            this.cpuMaxLimit
+        );
 
-        profileContext.Settings.MinimumFrequencyScale.set_value(profileContext.Profile.MinimumFrequency);
-        profileContext.Settings.MaximumFrequencyScale.set_value(profileContext.Profile.MaximumFrequency);
+        profileContext.Settings.MinimumFrequencyScale.set_value(
+            profileContext.Profile.MinimumFrequency
+        );
+        profileContext.Settings.MaximumFrequencyScale.set_value(
+            profileContext.Profile.MaximumFrequency
+        );
         profileContext.Settings.MinimumFrequencyValueLabel.set_text(
-            `${profileContext.Profile.MinimumFrequency}%`,
+            `${profileContext.Profile.MinimumFrequency}%`
         );
         profileContext.Settings.MaximumFrequencyValueLabel.set_text(
-            `${profileContext.Profile.MaximumFrequency}%`,
+            `${profileContext.Profile.MaximumFrequency}%`
         );
 
         profileContext.Settings.NameEntry.set_text(profileContext.Profile.Name);
-        profileContext.Settings.TurboBoostSwitch.set_active(profileContext.Profile.TurboBoost);
+        profileContext.Settings.TurboBoostSwitch.set_active(
+            profileContext.Profile.TurboBoost
+        );
         profileContext.ListItem.NameLabel.set_text(profileContext.Profile.Name);
-        profileContext.ListItem.MinimumFrequencyLabel.set_text(profileContext.Profile.MinimumFrequency.toString());
-        profileContext.ListItem.MaximumFrequencyLabel.set_text(profileContext.Profile.MaximumFrequency.toString());
-        profileContext.ListItem.TurboBoostStatusLabel.set_text(profileContext.Profile.TurboBoost ? _("Yes") : _("No"));
+        profileContext.ListItem.MinimumFrequencyLabel.set_text(
+            profileContext.Profile.MinimumFrequency.toString()
+        );
+        profileContext.ListItem.MaximumFrequencyLabel.set_text(
+            profileContext.Profile.MaximumFrequency.toString()
+        );
+        profileContext.ListItem.TurboBoostStatusLabel.set_text(
+            profileContext.Profile.TurboBoost ? _("Yes") : _("No")
+        );
 
-        if (this.settings.get_string("default-ac-profile") === profileContext.Profile.UUID) {
+        if (
+            this.settings.get_string("default-ac-profile") ===
+            profileContext.Profile.UUID
+        ) {
             profileContext.ListItem.AutoSwitchACIcon.set_visible(true);
         } else {
             profileContext.ListItem.AutoSwitchACIcon.set_visible(false);
         }
 
-        if (this.settings.get_string("default-battery-profile") === profileContext.Profile.UUID) {
+        if (
+            this.settings.get_string("default-battery-profile") ===
+            profileContext.Profile.UUID
+        ) {
             profileContext.ListItem.AutoSwitchBatIcon.set_visible(true);
         } else {
             profileContext.ListItem.AutoSwitchBatIcon.set_visible(false);
@@ -469,10 +540,16 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         let profileContext = this.ProfilesMap.get(profile.UUID);
 
         // set default profile to none if the removed profile was selected
-        if (this.DefaultACComboBox.get_active_id() === profileContext.Profile.UUID) {
+        if (
+            this.DefaultACComboBox.get_active_id() ===
+            profileContext.Profile.UUID
+        ) {
             this.settings.set_string("default-ac-profile", "");
         }
-        if (this.DefaultBatComboBox.get_active_id() === profileContext.Profile.UUID) {
+        if (
+            this.DefaultBatComboBox.get_active_id() ===
+            profileContext.Profile.UUID
+        ) {
             this.settings.set_string("default-battery-profile", "");
         }
 
@@ -527,7 +604,11 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         this.DefaultBatComboBox.append("", _("None"));
 
         let profileArray = Array.from(this.ProfilesMap.values());
-        profileArray.sort((p1, p2) => this.getProfileIndex(p1.Profile) - this.getProfileIndex(p2.Profile));
+        profileArray.sort(
+            (p1, p2) =>
+                this.getProfileIndex(p1.Profile) -
+                this.getProfileIndex(p2.Profile)
+        );
         for (let i in profileArray) {
             let profile = profileArray[i].Profile;
 
@@ -556,7 +637,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
             liststore.set(
                 iter,
                 [0, 1, 2],
-                [`${_("Automatic")} (${chosenBackend})`, "automatic", true],
+                [`${_("Automatic")} (${chosenBackend})`, "automatic", true]
             );
             Cpufreqctl.backends.list(backend, (result) => {
                 if (!result.ok) {
@@ -568,7 +649,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                     liststore.set(
                         iter,
                         [0, 1, 2],
-                        [backend, backend, supported],
+                        [backend, backend, supported]
                     );
                 }
                 combobox.set_active_id(backend);
@@ -628,8 +709,10 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         if (oldBackend !== state) {
             Cpufreqctl.reset(oldBackend, (result) => {
                 if (!result.ok) {
-                    this.status(`Failed to reset frequency scaling driver of old backend ${oldBackend}: ` +
-                                `${Cpufreqctl.exitCodeToString(result.exitCode)}`);
+                    this.status(
+                        `Failed to reset frequency scaling driver of old backend ${oldBackend}: ` +
+                            `${Cpufreqctl.exitCodeToString(result.exitCode)}`
+                    );
                 }
             });
         }
@@ -692,11 +775,21 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
     onUninstallButtonClicked(_button) {
         let uninstallDialogBuilder = new Gtk.Builder();
-        uninstallDialogBuilder.set_translation_domain("gnome-shell-extension-cpupower");
-        uninstallDialogBuilder.add_objects_from_file(GLADE_FILE, ["UninstallMessageDialog"]);
-        let dialog = uninstallDialogBuilder.get_object("UninstallMessageDialog");
-        let uninstallButton = uninstallDialogBuilder.get_object("UninstallDialogUninstall");
-        let cancelButton = uninstallDialogBuilder.get_object("UninstallDialogCancel");
+        uninstallDialogBuilder.set_translation_domain(
+            "gnome-shell-extension-cpupower"
+        );
+        uninstallDialogBuilder.add_objects_from_file(GLADE_FILE, [
+            "UninstallMessageDialog",
+        ]);
+        let dialog = uninstallDialogBuilder.get_object(
+            "UninstallMessageDialog"
+        );
+        let uninstallButton = uninstallDialogBuilder.get_object(
+            "UninstallDialogUninstall"
+        );
+        let cancelButton = uninstallDialogBuilder.get_object(
+            "UninstallDialogCancel"
+        );
         let parentWindow = this.MainWidget.get_toplevel();
         dialog.set_transient_for(parentWindow);
 
@@ -706,11 +799,16 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
                 if (this.cpupowerConnection) {
                     log("reloading extension");
-                    let result = this.cpupowerService.emit_signal("ExtensionReloadRequired", null);
+                    let result = this.cpupowerService.emit_signal(
+                        "ExtensionReloadRequired",
+                        null
+                    );
                     log(`emit signal result: ${result}`);
                 } else {
                     // hmm... extension seems not to be running, so who cares?
-                    log("Could not trigger extension reload as dbus connection is offline!");
+                    log(
+                        "Could not trigger extension reload as dbus connection is offline!"
+                    );
                 }
 
                 GLib.timeout_add(GLib.PRIORITY_DEFAULT, 0, () => {
@@ -727,8 +825,12 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     }
 
     showCpuLimitInfo(profileContext) {
-        if (profileContext.Settings.MinimumFrequencyScale.get_value() === this.cpuMinLimit ||
-            profileContext.Settings.MaximumFrequencyScale.get_value() === this.cpuMaxLimit) {
+        if (
+            profileContext.Settings.MinimumFrequencyScale.get_value() ===
+                this.cpuMinLimit ||
+            profileContext.Settings.MaximumFrequencyScale.get_value() ===
+                this.cpuMaxLimit
+        ) {
             profileContext.Settings.CpuInfoGrid.set_visible(true);
         } else {
             profileContext.Settings.CpuInfoGrid.set_visible(false);
@@ -738,7 +840,9 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     onProfilesListBoxRowSelected(_box, _row) {
         let profileContext = this.getSelectedProfileContext();
         if (profileContext) {
-            this.ProfileStack.set_visible_child(profileContext.Settings.StackItem);
+            this.ProfileStack.set_visible_child(
+                profileContext.Settings.StackItem
+            );
         }
     }
 
@@ -758,13 +862,18 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     }
 
     onProfileMinimumFrequencyScaleValueChanged(profileContext, scale) {
-        let changed = profileContext.Profile.MinimumFrequency !== scale.get_value();
+        let changed =
+            profileContext.Profile.MinimumFrequency !== scale.get_value();
 
         if (changed) {
             profileContext.Settings.DiscardButton.sensitive = true;
             profileContext.Settings.SaveButton.sensitive = true;
-            profileContext.Settings.MaximumFrequencyAdjustment.set_lower(scale.get_value());
-            profileContext.Settings.MinimumFrequencyValueLabel.set_text(`${scale.get_value()}%`);
+            profileContext.Settings.MaximumFrequencyAdjustment.set_lower(
+                scale.get_value()
+            );
+            profileContext.Settings.MinimumFrequencyValueLabel.set_text(
+                `${scale.get_value()}%`
+            );
 
             this.showCpuLimitInfo(profileContext);
 
@@ -777,13 +886,18 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     }
 
     onProfileMaximumFrequencyScaleValueChanged(profileContext, scale) {
-        let changed = profileContext.Profile.MaximumFrequency !== scale.get_value();
+        let changed =
+            profileContext.Profile.MaximumFrequency !== scale.get_value();
 
         if (changed) {
             profileContext.Settings.DiscardButton.sensitive = true;
             profileContext.Settings.SaveButton.sensitive = true;
-            profileContext.Settings.MinimumFrequencyAdjustment.set_upper(scale.get_value());
-            profileContext.Settings.MaximumFrequencyValueLabel.set_text(`${scale.get_value()}%`);
+            profileContext.Settings.MinimumFrequencyAdjustment.set_upper(
+                scale.get_value()
+            );
+            profileContext.Settings.MaximumFrequencyValueLabel.set_text(
+                `${scale.get_value()}%`
+            );
 
             this.showCpuLimitInfo(profileContext);
 
@@ -796,7 +910,8 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     }
 
     onProfileTurboBoostSwitchActiveNotify(profileContext, switchButton) {
-        let changed = profileContext.Profile.TurboBoost !== switchButton.get_active();
+        let changed =
+            profileContext.Profile.TurboBoost !== switchButton.get_active();
 
         if (changed) {
             profileContext.Settings.DiscardButton.sensitive = true;
@@ -816,8 +931,10 @@ var CPUPowerPreferences = class CPUPowerPreferences {
 
     onProfileSaveButtonClicked(profileContext, _button) {
         let name = profileContext.Settings.NameEntry.get_text();
-        let minimumFrequency = profileContext.Settings.MinimumFrequencyScale.get_value();
-        let maximumFrequency = profileContext.Settings.MaximumFrequencyScale.get_value();
+        let minimumFrequency =
+            profileContext.Settings.MinimumFrequencyScale.get_value();
+        let maximumFrequency =
+            profileContext.Settings.MaximumFrequencyScale.get_value();
         let turboBoost = profileContext.Settings.TurboBoostSwitch.get_active();
 
         profileContext.Profile.Name = name;
@@ -833,7 +950,10 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         let saved = [];
         for (let value of this.ProfilesMap.entries()) {
             this.status(`value: ${value[0]}${value[1]}`);
-            let idx = this.ProfilesMap.size - 1 - this.getProfileIndex(value[1].Profile);
+            let idx =
+                this.ProfilesMap.size -
+                1 -
+                this.getProfileIndex(value[1].Profile);
             this.status(`Saving: ${value[1].Profile.UUID} to idx ${idx}`);
             saved[idx] = value[1].Profile.save();
         }

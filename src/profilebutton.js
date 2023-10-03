@@ -25,11 +25,20 @@
  *
  */
 
-const PopupMenu = imports.ui.popupMenu;
-const GObject = imports.gi.GObject;
-const Config = imports.misc.config;
-const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
-const _ = Gettext.gettext;
+import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
+import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
+import * as Main from "resource:///org/gnome/shell/ui/main.js";
+import * as Util from "resource:///org/gnome/shell/misc/util.js";
+import {
+    Extension,
+    gettext as _,
+} from "resource:///org/gnome/shell/extensions/extension.js";
+import GObject from "gi://GObject";
+
+import Config from "./prefs40/misc";
+
+// const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
+// const _ = Gettext.gettext;
 
 const DEFAULT_EMPTY_NAME = "No name";
 
@@ -38,17 +47,24 @@ var CPUFreqProfileButton;
 
 // Handle different sub-classing paradigm between Gnome > 3.32 and Gnome <= 3.32
 if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-    CPUFreqProfileButton = class CPUFreqProfileButton extends PopupMenu.PopupMenuItem {
+    CPUFreqProfileButton = class CPUFreqProfileButton extends (
+        PopupMenu.PopupMenuItem
+    ) {
         _init(profile) {
-            super._init(profile.Name || DEFAULT_EMPTY_NAME, {reactive: true});
+            super._init(profile.Name || DEFAULT_EMPTY_NAME, { reactive: true });
             this.Profile = profile;
         }
     };
-    CPUFreqProfileButton = GObject.registerClass({GTypeName: "CPUFreqProfileButton"}, CPUFreqProfileButton);
+    CPUFreqProfileButton = GObject.registerClass(
+        { GTypeName: "CPUFreqProfileButton" },
+        CPUFreqProfileButton
+    );
 } else {
-    CPUFreqProfileButton = class CPUFreqProfileButton extends PopupMenu.PopupMenuItem {
+    CPUFreqProfileButton = class CPUFreqProfileButton extends (
+        PopupMenu.PopupMenuItem
+    ) {
         constructor(profile) {
-            super(_(profile.Name || DEFAULT_EMPTY_NAME), {reactive: true});
+            super(_(profile.Name || DEFAULT_EMPTY_NAME), { reactive: true });
             this.Profile = profile;
         }
     };

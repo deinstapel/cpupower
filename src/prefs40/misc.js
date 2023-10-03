@@ -1,19 +1,15 @@
 import Gio from "gi://Gio";
+import Gtk from "gi://Gtk?version=4.0";
+
+import {
+    ExtensionUtils,
+    gettext as _,
+} from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
 /* exported extensionUtils */
-var extensionUtils = {
-    getCurrentExtension: () => {
-        return {
-            imports,
-            dir: Gio.File.new_for_path(imports.system.programPath)
-                .get_parent()
-                .get_parent()
-                .get_parent(),
-        };
-    },
-};
+var extensionUtils = ExtensionUtils.getCurrentExtension();
 
 /* exported config */
-var config = {
-    PACKAGE_VERSION: "40.0",
+var Config = {
+    PACKAGE_VERSION: "45.0",
 };

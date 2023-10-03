@@ -26,9 +26,13 @@
  *
  */
 
-const GLib = imports.gi.GLib;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
+import GLib from "gi://GLib";
+//const ExtensionUtils = imports.misc.extensionUtils;
+
+import {
+    ExtensionUtils,
+    gettext as _,
+} from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
 /* exported PREFIX */
 var PREFIX = "/usr";

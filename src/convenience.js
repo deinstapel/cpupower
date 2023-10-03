@@ -24,11 +24,13 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-const Gettext = imports.gettext;
-const Gio = imports.gi.Gio;
+import Gio from "gi://Gio";
 
-const Config = imports.misc.config;
-const ExtensionUtils = imports.misc.extensionUtils;
+import Config from "./prefs40/misc";
+import {
+    ExtensionUtils,
+    gettext as _,
+} from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
 /* exported initTranslations */
 /**
@@ -82,7 +84,7 @@ function getSettings(schema) {
         schemaSource = GioSSS.new_from_directory(
             schemaDir.get_path(),
             GioSSS.get_default(),
-            false,
+            false
         );
     } else {
         schemaSource = GioSSS.get_default();
@@ -90,9 +92,11 @@ function getSettings(schema) {
 
     let schemaObj = schemaSource.lookup(schema, true);
     if (!schemaObj) {
-        throw new Error(`Schema ${schema} could not be found for extension ${extension.metadata.uuid}. ` +
-                        "Please check your installation.");
+        throw new Error(
+            `Schema ${schema} could not be found for extension ${extension.metadata.uuid}. ` +
+                "Please check your installation."
+        );
     }
 
-    return new Gio.Settings({settings_schema: schemaObj});
+    return new Gio.Settings({ settings_schema: schemaObj });
 }
