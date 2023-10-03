@@ -25,30 +25,32 @@
  *
  */
 
-const St = imports.gi.St;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
-const Util = imports.misc.util;
-const Mainloop = imports.mainloop;
-const Shell = imports.gi.Shell;
-const UPower = imports.gi.UPowerGlib;
-const Config = imports.misc.config;
+import Clutter from "gi://Clutter";
+import GLib from "gi://GLib";
+import Shell from "gi://Shell";
+import St from "gi://St";
+import UPower from "gi://UPowerGlib";
+import Gio from "gi://Gio";
 
-const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
-const _ = Gettext.gettext;
+import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
+import * as Main from "resource:///org/gnome/shell/ui/main.js";
+import * as Util from "resource:///org/gnome/shell/misc/util.js";
+import * as Config from "resource:///org/gnome/shell/misc/config.js";
+// import Gettext from 'gettext';
+// const _ = Gettext.domain('gnome-shell-extension-cpupower');
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const EXTENSIONDIR = Me.dir.get_path();
-const utils = Me.imports.src.utils;
-const Cpufreqctl = Me.imports.src.utils.Cpufreqctl;
+import {
+    Extension,
+    gettext as _,
+    ngettext,
+    pgettext,
+} from "resource:///org/gnome/shell/extensions/extension.js";
 
-const Slider = Me.imports.src.slider2;
-const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
-const baseindicator = Me.imports.src.baseindicator;
-const CPUFreqProfileButton = Me.imports.src.profilebutton.CPUFreqProfileButton;
+import { utils, Cpufreqctl } from "./utils.js";
+import { CPUFreqProfile } from "./profile.js";
+import { CPUFreqProfileButton } from "./profilebutton.js";
+import { Slider } from "./slider2.js";
+import { baseindicator } from "./baseindicator.js";
 
 const LASTSETTINGS = `${GLib.get_user_cache_dir()}/cpupower.last-settings`;
 
@@ -111,14 +113,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     enable() {
-        const Config = imports.misc.config;
-        if (parseInt(Config.PACKAGE_VERSION) >= 43) {
-            this.power =
-                Main.panel.statusArea.quickSettings._system._systemItem._powerToggle;
-        } else {
-            this.power = Main.panel.statusArea["aggregateMenu"]._power;
-        }
-
+        this.power = Main.panel.statusArea["aggregateMenu"]._power;
         this.powerState = this.power._proxy.State;
         this.powerConnectSignalId = this.power._proxy.connect(
             "g-properties-changed",
@@ -129,8 +124,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         super.enable();
 
-        this.timeout = Mainloop.timeout_add_seconds(1, () => this.updateFreq());
-        this.timeoutMinMax = Mainloop.timeout_add_seconds(1, () =>
+        this.timeout = GLib.timeout_add_seconds(1, () => this.updateFreq());
+        this.timeoutMinMax = GLib.timeout_add_seconds(1, () =>
             this.updateFreqMinMax(false)
         );
     }
@@ -651,17 +646,14 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     onPreferencesActivate(_item) {
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) >= 40) {
-            Util.trySpawnCommandLine(`${EXTENSIONDIR}/src/prefs40/main.js`);
-        } else if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-            Util.trySpawnCommandLine(
-                "gnome-extensions prefs cpupower@mko-sl.de"
-            );
-        } else {
-            Util.trySpawnCommandLine(
-                "gnome-shell-extension-prefs cpupower@mko-sl.de"
-            );
-        }
+        Util.trySpawnCommandLine(
+            GLib.uri_resolve_relative(
+                import.meta.url,
+                "./src/prefs40/main.js",
+                GLib.UriFlags.NONE
+            )
+        );
+
         return 0;
     }
 };

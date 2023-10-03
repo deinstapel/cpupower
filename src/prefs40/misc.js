@@ -1,11 +1,14 @@
-const Gio = imports.gi.Gio;
+import Gio from "gi://Gio";
 
 /* exported extensionUtils */
 var extensionUtils = {
     getCurrentExtension: () => {
         return {
             imports,
-            dir: Gio.File.new_for_path(imports.system.programPath).get_parent().get_parent().get_parent(),
+            dir: Gio.File.new_for_path(imports.system.programPath)
+                .get_parent()
+                .get_parent()
+                .get_parent(),
         };
     },
 };

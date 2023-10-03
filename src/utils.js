@@ -26,16 +26,14 @@
  *
  */
 
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
-const ByteArray = imports.byteArray;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const EXTENSIONDIR = Me.dir.get_path();
-const INSTALLER = `${EXTENSIONDIR}/tool/installer.sh`;
+
+//const EXTENSIONDIR = Me.dir.get_path();
+const INSTALLER = GLib.uri_resolve_relative(import.meta.url, '/tool/installer.sh', GLib.UriFlags.NONE));
 const PKEXEC = GLib.find_program_in_path("pkexec");
-const CONFIG = Me.imports.src.config;
+import { CONFIG } from "./src/config.js"
 
 // FIXME: I don't know how to call linux's getuid directly...
 /* exported getuid */

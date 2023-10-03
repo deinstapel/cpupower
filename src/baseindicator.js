@@ -26,20 +26,21 @@
  *
  */
 
-// Gnome imports
-const PanelMenu = imports.ui.panelMenu;
-const St = imports.gi.St;
-const Gio = imports.gi.Gio;
-const PopupMenu = imports.ui.popupMenu;
-const Main = imports.ui.main;
-const Clutter = imports.gi.Clutter;
-const Config = imports.misc.config;
+import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
+import * as Main from "resource:///org/gnome/shell/ui/main.js";
+import * as Util from "resource:///org/gnome/shell/misc/util.js";
+import * as Config from "resource:///org/gnome/shell/misc/config.js";
+import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
 
-// Relative and misc imports and definitions
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.src.convenience;
-const SETTINGS_ID = "org.gnome.shell.extensions.cpupower";
+// Gnome imports
+import Gio from "gi://Gio";
+import St from "gi://St";
+import Gio from "gi://Gio";
+import Clutter from "gi://Clutter";
+
+//Relative imports
+
+import { CpuPowerExtension } from "./../extension.js";
 
 /* exported CPUFreqBaseIndicator */
 var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
@@ -47,23 +48,24 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
         this.mainButton = new PanelMenu.Button(null, "cpupower");
         this.menu = this.mainButton.menu;
 
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-            this.actor = this.mainButton;
-        } else {
-            this.actor = this.mainButton.actor;
-        }
-
-        this.settings = Convenience.getSettings(SETTINGS_ID);
-
+        this.actor = this.mainButton;
+        ax;
+        this.settings = new CpuPowerExtension().settings;
         Main.panel.menuManager.addMenu(this.menu);
-        this.hbox = new St.BoxLayout({style_class: "panel-status-menu-box"});
-        let gicon = Gio.icon_new_for_string(`${Me.path}/data/icons/cpu-symbolic.svg`);
+        this.hbox = new St.BoxLayout({ style_class: "panel-status-menu-box" });
+        let gicon = Gio.icon_new_for_string(
+            `${Me.path}/data/icons/cpu-symbolic.svg`
+        );
         this.icon = new St.Icon({
             gicon,
             style_class: "system-status-icon",
         });
 
-        this.lbl = new St.Label({text: "", y_expand: true, y_align: Clutter.ActorAlign.CENTER});
+        this.lbl = new St.Label({
+            text: "",
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.arrow = PopupMenu.arrowIcon(St.Side.BOTTOM);
 
         this.createIndicator();
