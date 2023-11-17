@@ -25,111 +25,106 @@
  *
  */
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const EXTENSIONDIR = Me.dir.get_path();
-const Convenience = Me.imports.src.convenience;
-const Main = imports.ui.main;
-const Config = imports.misc.config;
-const ByteArray = imports.byteArray;
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-const utils = Me.imports.src.utils;
-const checkInstalled = Me.imports.src.utils.checkInstalled;
-const notinstalled = Me.imports.src.notinstalled;
-const update = Me.imports.src.update;
-const indicator = Me.imports.src.indicator;
+import * as utils from './src/utils.js';
+import {checkInstalled} from './src/utils.js';
+import * as notinstalled from './src/notinstalled.js';
+import * as update from './src/update.js';
+import * as indicator from './src/indicator.js';
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
-let indicatorInstance;
-/* exported init */
-function init(_meta) {
-    Convenience.initTranslations("gnome-shell-extension-cpupower");
-}
+const EXTENSIONDIR = import.meta.url.substr('file://'.length, import.meta.url.lastIndexOf('/') - 'file://'.length);
 
-function enableIndicator(instance) {
-    Main.panel.addToStatusArea("cpupower", instance.mainButton);
-    instance.enable();
-}
-
-let cpupowerProxy;
-let extensionReloadSignalHandler;
-/* exported enable */
-function enable() {
-    const interfaceBinary = GLib.file_get_contents(`${EXTENSIONDIR}/schemas/io.github.martin31821.cpupower.dbus.xml`)[1];
-    let interfaceXml;
-    if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.28) {
-        interfaceXml = ByteArray.toString(interfaceBinary);
-    } else {
-        interfaceXml = interfaceBinary.toString();
+export default class CPUPowerExtension extends Extension {
+    constructor(...args) {
+        super(...args);
+        this.indicatorInstance = null;
+        this.cpupowerProxy = null;
+        this.extensionReloadSignalHandler = null;
     }
-    const CpupowerProxy = Gio.DBusProxy.makeProxyWrapper(interfaceXml);
 
-    cpupowerProxy = new CpupowerProxy(
-        Gio.DBus.session,
-        "io.github.martin31821.cpupower",
-        "/io/github/martin31821/cpupower",
-    );
+    enableIndicator(instance) {
+        Main.panel.addToStatusArea("cpupower", instance.mainButton);
+        instance.enable();
+    }
 
-    extensionReloadSignalHandler = cpupowerProxy.connectSignal("ExtensionReloadRequired", () => {
-        log("Reloading cpupower");
-        disable();
-        enable();
-    });
+    /* exported enable */
+    enable() {
+        const interfaceBinary = GLib.file_get_contents(`${EXTENSIONDIR}/schemas/io.github.martin31821.cpupower.dbus.xml`)[1];
+        let decoder = new TextDecoder('utf-8');
+        let interfaceXml = decoder.decode(interfaceBinary);
+        const CpupowerProxy = Gio.DBusProxy.makeProxyWrapper(interfaceXml);
 
-    try {
-        checkInstalled((installed, exitCode) => {
-            if (!installed) {
-                switch (exitCode) {
-                case utils.INSTALLER_NEEDS_UPDATE:
-                    indicatorInstance = new update.UpdateIndicator(update.UPDATE, function (success) {
-                        if (success) {
-                            // reenable the extension to allow immediate operation.
-                            disable();
-                            enable();
-                        }
-                    }, (inst) => enableIndicator(inst));
-                    break;
-                case utils.INSTALLER_NEEDS_SECURITY_UPDATE:
-                    indicatorInstance = new update.UpdateIndicator(update.SECURITY_UPDATE, function (success) {
-                        if (success) {
-                            // reenable the extension to allow immediate operation.
-                            disable();
-                            enable();
-                        }
-                    }, (inst) => enableIndicator(inst));
-                    break;
-                default:
-                    indicatorInstance = new notinstalled.NotInstalledIndicator(exitCode, function (success) {
-                        if (success) {
-                            // reenable the extension to allow immediate operation.
-                            disable();
-                            enable();
-                        }
-                    }, (inst) => enableIndicator(inst));
-                    break;
-                }
-            } else {
-                indicatorInstance = new indicator.CPUFreqIndicator((inst) => enableIndicator(inst));
-            }
+        this.cpupowerProxy = new CpupowerProxy(
+            Gio.DBus.session,
+            "io.github.martin31821.cpupower",
+            "/io/github/martin31821/cpupower",
+        );
+
+        this.extensionReloadSignalHandler = this.cpupowerProxy.connectSignal("ExtensionReloadRequired", () => {
+            log("Reloading cpupower");
+            this.disable();
+            this.enable();
         });
-    } catch (e) {
-        logError(e.message);
+
+        try {
+            checkInstalled((installed, exitCode) => {
+                if (!installed) {
+                    switch (exitCode) {
+                    case utils.INSTALLER_NEEDS_UPDATE:
+                        this.indicatorInstance = new update.UpdateIndicator(update.UPDATE, function (success) {
+                            if (success) {
+                                // reenable the extension to allow immediate operation.
+                                disable();
+                                enable();
+                            }
+                        }, (inst) => this.enableIndicator(inst));
+                        break;
+                    case utils.INSTALLER_NEEDS_SECURITY_UPDATE:
+                        this.indicatorInstance = new update.UpdateIndicator(update.SECURITY_UPDATE, function (success) {
+                            if (success) {
+                                // reenable the extension to allow immediate operation.
+                                disable();
+                                enable();
+                            }
+                        }, (inst) => this.enableIndicator(inst));
+                        break;
+                    default:
+                        this.indicatorInstance = new notinstalled.NotInstalledIndicator(exitCode, function (success) {
+                            if (success) {
+                                // reenable the extension to allow immediate operation.
+                                disable();
+                                enable();
+                            }
+                        }, (inst) => this.enableIndicator(inst));
+                        break;
+                    }
+                } else {
+                    this.indicatorInstance = new indicator.CPUFreqIndicator((inst) => this.enableIndicator(inst));
+                }
+            });
+        } catch (e) {
+            logError(e);
+        }
     }
-}
 
-/* exported disable */
-function disable() {
-    if (indicatorInstance) {
-        indicatorInstance.disable();
-        indicatorInstance.destroy();
-    }
+    /* exported disable */
+    disable() {
+        if (this.indicatorInstance) {
+            this.indicatorInstance.disable();
+            this.indicatorInstance.destroy();
+        }
 
-    if (cpupowerProxy && extensionReloadSignalHandler) {
-        cpupowerProxy.disconnectSignal(extensionReloadSignalHandler);
+        if (this.cpupowerProxy && this.extensionReloadSignalHandler) {
+            this.cpupowerProxy.disconnectSignal(this.extensionReloadSignalHandler);
 
-        cpupowerProxy = null;
-        extensionReloadSignalHandler = null;
+            this.cpupowerProxy = null;
+            this.extensionReloadSignalHandler = null;
+        }
     }
 }

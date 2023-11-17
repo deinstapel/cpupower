@@ -30,8 +30,7 @@ function GenerateUUID() {
     return Math.floor(1 + Math.random() * 0xFFFFFFFE).toString();
 }
 
-/* exported CPUFreqProfile */
-var CPUFreqProfile = class CPUFreqProfile {
+export class CPUFreqProfile {
     constructor() {
         this.UUID = GenerateUUID();
         this.MinimumFrequency = 0;

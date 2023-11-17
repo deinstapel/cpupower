@@ -27,27 +27,14 @@
  */
 
 // Gnome imports
-import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
-import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
-import * as Main from "resource:///org/gnome/shell/ui/main.js";
-import * as Util from "resource:///org/gnome/shell/misc/util.js";
-import {
-    ExtensionUtils,
-    gettext as _,
-} from "resource:///org/gnome/shell/extensions/extension.js";
-import Gtk from "gi://Gtk";
-import Gio from "gi://Gio";
-import GLib from "gi://GLib";
+import Gio from 'gi://Gio';
 
-// // Relative and misc imports and definitions
-// const ExtensionUtils = imports.misc.extensionUtils;
-// const Me = ExtensionUtils.getCurrentExtension();
-import baseindicator from "baseindicator";
-import attemptInstallation from "utils.attemptInstallation";
-import utils from "utils";
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-// const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
-// const _ = Gettext.gettext;
+// Relative and misc imports and definitions
+import * as baseindicator from './baseindicator.js';
+import * as utils from './utils.js';
 
 /* exported NotInstalledIndicator */
 var NotInstalledIndicator = class NotInstalledIndicator extends baseindicator.CPUFreqBaseIndicator {
@@ -66,31 +53,21 @@ var NotInstalledIndicator = class NotInstalledIndicator extends baseindicator.CP
         super.createMenu();
 
         if (this.exitCode === utils.INSTALLER_NOT_INSTALLED) {
-            let notInstalledLabel = new PopupMenu.PopupMenuItem(
-                _("Installation required."),
-                { reactive: false }
-            );
+            let notInstalledLabel = new PopupMenu.PopupMenuItem(_("Installation required."), {reactive: false});
             this.mainSection.addMenuItem(notInstalledLabel);
         } else {
             let errorLabel = new PopupMenu.PopupMenuItem(
-                _(
-                    "Oh no! This should not have happened.\n" +
-                        "An error occurred while checking the installation!"
-                ),
-                { reactive: false }
+                _("Oh no! This should not have happened.\n" +
+                  "An error occurred while checking the installation!"),
+                {reactive: false},
             );
             let reportLabel = new PopupMenu.PopupMenuItem(
-                _(
-                    "Please consider reporting this to the developers\n" +
-                        "of this extension by submitting an issue on Github."
-                ),
-                { reactive: true }
+                _("Please consider reporting this to the developers\n" +
+                  "of this extension by submitting an issue on Github."),
+                {reactive: true},
             );
             reportLabel.connect("activate", function () {
-                Gio.AppInfo.launch_default_for_uri(
-                    "https://github.com/deinstapel/cpupower/issues/new",
-                    null
-                );
+                Gio.AppInfo.launch_default_for_uri("https://github.com/deinstapel/cpupower/issues/new", null);
             });
             this.mainSection.addMenuItem(errorLabel);
             this.mainSection.addMenuItem(reportLabel);
@@ -99,14 +76,8 @@ var NotInstalledIndicator = class NotInstalledIndicator extends baseindicator.CP
         let separator = new PopupMenu.PopupSeparatorMenuItem();
         this.mainSection.addMenuItem(separator);
 
-        this.attemptInstallationLabel = new PopupMenu.PopupMenuItem(
-            _("Attempt installation"),
-            { reactive: true }
-        );
-        this.attemptInstallationLabel.connect(
-            "activate",
-            attemptInstallation.bind(null, this.done)
-        );
+        this.attemptInstallationLabel = new PopupMenu.PopupMenuItem(_("Attempt installation"), {reactive: true});
+        this.attemptInstallationLabel.connect("activate", utils.attemptInstallation.bind(null, this.done));
         this.mainSection.addMenuItem(this.attemptInstallationLabel);
     }
 };

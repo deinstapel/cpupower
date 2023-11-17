@@ -25,37 +25,37 @@
  *
  */
 
-import Clutter from "gi://Clutter";
-import GLib from "gi://GLib";
-import Shell from "gi://Shell";
 import St from "gi://St";
-import UPower from "gi://UPowerGlib";
 import Gio from "gi://Gio";
+import GLib from "gi://GLib";
+import Gtk from "gi://Gtk";
+import Shell from "gi://Shell";
+import UPower from "gi://UPowerGlib";
 
-import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
+import * as Slider from "resource:///org/gnome/shell/ui/slider.js";
+import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
 import * as Util from "resource:///org/gnome/shell/misc/util.js";
 import * as Config from "resource:///org/gnome/shell/misc/config.js";
-// import Gettext from 'gettext';
-// const _ = Gettext.domain('gnome-shell-extension-cpupower');
-
 import {
     Extension,
     gettext as _,
-    ngettext,
-    pgettext,
 } from "resource:///org/gnome/shell/extensions/extension.js";
 
-import { utils, Cpufreqctl } from "./utils.js";
+import * as utils from "./utils.js";
+import * as baseindicator from "./baseindicator.js";
 import { CPUFreqProfile } from "./profile.js";
 import { CPUFreqProfileButton } from "./profilebutton.js";
-import { Slider } from "./slider2.js";
-import { baseindicator } from "./baseindicator.js";
 
+const EXTENSIONDIR =
+    import.meta.url.substr(
+        "file://".length,
+        import.meta.url.lastIndexOf("/") - "file://".length
+    ) + "/..";
 const LASTSETTINGS = `${GLib.get_user_cache_dir()}/cpupower.last-settings`;
 
 /* exported CPUFreqIndicator */
-var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseIndicator {
+export class CPUFreqIndicator extends baseindicator.CPUFreqBaseIndicator {
     constructor(onConstructed) {
         super();
         this.cpufreq = 800;
@@ -113,7 +113,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     enable() {
-        this.power = Main.panel.statusArea["aggregateMenu"]._power;
+        this.power =
+            Main.panel.statusArea.quickSettings._system._systemItem._powerToggle;
         this.powerState = this.power._proxy.State;
         this.powerConnectSignalId = this.power._proxy.connect(
             "g-properties-changed",
@@ -124,9 +125,13 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         super.enable();
 
-        this.timeout = GLib.timeout_add_seconds(1, () => this.updateFreq());
-        this.timeoutMinMax = GLib.timeout_add_seconds(1, () =>
-            this.updateFreqMinMax(false)
+        this.timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1, () =>
+            this.updateFreq()
+        );
+        this.timeoutMinMax = GLib.timeout_add_seconds(
+            GLib.PRIORITY_DEFAULT,
+            1,
+            () => this.updateFreqMinMax(false)
         );
     }
 
@@ -283,7 +288,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         });
 
         this.imSliderMin = new PopupMenu.PopupBaseMenuItem({ activate: false });
-        this.minSlider = new Slider.Slider2(this.minVal);
+        this.minSlider = new Slider.Slider(this.minVal);
         this.minSlider.x_expand = true;
         this.minSlider.maximum_value = 100;
         this.minSlider.overdrive_start = 100;
@@ -300,14 +305,9 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             this.updateMin();
         });
 
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-            this.imSliderMin.add_child(this.minSlider);
-        } else {
-            this.imSliderMin.actor.add(this.minSlider, { expand: true });
-        }
-
+        this.imSliderMin.add_child(this.minSlider);
         this.imSliderMax = new PopupMenu.PopupBaseMenuItem({ activate: false });
-        this.maxSlider = new Slider.Slider2(this.maxVal);
+        this.maxSlider = new Slider.Slider(this.maxVal);
         this.maxSlider.x_expand = true;
         this.maxSlider.maximum_value = 100;
         this.maxSlider.overdrive_start = 100;
@@ -324,12 +324,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             this.updateMax();
         });
 
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-            this.imSliderMax.add_child(this.maxSlider);
-        } else {
-            this.imSliderMax.actor.add(this.maxSlider, { expand: true });
-        }
-
+        this.imSliderMax.add_child(this.maxSlider);
         this.imCurrentTitle = new PopupMenu.PopupMenuItem(
             `${_("Current Frequency")}:`,
             { reactive: false }
@@ -369,7 +364,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         this.hasError = false;
         let backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.backends.current(backend, (result) => {
+        utils.Cpufreqctl.backends.current(backend, (result) => {
             if (!result.ok) {
                 switch (result.exitCode) {
                     case utils.CPUFREQCTL_NOT_SUPPORTED:
@@ -386,7 +381,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                             `${_("Oh no! Something went wrong.")}\n` +
                                 `${_(
                                     "An internal error occurred:"
-                                )} ${Cpufreqctl.exitCodeToString(
+                                )} ${utils.Cpufreqctl.exitCodeToString(
                                     result.exitCode
                                 )}`,
                             true
@@ -418,8 +413,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     disable() {
         this.power._proxy.disconnect(this.powerConnectSignalId);
         super.disable();
-        Mainloop.source_remove(this.timeout);
-        Mainloop.source_remove(this.timeoutMinMax);
+        //GLib.SOURCE_REMOVE(this.timeout);
+        //GLib.SOURCE_REMOVE(this.timeoutMinMax);
     }
 
     getMinText() {
@@ -442,7 +437,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
     updateMax(done) {
         let backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.max.set(
+        utils.Cpufreqctl.max.set(
             backend,
             Math.floor(this.maxVal).toString(),
             (_result) => {
@@ -457,7 +452,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
     updateMin(done) {
         let backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.min.set(
+        utils.Cpufreqctl.min.set(
             backend,
             Math.floor(this.minVal).toString(),
             (_result) => {
@@ -472,7 +467,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
     updateTurbo(done) {
         let backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.turbo.set(
+        utils.Cpufreqctl.turbo.set(
             backend,
             this.isTurboBoostActive ? "on" : "off",
             (_result) => {
@@ -527,7 +522,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         }
 
         const backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.info.current(backend, (result) => {
+        utils.Cpufreqctl.info.current(backend, (result) => {
             if (result.ok && result.exitCode === 0) {
                 let value;
                 switch (this.settings.get_string("frequency-sampling-mode")) {
@@ -577,21 +572,21 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         };
 
         const backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.turbo.get(backend, (result) => {
+        utils.Cpufreqctl.turbo.get(backend, (result) => {
             if (result.ok && result.exitCode === 0) {
                 this.isTurboBoostActive = result.response === "on";
             }
             updateUi();
         });
 
-        Cpufreqctl.min.get(backend, (result) => {
+        utils.Cpufreqctl.min.get(backend, (result) => {
             if (result.ok && result.exitCode === 0) {
                 this.minVal = result.response;
             }
             updateUi();
         });
 
-        Cpufreqctl.max.get(backend, (result) => {
+        utils.Cpufreqctl.max.get(backend, (result) => {
             if (result.ok && result.exitCode === 0) {
                 this.maxVal = result.response;
             }
@@ -602,11 +597,11 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     checkFrequencies(cb) {
-        Cpufreqctl.info.frequencies(
+        utils.Cpufreqctl.info.frequencies(
             this.settings.get_string("cpufreqctl-backend"),
             (result) => {
                 if (!result.ok || result.exitCode !== 0) {
-                    let exitReason = Cpufreqctl.exitCodeToString(
+                    let exitReason = utils.Cpufreqctl.exitCodeToString(
                         result.exitCode
                     );
                     log(
@@ -646,14 +641,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     onPreferencesActivate(_item) {
-        Util.trySpawnCommandLine(
-            GLib.uri_resolve_relative(
-                import.meta.url,
-                "./src/prefs40/main.js",
-                GLib.UriFlags.NONE
-            )
-        );
-
-        return 0;
+        const extension = Extension.lookupByURL(import.meta.url);
+        extension.openPreferences();
     }
-};
+}

@@ -27,24 +27,12 @@
  */
 
 // Gnome imports
-import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
-import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
-import * as Main from "resource:///org/gnome/shell/ui/main.js";
-import * as Util from "resource:///org/gnome/shell/misc/util.js";
-import {
-    Extension,
-    gettext as _,
-} from "resource:///org/gnome/shell/extensions/extension.js";
-import GObject from "gi://GObject";
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 // Relative and misc imports and definitions
-// const ExtensionUtils = imports.misc.extensionUtils;
-// const Me = ExtensionUtils.getCurrentExtension();
-import baseindicator from "./baseindicator";
-import attemptUpdate from "./utils.attemptUpdate";
-
-// const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
-// const _ = Gettext.gettext;
+import * as baseindicator from './baseindicator.js';
+import {attemptUpdate} from './utils.js';
 
 /* eslint no-unused-vars: "off" */
 const UPDATE = 1;
@@ -66,34 +54,22 @@ var UpdateIndicator = class UpdateIndicator extends baseindicator.CPUFreqBaseInd
     createMenu() {
         super.createMenu();
 
-        let updateText = _(
-            "Your CPU Power Manager installation needs updating!"
-        );
-        let securityText = _(
-            "Warning: Security issues were found with your installation!\n" +
-                "Please update immediately!"
-        );
+        let updateText = _("Your CPU Power Manager installation needs updating!");
+        let securityText = _("Warning: Security issues were found with your installation!\n" +
+                             "Please update immediately!");
         if (this.updateType === SECURITY_UPDATE) {
             updateText += "\n";
             updateText += securityText;
         }
 
-        let updateLabel = new PopupMenu.PopupMenuItem(updateText, {
-            reactive: false,
-        });
+        let updateLabel = new PopupMenu.PopupMenuItem(updateText, {reactive: false});
         this.mainSection.addMenuItem(updateLabel);
 
         let separator = new PopupMenu.PopupSeparatorMenuItem();
         this.mainSection.addMenuItem(separator);
 
-        this.attemptUpdateLabel = new PopupMenu.PopupMenuItem(
-            _("Attempt tool update"),
-            { reactive: true }
-        );
-        this.attemptUpdateLabel.connect(
-            "activate",
-            attemptUpdate.bind(null, this.done)
-        );
+        this.attemptUpdateLabel = new PopupMenu.PopupMenuItem(_("Attempt tool update"), {reactive: true});
+        this.attemptUpdateLabel.connect("activate", attemptUpdate.bind(null, this.done));
         this.mainSection.addMenuItem(this.attemptUpdateLabel);
     }
 };

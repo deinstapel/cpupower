@@ -29,16 +29,16 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
-
-//const EXTENSIONDIR = Me.dir.get_path();
-const INSTALLER = GLib.uri_resolve_relative(import.meta.url, '/tool/installer.sh', GLib.UriFlags.NONE));
 const PKEXEC = GLib.find_program_in_path("pkexec");
-import { CONFIG } from "./src/config.js"
+import * as CONFIG from './config.js';
+
+const EXTENSIONDIR = import.meta.url.substr('file://'.length, import.meta.url.lastIndexOf('/') - 'file://'.length) + '/..';
+const INSTALLER = `${EXTENSIONDIR}/tool/installer.sh`;
 
 // FIXME: I don't know how to call linux's getuid directly...
 /* exported getuid */
-function getuid() {
-    return parseInt(ByteArray.toString(GLib.spawn_sync(null, ["id", "-u"], null, GLib.SpawnFlags.SEARCH_PATH, null)[1]));
+export function getuid() {
+    return parseInt(TextDecoder.decode(GLib.spawn_sync(null, ["id", "-u"], null, GLib.SpawnFlags.SEARCH_PATH, null)[1]));
 }
 
 function spawnProcessCheckExitCode(argv, callback) {
@@ -71,22 +71,22 @@ function spawnProcessCheckExitCode(argv, callback) {
 }
 
 /* exported INSTALLER_SUCCESS */
-var INSTALLER_SUCCESS = 0;
+export var INSTALLER_SUCCESS = 0;
 /* exported INSTALLER_INVALID_ARG */
-var INSTALLER_INVALID_ARG = 1;
+export var INSTALLER_INVALID_ARG = 1;
 /* exported INSTALLER_FAILED */
-var INSTALLER_FAILED = 2;
+export var INSTALLER_FAILED = 2;
 /* exported INSTALLER_NEEDS_UPDATE */
-var INSTALLER_NEEDS_UPDATE = 3;
+export var INSTALLER_NEEDS_UPDATE = 3;
 /* exported INSTALLER_NEEDS_SECURITY_UPDATE */
-var INSTALLER_NEEDS_SECURITY_UPDATE = 4;
+export var INSTALLER_NEEDS_SECURITY_UPDATE = 4;
 /* exported INSTALLER_NOT_INSTALLED */
-var INSTALLER_NOT_INSTALLED = 5;
+export var INSTALLER_NOT_INSTALLED = 5;
 /* exported INSTALLER_MUST_BE_ROOT */
-var INSTALLER_MUST_BE_ROOT = 6;
+export var INSTALLER_MUST_BE_ROOT = 6;
 
 /* exported checkInstalled */
-function checkInstalled(callback) {
+export function checkInstalled(callback) {
     spawnProcessCheckExitCode(
         [INSTALLER, "--prefix", CONFIG.PREFIX, "--tool-suffix", CONFIG.TOOL_SUFFIX, "check"],
         callback,
@@ -94,7 +94,7 @@ function checkInstalled(callback) {
 }
 
 /* exported attemptInstallation */
-function attemptInstallation(done) {
+export function attemptInstallation(done) {
     spawnProcessCheckExitCode(
         [PKEXEC, INSTALLER, "--prefix", CONFIG.PREFIX, "--tool-suffix", CONFIG.TOOL_SUFFIX, "install"],
         done,
@@ -102,7 +102,7 @@ function attemptInstallation(done) {
 }
 
 /* exported attemptUninstallation */
-function attemptUninstallation(done) {
+export function attemptUninstallation(done) {
     spawnProcessCheckExitCode(
         [PKEXEC, INSTALLER, "--prefix", CONFIG.PREFIX, "--tool-suffix", CONFIG.TOOL_SUFFIX, "uninstall"],
         done,
@@ -110,7 +110,7 @@ function attemptUninstallation(done) {
 }
 
 /* exported attemptUpdate */
-function attemptUpdate(done) {
+export function attemptUpdate(done) {
     spawnProcessCheckExitCode(
         [PKEXEC, INSTALLER, "--prefix", CONFIG.PREFIX, "--tool-suffix", CONFIG.TOOL_SUFFIX, "update"],
         done,
@@ -118,21 +118,21 @@ function attemptUpdate(done) {
 }
 
 /* exported CPUFREQCTL_SUCCESS */
-var CPUFREQCTL_SUCCESS = 0;
+export var CPUFREQCTL_SUCCESS = 0;
 /* exported CPUFREQCTL_NO_ARGUMENTS */
-var CPUFREQCTL_NO_ARGUMENTS = 3;
+export var CPUFREQCTL_NO_ARGUMENTS = 3;
 /* exported CPUFREQCTL_INVALID_ARGUMENT */
-var CPUFREQCTL_INVALID_ARGUMENT = 4;
+export var CPUFREQCTL_INVALID_ARGUMENT = 4;
 /* exported CPUFREQCTL_OUT_OF_RANGE */
-var CPUFREQCTL_OUT_OF_RANGE = 5;
+export var CPUFREQCTL_OUT_OF_RANGE = 5;
 /* exported CPUFREQCTL_NO_BACKEND */
-var CPUFREQCTL_NO_BACKEND = 6;
+export var CPUFREQCTL_NO_BACKEND = 6;
 /* exported CPUFREQCTL_INVALID_BACKEND */
-var CPUFREQCTL_INVALID_BACKEND = 7;
+export var CPUFREQCTL_INVALID_BACKEND = 7;
 /* exported CPUFREQCTL_INTERNAL_ERROR */
-var CPUFREQCTL_INTERNAL_ERROR = 8;
+export var CPUFREQCTL_INTERNAL_ERROR = 8;
 /* exported CPUFREQCTL_NOT_SUPPORTED */
-var CPUFREQCTL_NOT_SUPPORTED = 9;
+export var CPUFREQCTL_NOT_SUPPORTED = 9;
 
 function runCpufreqctl(pkexecNeeded, backend, params, cb) {
     let args = [
@@ -208,7 +208,7 @@ function runCpufreqctl(pkexecNeeded, backend, params, cb) {
 }
 
 /* exported Cpufreqctl */
-var Cpufreqctl = {
+export var Cpufreqctl = {
     turbo: {
         get(backend, cb) {
             runCpufreqctl(false, backend, ["turbo", "get"], cb);
