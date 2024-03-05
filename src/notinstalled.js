@@ -27,18 +27,14 @@
  */
 
 // Gnome imports
-const PopupMenu = imports.ui.popupMenu;
+import Gio from 'gi://Gio';
+
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 // Relative and misc imports and definitions
-const Gio = imports.gi.Gio;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const baseindicator = Me.imports.src.baseindicator;
-const attemptInstallation = Me.imports.src.utils.attemptInstallation;
-const utils = Me.imports.src.utils;
-
-const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
-const _ = Gettext.gettext;
+import * as baseindicator from './baseindicator.js';
+import * as utils from './utils.js';
 
 /* exported NotInstalledIndicator */
 var NotInstalledIndicator = class NotInstalledIndicator extends baseindicator.CPUFreqBaseIndicator {
@@ -81,7 +77,7 @@ var NotInstalledIndicator = class NotInstalledIndicator extends baseindicator.CP
         this.mainSection.addMenuItem(separator);
 
         this.attemptInstallationLabel = new PopupMenu.PopupMenuItem(_("Attempt installation"), {reactive: true});
-        this.attemptInstallationLabel.connect("activate", attemptInstallation.bind(null, this.done));
+        this.attemptInstallationLabel.connect("activate", utils.attemptInstallation.bind(null, this.done));
         this.mainSection.addMenuItem(this.attemptInstallationLabel);
     }
 };

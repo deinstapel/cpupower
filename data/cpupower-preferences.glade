@@ -47,7 +47,7 @@ along with gnome-shell extension cpupower.  If not, see
 <http://www.gnu.org/licenses/>.
 -->
 <interface>
-  <requires lib="gtk+" version="3.22"/>
+  <requires lib="gtk+" version="4.12"/>
   <!-- interface-license-type gplv3 -->
   <!-- interface-name CPU Power Gnome-Shell extension -->
   <!-- interface-description Creates a widget to set the preferences of the cpupower extension -->

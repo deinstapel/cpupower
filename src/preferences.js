@@ -26,28 +26,24 @@
  *
  */
 
-const Gtk = imports.gi.Gtk;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
-const Config = imports.misc.config;
-const _ = Gettext.gettext;
-const ByteArray = imports.byteArray;
+import Gtk from 'gi://Gtk';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.src.convenience;
-const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
-const EXTENSIONDIR = Me.dir.get_path();
-const CONFIG = Me.imports.src.config;
-const attemptUninstallation = Me.imports.src.utils.attemptUninstallation;
-const Cpufreqctl = Me.imports.src.utils.Cpufreqctl;
+import * as Config from 'resource:///org/gnome/Shell/Extensions/js/misc/config.js';
+import {gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
+import * as Convenience from './convenience.js';
+import * as CONFIG from './config.js';
+import * as utils from './utils.js';
+import {CPUFreqProfile} from './profile.js';
+
+const EXTENSIONDIR = import.meta.url.substr('file://'.length, import.meta.url.lastIndexOf('/') - 'file://'.length);
 const GLADE_FILE = `${EXTENSIONDIR}/data/cpupower-preferences.glade`;
 const SETTINGS_SCHEMA = "org.gnome.shell.extensions.cpupower";
 
 /* exported CPUPowerPreferences */
-var CPUPowerPreferences = class CPUPowerPreferences {
+export class CPUPowerPreferencesContent {
     constructor() {
         this.cpupowerService = null;
         this.cpupowerConnection = null;
@@ -126,9 +122,9 @@ var CPUPowerPreferences = class CPUPowerPreferences {
     }
 
     checkFrequencies(cb) {
-        Cpufreqctl.info.frequencies(this.settings.get_string("cpufreqctl-backend"), (result) => {
+        utils.Cpufreqctl.info.frequencies(this.settings.get_string("cpufreqctl-backend"), (result) => {
             if (!result.ok || result.exitCode !== 0) {
-                let exitReason = Cpufreqctl.exitCodeToString(result.exitCode);
+                let exitReason = utils.Cpufreqctl.exitCodeToString(result.exitCode);
                 log(`Failed to query supported frequency ranges from cpufreqctl, reason ${exitReason}! ` +
                     "Assuming full range...");
                 log(result.response);
@@ -547,7 +543,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         let combobox = this.FrequencyScalingDriverComboBox;
         let backend = this.settings.get_string("cpufreqctl-backend");
         liststore.clear();
-        Cpufreqctl.backends.automatic((result) => {
+        utils.Cpufreqctl.backends.automatic((result) => {
             let iter = liststore.append();
             let chosenBackend = result.response;
             if (!result.ok) {
@@ -558,7 +554,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
                 [0, 1, 2],
                 [`${_("Automatic")} (${chosenBackend})`, "automatic", true],
             );
-            Cpufreqctl.backends.list(backend, (result) => {
+            utils.Cpufreqctl.backends.list(backend, (result) => {
                 if (!result.ok) {
                     return;
                 }
@@ -626,10 +622,10 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         this.status(`FrequencyScalingDriver: ${state}`);
 
         if (oldBackend !== state) {
-            Cpufreqctl.reset(oldBackend, (result) => {
+            utils.Cpufreqctl.reset(oldBackend, (result) => {
                 if (!result.ok) {
                     this.status(`Failed to reset frequency scaling driver of old backend ${oldBackend}: ` +
-                                `${Cpufreqctl.exitCodeToString(result.exitCode)}`);
+                                `${utils.Cpufreqctl.exitCodeToString(result.exitCode)}`);
                 }
             });
         }
@@ -701,7 +697,7 @@ var CPUPowerPreferences = class CPUPowerPreferences {
         dialog.set_transient_for(parentWindow);
 
         uninstallButton.connect("clicked", () => {
-            attemptUninstallation((_success) => {
+            utils.attemptUninstallation((_success) => {
                 dialog.close();
 
                 if (this.cpupowerConnection) {

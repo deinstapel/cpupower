@@ -26,23 +26,21 @@
  *
  */
 
-const GLib = imports.gi.GLib;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
+import GLib from 'gi://GLib';
 
 /* exported PREFIX */
-var PREFIX = "/usr";
+export var PREFIX = "/usr";
 /* exported TOOL_SUFFIX */
-var TOOL_SUFFIX = "";
+export var TOOL_SUFFIX = "";
 /* exported IS_USER_INSTALL */
-var IS_USER_INSTALL = false;
+export var IS_USER_INSTALL = false;
 
 /* exported CPUFREQCTL */
-var CPUFREQCTL = `${PREFIX}/bin/cpufreqctl`;
+export var CPUFREQCTL = `${PREFIX}/bin/cpufreqctl`;
 /* exported POLKIT */
-var POLKIT = `${PREFIX}/share/polkit-1/actions/mko.cpupower.setcpufreq.policy`;
+export var POLKIT = `${PREFIX}/share/polkit-1/actions/mko.cpupower.setcpufreq.policy`;
 
-if (Me.dir.get_path().includes("/home")) {
+if (import.meta.url.includes("/home")) {
     // we are installed in the /home directory, let"s handle tool installation
     TOOL_SUFFIX = GLib.get_user_name();
     CPUFREQCTL = `${PREFIX}/local/bin/cpufreqctl-${TOOL_SUFFIX}`;

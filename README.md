@@ -1,4 +1,4 @@
-<h1 align="center">CPU Power Manager for Gnome Shell</h1>
+<h1 align="center">CPU Power Manager for Gnome Shell - GNOME 45</h1>
 <p align="center">
   <img alt="Screenshot" width="331" src="./img/header.png"/>
   <!--<a href="https://extensions.gnome.org/extension/945/cpu-power-manager/">
@@ -14,7 +14,7 @@
   <a href="https://github.com/deinstapel/cpupower/releases">
     <img alt="Lastest release" src="https://img.shields.io/github/v/release/deinstapel/cpupower?label=latest%20release&sort=semver">
   </a>
-  <img alt="Gnome 42" src="https://img.shields.io/badge/gnome-42-blue?logo=gnome&logoColor=white">
+  <img alt="Gnome 43" src="https://img.shields.io/badge/gnome-43-blue?logo=gnome&logoColor=white">
   <a href="https://github.com/deinstapel/cpupower/blob/master/LICENSE">
     <img alt="License" src="https://img.shields.io/github/license/deinstapel/cpupower.svg">
   </a>
@@ -34,6 +34,10 @@
   <a href="#developing">Developing</a>
 </p>
 
+## Disclaimer
+This is a semi-"mainained" version of the original `cpupower` repo made by Nicolas Derumigny, compatible with GNOME 45. I do it on my free time and for my own configuration only. I accept PRs and bug reports, but do not expect me to fix it quick.
+
+--- original, **NOT UPDATED** README ----
 ## Prerequisites
 
 You need to have a CPU which is supported by the **cpufreq** or **intel_pstate** CPU frequency scaling driver of the Linux kernel. This applies for most modern CPU's. Furthermore, the following software needs to be installed to use this extension:

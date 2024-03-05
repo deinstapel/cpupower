@@ -1,4 +1,5 @@
 *~
+*.log
 .pgen
 .last-settings
 mko.cpupower.policy
