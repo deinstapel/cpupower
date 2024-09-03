@@ -46,7 +46,7 @@ jobs:
         cp target/gnome-shell-extension-cpupower_$VERSION.deb $GITHUB_WORKSPACE/gnome-shell-extension-cpupower_$VERSION.deb
         cp target/gnome-shell-extension-cpupower-$VERSION-1.noarch.rpm $GITHUB_WORKSPACE/gnome-shell-extension-cpupower-$VERSION-1.noarch.rpm
     - name: Load Release URL File from release job
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v4.1.7
       with:
         name: release_url
     - name: Get Release File Name & Upload URL
