@@ -25,35 +25,37 @@
  *
  */
 
-const St = imports.gi.St;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
-const Util = imports.misc.util;
-const Mainloop = imports.mainloop;
-const Shell = imports.gi.Shell;
-const UPower = imports.gi.UPowerGlib;
-const Config = imports.misc.config;
+import St from "gi://St";
+import Gio from "gi://Gio";
+import GLib from "gi://GLib";
+import Gtk from "gi://Gtk";
+import Shell from "gi://Shell";
+import UPower from "gi://UPowerGlib";
 
-const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
-const _ = Gettext.gettext;
+import * as Main from "resource:///org/gnome/shell/ui/main.js";
+import * as Slider from "resource:///org/gnome/shell/ui/slider.js";
+import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
+import * as Util from "resource:///org/gnome/shell/misc/util.js";
+import * as Config from "resource:///org/gnome/shell/misc/config.js";
+import {
+    Extension,
+    gettext as _,
+} from "resource:///org/gnome/shell/extensions/extension.js";
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const EXTENSIONDIR = Me.dir.get_path();
-const utils = Me.imports.src.utils;
-const Cpufreqctl = Me.imports.src.utils.Cpufreqctl;
+import * as utils from "./utils.js";
+import * as baseindicator from "./baseindicator.js";
+import { CPUFreqProfile } from "./profile.js";
+import { CPUFreqProfileButton } from "./profilebutton.js";
 
-const Slider = Me.imports.src.slider2;
-const CPUFreqProfile = Me.imports.src.profile.CPUFreqProfile;
-const baseindicator = Me.imports.src.baseindicator;
-const CPUFreqProfileButton = Me.imports.src.profilebutton.CPUFreqProfileButton;
-
+const EXTENSIONDIR =
+    import.meta.url.substr(
+        "file://".length,
+        import.meta.url.lastIndexOf("/") - "file://".length
+    ) + "/..";
 const LASTSETTINGS = `${GLib.get_user_cache_dir()}/cpupower.last-settings`;
 
 /* exported CPUFreqIndicator */
-var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseIndicator {
+export class CPUFreqIndicator extends baseindicator.CPUFreqBaseIndicator {
     constructor(onConstructed) {
         super();
         this.cpufreq = 800;
@@ -65,14 +67,17 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
         // read the cached settings file.
         if (GLib.file_test(LASTSETTINGS, GLib.FileTest.EXISTS)) {
-            let lines = Shell.get_file_contents_utf8_sync(LASTSETTINGS).split("\n");
+            let lines =
+                Shell.get_file_contents_utf8_sync(LASTSETTINGS).split("\n");
             if (lines.length > 3) {
                 this.minVal = parseInt(lines[0]);
                 this.maxVal = parseInt(lines[1]);
                 this.isTurboBoostActive = lines[2].indexOf("true") > -1;
                 this.isAutoSwitchActive = lines[3].indexOf("true") > -1;
 
-                log(`Loaded old settings: { minVal: ${this.minVal}, maxVal: ${this.maxVal}, isTurboBoostActive: ${this.isTurboBoostActive}, isAutoSwitchActive: ${this.isAutoSwitchActive} }`);
+                log(
+                    `Loaded old settings: { minVal: ${this.minVal}, maxVal: ${this.maxVal}, isTurboBoostActive: ${this.isTurboBoostActive}, isAutoSwitchActive: ${this.isAutoSwitchActive} }`
+                );
 
                 this.updateMin();
                 this.updateMax();
@@ -108,19 +113,26 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     enable() {
-        this.power = Main.panel.statusArea["aggregateMenu"]._power;
+        this.power =
+            Main.panel.statusArea.quickSettings._system._systemItem._powerToggle;
         this.powerState = this.power._proxy.State;
         this.powerConnectSignalId = this.power._proxy.connect(
             "g-properties-changed",
-            this.onPowerChanged.bind(this),
+            this.onPowerChanged.bind(this)
         );
         // select the right profile at login
         this.powerActions(this.powerState, null);
 
         super.enable();
 
-        this.timeout = Mainloop.timeout_add_seconds(1, () => this.updateFreq());
-        this.timeoutMinMax = Mainloop.timeout_add_seconds(1, () => this.updateFreqMinMax(false));
+        this.timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1, () =>
+            this.updateFreq()
+        );
+        this.timeoutMinMax = GLib.timeout_add_seconds(
+            GLib.PRIORITY_DEFAULT,
+            1,
+            () => this.updateFreqMinMax(false)
+        );
     }
 
     onPowerChanged() {
@@ -140,8 +152,14 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             log("Power state changed: discharging");
             // switch to battery profile if auto switching is enabled
             if (this.isAutoSwitchActive) {
-                let defaultBatProfileID = this.settings.get_string("default-battery-profile");
-                for (let i = 0; i < this.profiles.length && defaultBatProfileID !== ""; i++) {
+                let defaultBatProfileID = this.settings.get_string(
+                    "default-battery-profile"
+                );
+                for (
+                    let i = 0;
+                    i < this.profiles.length && defaultBatProfileID !== "";
+                    i++
+                ) {
                     if (this.profiles[i].Profile.UUID === defaultBatProfileID) {
                         doneScheduled = true;
                         this.applyProfile(this.profiles[i].Profile, done);
@@ -149,8 +167,10 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                     }
                 }
             }
-        } else if (powerState === UPower.DeviceState.CHARGING ||
-                   powerState === UPower.DeviceState.FULLY_CHARGED) {
+        } else if (
+            powerState === UPower.DeviceState.CHARGING ||
+            powerState === UPower.DeviceState.FULLY_CHARGED
+        ) {
             if (powerState === UPower.DeviceState.CHARGING) {
                 log("Power state changed: charging");
             } else {
@@ -158,8 +178,13 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             }
             // switch to AC profile if auto switching is enabled
             if (this.isAutoSwitchActive) {
-                let defaultACProfileID = this.settings.get_string("default-ac-profile");
-                for (var i = 0; i < this.profiles.length && defaultACProfileID !== ""; i++) {
+                let defaultACProfileID =
+                    this.settings.get_string("default-ac-profile");
+                for (
+                    var i = 0;
+                    i < this.profiles.length && defaultACProfileID !== "";
+                    i++
+                ) {
                     if (this.profiles[i].Profile.UUID === defaultACProfileID) {
                         doneScheduled = true;
                         this.applyProfile(this.profiles[i].Profile, done);
@@ -178,23 +203,33 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.hasError = true;
         this.lbl.set_text("");
         this.mainSection.removeAll();
-        this.mainSection.addMenuItem(new PopupMenu.PopupMenuItem(msg, {reactive: false}));
+        this.mainSection.addMenuItem(
+            new PopupMenu.PopupMenuItem(msg, { reactive: false })
+        );
 
         if (report) {
             let reportLabel = new PopupMenu.PopupMenuItem(
-                _("Please consider reporting this to the developers\n" +
-                  "of this extension by submitting an issue on Github."),
-                {reactive: true},
+                _(
+                    "Please consider reporting this to the developers\n" +
+                        "of this extension by submitting an issue on Github."
+                ),
+                { reactive: true }
             );
             reportLabel.connect("activate", function () {
-                Gio.AppInfo.launch_default_for_uri("https://github.com/deinstapel/cpupower/issues/new", null);
+                Gio.AppInfo.launch_default_for_uri(
+                    "https://github.com/deinstapel/cpupower/issues/new",
+                    null
+                );
             });
             this.mainSection.addMenuItem(reportLabel);
         }
 
         this.mainSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.imPrefsBtn = new PopupMenu.PopupMenuItem(_("Preferences"));
-        this.imPrefsBtn.connect("activate", this.onPreferencesActivate.bind(this));
+        this.imPrefsBtn.connect(
+            "activate",
+            this.onPreferencesActivate.bind(this)
+        );
         this.mainSection.addMenuItem(this.imPrefsBtn);
     }
 
@@ -218,30 +253,42 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         }
         this.profiles.reverse();
 
-        this.imMinTitle = new PopupMenu.PopupMenuItem(`${_("Minimum Frequency")}:`, {reactive: false});
-        this.imMinLabel = new St.Label({text: this.getMinText()});
+        this.imMinTitle = new PopupMenu.PopupMenuItem(
+            `${_("Minimum Frequency")}:`,
+            { reactive: false }
+        );
+        this.imMinLabel = new St.Label({ text: this.getMinText() });
         this.imMinLabel.set_style("width: 3.5em; text-align: right");
         this.imMinTitle.actor.add_child(this.imMinLabel);
 
-        this.imMaxTitle = new PopupMenu.PopupMenuItem(`${_("Maximum Frequency")}:`, {reactive: false});
-        this.imMaxLabel = new St.Label({text: this.getMaxText()});
+        this.imMaxTitle = new PopupMenu.PopupMenuItem(
+            `${_("Maximum Frequency")}:`,
+            { reactive: false }
+        );
+        this.imMaxLabel = new St.Label({ text: this.getMaxText() });
         this.imMaxLabel.set_style("width: 3.5em; text-align: right");
         this.imMaxTitle.actor.add_child(this.imMaxLabel);
 
-        this.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(`${_("Turbo Boost")}:`, this.isTurboBoostActive);
+        this.imTurboSwitch = new PopupMenu.PopupSwitchMenuItem(
+            `${_("Turbo Boost")}:`,
+            this.isTurboBoostActive
+        );
         this.imTurboSwitch.connect("toggled", (item) => {
             this.isTurboBoostActive = item.state;
             this.updateTurbo();
         });
 
-        this.imAutoSwitch = new PopupMenu.PopupSwitchMenuItem(`${_("Auto Switch")}:`, this.isAutoSwitchActive);
+        this.imAutoSwitch = new PopupMenu.PopupSwitchMenuItem(
+            `${_("Auto Switch")}:`,
+            this.isAutoSwitchActive
+        );
         this.imAutoSwitch.connect("toggled", (item) => {
             this.isAutoSwitchActive = item.state;
             this.updateAutoSwitch();
         });
 
-        this.imSliderMin = new PopupMenu.PopupBaseMenuItem({activate: false});
-        this.minSlider = new Slider.Slider2(this.minVal);
+        this.imSliderMin = new PopupMenu.PopupBaseMenuItem({ activate: false });
+        this.minSlider = new Slider.Slider(this.minVal);
         this.minSlider.x_expand = true;
         this.minSlider.maximum_value = 100;
         this.minSlider.overdrive_start = 100;
@@ -258,14 +305,9 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             this.updateMin();
         });
 
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-            this.imSliderMin.add_child(this.minSlider);
-        } else {
-            this.imSliderMin.actor.add(this.minSlider, {expand: true});
-        }
-
-        this.imSliderMax = new PopupMenu.PopupBaseMenuItem({activate: false});
-        this.maxSlider = new Slider.Slider2(this.maxVal);
+        this.imSliderMin.add_child(this.minSlider);
+        this.imSliderMax = new PopupMenu.PopupBaseMenuItem({ activate: false });
+        this.maxSlider = new Slider.Slider(this.maxVal);
         this.maxSlider.x_expand = true;
         this.maxSlider.maximum_value = 100;
         this.maxSlider.overdrive_start = 100;
@@ -282,14 +324,12 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
             this.updateMax();
         });
 
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-            this.imSliderMax.add_child(this.maxSlider);
-        } else {
-            this.imSliderMax.actor.add(this.maxSlider, {expand: true});
-        }
-
-        this.imCurrentTitle = new PopupMenu.PopupMenuItem(`${_("Current Frequency")}:`, {reactive: false});
-        this.imCurrentLabel = new St.Label({text: this.getCurFreq()});
+        this.imSliderMax.add_child(this.maxSlider);
+        this.imCurrentTitle = new PopupMenu.PopupMenuItem(
+            `${_("Current Frequency")}:`,
+            { reactive: false }
+        );
+        this.imCurrentLabel = new St.Label({ text: this.getCurFreq() });
         this.imCurrentLabel.set_style("width: 4.5em; text-align: right");
         this.imCurrentTitle.actor.add_child(this.imCurrentLabel);
 
@@ -305,7 +345,9 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.mainSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         for (var i = 0; i < this.profiles.length; i++) {
-            this.profiles[i].connect("activate", (item) => this.applyProfile(item.Profile, null));
+            this.profiles[i].connect("activate", (item) =>
+                this.applyProfile(item.Profile, null)
+            );
             this.mainSection.addMenuItem(this.profiles[i]);
         }
 
@@ -313,28 +355,37 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         this.mainSection.addMenuItem(this.imAutoSwitch);
 
         this.imPrefsBtn = new PopupMenu.PopupMenuItem(_("Preferences"));
-        this.imPrefsBtn.connect("activate", this.onPreferencesActivate.bind(this));
+        this.imPrefsBtn.connect(
+            "activate",
+            this.onPreferencesActivate.bind(this)
+        );
         this.mainSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.mainSection.addMenuItem(this.imPrefsBtn);
 
         this.hasError = false;
         let backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.backends.current(backend, (result) => {
+        utils.Cpufreqctl.backends.current(backend, (result) => {
             if (!result.ok) {
                 switch (result.exitCode) {
-                case utils.CPUFREQCTL_NOT_SUPPORTED:
-                    this.showError(
-                        `${_("Oh no! Something went wrong.")}\n` +
-                            `${_("The currently selected frequency scaling driver is not supported on your CPU!")}`,
-                        false,
-                    );
-                    break;
-                default:
-                    this.showError(
-                        `${_("Oh no! Something went wrong.")}\n` +
-                            `${_("An internal error occurred:")} ${Cpufreqctl.exitCodeToString(result.exitCode)}`,
-                        true,
-                    );
+                    case utils.CPUFREQCTL_NOT_SUPPORTED:
+                        this.showError(
+                            `${_("Oh no! Something went wrong.")}\n` +
+                                `${_(
+                                    "The currently selected frequency scaling driver is not supported on your CPU!"
+                                )}`,
+                            false
+                        );
+                        break;
+                    default:
+                        this.showError(
+                            `${_("Oh no! Something went wrong.")}\n` +
+                                `${_(
+                                    "An internal error occurred:"
+                                )} ${utils.Cpufreqctl.exitCodeToString(
+                                    result.exitCode
+                                )}`,
+                            true
+                        );
                 }
             } else {
                 this.clearError();
@@ -362,8 +413,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     disable() {
         this.power._proxy.disconnect(this.powerConnectSignalId);
         super.disable();
-        Mainloop.source_remove(this.timeout);
-        Mainloop.source_remove(this.timeoutMinMax);
+        //GLib.SOURCE_REMOVE(this.timeout);
+        //GLib.SOURCE_REMOVE(this.timeoutMinMax);
     }
 
     getMinText() {
@@ -375,7 +426,8 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     updateFile() {
-        let cmd = `${Math.floor(this.minVal)}\n` +
+        let cmd =
+            `${Math.floor(this.minVal)}\n` +
             `${Math.floor(this.maxVal)}\n` +
             `${this.isTurboBoostActive ? "true" : "false"}\n` +
             `${this.isAutoSwitchActive ? "true" : "false"}\n`;
@@ -385,35 +437,47 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
 
     updateMax(done) {
         let backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.max.set(backend, Math.floor(this.maxVal).toString(), (_result) => {
-            this.updateFile();
+        utils.Cpufreqctl.max.set(
+            backend,
+            Math.floor(this.maxVal).toString(),
+            (_result) => {
+                this.updateFile();
 
-            if (done) {
-                done();
+                if (done) {
+                    done();
+                }
             }
-        });
+        );
     }
 
     updateMin(done) {
         let backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.min.set(backend, Math.floor(this.minVal).toString(), (_result) => {
-            this.updateFile();
+        utils.Cpufreqctl.min.set(
+            backend,
+            Math.floor(this.minVal).toString(),
+            (_result) => {
+                this.updateFile();
 
-            if (done) {
-                done();
+                if (done) {
+                    done();
+                }
             }
-        });
+        );
     }
 
     updateTurbo(done) {
         let backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.turbo.set(backend, this.isTurboBoostActive ? "on" : "off", (_result) => {
-            this.updateFile();
+        utils.Cpufreqctl.turbo.set(
+            backend,
+            this.isTurboBoostActive ? "on" : "off",
+            (_result) => {
+                this.updateFile();
 
-            if (done) {
-                done();
+                if (done) {
+                    done();
+                }
             }
-        });
+        );
     }
 
     updateAutoSwitch() {
@@ -442,38 +506,44 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
                 this.minVal === p.Profile.MinimumFrequency &&
                     this.maxVal === p.Profile.MaximumFrequency &&
                     this.isTurboBoostActive === p.Profile.TurboBoost
-                    ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE,
+                    ? PopupMenu.Ornament.DOT
+                    : PopupMenu.Ornament.NONE
             );
         }
     }
 
     updateFreq() {
         // Only update current frequency if it is shown next to the indicator or the menu is open
-        if (this.hasError || !(this.lblActive || this.menu && this.menu.isOpen)) {
+        if (
+            this.hasError ||
+            !(this.lblActive || (this.menu && this.menu.isOpen))
+        ) {
             return true;
         }
 
         const backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.info.current(backend, (result) => {
+        utils.Cpufreqctl.info.current(backend, (result) => {
             if (result.ok && result.exitCode === 0) {
                 let value;
                 switch (this.settings.get_string("frequency-sampling-mode")) {
-                case "average":
-                    value = result.response.avg;
-                    break;
-                case "minimum":
-                    value = result.response.min;
-                    break;
-                case "maximum":
-                    value = result.response.max;
-                    break;
-                case "random":
-                    value = result.response.rnd;
-                    break;
-                default:
-                    log("invalid frequency-sampling-mode provided, defaulting to 'average'...");
-                    value = result.response.avg;
-                    break;
+                    case "average":
+                        value = result.response.avg;
+                        break;
+                    case "minimum":
+                        value = result.response.min;
+                        break;
+                    case "maximum":
+                        value = result.response.max;
+                        break;
+                    case "random":
+                        value = result.response.rnd;
+                        break;
+                    default:
+                        log(
+                            "invalid frequency-sampling-mode provided, defaulting to 'average'..."
+                        );
+                        value = result.response.avg;
+                        break;
                 }
                 this.cpufreq = value / 1000;
                 if (this.menu && this.menu.isOpen) {
@@ -502,21 +572,21 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
         };
 
         const backend = this.settings.get_string("cpufreqctl-backend");
-        Cpufreqctl.turbo.get(backend, (result) => {
+        utils.Cpufreqctl.turbo.get(backend, (result) => {
             if (result.ok && result.exitCode === 0) {
                 this.isTurboBoostActive = result.response === "on";
             }
             updateUi();
         });
 
-        Cpufreqctl.min.get(backend, (result) => {
+        utils.Cpufreqctl.min.get(backend, (result) => {
             if (result.ok && result.exitCode === 0) {
                 this.minVal = result.response;
             }
             updateUi();
         });
 
-        Cpufreqctl.max.get(backend, (result) => {
+        utils.Cpufreqctl.max.get(backend, (result) => {
             if (result.ok && result.exitCode === 0) {
                 this.maxVal = result.response;
             }
@@ -527,30 +597,39 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     checkFrequencies(cb) {
-        Cpufreqctl.info.frequencies(this.settings.get_string("cpufreqctl-backend"), (result) => {
-            if (!result.ok || result.exitCode !== 0) {
-                let exitReason = Cpufreqctl.exitCodeToString(result.exitCode);
-                log(`Failed to query supported frequency ranges from cpufreqctl, reason ${exitReason}! ` +
-                    "Assuming full range...");
-                log(result.response);
-                cb({
-                    min: 0,
-                    max: 100,
-                });
-            } else if (result.response.mode === "continuous") {
-                cb({
-                    min: result.response.min,
-                    max: result.response.max,
-                });
-            } else {
-                log(`Cpufreqctl signaled unsupported frequency mode ${result.response.mode}! ` +
-                    "Assuming full range...");
-                cb({
-                    min: 0,
-                    max: 100,
-                });
+        utils.Cpufreqctl.info.frequencies(
+            this.settings.get_string("cpufreqctl-backend"),
+            (result) => {
+                if (!result.ok || result.exitCode !== 0) {
+                    let exitReason = utils.Cpufreqctl.exitCodeToString(
+                        result.exitCode
+                    );
+                    log(
+                        `Failed to query supported frequency ranges from cpufreqctl, reason ${exitReason}! ` +
+                            "Assuming full range..."
+                    );
+                    log(result.response);
+                    cb({
+                        min: 0,
+                        max: 100,
+                    });
+                } else if (result.response.mode === "continuous") {
+                    cb({
+                        min: result.response.min,
+                        max: result.response.max,
+                    });
+                } else {
+                    log(
+                        `Cpufreqctl signaled unsupported frequency mode ${result.response.mode}! ` +
+                            "Assuming full range..."
+                    );
+                    cb({
+                        min: 0,
+                        max: 100,
+                    });
+                }
             }
-        });
+        );
     }
 
     getCurFreq() {
@@ -562,13 +641,7 @@ var CPUFreqIndicator = class CPUFreqIndicator extends baseindicator.CPUFreqBaseI
     }
 
     onPreferencesActivate(_item) {
-        if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) >= 40) {
-            Util.trySpawnCommandLine(`${EXTENSIONDIR}/src/prefs40/main.js`);
-        } else if (parseFloat(Config.PACKAGE_VERSION.substring(0, 4)) > 3.32) {
-            Util.trySpawnCommandLine("gnome-extensions prefs cpupower@mko-sl.de");
-        } else {
-            Util.trySpawnCommandLine("gnome-shell-extension-prefs cpupower@mko-sl.de");
-        }
-        return 0;
+        const extension = Extension.lookupByURL(import.meta.url);
+        extension.openPreferences();
     }
-};
+}

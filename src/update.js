@@ -27,16 +27,12 @@
  */
 
 // Gnome imports
-const PopupMenu = imports.ui.popupMenu;
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 // Relative and misc imports and definitions
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const baseindicator = Me.imports.src.baseindicator;
-const attemptUpdate = Me.imports.src.utils.attemptUpdate;
-
-const Gettext = imports.gettext.domain("gnome-shell-extension-cpupower");
-const _ = Gettext.gettext;
+import * as baseindicator from './baseindicator.js';
+import {attemptUpdate} from './utils.js';
 
 /* eslint no-unused-vars: "off" */
 const UPDATE = 1;

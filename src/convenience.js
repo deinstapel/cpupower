@@ -24,36 +24,9 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-const Gettext = imports.gettext;
-const Gio = imports.gi.Gio;
-
-const Config = imports.misc.config;
-const ExtensionUtils = imports.misc.extensionUtils;
-
-/* exported initTranslations */
-/**
- * initTranslations:
- * @domain: (optional): the gettext domain to use
- *
- * Initialize Gettext to load translations from extensionsdir/locale.
- * If @domain is not provided, it will be taken from metadata["gettext-domain"]
- */
-function initTranslations(domain) {
-    let extension = ExtensionUtils.getCurrentExtension();
-
-    domain = domain || extension.metadata["gettext-domain"];
-
-    // check if this extension was built with "make zip-file", and thus
-    // has the locale files in a subfolder
-    // otherwise assume that extension has been installed in the
-    // same prefix as gnome-shell
-    let localeDir = extension.dir.get_child("locale");
-    if (localeDir.query_exists(null)) {
-        Gettext.bindtextdomain(domain, localeDir.get_path());
-    } else {
-        Gettext.bindtextdomain(domain, Config.LOCALEDIR);
-    }
-}
+import Gio from 'gi://Gio';
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
 /* exported getSettings */
 /**
@@ -64,8 +37,8 @@ function initTranslations(domain) {
  * in extensionsdir/schemas. If @schema is not provided, it is taken from
  * metadata["settings-schema"].
  */
-function getSettings(schema) {
-    let extension = ExtensionUtils.getCurrentExtension();
+export function getSettings(schema) {
+    let extension = Extension.lookupByUUID('cpupower@mko-sl.de');
 
     schema = schema || extension.metadata["settings-schema"];
 

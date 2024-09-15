@@ -1,17 +1,19 @@
 #! /usr/bin/env gjs
 
-const Gio = imports.gi.Gio;
+import Gio from "gi://Gio";
+// imports.gi.versions.Gtk = "3.0";
+import Gtk from "gi://Gtk?version=4.0";
+//import * as prefs from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
-let scriptdir = Gio.File.new_for_path(imports.system.programPath).get_parent();
-imports.searchPath.unshift(scriptdir.get_path());
-imports.searchPath.unshift(scriptdir.get_parent().get_parent().get_path());
+// imports.searchPath.unshift(scriptdir.get_path());
+// imports.searchPath.unshift(scriptdir.get_parent().get_parent().get_path());
 
-imports.gi.versions.Gtk = "3.0";
-const Gtk = imports.gi.Gtk;
-const prefs = imports.prefs;
+//const prefs = imports.prefs;
+
+//let scriptdir = Gio.File.new_for_path(imports.system.programPath).get_parent();
 
 Gtk.init(null);
-prefs.init();
+//prefs.init();
 
 let win = new Gtk.Window();
 win.connect("delete-event", () => {
