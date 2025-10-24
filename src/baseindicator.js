@@ -27,22 +27,21 @@
  */
 
 // Gnome imports
-const PanelMenu = imports.ui.panelMenu;
-const St = imports.gi.St;
-const Gio = imports.gi.Gio;
-const PopupMenu = imports.ui.popupMenu;
-const Main = imports.ui.main;
-const Clutter = imports.gi.Clutter;
-const Config = imports.misc.config;
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import St from 'gi://St';
+import Gio from 'gi://Gio';
+import Clutter from 'gi://Clutter';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
 // Relative and misc imports and definitions
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.src.convenience;
+import * as Convenience from './convenience.js';
 const SETTINGS_ID = "org.gnome.shell.extensions.cpupower";
+const EXTENSIONDIR = import.meta.url.substr('file://'.length, import.meta.url.lastIndexOf('/') - 'file://'.length) + '/..';
 
 /* exported CPUFreqBaseIndicator */
-var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
+export class CPUFreqBaseIndicator {
     constructor() {
         this.mainButton = new PanelMenu.Button(null, "cpupower");
         this.menu = this.mainButton.menu;
@@ -57,7 +56,7 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
 
         Main.panel.menuManager.addMenu(this.menu);
         this.hbox = new St.BoxLayout({style_class: "panel-status-menu-box"});
-        let gicon = Gio.icon_new_for_string(`${Me.path}/data/icons/cpu-symbolic.svg`);
+        let gicon = Gio.icon_new_for_string(EXTENSIONDIR + '/data/icons/cpu-symbolic.svg');
         this.icon = new St.Icon({
             gicon,
             style_class: "system-status-icon",
@@ -83,13 +82,13 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
         this.arrowActive = this.settings.get_boolean("show-arrow-in-taskbar");
         this.hbox.remove_all_children();
         if (this.iconActive) {
-            this.hbox.add_actor(this.icon);
+            this.hbox.add_child(this.icon);
         }
         if (this.lblActive) {
-            this.hbox.add_actor(this.lbl);
+            this.hbox.add_child(this.lbl);
         }
         if (this.arrowActive) {
-            this.hbox.add_actor(this.arrow);
+            this.hbox.add_child(this.arrow);
         }
     }
 
@@ -100,11 +99,11 @@ var CPUFreqBaseIndicator = class CPUFreqBaseIndicator {
     }
 
     disable() {
-        this.actor.remove_actor(this.hbox);
+        this.actor.remove_child(this.hbox);
     }
 
     enable() {
-        this.actor.add_actor(this.hbox);
+        this.actor.add_child(this.hbox);
     }
 
     destroy() {

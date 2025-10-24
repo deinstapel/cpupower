@@ -26,41 +26,21 @@
  *
  */
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const EXTENSIONDIR = Me.dir.get_path();
-const Convenience = Me.imports.src.convenience;
-const CPUPowerPreferences = Me.imports.src.preferences.CPUPowerPreferences;
-const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
+import {ExtensionPreferences,  gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+import {CPUPowerPreferencesContent} from './src/preferences.js';
+import Gtk from 'gi://Gtk';
+import Adw from "gi://Adw"
 
-/* exported init */
-function init() {
-    Convenience.initTranslations("gnome-shell-extension-cpupower");
-}
+export default class CPUPowerPreferences extends ExtensionPreferences {
+    fillPreferencesWindow(win) {
+        win._settings = this.getSettings();
 
-/* exported buildPrefsWidget */
-function buildPrefsWidget() {
-    if (Gtk.get_major_version() === 4) {
-        let dummy = new Gtk.Label();
-        GLib.timeout_add(GLib.PRIORITY_DEFAULT, 0, () => {
-            let window = dummy.get_root();
-            window.close();
+        if (globalThis.cpupowerExtension == undefined){
+            globalThis.cpupowerExtension = ExtensionPreferences.lookupByUUID('cpupower@mko-sl.de')
+        }
+        let preferences = new CPUPowerPreferencesContent();
+        let mainWidget = preferences.show();
 
-            GLib.spawn_sync(
-                null,
-                [`${EXTENSIONDIR}/src/prefs40/main.js`],
-                null,
-                null,
-                null,
-            );
-
-            return GLib.SOURCE_REMOVE;
-        });
-        return dummy;
-    } else {
-        let preferences = new CPUPowerPreferences();
-
-        return preferences.show();
+        win.add(mainWidget);
     }
 }
