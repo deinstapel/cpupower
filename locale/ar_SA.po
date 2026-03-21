@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: cpupower\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-27 17:03+0200\n"
-"PO-Revision-Date: 2022-04-24 13:09\n"
+"PO-Revision-Date: 2026-03-21 20:10\n"
 "Last-Translator: Marek Pikuła <marek@pikula.co>\n"
 "Language-Team: Arabic\n"
 "Language: ar_SA\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:57
 msgid "About"
-msgstr ""
+msgstr "حول"
 
 #: data/cpupower-preferences.glade:68
 msgid "Gnome-Shell Extension for controlling the frequency scaling driver of your CPU."
@@ -31,7 +31,7 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:156
 msgid "Top Bar"
-msgstr ""
+msgstr "الشريط العلوي"
 
 #: data/cpupower-preferences.glade:188
 msgid "Show current frequency"
@@ -222,16 +222,16 @@ msgstr ""
 
 #: data/cpupower-preferences.glade:1095 src/indicator.js:221
 msgid "Minimum Frequency"
-msgstr ""
+msgstr "الحد الأدنى للتردد"
 
 #: data/cpupower-preferences.glade:1107 src/indicator.js:226
 msgid "Maximum Frequency"
-msgstr ""
+msgstr "الحد الأقصى للتردد"
 
 #: data/cpupower-preferences.glade:1119 data/cpupower-preferences.glade:1552
 #: src/indicator.js:231
 msgid "Turbo Boost"
-msgstr ""
+msgstr "Turbo Boost"
 
 #: data/cpupower-preferences.glade:1141
 msgid "Turbo boost switch"
